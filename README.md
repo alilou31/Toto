@@ -24,6 +24,10 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
 ## État actuel
 
 - [x] Landing page responsive et identité visuelle initiale
+- [x] Démonstration locale : profils fictifs, création de profil, likes et matchs simulés
+- [x] Page de tests manuels accessible via `/validation`
+- [x] Tests unitaires de validation et règles de démonstration (`npm test`)
+- [x] GitHub Actions pour lancer les tests sur push et pull request
 - [x] Pages d'entrée inscription et connexion (UI seulement)
 - [x] Pages d'information confidentialité et conditions (brouillons à revoir)
 - [x] Schéma SQL initial et politiques RLS de départ
@@ -35,11 +39,11 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
 - [ ] Messagerie temps réel et contrôles d'autorisation
 - [ ] Signalements, blocages et outils d'administration
 - [ ] Stripe, webhooks et gestion des abonnements
-- [ ] Tests automatisés, CI/CD et revue de sécurité/RGPD
+- [ ] Tests d'intégration navigateur et tests de sécurité RLS après connexion à Supabase\n- [ ] Revue de sécurité/RGPD
 
 Les formulaires actuels ne créent pas encore de comptes : ils indiquent explicitement que Supabase doit être configuré. Aucun faux membre, témoignage ou chiffre d'audience n'est affiché. L'application n'est pas prête pour la production.
 
-## Sécurité importante
+## Démonstration sans base de données\n\nOuvrir `/demo` pour tester les profils fictifs, enregistrer un profil local, aimer/retirer un like et afficher des matchs simulés. Les données sont stockées dans le localStorage du navigateur uniquement ; ne pas saisir d'informations personnelles réelles. Aucun compte, message ou match réel n'est créé. Ouvrir `/validation` pour les contrôles de formulaire.\n\n## Sécurité importante
 
 - Les dates de naissance et détails privés sont séparés des profils publics dans le schéma initial.
 - Les règles d'âge doivent être appliquées côté serveur avant publication d'un profil; ne jamais se fier uniquement à une case à cocher.
