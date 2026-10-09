@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./auth.css";
+import "./legal.css";
 
 export const metadata: Metadata = {
   title: "NIKAHYA — La rencontre qui change tout",
