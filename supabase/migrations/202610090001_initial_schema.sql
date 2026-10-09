@@ -9,7 +9,6 @@ create type public.subscription_status as enum ('inactive','trialing','active','
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   public_name text not null check (char_length(public_name) between 1 and 40),
-  birth_date date,
   city text,
   region_code text,
   bio text not null default '' check (char_length(bio) <= 1000),
@@ -20,6 +19,14 @@ create table public.profiles (
   visibility public.profile_visibility not null default 'hidden',
   onboarding_completed boolean not null default false,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+);
+
+create table public.profile_private_details (
+  user_id uuid primary key references public.profiles(id) on delete cascade,
+  birth_date date,
+  exact_location jsonb,
+  sensitive_preferences jsonb not null default '{}',
   updated_at timestamptz not null default now(),
   constraint adult_birth_date check (birth_date is null or birth_date <= (current_date - interval '18 years')::date)
 );
@@ -183,6 +190,7 @@ create index notifications_user_unread_idx on public.notifications (user_id, cre
 
 -- RLS is enabled on every user-facing table. Private/admin tables intentionally have no client write policies.
 alter table public.profiles enable row level security;
+alter table public.profile_private_details enable row level security;
 alter table public.profile_preferences enable row level security;
 alter table public.profile_photos enable row level security;
 alter table public.interests enable row level security;
@@ -202,12 +210,13 @@ alter table public.consent_records enable row level security;
 
 create policy "Profiles: owner can read own" on public.profiles for select to authenticated using (id = (select auth.uid()));
 create policy "Profiles: visible adult profiles can be discovered" on public.profiles for select to authenticated using (
-  visibility = 'visible' and onboarding_completed and birth_date <= (current_date - interval '18 years')::date
+  visibility = 'visible' and onboarding_completed
   and not exists (select 1 from public.blocks b where (b.blocker_id = (select auth.uid()) and b.blocked_id = id) or (b.blocker_id = id and b.blocked_id = (select auth.uid())))
 );
 create policy "Profiles: owner can create" on public.profiles for insert to authenticated with check (id = (select auth.uid()));
 create policy "Profiles: owner can update" on public.profiles for update to authenticated using (id = (select auth.uid())) with check (id = (select auth.uid()));
 
+create policy "Private details: owner only" on public.profile_private_details for all to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 create policy "Preferences: owner only" on public.profile_preferences for all to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 create policy "Photos: owner can manage" on public.profile_photos for all to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 create policy "Interests: participants can read" on public.interests for select to authenticated using (sender_id = (select auth.uid()) or recipient_id = (select auth.uid()));
