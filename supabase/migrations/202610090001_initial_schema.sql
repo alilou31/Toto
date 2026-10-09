@@ -19,7 +19,7 @@ create table public.profiles (
   visibility public.profile_visibility not null default 'hidden',
   onboarding_completed boolean not null default false,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table public.profile_private_details (
@@ -221,11 +221,11 @@ create policy "Preferences: owner only" on public.profile_preferences for all to
 create policy "Photos: owner can manage" on public.profile_photos for all to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 create policy "Interests: participants can read" on public.interests for select to authenticated using (sender_id = (select auth.uid()) or recipient_id = (select auth.uid()));
 create policy "Interests: sender creates own" on public.interests for insert to authenticated with check (sender_id = (select auth.uid()) and not exists (select 1 from public.blocks b where (b.blocker_id = sender_id and b.blocked_id = recipient_id) or (b.blocker_id = recipient_id and b.blocked_id = sender_id)));
-create policy "Interests: participants update" on public.interests for update to authenticated using (sender_id = (select auth.uid()) or recipient_id = (select auth.uid())) with check (sender_id = (select auth.uid()) or recipient_id = (select auth.uid()));
+-- Interest status changes must be handled by a trusted server function to prevent forged acceptance/matches.
 
 create policy "Matches: participants read" on public.matches for select to authenticated using (user_a = (select auth.uid()) or user_b = (select auth.uid()));
 create policy "Conversations: members read" on public.conversations for select to authenticated using (exists (select 1 from public.conversation_members cm where cm.conversation_id = id and cm.user_id = (select auth.uid())));
-create policy "Conversation members: self/read shared" on public.conversation_members for select to authenticated using (user_id = (select auth.uid()) or exists (select 1 from public.conversation_members cm where cm.conversation_id = conversation_id and cm.user_id = (select auth.uid())));
+create policy "Conversation members: own membership only" on public.conversation_members for select to authenticated using (user_id = (select auth.uid()));
 create policy "Messages: conversation members read" on public.messages for select to authenticated using (exists (select 1 from public.conversation_members cm where cm.conversation_id = conversation_id and cm.user_id = (select auth.uid())));
 create policy "Messages: send as self in joined conversation" on public.messages for insert to authenticated with check (sender_id = (select auth.uid()) and exists (select 1 from public.conversation_members cm where cm.conversation_id = conversation_id and cm.user_id = (select auth.uid())));
 
