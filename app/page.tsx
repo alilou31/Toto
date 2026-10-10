@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Menu } from "lucide-react";
 
+// Public marketing content can be regenerated periodically; keep authenticated
+// routes dynamic so private user data is never shared through this cache.
+export const revalidate = 60;
+
 const values = [
   { icon: Heart, title: "Des intentions claires", text: "Rencontrez des personnes qui savent ce qu’elles recherchent, dans le respect du rythme de chacun." },
   { icon: Sparkles, title: "Une compatibilité qui a du sens", text: "Explorez les valeurs, les envies et les projets de vie qui peuvent vous rapprocher." },
