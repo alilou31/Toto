@@ -1,29 +1,29 @@
 import { expect, test } from "@playwright/test";
 
 test("homepage shows account navigation when a session exists", async ({ page }) => {
-  await page.route("**/api/auth/me", async (route) => {
+  await page.route("**/api/auth/me**", async (route) => {
     await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: { id: "user-1" } }) });
   });
 
   await page.goto("/");
-  const header = page.locator("header");
-  await expect(header.getByRole("link", { name: "Mon profil" })).toBeVisible();
+  const header = page.locator("header.site-header").first();
+  await expect(header.getByRole("link", { name: "Mon profil", exact: true })).toBeVisible();
   await expect(header.getByRole("link", { name: "Découvrir", exact: true })).toBeVisible();
   await expect(header.getByRole("button", { name: "Déconnexion" })).toBeVisible();
-  await expect(header.getByRole("link", { name: "Connexion" })).toHaveCount(0);
+  await expect(header.getByRole("link", { name: "Connexion", exact: true })).toHaveCount(0);
   await expect(header.getByRole("link", { name: "Créer mon profil" })).toHaveCount(0);
 });
 
 test("homepage shows registration and login links without a session", async ({ page }) => {
-  await page.route("**/api/auth/me", async (route) => {
+  await page.route("**/api/auth/me**", async (route) => {
     await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: null }) });
   });
 
   await page.goto("/");
-  const header = page.locator("header");
-  await expect(header.getByRole("link", { name: "Connexion" })).toBeVisible();
+  const header = page.locator("header.site-header").first();
+  await expect(header.getByRole("link", { name: "Connexion", exact: true })).toBeVisible();
   await expect(header.getByRole("link", { name: "Créer mon profil" })).toBeVisible();
-  await expect(header.getByRole("link", { name: "Mon profil" })).toHaveCount(0);
+  await expect(header.getByRole("link", { name: "Mon profil", exact: true })).toHaveCount(0);
 });
 
 test("saving a profile confirms success without navigating away", async ({ page }) => {
