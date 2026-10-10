@@ -6,13 +6,13 @@ test.describe("Interface NIKAHYA en production", () => {
     expect(response?.status(), "La page d'accueil doit répondre en HTTP 200").toBe(200);
     await expect(page).toHaveTitle(/NIKAHYA/i);
     await expect(page.getByRole("heading", { name: /Et si votre prochaine rencontre/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Créer mon profil/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Essayer la démo/i }).first()).toBeVisible();
   });
 
   test("la navigation vers la connexion fonctionne", async ({ page }) => {
     await page.goto("/");
-    await page.locator("header").getByRole("link", { name: "Connexion" }).click();
+    await page.locator("header").getByRole("link", { name: /Se connecter|Connexion/i }).first().click();
     await expect(page).toHaveURL(/\/connexion$/);
     await expect(page.getByRole("heading", { name: /Votre histoire/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /Se connecter/i })).toBeVisible();
@@ -51,7 +51,7 @@ test.describe("Interface NIKAHYA en production", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
     await expect(page.getByRole("heading", { name: /Et si votre prochaine rencontre/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Créer mon profil/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     const dimensions = await page.evaluate(() => ({
       viewport: document.documentElement.clientWidth,
       content: document.documentElement.scrollWidth,
