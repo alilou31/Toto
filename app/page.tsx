@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Menu } from "lucide-react";
+import HomeHeader from "@/app/components/home-header";
+import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound } from "lucide-react";
 
 const values = [
   { icon: Heart, title: "Des intentions claires", text: "Rencontrez des personnes qui savent ce qu’elles recherchent, dans le respect du rythme de chacun." },
@@ -23,20 +24,7 @@ const faqs = [
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
-        <Link href="/" className="brand" aria-label="NIKAHYA, accueil">
-          <span className="brand-mark"><Heart size={20} strokeWidth={2.1} /></span>
-          <span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span>
-        </Link>
-        <nav className="desktop-nav" aria-label="Navigation principale">
-          <a href="#concept">Le concept</a><a href="#methode">Comment ça marche</a><a href="#securite">Sécurité</a>
-        </nav>
-        <div className="header-actions">
-          <Link href="/connexion" className="login-link">Connexion</Link>
-          <Link href="/demo" className="login-link">Essayer la démo</Link><Link href="/inscription" className="button button-dark button-small">Créer mon profil <ArrowRight size={15}/></Link>
-        </div>
-        <button className="mobile-menu" aria-label="Menu"><Menu size={23}/></button>
-      </header>
+      <HomeHeader />
 
       <section className="hero">
         <div className="hero-copy">
@@ -44,7 +32,8 @@ export default function Home() {
           <h1>Et si votre prochaine rencontre <em>était la bonne&nbsp;?</em></h1>
           <p className="hero-lede">Une belle histoire commence bien avant le premier message. Rencontrez des personnes qui partagent vos intentions, vos valeurs et votre vision de l’avenir.</p>
           <div className="hero-actions">
-            <Link href="/inscription" className="button button-green">Trouver ma moitié <ArrowRight size={17}/></Link>
+            <Link href="/inscription" className="button button-green">Créer mon compte <ArrowRight size={17}/></Link>
+            <Link href="/connexion" className="button button-quiet">Se connecter</Link>
             <a href="#concept" className="button button-quiet">Découvrir le concept <ArrowDown size={16}/></a>
           </div>
           <div className="hero-note"><span className="note-icon"><ShieldCheck size={17}/></span><span>Un espace pensé pour la sincérité.<br/><strong>Vos choix, votre rythme, votre histoire.</strong></span></div>
