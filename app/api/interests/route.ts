@@ -69,10 +69,10 @@ export async function POST(request: Request) {
     if (!eligible.length) return NextResponse.json({ error: "Ce profil n’est pas disponible pour un intérêt." }, { status: 404 });
 
     await sql`
-      insert into public.interests (sender_id, recipient_id, status)
+      insert into public.interests as current_interest (sender_id, recipient_id, status)
       values (${user.id}, ${recipientId}, 'pending')
       on conflict (sender_id, recipient_id) do update
-      set status = case when public.interests.status = 'accepted' then 'accepted' else 'pending' end,
+      set status = case when current_interest.status = 'accepted' then 'accepted' else 'pending' end,
           updated_at = now()
     `;
 
