@@ -11,7 +11,6 @@ test.describe("API d'authentification — validations sans compte réel", () => 
       },
     });
     expect(response.status()).toBe(400);
-    await expect(response).toBeOK().catch(() => undefined);
     expect(await response.json()).toMatchObject({
       error: "Veuillez saisir une adresse e-mail valide.",
     });
