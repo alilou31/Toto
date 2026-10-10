@@ -59,7 +59,7 @@ export default function HomeHeader() {
           <>
             <Link href="/profil" className="login-link">Mon profil</Link>
             <Link href="/decouvrir" className="login-link">Découvrir</Link>
-            <button type="button" className="login-link" onClick={logout} disabled={loggingOut}>
+            <button type="button" className="login-link" onClick={logout} disabled={loggingOut} style={{ border: 0, padding: 0, background: "transparent", fontFamily: "inherit", cursor: loggingOut ? "wait" : "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
               <LogOut size={14} aria-hidden="true" /> {loggingOut ? "Déconnexion…" : "Déconnexion"}
             </button>
           </>
