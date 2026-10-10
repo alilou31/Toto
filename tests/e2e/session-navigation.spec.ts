@@ -6,11 +6,12 @@ test("homepage shows account navigation when a session exists", async ({ page })
   });
 
   await page.goto("/");
-  await expect(page.getByRole("link", { name: "Mon profil" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Découvrir", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Déconnexion" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Connexion" })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Créer mon profil" })).toHaveCount(0);
+  const header = page.locator("header.site-header");
+  await expect(header.getByRole("link", { name: "Mon profil" })).toBeVisible();
+  await expect(header.getByRole("link", { name: "Découvrir", exact: true })).toBeVisible();
+  await expect(header.getByRole("button", { name: "Déconnexion" })).toBeVisible();
+  await expect(header.getByRole("link", { name: "Connexion" })).toHaveCount(0);
+  await expect(header.getByRole("link", { name: "Créer mon profil" })).toHaveCount(0);
 });
 
 test("homepage shows registration and login links without a session", async ({ page }) => {
@@ -19,9 +20,10 @@ test("homepage shows registration and login links without a session", async ({ p
   });
 
   await page.goto("/");
-  await expect(page.getByRole("link", { name: "Connexion" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Créer mon profil/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Mon profil" })).toHaveCount(0);
+  const header = page.locator("header.site-header");
+  await expect(header.getByRole("link", { name: "Connexion" })).toBeVisible();
+  await expect(header.getByRole("link", { name: /Créer mon profil/ })).toBeVisible();
+  await expect(header.getByRole("link", { name: "Mon profil" })).toHaveCount(0);
 });
 
 test("saving a profile confirms success without navigating away", async ({ page }) => {
