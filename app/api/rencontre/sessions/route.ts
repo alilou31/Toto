@@ -175,7 +175,9 @@ export async function PATCH(request: Request) {
       updated = await sql`
         update public.rencontre_sessions
         set state = state || ${JSON.stringify(value)}::jsonb, updated_at = now()
-        where id = ${sessionId}::uuid and status = 'active'
+        where id = ${sessionId}::uuid
+          and status = 'active'
+          and state = ${JSON.stringify(session.state)}::jsonb
         returning id, status, state, updated_at
       `;
     }
