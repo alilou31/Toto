@@ -27,7 +27,7 @@ jobs:
           curl --fail --silent --show-error --location \
             --retry 3 --retry-all-errors --max-time 20 \
             --output /dev/null \
-            --write-out 'Homepage HTTP %{http_code} in %{time_total}s\n' \
+            --write-out 'Homepage HTTP %{http_code} in %{time_total}s\\n' \
             "$PRODUCTION_URL/"
 
       - name: Check demo page
@@ -35,7 +35,7 @@ jobs:
           curl --fail --silent --show-error --location \
             --retry 3 --retry-all-errors --max-time 20 \
             --output /dev/null \
-            --write-out 'Demo HTTP %{http_code} in %{time_total}s\n' \
+            --write-out 'Demo HTTP %{http_code} in %{time_total}s\\n' \
             "$PRODUCTION_URL/demo"
 
       - name: Check live Neon database connectivity
@@ -43,7 +43,7 @@ jobs:
           curl --fail --silent --show-error --location \
             --retry 3 --retry-all-errors --max-time 20 \
             --output /tmp/db-check.json \
-            --write-out 'Database health endpoint HTTP %{http_code} in %{time_total}s\n' \
+            --write-out 'Database health endpoint HTTP %{http_code} in %{time_total}s\\n' \
             "$PRODUCTION_URL/api/db-check"
           node --input-type=module -e '
             import fs from "node:fs";
@@ -72,9 +72,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Run read-only production UI tests
