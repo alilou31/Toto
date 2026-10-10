@@ -40,17 +40,19 @@ export async function PUT(request: Request) {
   const city = typeof data.city === "string" ? data.city.trim() : "";
   const bio = typeof data.bio === "string" ? data.bio.trim() : "";
   const intention = typeof data.relationshipIntention === "string" ? data.relationshipIntention : "";
+  const visibility = typeof data.visibility === "string" ? data.visibility : "hidden";
   if (name.length < 2 || name.length > 40) return NextResponse.json({ error: "Le nom public doit contenir entre 2 et 40 caractères." }, { status: 400 });
   if (city.length > 100 || bio.length > 1000) return NextResponse.json({ error: "La ville ou la présentation dépasse la longueur autorisée." }, { status: 400 });
   if (!isAdultDate(data.birthDate)) return NextResponse.json({ error: "Saisissez une date de naissance valide confirmant que vous avez au moins 18 ans." }, { status: 400 });
   if (!["serious", "marriage", "friendship", "unspecified"].includes(intention)) return NextResponse.json({ error: "Choisissez une intention valide." }, { status: 400 });
+  if (!["hidden", "visible", "paused"].includes(visibility)) return NextResponse.json({ error: "Choisissez une visibilité valide." }, { status: 400 });
 
   try {
     const sql = getDb();
     const rows = await sql`insert into public.profiles (id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed)
-      values (${user.id}, ${name}, ${city || null}, ${bio}, ${intention}, ${data.birthDate as string}, 'hidden', true)
+      values (${user.id}, ${name}, ${city || null}, ${bio}, ${intention}, ${data.birthDate as string}, ${visibility}, true)
       on conflict (id) do update set public_name = excluded.public_name, city = excluded.city, bio = excluded.bio,
-        relationship_intention = excluded.relationship_intention, birth_date = excluded.birth_date, onboarding_completed = true, updated_at = now()
+        relationship_intention = excluded.relationship_intention, birth_date = excluded.birth_date, visibility = excluded.visibility, onboarding_completed = true, updated_at = now()
       returning id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed`;
     return NextResponse.json({ profile: rows[0] }, { headers: { "Cache-Control": "no-store" } });
   } catch {
