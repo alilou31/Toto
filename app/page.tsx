@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, MessageCircleHeart, ShieldCheck, Sparkles, UsersRound, Compass, Menu } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Menu } from "lucide-react";
 
 const values = [
   { icon: Heart, title: "Des intentions claires", text: "Rencontrez des personnes qui savent ce qu’elles recherchent, dans le respect du rythme de chacun." },
