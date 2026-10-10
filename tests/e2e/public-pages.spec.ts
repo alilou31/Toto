@@ -4,13 +4,13 @@ test.describe("Pages publiques NIKAHYA", () => {
   test("la page d'accueil affiche la marque et les accès principaux", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/NIKAHYA/i);
-    await expect(page.getByRole("link", { name: /Créer mon profil/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Essayer la démo/i }).first()).toBeVisible();
   });
 
   test("la navigation mène au formulaire de connexion", async ({ page }) => {
     await page.goto("/");
-    await page.locator("header").getByRole("link", { name: "Connexion" }).click();
+    await page.locator("header").getByRole("link", { name: /Se connecter|Connexion/i }).first().click();
     await expect(page).toHaveURL(/\/connexion$/);
     await expect(page.getByRole("heading", { name: /Votre histoire/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /Se connecter/i })).toBeVisible();
