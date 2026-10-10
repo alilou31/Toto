@@ -73,7 +73,7 @@ export default function HomeHeader() {
         <span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span>
       </Link>
       <nav className="desktop-nav" aria-label="Navigation principale">
-        <a href="/#concept">Le concept</a><a href="/#methode">Comment ça marche</a><a href="/#securite">Sécurité</a>
+        <Link href="/#concept">Le concept</Link><Link href="/#methode">Comment ça marche</Link><Link href="/#securite">Sécurité</Link>
       </nav>
       <div className="header-actions" aria-live="polite">
         {session === "checking" ? <span className="login-link" role="status">Vérification…</span> : session === "signed-in" ? (
