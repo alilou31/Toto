@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Menu } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Gamepad2 } from "lucide-react";
+import HomeHeaderControls, { DashboardHeroCta } from "@/components/home-header-controls";
 
 const values = [
   { icon: Heart, title: "Des intentions claires", text: "Rencontrez des personnes qui savent ce qu’elles recherchent, dans le respect du rythme de chacun." },
@@ -31,11 +32,7 @@ export default function Home() {
         <nav className="desktop-nav" aria-label="Navigation principale">
           <a href="#concept">Le concept</a><a href="#methode">Comment ça marche</a><a href="#securite">Sécurité</a>
         </nav>
-        <div className="header-actions">
-          <Link href="/connexion" className="login-link">Connexion</Link>
-          <Link href="/demo" className="login-link">Essayer la démo</Link><Link href="/inscription" className="button button-dark button-small">Créer mon profil <ArrowRight size={15}/></Link>
-        </div>
-        <button className="mobile-menu" aria-label="Menu"><Menu size={23}/></button>
+        <HomeHeaderControls />
       </header>
 
       <section className="hero">
@@ -47,6 +44,7 @@ export default function Home() {
             <Link href="/inscription" className="button button-green">Trouver ma moitié <ArrowRight size={17}/></Link>
             <a href="#concept" className="button button-quiet">Découvrir le concept <ArrowDown size={16}/></a>
           </div>
+          <DashboardHeroCta />
           <div className="hero-note"><span className="note-icon"><ShieldCheck size={17}/></span><span>Un espace pensé pour la sincérité.<br/><strong>Vos choix, votre rythme, votre histoire.</strong></span></div>
         </div>
         <div className="hero-visual" aria-label="Illustration chaleureuse d'une rencontre au coucher du soleil">
@@ -75,12 +73,26 @@ export default function Home() {
         <div className="method-cta"><span>Prêt·e à écrire la suite&nbsp;?</span><Link href="/inscription" className="button button-light">Créer mon profil <ArrowRight size={16}/></Link></div>
       </section>
 
-      <section className="safety section-pad" id="securite">
-        <div className="safety-visual"><div className="safety-orb"><div className="safety-ring ring-a"/><div className="safety-ring ring-b"/><div className="shield-core"><ShieldCheck size={48} strokeWidth={1.2}/></div><span className="orb-spark spark-a">✳</span><span className="orb-spark spark-b">✦</span></div><div className="safety-stamp"><LockKeyhole size={15}/> LA CONFIANCE AVANT TOUT</div></div>
-        <div className="safety-copy"><div className="section-kicker"><span>03</span> / VOTRE TRANQUILLITÉ COMPTE</div><h2>La confiance n’est pas une option. <em>C’est le début.</em></h2><p>Une rencontre sincère mérite un cadre rassurant. La confidentialité et la sécurité guident la conception de NIKAHYA, dès les premiers choix du produit.</p><ul><li><Check size={16}/> Contrôle de la visibilité de vos informations</li><li><Check size={16}/> Outils de blocage et de signalement prévus au cœur du service</li><li><Check size={16}/> Des pratiques transparentes sur vos données</li></ul><a href="#faq" className="text-link">Nos engagements, en toute transparence <ArrowRight size={16}/></a><p className="fine-print">Les fonctionnalités de sécurité sont en cours de construction. Les vérifications de profils ne seront signalées comme effectives qu’après un contrôle réel.</p></div>
+      <section className="games-promo section-pad" id="jeux">
+        <div className="games-promo-copy">
+          <div className="section-kicker"><span>03</span> / JOUER POUR SE DÉCOUVRIR</div>
+          <h2>Et si un jeu<br/><em>lançait la conversation&nbsp;?</em></h2>
+          <p>Participez à des activités à deux : questions qui rapprochent, quiz d’affinités et scénarios de vie. Pour certains jeux, les membres pourront définir un niveau minimum pour rejoindre une partie.</p>
+          <Link href="/jeux" className="button button-green">Découvrir les jeux <ArrowRight size={16}/></Link>
+        </div>
+        <div className="games-promo-cards">
+          <article><span><MessageCircleHeart size={20}/></span><strong>Questions guidées</strong><small>Faire connaissance en douceur</small></article>
+          <article><span><Gamepad2 size={20}/></span><strong>Quiz à deux</strong><small>Comparer ses réponses, sans jugement</small></article>
+          <article><span><Sparkles size={20}/></span><strong>Niveau au choix</strong><small>Des parties adaptées aux joueurs</small></article>
+        </div>
       </section>
 
-      <section className="faq section-pad" id="faq"><div className="faq-heading"><div className="section-kicker"><span>04</span> / BON À SAVOIR</div><h2>Vos questions,<br/><em>nos réponses.</em></h2><p>La transparence fait aussi partie de la rencontre.</p></div><div className="faq-list">{faqs.map((f,i)=><details className="faq-item" key={f.q} open={i===0}><summary><span>{f.q}</span><span className="faq-plus">+</span></summary><p>{f.a}</p></details>)}</div></section>
+      <section className="safety section-pad" id="securite">
+        <div className="safety-visual"><div className="safety-orb"><div className="safety-ring ring-a"/><div className="safety-ring ring-b"/><div className="shield-core"><ShieldCheck size={48} strokeWidth={1.2}/></div><span className="orb-spark spark-a">✳</span><span className="orb-spark spark-b">✦</span></div><div className="safety-stamp"><LockKeyhole size={15}/> LA CONFIANCE AVANT TOUT</div></div>
+        <div className="safety-copy"><div className="section-kicker"><span>04</span> / VOTRE TRANQUILLITÉ COMPTE</div><h2>La confiance n’est pas une option. <em>C’est le début.</em></h2><p>Une rencontre sincère mérite un cadre rassurant. La confidentialité et la sécurité guident la conception de NIKAHYA, dès les premiers choix du produit.</p><ul><li><Check size={16}/> Contrôle de la visibilité de vos informations</li><li><Check size={16}/> Outils de blocage et de signalement prévus au cœur du service</li><li><Check size={16}/> Des pratiques transparentes sur vos données</li></ul><a href="#faq" className="text-link">Nos engagements, en toute transparence <ArrowRight size={16}/></a><p className="fine-print">Les fonctionnalités de sécurité sont en cours de construction. Les vérifications de profils ne seront signalées comme effectives qu’après un contrôle réel.</p></div>
+      </section>
+
+      <section className="faq section-pad" id="faq"><div className="faq-heading"><div className="section-kicker"><span>05</span> / BON À SAVOIR</div><h2>Vos questions,<br/><em>nos réponses.</em></h2><p>La transparence fait aussi partie de la rencontre.</p></div><div className="faq-list">{faqs.map((f,i)=><details className="faq-item" key={f.q} open={i===0}><summary><span>{f.q}</span><span className="faq-plus">+</span></summary><p>{f.a}</p></details>)}</div></section>
 
       <section className="final-cta"><div className="cta-flower">✳</div><div className="section-kicker">VOTRE HISTOIRE PEUT COMMENCER ICI</div><h2>Et si le plus beau<br/>restait <em>à venir&nbsp;?</em></h2><p>Faites le premier pas vers une rencontre qui vous ressemble.</p><Link href="/demo" className="button button-light">Essayer la démo <ArrowRight size={17}/></Link><span className="cta-signature">NIKAHYA — La rencontre qui change tout.</span></section>
 
