@@ -10,7 +10,7 @@ test.describe("Pages publiques NIKAHYA", () => {
 
   test("la navigation mène au formulaire de connexion", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: "Connexion" }).click();
+    await page.locator("header").getByRole("link", { name: "Connexion" }).click();
     await expect(page).toHaveURL(/\/connexion$/);
     await expect(page.getByRole("heading", { name: /Votre histoire/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /Se connecter/i })).toBeVisible();
