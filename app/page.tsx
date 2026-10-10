@@ -1,6 +1,6 @@
 import Link from "next/link";
 import HomeHeader from "@/app/components/home-header";
-import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Menu } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound } from "lucide-react";
 
 const values = [
   { icon: Heart, title: "Des intentions claires", text: "Rencontrez des personnes qui savent ce qu’elles recherchent, dans le respect du rythme de chacun." },
