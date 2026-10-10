@@ -9,6 +9,7 @@ type Profile = {
   public_name?: string | null;
   city?: string | null;
   bio?: string | null;
+  birth_date?: string | null;
   relationship_intention?: string | null;
   visibility?: "hidden" | "visible" | "paused" | null;
   onboarding_completed?: boolean;
