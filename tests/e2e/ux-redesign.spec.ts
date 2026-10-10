@@ -42,7 +42,9 @@ test.describe("NIKAHYA — pages publiques", () => {
     await expect(password).toBeVisible();
     await expect(email).toHaveAttribute("type", "email");
     await expect(password).toHaveAttribute("type", "password");
-    await expect(page.locator("form button[type=submit]")).toBeDisabled();
+    const form = page.locator("form");
+    await expect(form.locator("button[type=submit]")).toBeVisible();
+    expect(await form.evaluate((node: HTMLFormElement) => node.checkValidity())).toBe(false);
   });
 });
 
