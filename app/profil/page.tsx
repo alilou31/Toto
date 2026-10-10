@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Heart, Save } from "lucide-react";
 
-type Profile = { public_name?: string; city?: string | null; bio?: string; relationship_intention?: string; birth_date?: string };
+type Profile = { public_name?: string; city?: string | null; bio?: string; relationship_intention?: string; birth_date?: string; visibility?: "hidden" | "visible" | "paused" };
 
 export default function ProfilePage() {
   const [publicName, setPublicName] = useState("");
@@ -12,6 +12,7 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [intention, setIntention] = useState("marriage");
+  const [visibility, setVisibility] = useState<"hidden" | "visible" | "paused">("hidden");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -26,7 +27,7 @@ export default function ProfilePage() {
       if (!active || !profile) return;
       setPublicName(profile.public_name ?? ""); setCity(profile.city ?? ""); setBio(profile.bio ?? "");
       setBirthDate(profile.birth_date ? String(profile.birth_date).slice(0, 10) : "");
-      setIntention(profile.relationship_intention ?? "marriage");
+      setIntention(profile.relationship_intention ?? "marriage"); setVisibility(profile.visibility ?? "hidden");
     }).catch(error => { if (active) setMessage(error instanceof Error ? error.message : "Impossible de charger le profil."); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
@@ -36,10 +37,10 @@ export default function ProfilePage() {
     event.preventDefault(); setSaving(true); setMessage("");
     try {
       const response = await fetch("/api/profile", { method: "PUT", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicName, city, bio, birthDate, relationshipIntention: intention }) });
+        body: JSON.stringify({ publicName, city, bio, birthDate, relationshipIntention: intention, visibility }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Enregistrement impossible.");
-      setMessage("Profil enregistré. Il reste masqué jusqu’à ce que vous choisissiez de le rendre visible.");
+      setMessage(visibility === "visible" ? "Profil enregistré et visible dans la découverte." : visibility === "paused" ? "Profil enregistré et mis en pause." : "Profil enregistré et masqué.");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Service indisponible."); }
     finally { setSaving(false); }
   }
@@ -63,13 +64,18 @@ export default function ProfilePage() {
           <option value="marriage">Mariage</option><option value="serious">Relation sérieuse</option>
           <option value="friendship">Faire connaissance</option><option value="unspecified">Je préfère en discuter</option>
         </select>
+        <label htmlFor="visibility">Visibilité de mon profil</label>
+        <select id="visibility" className="form-control" value={visibility} onChange={e=>setVisibility(e.target.value as "hidden" | "visible" | "paused")}>
+          <option value="hidden">Masqué — je ne suis pas visible</option><option value="paused">En pause</option><option value="visible">Visible dans la découverte</option>
+        </select>
+        <p className="password-hint">Seuls votre prénom public, ville, présentation et intention sont partagés. Votre e-mail et votre date de naissance ne sont jamais affichés.</p>
         <label htmlFor="bio">Quelques mots sur vous</label>
         <textarea id="bio" className="form-control" rows={5} maxLength={1000} value={bio} onChange={e=>setBio(e.target.value)} placeholder="Vos valeurs, vos centres d’intérêt, ce qui compte pour vous…"/>
         <p className="password-hint">{bio.length}/1000 caractères. Votre profil reste masqué pendant cette première étape.</p>
         <button className="button button-green auth-submit" type="submit" disabled={saving}><Save size={17}/>{saving ? "Enregistrement…" : "Enregistrer mon profil"}</button>
         {message && <p className="auth-notice" role="status">{message}</p>}
       </form>}
-      <p className="auth-switch"><Link href="/connexion">Retour à la connexion</Link></p>
+      <p className="auth-switch"><Link href="/decouvrir">Découvrir les profils visibles</Link> · <Link href="/connexion">Retour à la connexion</Link></p>
     </section>
   </main>;
 }
