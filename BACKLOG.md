@@ -154,6 +154,30 @@
 - [ ] Définir une durée de conservation des données et une procédure de suppression
 - [ ] Vérifier les obligations applicables avant l'ouverture publique
 
+## EPIC 6 — Mode Rencontre
+
+### NIK-050 — Proposer une activité à un match (P1)
+- [x] Ajouter une migration Neon pour enregistrer les sessions d'activité
+- [x] Ajouter une API authentifiée pour lire et créer une proposition liée à un match
+- [x] Refuser les sessions pour un match inexistant, non autorisé ou bloqué
+- [x] Ajouter la page mobile-first `/rencontre` avec quatre catégories d'activités
+- [ ] Exécuter la migration `003_rencontre_sessions.sql` dans Neon
+- [ ] Ajouter une navigation visible vers le Mode Rencontre
+- [ ] Ajouter les tests API et navigateur (authentification, autorisation, blocage, création)
+
+**État :** première tranche de la fonctionnalité. La proposition est persistée en base et visible dans la liste des activités des deux membres du match. Les parties jouables et la synchronisation entre participants restent à réaliser.
+
+### NIK-051 — Jouer aux activités (P1)
+- [ ] Défi logique avec progression et résultat enregistrés
+- [ ] Snake challenge avec score enregistré
+- [ ] Duo langues avec questions et progression
+- [ ] Défi coopératif avec état partagé entre les deux membres
+- [ ] Rafraîchissement/synchronisation serveur sans service temps réel externe
+- [ ] Permettre aux deux membres d'accepter, démarrer, terminer ou annuler une activité
+- [ ] Contrôler côté serveur que seuls les membres du match peuvent lire ou modifier une session
+
+**Critères d'acceptation :** les activités sont jouables, leur état ne peut pas être modifié par un tiers et l'interface indique clairement les états d'attente, en cours et terminés. Aucune session ni donnée de profil fictive n'est utilisée.
+
 ## REPORTÉ — Phase 2 (prestataires externes)
 
 Ces éléments ne doivent pas bloquer le MVP. Prévoir des points d'intégration, sans connecter de fournisseur pour l'instant.
