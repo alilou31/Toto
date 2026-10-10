@@ -58,8 +58,11 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [x] Schéma initial des profils, intérêts, matchs, conversations, messages, blocages et signalements
 - [x] Tables d'utilisateurs et de sessions pour l'authentification première partie
 - [x] Hashage de mot de passe avec scrypt et cookies de session HttpOnly
-- [x] Première tranche du Mode Rencontre : page `/rencontre`, propositions d'activité rattachées aux matchs et stockage des sessions dans Neon (migration 003 à appliquer)
-- [ ] Implémenter les parties jouables, les états de session et la synchronisation entre les deux participants
+- [x] Mode Rencontre : invitations liées aux matchs, API authentifiée et migration Neon 003 (à appliquer)
+- [x] Défis logiques, duo langues et défis coopératifs avec progression partagée
+- [x] Acceptation, annulation et clôture des activités ; rafraîchissement de l'état toutes les 5 secondes
+- [ ] Remplacer le Snake score simplifié par le jeu Snake classique
+- [ ] Appliquer la migration 003 dans Neon et valider le parcours à deux comptes en préproduction
 - [ ] Exécuter la migration `002_authentication.sql` dans Neon avant de tester inscription/connexion
 - [ ] Vérifier build, tests et parcours d'authentification en préproduction
 - [ ] Ajouter limitation des tentatives et tests de sécurité
