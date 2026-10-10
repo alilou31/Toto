@@ -21,6 +21,7 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
 5. Dans le SQL Editor de Neon, exécuter dans l'ordre :
    - `db/migrations/001_nikahya_initial.sql`
    - `db/migrations/002_authentication.sql`
+   - `db/migrations/003_auth_rate_limits.sql`
 6. Lancer `npm run dev`, puis ouvrir `http://localhost:3000`.
 7. Vérifier la connexion sur `http://localhost:3000/api/db-check`. La route renvoie uniquement un état et l'heure de la base, jamais la chaîne de connexion.
 
@@ -73,7 +74,8 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [x] Hashage de mot de passe avec scrypt et cookies de session HttpOnly
 - [ ] Exécuter la migration `002_authentication.sql` dans Neon avant de tester inscription/connexion
 - [ ] Vérifier build, tests et parcours d'authentification en préproduction
-- [ ] Ajouter limitation des tentatives et tests de sécurité
+- [x] Ajouter limitation persistante des tentatives d’inscription et de connexion (migration 003 requise)
+- [ ] Ajouter tests de sécurité complémentaires
 - [ ] Créer le parcours de profil relié au compte connecté
 - [ ] Enregistrer les profils via des routes serveur authentifiées
 - [ ] Gestion des photos avec stockage privé durable et modération
@@ -93,7 +95,7 @@ Les routes disponibles sont :
 
 Les mots de passe sont stockés sous forme de hash scrypt ; le cookie de session est HttpOnly, SameSite=Lax et marqué Secure en production. La base ne stocke qu'un hash du jeton de session. Ces protections constituent une première base, pas une validation de sécurité complète.
 
-**Limites actuelles :** la vérification d'e-mail et la récupération de mot de passe par e-mail sont reportées à la phase 2. La limitation de tentatives, la page de profil, les autorisations métier complètes et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
+**Limites actuelles :** la vérification d'e-mail et la récupération de mot de passe par e-mail sont reportées à la phase 2. La limitation de tentatives est implémentée via Neon (migration `003_auth_rate_limits.sql` obligatoire) : 5 tentatives de connexion par e-mail sur 15 minutes, 30 par IP Cloudflare sur 15 minutes, 5 inscriptions par e-mail et 10 par IP sur une heure. Les clés sont stockées sous forme de hash. La page de profil, les autorisations métier complètes et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
 
 ## Démonstration sans base de données
 
