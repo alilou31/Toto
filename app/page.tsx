@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HomeHeader from "@/app/components/home-header";
 import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Menu } from "lucide-react";
 
 const values = [
@@ -23,20 +24,7 @@ const faqs = [
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
-        <Link href="/" className="brand" aria-label="NIKAHYA, accueil">
-          <span className="brand-mark"><Heart size={20} strokeWidth={2.1} /></span>
-          <span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span>
-        </Link>
-        <nav className="desktop-nav" aria-label="Navigation principale">
-          <a href="#concept">Le concept</a><a href="#methode">Comment ça marche</a><a href="#securite">Sécurité</a>
-        </nav>
-        <div className="header-actions">
-          <Link href="/connexion" className="login-link">Connexion</Link>
-          <Link href="/demo" className="login-link">Essayer la démo</Link><Link href="/inscription" className="button button-dark button-small">Créer mon profil <ArrowRight size={15}/></Link>
-        </div>
-        <button className="mobile-menu" aria-label="Menu"><Menu size={23}/></button>
-      </header>
+      <HomeHeader />
 
       <section className="hero">
         <div className="hero-copy">
