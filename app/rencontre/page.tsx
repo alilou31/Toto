@@ -189,7 +189,7 @@ export default function RencontrePage() {
             </div>
           )}
         </div>
-        <p className="auth-switch"><Link href="/matchs">Mes matchs</Link> · <Link href="/messages">Messagerie</Link> · <Link href="/">Accueil</Link></p>
+        <p className="auth-switch"><Link href="/matchs">Mes matchs</Link> · <Link href="/matchs">Mes matchs</Link> · <Link href="/">Accueil</Link></p>
       </section>
     </main>
   );
