@@ -154,6 +154,30 @@ export async function PATCH(request: Request) {
       if (Object.keys(value).some((key) => !allowedKeys.has(key))) {
         return NextResponse.json({ error: "La progression contient des champs non autorisés." }, { status: 400 });
       }
+
+      // Restrict each game to its own state shape so a client cannot accidentally
+      // mutate another game's counters or attach unrelated state.
+      const gameKeys: Record<string, Set<string>> = {
+        snake: new Set(["score", "moves"]),
+        logic: new Set(["round", "score", "answers", "lastPrompt"]),
+        english: new Set(["round", "score", "answers", "lastPrompt"]),
+        cooperative: new Set(["round", "completedChallenges", "lastPrompt"]),
+      };
+      if (Object.keys(value).some((key) => !gameKeys[session.game_key]?.has(key))) {
+        return NextResponse.json({ error: "Ces champs ne sont pas valides pour cette activité." }, { status: 400 });
+      }
+
+      const currentState = session.state && typeof session.state === "object" ? session.state as Record<string, unknown> : {};
+      const monotonicFields = ["round", "score", "moves", "completedChallenges"] as const;
+      for (const key of monotonicFields) {
+        if (typeof value[key] === "number" && typeof currentState[key] === "number" && value[key] < (currentState[key] as number)) {
+          return NextResponse.json({ error: "La progression ne peut pas revenir en arrière." }, { status: 409 });
+        }
+      }
+      if (Array.isArray(value.answers) && Array.isArray(currentState.answers) && value.answers.length < currentState.answers.length) {
+        return NextResponse.json({ error: "Les réponses déjà enregistrées ne peuvent pas être supprimées." }, { status: 409 });
+      }
+
       if (Object.hasOwn(value, "round") && (!Number.isInteger(value.round) || Number(value.round) < 0 || Number(value.round) > 100)) {
         return NextResponse.json({ error: "Numéro de manche invalide." }, { status: 400 });
       }
