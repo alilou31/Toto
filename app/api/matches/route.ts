@@ -18,7 +18,12 @@ export async function GET() {
       from public.matches m
       join public.conversations c on c.match_id = m.id
       join public.profiles p on p.id = case when m.user_a = ${user.id} then m.user_b else m.user_a end
-      where m.user_a = ${user.id} or m.user_b = ${user.id}
+      where (m.user_a = ${user.id} or m.user_b = ${user.id})
+        and not exists (
+          select 1 from public.blocks b
+          where (b.blocker_id = ${user.id} and b.blocked_id = p.id)
+             or (b.blocker_id = p.id and b.blocked_id = ${user.id})
+        )
       order by coalesce(c.last_message_at, c.created_at) desc
       limit 100
     `;
