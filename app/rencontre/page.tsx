@@ -230,6 +230,11 @@ export default function RencontrePage() {
     try {
       const response = await fetch("/api/rencontre/sessions", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId: session.id, action: "progress", progress }) });
       const data = await response.json();
+      if (response.status === 409) {
+        setNotice("L’activité a changé entre-temps. La progression a été actualisée ; réessayez si nécessaire.");
+        await loadData(false);
+        return;
+      }
       if (!response.ok) throw new Error(data.error || "Impossible d’enregistrer la progression.");
       await loadData(false);
     } catch (e) {
