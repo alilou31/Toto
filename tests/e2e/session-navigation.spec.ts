@@ -23,7 +23,7 @@ test("homepage shows registration and login links without a session", async ({ p
   const header = page.locator("header.site-header");
   await expect(header.getByRole("link", { name: "Connexion" })).toBeVisible();
   await expect(header.getByRole("link", { name: /Créer mon profil/ })).toBeVisible();
-  await expect(header.getByRole("link", { name: "Mon profil" })).toHaveCount(0);
+  await expect(header.getByRole("link", { name: "Mon profil" })).toBeHidden();
 });
 
 test("saving a profile confirms success without navigating away", async ({ page }) => {
