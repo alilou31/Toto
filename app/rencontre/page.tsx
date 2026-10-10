@@ -265,7 +265,7 @@ export default function RencontrePage() {
         {challenge ? <><h3>{challenge}</h3><p>Faites le défi ensemble, puis l’un de vous valide pour passer au suivant.</p><button className="button button-green" disabled={disabled} onClick={() => void saveProgress(session, { completedChallenges: challengeCount + 1, round: challengeCount + 1, lastPrompt: challenge })}>Défi réalisé <CheckCircle2 size={16} /></button></> : <><h3>Tous les défis sont accomplis !</h3><p>Vous avez complété les {coopChallenges.length} défis ensemble.</p></>}
       </div>;
     }
-    return <SnakeGame disabled={disabled} onPoint={(localScore, localMoves) => {
+    return <SnakeGame disabled={disabled} onPoint={() => {
       const storedScore = typeof session.state?.score === "number" ? session.state.score : 0;
       const storedMoves = typeof session.state?.moves === "number" ? session.state.moves : 0;
       void saveProgress(session, { score: storedScore + localScore, moves: storedMoves + localMoves });
