@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./gamified.css";
+import "./profile-ui.css";
 import "./auth.css";
 import "./legal.css";
 
