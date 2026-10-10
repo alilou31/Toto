@@ -37,7 +37,7 @@ Pour le déploiement Cloudflare Workers, suivre la section « Déploiement Cloud
 
 Le projet utilise OpenNext pour exécuter Next.js App Router sur Cloudflare Workers, tout en conservant Neon PostgreSQL.
 
-1. Créer un Worker Cloudflare nommé `nikahya` et un bucket R2 nommé `nikahya-next-cache` (le bucket sert au cache incrémental/ISR).
+1. Créer un bucket R2 nommé `nikahya-next-cache` dans le compte Cloudflare (il sert au cache incrémental/ISR). Le workflow crée/déploie le Worker nommé `nikahya`.
 2. Dans GitHub, ajouter les secrets du dépôt ou de l'environnement `production` : `CLOUDFLARE_API_TOKEN` (droits Workers Scripts et R2 requis), `CLOUDFLARE_ACCOUNT_ID` et `DATABASE_URL` (chaîne Neon pooled avec `sslmode=require`). Ajouter la variable d'environnement `NEXT_PUBLIC_SITE_URL` avec l'URL publique prévue.
 3. Vérifier que le compte Cloudflare autorise le binding Images utilisé par Wrangler. Si le compte n'utilise pas Cloudflare Images, retirer le binding `images` de `wrangler.jsonc` et configurer la stratégie d'images avant déploiement.
 4. Dans GitHub Actions, lancer manuellement le workflow **Deploy NIKAHYA to Cloudflare Workers** (`workflow_dispatch`). Le workflow compile puis déploie l'application et configure le secret `DATABASE_URL` sur le Worker.
