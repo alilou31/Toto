@@ -8,7 +8,7 @@ const navigation = [
   { href: "/cockpit/likes", label: "Likes & matchs", icon: Heart },
   { href: "/cockpit/visites", label: "Visites", icon: Eye },
   { href: "/cockpit/historique", label: "Historique", icon: History },
-  { href: "/profil/edit", label: "Mon profil", icon: CircleUserRound },
+  { href: "/profil", label: "Mon profil", icon: CircleUserRound },
 ];
 
 export function GameShell({ children, active = "/cockpit" }: { children: React.ReactNode; active?: string }) {
@@ -19,7 +19,7 @@ export function GameShell({ children, active = "/cockpit" }: { children: React.R
       <nav aria-label="Navigation principale">{navigation.map(({href,label,icon:Icon})=><Link key={href} href={href} aria-current={active===href?"page":undefined} className="game-nav-link"><Icon size={18}/><span>{label}</span>{href==="/cockpit/defis"&&<b>2</b>}</Link>)}</nav>
       <div className="game-sidebar-bottom"><div className="game-safety"><ShieldCheck size={18}/><span><strong>Un espace bienveillant</strong><small>Votre rythme, vos règles.</small></span></div><Link href="/" className="game-back-home">← Retour au site</Link></div>
     </aside>
-    <div className="game-main"><header className="game-topbar"><div className="game-breadcrumb">Votre espace <span>/</span> <strong>{navigation.find(n=>n.href===active)?.label ?? "Découvrir"}</strong></div><div className="game-top-actions"><span className="game-level-chip"><Sparkles size={15}/> Niveau 1</span><Link href="/profil/edit" className="game-avatar" aria-label="Modifier mon profil">N</Link></div></header><main className="game-content">{children}</main><nav className="game-mobile-nav" aria-label="Navigation mobile">{navigation.slice(0,5).map(({href,label,icon:Icon})=><Link key={href} href={href} aria-current={active===href?"page":undefined} aria-label={label}><Icon size={19}/><span>{label.split(" ")[0]}</span></Link>)}</nav></div>
+    <div className="game-main"><header className="game-topbar"><div className="game-breadcrumb">Votre espace <span>/</span> <strong>{navigation.find(n=>n.href===active)?.label ?? "Découvrir"}</strong></div><div className="game-top-actions"><span className="game-level-chip"><Sparkles size={15}/> Niveau 1</span><Link href="/profil" className="game-avatar" aria-label="Modifier mon profil">N</Link></div></header><main className="game-content">{children}</main><nav className="game-mobile-nav" aria-label="Navigation mobile">{navigation.slice(0,5).map(({href,label,icon:Icon})=><Link key={href} href={href} aria-current={active===href?"page":undefined} aria-label={label}><Icon size={19}/><span>{label.split(" ")[0]}</span></Link>)}</nav></div>
   </div>;
 }
 
