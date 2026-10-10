@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Gamepad2 } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, Heart, LockKeyhole, ShieldCheck, Sparkles, UsersRound, Gamepad2, MessageCircleHeart } from "lucide-react";
 import HomeHeaderControls, { DashboardHeroCta } from "@/components/home-header-controls";
 
 const values = [
