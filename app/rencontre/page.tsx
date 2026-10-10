@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Brain, CheckCircle2, Gamepad2, Languages, RefreshCw, Users, Zap, Play, Trophy, X } from "lucide-react";
 
 type Match = { match_id: string; public_name: string; city: string | null };
@@ -19,7 +19,7 @@ type Session = {
 const games = [
   { key: "logic", title: "Défi logique", description: "Des énigmes courtes pour découvrir la façon de réfléchir de l’autre.", icon: Brain, tag: "Réflexion" },
   { key: "english", title: "Duo langues", description: "Des questions légères pour pratiquer l’anglais ensemble.", icon: Languages, tag: "Conversation" },
-  { key: "snake", title: "Snake challenge", description: "Un mini-défi arcade de score à relever à tour de rôle.", icon: Zap, tag: "Rapide" },
+  { key: "snake", title: "Snake challenge", description: "Un jeu arcade : guidez le serpent, mangez les fruits et évitez les collisions.", icon: Zap, tag: "Arcade" },
   { key: "cooperative", title: "Défi coopératif", description: "Réalisez ensemble une série de petits défis.", icon: Users, tag: "En équipe" },
 ] as const;
 const gameLabels: Record<string, string> = { logic: "Défi logique", english: "Duo langues", snake: "Snake challenge", cooperative: "Défi coopératif" };
@@ -41,6 +41,108 @@ const coopChallenges = [
   "Imaginez une sortie idéale avec un budget limité.",
   "Chacun cite une valeur importante dans une relation.",
 ];
+
+type Cell = { x: number; y: number };
+type SnakeDirection = "up" | "down" | "left" | "right";
+
+function SnakeGame({ disabled, onPoint }: { disabled: boolean; onPoint: (score: number, moves: number) => void }) {
+  const [snake, setSnake] = useState<Cell[]>([{ x: 5, y: 5 }, { x: 4, y: 5 }, { x: 3, y: 5 }]);
+  const [food, setFood] = useState<Cell>({ x: 8, y: 5 });
+  const [direction, setDirection] = useState<SnakeDirection>("right");
+  const [running, setRunning] = useState(false);
+  const [ended, setEnded] = useState(false);
+  const [score, setScore] = useState(0);
+  const [moves, setMoves] = useState(0);
+  const snakeRef = useRef(snake);
+  const foodRef = useRef(food);
+  const directionRef = useRef(direction);
+  const runningRef = useRef(running);
+  const endedRef = useRef(ended);
+  const onPointRef = useRef(onPoint);
+
+  useEffect(() => { snakeRef.current = snake; foodRef.current = food; directionRef.current = direction; runningRef.current = running; endedRef.current = ended; onPointRef.current = onPoint; }, [snake, food, direction, running, ended, onPoint]);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const map: Record<string, SnakeDirection> = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", w: "up", s: "down", a: "left", d: "right" };
+      const next = map[event.key];
+      if (!next) return;
+      event.preventDefault();
+      const current = directionRef.current;
+      if ((current === "up" && next !== "down") || (current === "down" && next !== "up") || (current === "left" && next !== "right") || (current === "right" && next !== "left")) {
+        directionRef.current = next;
+        setDirection(next);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    if (!running || ended) return;
+    const timer = window.setInterval(() => {
+      const currentSnake = snakeRef.current;
+      const currentFood = foodRef.current;
+      const dir = directionRef.current;
+      const head = currentSnake[0];
+      const nextHead = { x: head.x + (dir === "right" ? 1 : dir === "left" ? -1 : 0), y: head.y + (dir === "down" ? 1 : dir === "up" ? -1 : 0) };
+      const ate = nextHead.x === currentFood.x && nextHead.y === currentFood.y;
+      const body = ate ? currentSnake : currentSnake.slice(0, -1);
+      if (nextHead.x < 0 || nextHead.x >= 12 || nextHead.y < 0 || nextHead.y >= 12 || body.some((part) => part.x === nextHead.x && part.y === nextHead.y)) {
+        endedRef.current = true; runningRef.current = false; setEnded(true); setRunning(false); return;
+      }
+      const nextSnake = [nextHead, ...currentSnake.slice(0, ate ? undefined : -1)];
+      snakeRef.current = nextSnake; setSnake(nextSnake);
+      const nextMoves = movesRef.current + 1; movesRef.current = nextMoves; setMoves(nextMoves);
+      if (ate) {
+        const nextScore = scoreRef.current + 1; scoreRef.current = nextScore; setScore(nextScore);
+        let nextFood: Cell;
+        do { nextFood = { x: Math.floor(Math.random() * 12), y: Math.floor(Math.random() * 12) }; }
+        while (nextSnake.some((part) => part.x === nextFood.x && part.y === nextFood.y));
+        foodRef.current = nextFood; setFood(nextFood);
+        onPointRef.current(nextScore, nextMoves);
+      }
+    }, 220);
+    return () => window.clearInterval(timer);
+  }, [running, ended]);
+
+  const scoreRef = useRef(score);
+  const movesRef = useRef(moves);
+  useEffect(() => { scoreRef.current = score; movesRef.current = moves; }, [score, moves]);
+
+  function restart() {
+    const initial = [{ x: 5, y: 5 }, { x: 4, y: 5 }, { x: 3, y: 5 }];
+    snakeRef.current = initial; setSnake(initial);
+    const initialFood = { x: 8, y: 5 }; foodRef.current = initialFood; setFood(initialFood);
+    directionRef.current = "right"; setDirection("right");
+    scoreRef.current = 0; setScore(0); movesRef.current = 0; setMoves(0);
+    endedRef.current = false; setEnded(false); runningRef.current = true; setRunning(true);
+  }
+
+  const cells = Array.from({ length: 144 }, (_, index) => ({ x: index % 12, y: Math.floor(index / 12) }));
+  return <div className="value-card" style={{ marginTop: 18, background: "#f7f8f3" }}>
+    <div className="value-top"><span className="card-number">SNAKE CLASSIQUE</span><span className="card-number">SCORE : {score}</span></div>
+    <p>Utilisez les flèches du clavier ou les boutons directionnels. Mangez les fruits, évitez les murs et votre propre corps.</p>
+    <div role="img" aria-label={`Plateau Snake, score ${score}, ${ended ? "partie terminée" : running ? "partie en cours" : "prêt à jouer"}`} style={{ display: "grid", gridTemplateColumns: "repeat(12, minmax(0, 1fr))", gap: 2, width: "100%", maxWidth: 360, aspectRatio: "1", padding: 6, background: "#dce6d8", border: "2px solid #6d896d", borderRadius: 8, margin: "12px auto" }}>
+      {cells.map((cell) => {
+        const isHead = snake[0]?.x === cell.x && snake[0]?.y === cell.y;
+        const isBody = snake.some((part, index) => index > 0 && part.x === cell.x && part.y === cell.y);
+        const isFood = food.x === cell.x && food.y === cell.y;
+        return <span key={cell.y * 12 + cell.x} style={{ borderRadius: 3, background: isHead ? "#234b35" : isBody ? "#4f805c" : isFood ? "#c4473a" : "rgba(255,255,255,.38)" }} />;
+      })}
+    </div>
+    <div style={{ display: "flex", justifyContent: "center", gap: 8, flexWrap: "wrap" }}>
+      <button type="button" className="button button-quiet" disabled={disabled || !running} onClick={() => { if (directionRef.current !== "down") { directionRef.current = "up"; setDirection("up"); } }}>↑ Haut</button>
+      <button type="button" className="button button-quiet" disabled={disabled || !running} onClick={() => { if (directionRef.current !== "right") { directionRef.current = "left"; setDirection("left"); } }}>← Gauche</button>
+      <button type="button" className="button button-quiet" disabled={disabled || !running} onClick={() => { if (directionRef.current !== "left") { directionRef.current = "right"; setDirection("right"); } }}>Droite →</button>
+      <button type="button" className="button button-quiet" disabled={disabled || !running} onClick={() => { if (directionRef.current !== "up") { directionRef.current = "down"; setDirection("down"); } }}>↓ Bas</button>
+    </div>
+    {ended && <p role="status">Partie terminée. Score : {score}. Vous pouvez recommencer.</p>}
+    <div style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>
+      <button type="button" className="button button-green" disabled={disabled} onClick={restart}><Play size={16} /> {ended ? "Rejouer" : running ? "Recommencer" : "Démarrer"}</button>
+    </div>
+  </div>;
+}
 
 export default function RencontrePage() {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -163,11 +265,11 @@ export default function RencontrePage() {
         {challenge ? <><h3>{challenge}</h3><p>Faites le défi ensemble, puis l’un de vous valide pour passer au suivant.</p><button className="button button-green" disabled={disabled} onClick={() => void saveProgress(session, { completedChallenges: challengeCount + 1, round: challengeCount + 1, lastPrompt: challenge })}>Défi réalisé <CheckCircle2 size={16} /></button></> : <><h3>Tous les défis sont accomplis !</h3><p>Vous avez complété les {coopChallenges.length} défis ensemble.</p></>}
       </div>;
     }
-    return <div className="value-card" style={{ marginTop: 18, background: "#f7f8f3" }}>
-      <div className="value-top"><span className="card-number">SNAKE CHALLENGE · MODE SCORE</span><span className="card-number">SCORE : {score}</span></div>
-      <p>À tour de rôle, appuyez sur le bouton pour ajouter un point à votre défi. Comparez vos scores dans la conversation. (Version score simplifiée ; le Snake classique sera ajouté ensuite.)</p>
-      <button className="button button-green" disabled={disabled} onClick={() => void saveProgress(session, { score: score + 1, moves: (typeof state.moves === "number" ? state.moves : 0) + 1 })}><Zap size={16} /> Marquer un point</button>
-    </div>;
+    return <SnakeGame disabled={disabled} onPoint={(localScore, localMoves) => {
+      const storedScore = typeof session.state?.score === "number" ? session.state.score : 0;
+      const storedMoves = typeof session.state?.moves === "number" ? session.state.moves : 0;
+      void saveProgress(session, { score: storedScore + localScore, moves: storedMoves + localMoves });
+    }} />;
   }
 
   return (
