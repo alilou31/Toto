@@ -47,8 +47,8 @@ export async function consumeAuthRateLimit(
   const row = rows[0] as { attempts: number; retry_after_seconds: number } | undefined;
   if (!row) throw new Error("Rate limit counter did not return a row");
 
-  // Opportunistic cleanup to avoid retaining old pseudonymous keys indefinitely.
-  await sql`delete from public.auth_rate_limits where updated_at < now() - interval '2 days'`;
+  // Stale counters should be pruned by scheduled maintenance; avoid adding
+  // a second database round-trip to every authentication attempt.
 
   return {
     allowed: Number(row.attempts) <= limit,
