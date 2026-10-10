@@ -32,7 +32,8 @@ export default function Home() {
           <h1>Et si votre prochaine rencontre <em>était la bonne&nbsp;?</em></h1>
           <p className="hero-lede">Une belle histoire commence bien avant le premier message. Rencontrez des personnes qui partagent vos intentions, vos valeurs et votre vision de l’avenir.</p>
           <div className="hero-actions">
-            <Link href="/inscription" className="button button-green">Trouver ma moitié <ArrowRight size={17}/></Link>
+            <Link href="/inscription" className="button button-green">Créer mon compte <ArrowRight size={17}/></Link>
+            <Link href="/connexion" className="button button-quiet">Se connecter</Link>
             <a href="#concept" className="button button-quiet">Découvrir le concept <ArrowDown size={16}/></a>
           </div>
           <div className="hero-note"><span className="note-icon"><ShieldCheck size={17}/></span><span>Un espace pensé pour la sincérité.<br/><strong>Vos choix, votre rythme, votre histoire.</strong></span></div>
