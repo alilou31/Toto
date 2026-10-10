@@ -175,7 +175,7 @@
 - [x] Contrôle d'accès serveur pour les actions de session et la progression
 - [x] Permettre à l'autre membre d'accepter une invitation, puis aux participants de terminer ou annuler
 - [x] Rafraîchissement automatique des sessions toutes les 5 secondes, sans service temps réel externe
-- [ ] Remplacer le Snake score simplifié par un vrai jeu Snake
+- [x] Remplacer le Snake score simplifié par un jeu Snake classique jouable au clavier et via les boutons directionnels
 - [ ] Ajouter des tests d'intégration des transitions de session et des mises à jour concurrentes
 
 **Critères d'acceptation :** les activités sont jouables, leur état ne peut pas être modifié par un tiers et l'interface indique clairement les états d'attente, en cours et terminés. Aucune session ni donnée de profil fictive n'est utilisée.
