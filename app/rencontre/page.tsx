@@ -2,55 +2,60 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { ArrowLeft, Brain, CheckCircle2, Gamepad2, Languages, RefreshCw, Users, Zap } from "lucide-react";
+import { ArrowLeft, Brain, CheckCircle2, Gamepad2, Languages, RefreshCw, Users, Zap, Play, Trophy, X } from "lucide-react";
 
-type Match = {
-  match_id: string;
-  public_name: string;
-  city: string | null;
-};
-
+type Match = { match_id: string; public_name: string; city: string | null };
 type Session = {
   id: string;
   match_id: string;
   game_key: string;
   status: "invited" | "active" | "completed" | "cancelled";
+  state: Record<string, unknown>;
   created_at: string;
   partner_name: string;
+  created_by?: string;
+  is_creator?: boolean;
 };
-
 const games = [
-  { key: "logic", title: "Défi logique", description: "Des petites énigmes pour découvrir la façon de réfléchir de l’autre.", icon: Brain, tag: "Réflexion" },
-  { key: "english", title: "Duo langues", description: "Des questions légères pour pratiquer l’anglais et apprendre ensemble.", icon: Languages, tag: "Conversation" },
-  { key: "snake", title: "Snake challenge", description: "Un mini-défi arcade pour comparer vos scores et vous challenger.", icon: Zap, tag: "Rapide" },
-  { key: "cooperative", title: "Défi coopératif", description: "Choisissez un objectif commun et faites équipe pour le réussir.", icon: Users, tag: "En équipe" },
+  { key: "logic", title: "Défi logique", description: "Des énigmes courtes pour découvrir la façon de réfléchir de l’autre.", icon: Brain, tag: "Réflexion" },
+  { key: "english", title: "Duo langues", description: "Des questions légères pour pratiquer l’anglais ensemble.", icon: Languages, tag: "Conversation" },
+  { key: "snake", title: "Snake challenge", description: "Un mini-défi arcade de score à relever à tour de rôle.", icon: Zap, tag: "Rapide" },
+  { key: "cooperative", title: "Défi coopératif", description: "Réalisez ensemble une série de petits défis.", icon: Users, tag: "En équipe" },
 ] as const;
-
-const gameLabels: Record<string, string> = {
-  logic: "Défi logique",
-  english: "Duo langues",
-  snake: "Snake challenge",
-  cooperative: "Défi coopératif",
-};
-const statusLabels: Record<Session["status"], string> = {
-  invited: "Proposée",
-  active: "En cours",
-  completed: "Terminée",
-  cancelled: "Annulée",
-};
+const gameLabels: Record<string, string> = { logic: "Défi logique", english: "Duo langues", snake: "Snake challenge", cooperative: "Défi coopératif" };
+const statusLabels: Record<Session["status"], string> = { invited: "En attente", active: "En cours", completed: "Terminée", cancelled: "Annulée" };
+const logicQuestions = [
+  { prompt: "Quel nombre complète la suite : 2, 4, 8, 16, … ?", options: ["18", "24", "32"], answer: "32", explanation: "On multiplie chaque nombre par 2." },
+  { prompt: "Tu as 3 pommes et tu en prends 2. Combien en as-tu ?", options: ["1", "2", "3"], answer: "2", explanation: "Tu as pris deux pommes." },
+  { prompt: "Quel mot est différent des autres ?", options: ["Rose", "Tulipe", "Carotte"], answer: "Carotte", explanation: "La carotte est un légume." },
+];
+const englishQuestions = [
+  { prompt: "How do you say « apprendre à se connaître »?", options: ["Get to know each other", "Know to learn", "Meet to study"], answer: "Get to know each other" },
+  { prompt: "Choose the correct answer: « What do you enjoy doing? »", options: ["I enjoy reading.", "I enjoy to read.", "I reading enjoy."], answer: "I enjoy reading." },
+  { prompt: "What does « thoughtful » mean?", options: ["Attentionné", "Fatigué", "Pressé"], answer: "Attentionné" },
+];
+const coopChallenges = [
+  "Chacun partage une chose qui lui donne le sourire.",
+  "Trouvez trois centres d’intérêt que vous avez en commun.",
+  "Posez-vous chacun une question que vous n’osez pas souvent poser.",
+  "Imaginez une sortie idéale avec un budget limité.",
+  "Chacun cite une valeur importante dans une relation.",
+];
 
 export default function RencontrePage() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [selectedMatch, setSelectedMatch] = useState("");
   const [selectedGame, setSelectedGame] = useState<string>("logic");
+  const [activeSessionId, setActiveSessionId] = useState("");
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [busyAction, setBusyAction] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
-  const loadData = useCallback(async () => {
-    setLoading(true);
+  const loadData = useCallback(async (showLoading = true) => {
+    if (showLoading) setLoading(true);
     setError("");
     try {
       const [matchesResponse, sessionsResponse] = await Promise.all([
@@ -59,137 +64,163 @@ export default function RencontrePage() {
       ]);
       const matchesData = await matchesResponse.json();
       const sessionsData = await sessionsResponse.json();
-      if (matchesResponse.status === 401 || sessionsResponse.status === 401) {
-        throw new Error("Connectez-vous pour utiliser le Mode Rencontre.");
-      }
+      if (matchesResponse.status === 401 || sessionsResponse.status === 401) throw new Error("Connectez-vous pour utiliser le Mode Rencontre.");
       if (!matchesResponse.ok) throw new Error(matchesData.error || "Impossible de charger vos matchs.");
       if (!sessionsResponse.ok) throw new Error(sessionsData.error || "Impossible de charger vos activités.");
       const nextMatches = Array.isArray(matchesData.matches) ? matchesData.matches as Match[] : [];
+      const nextSessions = Array.isArray(sessionsData.sessions) ? sessionsData.sessions as Session[] : [];
       setMatches(nextMatches);
-      setSessions(Array.isArray(sessionsData.sessions) ? sessionsData.sessions as Session[] : []);
+      setSessions(nextSessions);
       setSelectedMatch((current) => current && nextMatches.some((item) => item.match_id === current) ? current : nextMatches[0]?.match_id ?? "");
+      setActiveSessionId((current) => current && nextSessions.some((item) => item.id === current && item.status === "active") ? current : nextSessions.find((item) => item.status === "active")?.id ?? "");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Service indisponible.");
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   }, []);
 
-  useEffect(() => { void loadData(); }, [loadData]);
+  useEffect(() => {
+    void loadData();
+    const timer = window.setInterval(() => void loadData(false), 5000);
+    return () => window.clearInterval(timer);
+  }, [loadData]);
 
   async function createSession() {
     if (!selectedMatch || !selectedGame) return;
-    setCreating(true);
-    setError("");
-    setNotice("");
+    setCreating(true); setError(""); setNotice("");
     try {
-      const response = await fetch("/api/rencontre/sessions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ matchId: selectedMatch, gameKey: selectedGame }),
-      });
+      const response = await fetch("/api/rencontre/sessions", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ matchId: selectedMatch, gameKey: selectedGame }) });
       const data = await response.json();
       if (response.status === 401) throw new Error("Connectez-vous pour proposer une activité.");
       if (!response.ok) throw new Error(data.error || "Impossible de créer l’activité.");
-      setNotice("Votre proposition est enregistrée. Elle apparaît dans la liste des activités liées à ce match.");
+      setNotice("Invitation enregistrée. L’autre membre du match peut maintenant l’accepter.");
       await loadData();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Service indisponible.");
-    } finally {
-      setCreating(false);
+    } finally { setCreating(false); }
+  }
+
+  async function sessionAction(sessionId: string, action: "accept" | "complete" | "cancel", progress?: Record<string, unknown>) {
+    setBusyAction(sessionId + action); setError(""); setNotice("");
+    try {
+      const response = await fetch("/api/rencontre/sessions", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId, action, ...(progress ? { progress } : {}) }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Impossible de mettre à jour l’activité.");
+      setNotice(action === "accept" ? "Invitation acceptée : vous pouvez jouer ensemble." : action === "complete" ? "Bravo, activité terminée !" : "Activité annulée.");
+      await loadData(false);
+      if (action === "accept") setActiveSessionId(sessionId);
+      if (action === "complete" || action === "cancel") setActiveSessionId((current) => current === sessionId ? "" : current);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Service indisponible.");
+    } finally { setBusyAction(""); }
+  }
+
+  async function saveProgress(session: Session, progress: Record<string, unknown>) {
+    setBusyAction(session.id + "progress"); setError("");
+    try {
+      const response = await fetch("/api/rencontre/sessions", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId: session.id, action: "progress", progress }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Impossible d’enregistrer la progression.");
+      await loadData(false);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Service indisponible.");
+    } finally { setBusyAction(""); }
+  }
+
+  const activeSession = sessions.find((session) => session.id === activeSessionId && session.status === "active");
+  const disabled = !!busyAction;
+
+  function playPanel(session: Session) {
+    const state = session.state ?? {};
+    const round = typeof state.round === "number" ? state.round : 0;
+    const score = typeof state.score === "number" ? state.score : 0;
+    const answers = Array.isArray(state.answers) ? state.answers as string[] : [];
+    const challengeCount = typeof state.completedChallenges === "number" ? state.completedChallenges : 0;
+    const answerQuestion = (answer: string, questionAnswer: string, explanation?: string) => {
+      if (answers.length > round) return;
+      const correct = answer === questionAnswer;
+      void saveProgress(session, { round: round + 1, score: score + (correct ? 1 : 0), answers: [...answers, answer], lastPrompt: explanation ?? (correct ? "Bonne réponse !" : "Pas tout à fait, essayez la suivante.") });
+    };
+
+    if (session.game_key === "logic" || session.game_key === "english") {
+      const questions = session.game_key === "logic" ? logicQuestions : englishQuestions;
+      const question = questions[round % questions.length];
+      const done = round >= questions.length;
+      return <div className="value-card" style={{ marginTop: 18, background: "#f7f8f3" }}>
+        <div className="value-top"><span className="card-number">MANCHE {Math.min(round + 1, questions.length)} / {questions.length}</span><span className="card-number">SCORE PARTAGÉ : {score}</span></div>
+        {done ? <><h3>Défi terminé !</h3><p>Score enregistré : {score} / {questions.length}. Vous pouvez terminer l’activité ou continuer à discuter.</p></> : <>
+          <h3>{question.prompt}</h3>
+          <div style={{ display: "grid", gap: 8 }}>{question.options.map((option) => <button key={option} className="button button-quiet" type="button" disabled={disabled || answers.length > round} onClick={() => answerQuestion(option, question.answer, "Réponse : " + question.answer + ("explanation" in question ? " — " + question.explanation : ""))}>{option}</button>)}</div>
+          {typeof state.lastPrompt === "string" && <p role="status">{state.lastPrompt}</p>}
+        </>}
+      </div>;
     }
+    if (session.game_key === "cooperative") {
+      const challenge = coopChallenges[challengeCount];
+      return <div className="value-card" style={{ marginTop: 18, background: "#f7f8f3" }}>
+        <div className="value-top"><span className="card-number">DÉFI COOPÉRATIF</span><span className="card-number">{challengeCount} / {coopChallenges.length}</span></div>
+        {challenge ? <><h3>{challenge}</h3><p>Faites le défi ensemble, puis l’un de vous valide pour passer au suivant.</p><button className="button button-green" disabled={disabled} onClick={() => void saveProgress(session, { completedChallenges: challengeCount + 1, round: challengeCount + 1, lastPrompt: challenge })}>Défi réalisé <CheckCircle2 size={16} /></button></> : <><h3>Tous les défis sont accomplis !</h3><p>Vous avez complété les {coopChallenges.length} défis ensemble.</p></>}
+      </div>;
+    }
+    return <div className="value-card" style={{ marginTop: 18, background: "#f7f8f3" }}>
+      <div className="value-top"><span className="card-number">SNAKE CHALLENGE · MODE SCORE</span><span className="card-number">SCORE : {score}</span></div>
+      <p>À tour de rôle, appuyez sur le bouton pour ajouter un point à votre défi. Comparez vos scores dans la conversation. (Version score simplifiée ; le Snake classique sera ajouté ensuite.)</p>
+      <button className="button button-green" disabled={disabled} onClick={() => void saveProgress(session, { score: score + 1, moves: (typeof state.moves === "number" ? state.moves : 0) + 1 })}><Zap size={16} /> Marquer un point</button>
+    </div>;
   }
 
   return (
     <main className="auth-page">
       <Link href="/" className="auth-back"><ArrowLeft size={16} /> Retour à l’accueil</Link>
       <section className="auth-card auth-card-wide">
-        <Link href="/" className="brand auth-brand">
-          <span className="brand-mark"><Gamepad2 size={20} /></span>
-          <span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span>
-        </Link>
+        <Link href="/" className="brand auth-brand"><span className="brand-mark"><Gamepad2 size={20} /></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
         <div className="section-kicker auth-kicker">APPRENDRE À SE CONNAÎTRE AUTREMENT</div>
         <h1 className="auth-title">Le Mode <em>Rencontre.</em></h1>
-        <p className="auth-description">Proposez une activité à une personne avec qui vous avez déjà un match. Un jeu, une énigme ou un défi partagé peut lancer une conversation plus naturellement.</p>
+        <p className="auth-description">Proposez une activité à une personne avec qui vous avez déjà un match. Les invitations et la progression sont partagées entre les deux membres du match.</p>
 
         <div className="value-grid" style={{ marginBottom: 28 }}>
           {games.map((game) => {
-            const Icon = game.icon;
-            const active = selectedGame === game.key;
-            return (
-              <button
-                key={game.key}
-                type="button"
-                className="value-card"
-                aria-pressed={active}
-                onClick={() => setSelectedGame(game.key)}
-                style={{
-                  textAlign: "left",
-                  color: "inherit",
-                  background: active ? "#edf4ee" : "#fff",
-                  border: active ? "2px solid var(--green)" : "1px solid #e9ece5",
-                  cursor: "pointer",
-                  minHeight: 190,
-                }}
-              >
-                <div className="value-top">
-                  <span className="value-icon"><Icon size={22} /></span>
-                  <span className="card-number">{active ? "SÉLECTIONNÉ" : game.tag.toUpperCase()}</span>
-                </div>
-                <h2 style={{ fontFamily: "var(--sans)", fontSize: 16, fontWeight: 700, letterSpacing: 0 }}>{game.title}</h2>
-                <p>{game.description}</p>
-              </button>
-            );
+            const Icon = game.icon; const active = selectedGame === game.key;
+            return <button key={game.key} type="button" className="value-card" aria-pressed={active} onClick={() => setSelectedGame(game.key)} style={{ textAlign: "left", color: "inherit", background: active ? "#edf4ee" : "#fff", border: active ? "2px solid var(--green)" : "1px solid #e9ece5", cursor: "pointer", minHeight: 180 }}>
+              <div className="value-top"><span className="value-icon"><Icon size={22} /></span><span className="card-number">{active ? "SÉLECTIONNÉ" : game.tag.toUpperCase()}</span></div>
+              <h2 style={{ fontFamily: "var(--sans)", fontSize: 16, fontWeight: 700, letterSpacing: 0 }}>{game.title}</h2><p>{game.description}</p>
+            </button>;
           })}
         </div>
 
         <div className="value-card" style={{ marginBottom: 24 }}>
-          <div className="value-top">
-            <span className="value-icon"><Users size={22} /></span>
-            <span className="card-number">POUR UN MATCH EXISTANT</span>
-          </div>
+          <div className="value-top"><span className="value-icon"><Users size={22} /></span><span className="card-number">POUR UN MATCH EXISTANT</span></div>
           <h2 style={{ fontFamily: "var(--sans)", fontSize: 17, fontWeight: 700, letterSpacing: 0 }}>À qui proposer cette activité ?</h2>
-          {loading ? <p role="status">Chargement de vos matchs…</p> : matches.length === 0 ? (
-            <p>Vous n’avez pas encore de match disponible. Découvrez des profils et créez un match réciproque avant de proposer une activité.</p>
-          ) : (
-            <>
-              <label htmlFor="rencontre-match" className="auth-label">Choisir un match</label>
-              <select id="rencontre-match" className="auth-input" value={selectedMatch} onChange={(event) => setSelectedMatch(event.target.value)}>
-                {matches.map((match) => <option key={match.match_id} value={match.match_id}>{match.public_name}{match.city ? ` · ${match.city}` : ""}</option>)}
-              </select>
-              <button type="button" className="button button-green" onClick={() => void createSession()} disabled={creating || !selectedMatch}>
-                <Gamepad2 size={16} /> {creating ? "Enregistrement…" : "Proposer cette activité"}
-              </button>
-            </>
-          )}
+          {loading ? <p role="status">Chargement de vos matchs…</p> : matches.length === 0 ? <p>Vous n’avez pas encore de match disponible. Découvrez des profils et créez un match réciproque avant de proposer une activité.</p> : <>
+            <label htmlFor="rencontre-match" className="auth-label">Choisir un match</label>
+            <select id="rencontre-match" className="auth-input" value={selectedMatch} onChange={(event) => setSelectedMatch(event.target.value)}>{matches.map((match) => <option key={match.match_id} value={match.match_id}>{match.public_name}{match.city ? " · " + match.city : ""}</option>)}</select>
+            <button type="button" className="button button-green" onClick={() => void createSession()} disabled={creating || !selectedMatch}><Gamepad2 size={16} /> {creating ? "Enregistrement…" : "Proposer cette activité"}</button>
+          </>}
         </div>
 
         {notice && <p className="auth-notice" role="status"><CheckCircle2 size={16} style={{ display: "inline", verticalAlign: "-3px" }} /> {notice}</p>}
         {error && <p className="auth-notice" role="alert">{error} {error.includes("Connectez-vous") && <Link href="/connexion">Se connecter</Link>}</p>}
 
+        {activeSession && <section aria-label="Activité en cours"><div className="value-top"><h2 style={{ fontFamily: "var(--sans)", fontSize: 20 }}>Jouer : {gameLabels[activeSession.game_key]}</h2><button type="button" className="button button-quiet" onClick={() => setActiveSessionId("")}>Fermer</button></div><p>Avec {activeSession.partner_name}. Les mises à jour apparaissent automatiquement toutes les 5 secondes.</p>{playPanel(activeSession)}<button type="button" className="button button-green" style={{ marginTop: 14 }} disabled={disabled} onClick={() => void sessionAction(activeSession.id, "complete")}><Trophy size={16} /> Terminer l’activité</button></section>}
+
         <div className="value-card">
-          <div className="value-top">
-            <span className="value-icon"><Gamepad2 size={22} /></span>
-            <span className="card-number">VOS ACTIVITÉS</span>
-            <button className="button button-quiet" type="button" onClick={() => void loadData()} disabled={loading}><RefreshCw size={14} /> Actualiser</button>
-          </div>
-          {loading ? <p role="status">Chargement des activités…</p> : sessions.length === 0 ? (
-            <p>Aucune activité pour le moment. Choisissez un jeu et proposez-le à un match.</p>
-          ) : (
-            <div style={{ display: "grid", gap: 12 }}>
-              {sessions.map((session) => (
-                <article key={session.id} style={{ borderTop: "1px solid var(--line)", paddingTop: 14, display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
-                  <div>
-                    <strong>{gameLabels[session.game_key] ?? "Activité"}</strong>
-                    <p style={{ margin: "5px 0 0", color: "var(--muted)" }}>Avec {session.partner_name} · {new Date(session.created_at).toLocaleDateString("fr-FR")}</p>
-                  </div>
-                  <span className="card-number">{statusLabels[session.status] ?? session.status}</span>
-                </article>
-              ))}
-            </div>
-          )}
+          <div className="value-top"><span className="value-icon"><Gamepad2 size={22} /></span><span className="card-number">VOS ACTIVITÉS</span><button className="button button-quiet" type="button" onClick={() => void loadData()} disabled={loading}><RefreshCw size={14} /> Actualiser</button></div>
+          {loading ? <p role="status">Chargement des activités…</p> : sessions.length === 0 ? <p>Aucune activité pour le moment. Choisissez un jeu et proposez-le à un match.</p> : <div style={{ display: "grid", gap: 14 }}>
+            {sessions.map((session) => <article key={session.id} style={{ borderTop: "1px solid var(--line)", paddingTop: 14 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+                <div><strong>{gameLabels[session.game_key] ?? "Activité"}</strong><p style={{ margin: "5px 0 0", color: "var(--muted)" }}>Avec {session.partner_name} · {new Date(session.created_at).toLocaleDateString("fr-FR")}</p><span className="card-number">{statusLabels[session.status]}</span></div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  {session.status === "invited" && !session.is_creator && <button className="button button-green" disabled={disabled} onClick={() => void sessionAction(session.id, "accept")}><Play size={15} /> Accepter</button>}
+                  {session.status === "active" && <button className="button button-green" onClick={() => setActiveSessionId(session.id)}><Gamepad2 size={15} /> Jouer / reprendre</button>}
+                  {(session.status === "invited" || session.status === "active") && <button className="button button-quiet" disabled={disabled} onClick={() => void sessionAction(session.id, "cancel")}><X size={15} /> Annuler</button>}
+                </div>
+              </div>
+              {session.status === "active" && <p style={{ marginTop: 8, color: "var(--muted)" }}>Progression partagée : score {typeof session.state?.score === "number" ? session.state.score : 0} · défis réalisés {typeof session.state?.completedChallenges === "number" ? session.state.completedChallenges : 0}</p>}
+            </article>)}
+          </div>}
         </div>
-        <p className="auth-switch"><Link href="/matchs">Mes matchs</Link> · <Link href="/matchs">Mes matchs</Link> · <Link href="/">Accueil</Link></p>
+        <p className="auth-switch"><Link href="/matchs">Mes matchs</Link> · <Link href="/">Accueil</Link></p>
       </section>
     </main>
   );
