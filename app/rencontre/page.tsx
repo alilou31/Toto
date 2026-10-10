@@ -59,13 +59,20 @@ function SnakeGame({ disabled, onPoint }: { disabled: boolean; onPoint: (score: 
   const runningRef = useRef(running);
   const endedRef = useRef(ended);
   const onPointRef = useRef(onPoint);
+  const disabledRef = useRef(disabled);
 
-  useEffect(() => { snakeRef.current = snake; foodRef.current = food; directionRef.current = direction; runningRef.current = running; endedRef.current = ended; onPointRef.current = onPoint; }, [snake, food, direction, running, ended, onPoint]);
+  useEffect(() => { snakeRef.current = snake; foodRef.current = food; directionRef.current = direction; runningRef.current = running; endedRef.current = ended; onPointRef.current = onPoint; disabledRef.current = disabled; }, [snake, food, direction, running, ended, onPoint, disabled]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      // Do not hijack page scrolling or keystrokes in form controls. Keyboard input
+      // is active only while this Snake instance is actually running.
+      if (!runningRef.current || endedRef.current || disabledRef.current) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && (target.isContentEditable || target.closest("input, textarea, select, button, [role=\\"textbox\\"]"))) return;
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
       const map: Record<string, SnakeDirection> = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", w: "up", s: "down", a: "left", d: "right" };
-      const next = map[event.key];
+      const next = map[key];
       if (!next) return;
       event.preventDefault();
       const current = directionRef.current;
