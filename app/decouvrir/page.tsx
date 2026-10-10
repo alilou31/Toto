@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Heart, MapPin, RefreshCw, UserRound } from "lucide-react";
+import { ArrowLeft, Ban, Heart, MapPin, RefreshCw, UserRound } from "lucide-react";
 
 type PublicProfile = {
   id: string;
@@ -24,6 +24,7 @@ export default function DiscoverPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [liking, setLiking] = useState<string | null>(null);
+  const [blocking, setBlocking] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
 
   async function loadProfiles() {
@@ -57,6 +58,26 @@ export default function DiscoverPage() {
     finally { setLiking(null); }
   }
 
+  async function blockProfile(profile: PublicProfile) {
+    if (!window.confirm(`Bloquer ${profile.public_name} ? Ce profil ne pourra plus apparaître dans vos découvertes, matchs ou conversations.`)) return;
+    setBlocking(profile.id); setNotice("");
+    try {
+      const response = await fetch("/api/blocks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ blockedUserId: profile.id }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Impossible de bloquer ce profil.");
+      setProfiles(current => current.filter(item => item.id !== profile.id));
+      setNotice(`Le profil de ${profile.public_name} a été bloqué.`);
+    } catch (e) {
+      setNotice(e instanceof Error ? e.message : "Service indisponible.");
+    } finally {
+      setBlocking(null);
+    }
+  }
+
   return <main className="auth-page">
     <Link href="/" className="auth-back"><ArrowLeft size={16}/> Retour à l’accueil</Link>
     <section className="auth-card auth-card-wide">
@@ -75,7 +96,10 @@ export default function DiscoverPage() {
         <h2>{profile.public_name}</h2>
         {profile.city && <p><MapPin size={14} style={{display:"inline",verticalAlign:"-2px"}}/> {profile.city}</p>}
         <p>{profile.bio || "Cette personne préfère faire connaissance au fil de la conversation."}</p>
-        <button className="button button-green" type="button" onClick={() => void likeProfile(profile.id)} disabled={liking !== null}><Heart size={16}/>{liking === profile.id ? "Envoi…" : "Envoyer un intérêt"}</button>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+          <button className="button button-green" type="button" onClick={() => void likeProfile(profile.id)} disabled={liking !== null || blocking !== null}><Heart size={16}/>{liking === profile.id ? "Envoi…" : "Envoyer un intérêt"}</button>
+          <button className="button button-quiet" type="button" onClick={() => void blockProfile(profile)} disabled={blocking !== null || liking !== null} aria-label={`Bloquer ${profile.public_name}`}><Ban size={16}/>{blocking === profile.id ? "Blocage…" : "Bloquer"}</button>
+        </div>
       </article>)}</div>}
       <p className="auth-switch"><Link href="/profil">Gérer mon profil</Link> · <Link href="/">Accueil</Link></p>
     </section>
