@@ -163,18 +163,20 @@
 - [x] Ajouter la page mobile-first `/rencontre` avec quatre catégories d'activités
 - [ ] Exécuter la migration `003_rencontre_sessions.sql` dans Neon
 - [ ] Ajouter une navigation visible vers le Mode Rencontre
-- [ ] Ajouter les tests API et navigateur (authentification, autorisation, blocage, création)
+- [x] Ajouter les tests navigateur de la page et les tests API de validation/authentification
+- [ ] Ajouter des tests d'intégration avec deux comptes pour l'autorisation, les blocages et les transitions de session
 
-**État :** première tranche de la fonctionnalité. La proposition est persistée en base et visible dans la liste des activités des deux membres du match. Les parties jouables et la synchronisation entre participants restent à réaliser.
+**État :** parcours interactif initial ajouté. Les questions, scores et défis sont enregistrés dans l'état de session partagé. Le rafraîchissement est périodique (5 s), pas du temps réel instantané. Le Snake classique et les tests d'intégration à deux comptes restent à faire.
 
 ### NIK-051 — Jouer aux activités (P1)
-- [ ] Défi logique avec progression et résultat enregistrés
-- [ ] Snake challenge avec score enregistré
-- [ ] Duo langues avec questions et progression
-- [ ] Défi coopératif avec état partagé entre les deux membres
-- [ ] Rafraîchissement/synchronisation serveur sans service temps réel externe
-- [ ] Permettre aux deux membres d'accepter, démarrer, terminer ou annuler une activité
-- [ ] Contrôler côté serveur que seuls les membres du match peuvent lire ou modifier une session
+- [x] Défi logique avec questions, progression et score partagé
+- [x] Duo langues avec questions et progression
+- [x] Défi coopératif avec défis partagés
+- [x] Contrôle d'accès serveur pour les actions de session et la progression
+- [x] Permettre à l'autre membre d'accepter une invitation, puis aux participants de terminer ou annuler
+- [x] Rafraîchissement automatique des sessions toutes les 5 secondes, sans service temps réel externe
+- [ ] Remplacer le Snake score simplifié par un vrai jeu Snake
+- [ ] Ajouter des tests d'intégration des transitions de session et des mises à jour concurrentes
 
 **Critères d'acceptation :** les activités sont jouables, leur état ne peut pas être modifié par un tiers et l'interface indique clairement les états d'attente, en cours et terminés. Aucune session ni donnée de profil fictive n'est utilisée.
 
