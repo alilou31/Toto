@@ -1,9 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Heart, ArrowLeft, Mail, LockKeyhole } from "lucide-react";
 
 export default function ConnexionPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -24,7 +26,8 @@ export default function ConnexionPage() {
         setMessage(result.error ?? "Connexion impossible.");
         return;
       }
-      setMessage("Connexion réussie. Votre session est ouverte ; la page de profil sera ajoutée dans la prochaine étape.");
+      router.replace("/profil");
+      router.refresh();
     } catch {
       setMessage("Service indisponible. Vérifiez votre connexion puis réessayez.");
     } finally {
