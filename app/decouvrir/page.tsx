@@ -75,6 +75,7 @@ export default function DiscoverPage() {
         <h2>{profile.public_name}</h2>
         {profile.city && <p><MapPin size={14} style={{display:"inline",verticalAlign:"-2px"}}/> {profile.city}</p>}
         <p>{profile.bio || "Cette personne préfère faire connaissance au fil de la conversation."}</p>
+        <button className="button button-green" type="button" onClick={() => void likeProfile(profile.id)} disabled={liking !== null}><Heart size={16}/>{liking === profile.id ? "Envoi…" : "Envoyer un intérêt"}</button>
       </article>)}</div>}
       <p className="auth-switch"><Link href="/profil">Gérer mon profil</Link> · <Link href="/">Accueil</Link></p>
     </section>
