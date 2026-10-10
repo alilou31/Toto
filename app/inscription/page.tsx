@@ -1,9 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Heart, ArrowLeft, ArrowRight, Mail, LockKeyhole, UserRound } from "lucide-react";
 
 export default function InscriptionPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ageConfirmed, setAgeConfirmed] = useState(false);
@@ -26,7 +28,8 @@ export default function InscriptionPage() {
         setMessage(result.error ?? "La création du compte a échoué.");
         return;
       }
-      setMessage("Votre compte est créé et votre session est ouverte. La création du profil sera l’étape suivante. La vérification d’e-mail sera ajoutée ultérieurement.");
+      router.replace("/profil");
+      router.refresh();
     } catch {
       setMessage("Service indisponible. Vérifiez votre connexion puis réessayez.");
     } finally {
