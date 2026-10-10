@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { getDb } from "@/lib/db";
 import { createSession, hashPassword } from "@/lib/auth";
+import { consumeAuthRateLimit, getTrustedClientIp } from "@/lib/auth-rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -30,8 +31,20 @@ export async function POST(request: Request) {
   }
 
   const normalizedEmail = email.trim().toLowerCase();
-  const sql = getDb();
   try {
+    const emailLimit = await consumeAuthRateLimit("register-email", normalizedEmail, 5, 60 * 60);
+    const clientIp = getTrustedClientIp(request);
+    const ipLimit = clientIp
+      ? await consumeAuthRateLimit("register-ip", clientIp, 10, 60 * 60)
+      : { allowed: true, retryAfterSeconds: 0 };
+    if (!emailLimit.allowed || !ipLimit.allowed) {
+      const retryAfter = Math.max(emailLimit.allowed ? 0 : emailLimit.retryAfterSeconds, ipLimit.allowed ? 0 : ipLimit.retryAfterSeconds);
+      return NextResponse.json(
+        { error: "Trop de tentatives. Réessayez plus tard." },
+        { status: 429, headers: { "Cache-Control": "no-store", "Retry-After": String(retryAfter) } },
+      );
+    }
+    const sql = getDb();
     const id = randomUUID();
     const passwordHash = await hashPassword(password);
     await sql`
