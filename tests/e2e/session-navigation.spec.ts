@@ -15,7 +15,9 @@ test("homepage shows account navigation when a session exists", async ({ page })
 });
 
 test("homepage shows registration and login links without a session", async ({ page }) => {
+  let sessionCheckCount = 0;
   await page.route("**/api/auth/me", async (route) => {
+    sessionCheckCount += 1;
     await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: null }) });
   });
 
@@ -23,7 +25,8 @@ test("homepage shows registration and login links without a session", async ({ p
   const header = page.locator("header.site-header");
   await expect(header.getByRole("link", { name: "Connexion" })).toBeVisible();
   await expect(header.getByRole("link", { name: /Créer mon profil/ })).toBeVisible();
-  await expect(header.getByRole("link", { name: "Mon profil" })).toBeHidden();
+  expect(sessionCheckCount).toBeGreaterThan(0);
+  await expect(header.locator('a[href="/profil"]')).toHaveCount(0);
 });
 
 test("saving a profile confirms success without navigating away", async ({ page }) => {
