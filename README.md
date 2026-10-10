@@ -33,6 +33,18 @@ Si la migration 001 a déjà été exécutée, ne la relance pas en cas d'erreur
 
 Pour le déploiement, ajouter `DATABASE_URL` dans les variables d'environnement du fournisseur d'hébergement (par exemple Vercel), puis redéployer.
 
+## Tests automatisés
+
+- Tests unitaires : `npm test` (Node.js test runner, sans base de données).
+- Tests navigateur : `npm run test:e2e` (Playwright + Chromium).
+- Qualité locale : `npm run lint` puis `npm run build`.
+- La configuration Playwright démarre automatiquement Next.js sur `http://127.0.0.1:3000`, sauf si `PLAYWRIGHT_BASE_URL` est défini.
+- Les tests navigateur couvrent la page d'accueil, la navigation, les champs obligatoires des formulaires et l'accessibilité des pages de démo/validation. Ils ne créent pas de compte réel et ne remplacent pas les tests d'intégration avec Neon.
+
+GitHub Actions exécute les tests unitaires, ESLint et le build dans le job `quality`, puis lance les tests Chromium dans le job `playwright` à chaque push sur `main` et à chaque pull request vers `main`. En cas d'échec Playwright, les rapports sont conservés comme artefacts pendant 7 jours.
+
+Pour installer les navigateurs en local après `npm install` : `npx playwright install chromium`.
+
 ## État actuel
 
 - [x] Landing page responsive et identité visuelle initiale
