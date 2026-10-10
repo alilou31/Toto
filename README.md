@@ -21,6 +21,7 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
 5. Dans le SQL Editor de Neon, exécuter dans l'ordre :
    - `db/migrations/001_nikahya_initial.sql`
    - `db/migrations/002_authentication.sql`
+   - `db/migrations/003_rencontre_sessions.sql`
 6. Lancer `npm run dev`, puis ouvrir `http://localhost:3000`.
 7. Vérifier la connexion sur `http://localhost:3000/api/db-check`. La route renvoie uniquement un état et l'heure de la base, jamais la chaîne de connexion.
 
@@ -57,6 +58,8 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [x] Schéma initial des profils, intérêts, matchs, conversations, messages, blocages et signalements
 - [x] Tables d'utilisateurs et de sessions pour l'authentification première partie
 - [x] Hashage de mot de passe avec scrypt et cookies de session HttpOnly
+- [x] Première tranche du Mode Rencontre : page `/rencontre`, propositions d'activité rattachées aux matchs et stockage des sessions dans Neon (migration 003 à appliquer)
+- [ ] Implémenter les parties jouables, les états de session et la synchronisation entre les deux participants
 - [ ] Exécuter la migration `002_authentication.sql` dans Neon avant de tester inscription/connexion
 - [ ] Vérifier build, tests et parcours d'authentification en préproduction
 - [ ] Ajouter limitation des tentatives et tests de sécurité
