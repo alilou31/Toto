@@ -13,7 +13,15 @@ async function authorizedConversation(conversationId: string, userId: string) {
     select c.id
     from public.conversations c
     join public.matches m on m.id = c.match_id
-    where c.id = ${conversationId} and (m.user_a = ${userId} or m.user_b = ${userId})
+    where c.id = ${conversationId}
+      and (m.user_a = ${userId} or m.user_b = ${userId})
+      and not exists (
+        select 1 from public.blocks b
+        where (b.blocker_id = ${userId}
+          and b.blocked_id = case when m.user_a = ${userId} then m.user_b else m.user_a end)
+           or (b.blocked_id = ${userId}
+          and b.blocker_id = case when m.user_a = ${userId} then m.user_b else m.user_a end)
+      )
     limit 1
   `;
   return rows.length > 0;
