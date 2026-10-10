@@ -10,7 +10,7 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
 - Tailwind CSS v4
 - Neon PostgreSQL pour la base de données
 - Zod pour la validation
-- Stripe envisagé pour les abonnements
+- Stripe envisagé pour les abonnements (phase ultérieure)
 
 ## Démarrage local
 
@@ -18,9 +18,13 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
 2. Installer les dépendances : `npm install`.
 3. Copier `.env.example` vers `.env.local`.
 4. Dans la console Neon, copier la chaîne de connexion PostgreSQL (de préférence la chaîne pooled) et la placer dans `DATABASE_URL` dans `.env.local`. Garder `sslmode=require` et ne jamais publier cette valeur.
-5. Dans le SQL Editor de Neon, exécuter `db/migrations/001_nikahya_initial.sql` sur une base de développement.
+5. Dans le SQL Editor de Neon, exécuter dans l'ordre :
+   - `db/migrations/001_nikahya_initial.sql`
+   - `db/migrations/002_authentication.sql`
 6. Lancer `npm run dev`, puis ouvrir `http://localhost:3000`.
 7. Vérifier la connexion sur `http://localhost:3000/api/db-check`. La route renvoie uniquement un état et l'heure de la base, jamais la chaîne de connexion.
+
+Si la migration 001 a déjà été exécutée, ne la relance pas en cas d'erreur sans lire le message : vérifie d'abord si les tables existent. La migration 002 crée les tables nécessaires à l'authentification.
 
 ## Variables d'environnement
 
@@ -36,19 +40,34 @@ Pour le déploiement, ajouter `DATABASE_URL` dans les variables d'environnement 
 - [x] Page de tests manuels accessible via `/validation`
 - [x] Tests unitaires de validation et règles de démonstration (`npm test`)
 - [x] GitHub Actions pour lancer les tests sur push et pull request
-- [x] Pages d'inscription et de connexion (interface uniquement)
-- [x] Pages d'information confidentialité et conditions (brouillons à revoir)
+- [x] Pages d'inscription et de connexion reliées aux API d'authentification
 - [x] Client Neon côté serveur et route de diagnostic `/api/db-check`
-- [x] Migration SQL initiale compatible avec PostgreSQL/Neon
-- [ ] Renseigner `DATABASE_URL` dans l'environnement d'exécution et confirmer un test réel
-- [ ] Relier une solution d'authentification et vérifier les e-mails
+- [x] Schéma initial des profils, intérêts, matchs, conversations, messages, blocages et signalements
+- [x] Tables d'utilisateurs et de sessions pour l'authentification première partie
+- [x] Hashage de mot de passe avec scrypt et cookies de session HttpOnly
+- [ ] Exécuter la migration `002_authentication.sql` dans Neon avant de tester inscription/connexion
+- [ ] Vérifier build, tests et parcours d'authentification en préproduction
+- [ ] Ajouter limitation des tentatives et tests de sécurité
+- [ ] Créer le parcours de profil relié au compte connecté
 - [ ] Enregistrer les profils via des routes serveur authentifiées
-- [ ] Gestion des photos avec stockage privé et modération
+- [ ] Gestion des photos avec stockage privé durable et modération
 - [ ] Recherche, intérêts et matchs via fonctions serveur sûres
 - [ ] Messagerie et contrôles d'autorisation
 - [ ] Signalements, blocages et outils d'administration
-- [ ] Stripe, webhooks et gestion des abonnements
 - [ ] Tests d'intégration navigateur et revue de sécurité/RGPD
+
+## Authentification première partie (MVP)
+
+Les routes disponibles sont :
+
+- `POST /api/auth/register` : créer un compte avec e-mail, mot de passe, confirmation 18+ et acceptation des conditions.
+- `POST /api/auth/login` : ouvrir une session.
+- `POST /api/auth/logout` : fermer la session.
+- `GET /api/auth/me` : vérifier la session courante.
+
+Les mots de passe sont stockés sous forme de hash scrypt ; le cookie de session est HttpOnly, SameSite=Lax et marqué Secure en production. La base ne stocke qu'un hash du jeton de session. Ces protections constituent une première base, pas une validation de sécurité complète.
+
+**Limites actuelles :** la vérification d'e-mail et la récupération de mot de passe par e-mail sont reportées à la phase 2. La limitation de tentatives, la page de profil, les autorisations métier complètes et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
 
 ## Démonstration sans base de données
 
@@ -57,8 +76,8 @@ Ouvrir `/demo` pour tester les profils fictifs, enregistrer un profil local, aim
 ## Sécurité importante
 
 - Le schéma SQL est une base de travail, pas une application prête pour la production.
-- L'authentification n'est pas encore branchée : ne pas accepter d'identifiants réels comme si le compte était créé.
+- Ne jamais afficher les mots de passe, hashes, cookies de session ou chaînes de connexion.
 - La chaîne `DATABASE_URL` doit rester exclusivement côté serveur. Ne jamais la renvoyer au navigateur, l'ajouter à Git ou la coller dans une conversation.
 - Toute lecture/écriture de données privées doit passer par des routes serveur authentifiées et autorisées.
-- Le contrôle de majorité doit être effectué côté serveur avant toute publication de profil.
+- La majorité doit être validée côté serveur avant toute publication de profil ; une case à cocher ne suffit pas à vérifier l'âge.
 - Les pages juridiques sont des brouillons et doivent être complétées puis vérifiées par un professionnel avant commercialisation.
