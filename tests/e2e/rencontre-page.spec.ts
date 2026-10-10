@@ -7,6 +7,6 @@ test("Mode Rencontre présente les quatre activités et demande une connexion", 
   await expect(page.getByRole("heading", { name: "Duo langues" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Snake challenge" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Défi coopératif" })).toBeVisible();
-  await expect(page.getByRole("alert")).toContainText("Connectez-vous");
+  await expect(page.locator("p.auth-notice[role=\"alert\"]")).toContainText("Connectez-vous");
   await expect(page.getByRole("link", { name: "Se connecter" })).toHaveAttribute("href", "/connexion");
 });
