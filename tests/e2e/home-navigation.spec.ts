@@ -8,7 +8,8 @@ test("homepage makes sign-in and account creation obvious", async ({ page }) => 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   const header = page.locator("header.site-header");
-  await expect(header.getByRole("link", { name: "Se connecter" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Créer mon compte" }).first()).toHaveAttribute("href", "/inscription");
+  await expect(page.getByRole("link", { name: "Se connecter" }).first()).toHaveAttribute("href", "/connexion");
   await expect(header.getByRole("button", { name: "Ouvrir le menu" })).toBeVisible();
   await header.getByRole("button", { name: "Ouvrir le menu" }).click();
   const menu = page.getByRole("navigation", { name: "Menu mobile" });
