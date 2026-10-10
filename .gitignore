@@ -11,3 +11,9 @@ coverage/
 
 playwright-report/
 test-results/
+
+# Cloudflare Workers / OpenNext
+.open-next/
+.wrangler/
+.dev.vars
+cloudflare-env.d.ts
