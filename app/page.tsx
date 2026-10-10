@@ -33,7 +33,7 @@ export default function Home() {
         </nav>
         <div className="header-actions">
           <Link href="/connexion" className="login-link">Connexion</Link>
-          <Link href="/demo" className="login-link">Essayer la démo</Link><Link href="/inscription" className="button button-dark button-small">Créer mon profil <ArrowRight size={15}/></Link>
+          <Link href="/demo" className="login-link">Essayer la démo</Link><Link href="/rencontre" className="login-link">Mode Rencontre</Link><Link href="/inscription" className="button button-dark button-small">Créer mon profil <ArrowRight size={15}/></Link>
         </div>
         <button className="mobile-menu" aria-label="Menu"><Menu size={23}/></button>
       </header>
