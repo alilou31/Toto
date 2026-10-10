@@ -18,6 +18,8 @@ export async function GET() {
       from public.profiles p
       where p.visibility = 'visible'
         and p.onboarding_completed = true
+        and p.birth_date is not null
+        and p.birth_date <= (current_date - interval '18 years')::date
         and p.id <> ${user.id}
         and not exists (
           select 1 from public.blocks b
