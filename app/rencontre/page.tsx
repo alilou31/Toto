@@ -69,7 +69,7 @@ function SnakeGame({ disabled, onPoint }: { disabled: boolean; onPoint: (score: 
       // is active only while this Snake instance is actually running.
       if (!runningRef.current || endedRef.current || disabledRef.current) return;
       const target = event.target;
-      if (target instanceof HTMLElement && (target.isContentEditable || target.closest("input, textarea, select, button, [role=\\"textbox\\"]"))) return;
+      if (target instanceof HTMLElement && (target.isContentEditable || target.closest('input, textarea, select, button, [role="textbox"]'))) return;
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
       const map: Record<string, SnakeDirection> = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", w: "up", s: "down", a: "left", d: "right" };
       const next = map[key];
