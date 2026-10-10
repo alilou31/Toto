@@ -25,12 +25,14 @@ test.describe("Pages publiques NIKAHYA", () => {
     await expect(password).toBeVisible();
     await expect(password).toHaveAttribute("minlength", "12");
     await expect(page.getByRole("checkbox")).toHaveCount(2);
-    await expect(page.getByRole("button", { name: /Créer mon compte/i })).toBeDisabled();
-
     await email.fill("test@example.fr");
     await password.fill("motdepasse123");
     await page.getByRole("checkbox").nth(0).check();
     await page.getByRole("checkbox").nth(1).check();
+    await expect(email).toHaveAttribute("required", "");
+    await expect(password).toHaveAttribute("required", "");
+    await expect(page.getByRole("checkbox").nth(0)).toHaveAttribute("required", "");
+    await expect(page.getByRole("checkbox").nth(1)).toHaveAttribute("required", "");
     await expect(page.getByRole("button", { name: /Créer mon compte/i })).toBeEnabled();
   });
 
