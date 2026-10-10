@@ -4,7 +4,6 @@ test.describe("Mode Rencontre API", () => {
   test("refuse de lire les activités sans authentification", async ({ request }) => {
     const response = await request.get("/api/rencontre/sessions");
     expect(response.status()).toBe(401);
-    await expect(response).toBeOK().catch(() => undefined);
     expect(await response.json()).toMatchObject({ error: "Authentification requise." });
   });
 
@@ -24,7 +23,7 @@ test.describe("Mode Rencontre API", () => {
     expect(await response.json()).toMatchObject({ error: "Action non autorisée." });
   });
 
-  test("refuse la progression mal formée avant toute écriture", async ({ request }) => {
+  test("refuse les modifications de progression sans authentification", async ({ request }) => {
     const response = await request.patch("/api/rencontre/sessions", {
       data: { sessionId: "00000000-0000-4000-8000-000000000001", action: "progress" },
     });
