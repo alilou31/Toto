@@ -61,8 +61,6 @@ test.describe("API d'authentification — validations sans compte réel", () => 
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({ user: null });
   });
-});
-
 
   test("refuse un JSON mal formé à l'inscription", async ({ request }) => {
     const response = await request.post("/api/auth/register", {
