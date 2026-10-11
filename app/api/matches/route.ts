@@ -13,6 +13,7 @@ export async function GET() {
     const matches = await sql`
       select m.id as match_id, c.id as conversation_id, p.id as profile_id,
         p.public_name, p.city, p.bio, p.relationship_intention,
+        p.hobbies, p.favorite_games, p.interests,
         c.last_message_at,
         (select msg.body from public.messages msg where msg.conversation_id = c.id order by msg.created_at desc limit 1) as last_message
       from public.matches m
