@@ -41,7 +41,7 @@ test("signed-in users can open the dashboard from the mobile menu", async ({ pag
   const header = page.locator("header.site-header");
   await header.getByRole("button", { name: "Ouvrir le menu" }).click();
   const menu = page.getByRole("navigation", { name: "Menu mobile" });
-  await expect(menu.getByRole("link", { name: "Tableau de bord" })).toBeVisible();
+  await expect(menu.getByRole("link", { name: "Mon espace" })).toBeVisible();
   await menu.getByRole("link", { name: "Tableau de bord" }).click();
   await expect(page).toHaveURL(/\/tableau-de-bord$/);
   await expect(page.getByRole("heading", { name: "Bonjour, Camille." })).toBeVisible();
