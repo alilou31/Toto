@@ -77,3 +77,17 @@
 @media(min-width:761px){.mobile-menu{display:none}}
 @media(max-width:760px){.site-header{display:flex;justify-content:flex-start;gap:14px}.mobile-menu{display:flex;flex-shrink:0}.brand{margin-right:auto}.mobile-navigation{z-index:30}.dashboard-header{height:auto;min-height:70px;flex-wrap:wrap;padding:14px 5%;gap:12px}.dashboard-header nav{order:3;width:100%;justify-content:space-between;gap:8px;padding-top:12px;border-top:1px solid var(--line)}.dashboard-header nav a{font-size:10px;gap:4px}.dashboard-header>.button{font-size:10px;padding:10px}.dashboard-content{padding:35px 5% 25px}.dashboard-welcome{padding:26px 22px}.dashboard-welcome-icon{width:50px;height:50px}.dashboard-welcome-icon svg{width:24px}.dashboard-onboarding{align-items:flex-start;flex-wrap:wrap;padding:18px}.dashboard-onboarding>div:nth-child(2){min-width:calc(100% - 65px)}.dashboard-onboarding .button{width:100%}.dashboard-cards,.dashboard-lower-grid{grid-template-columns:1fr}.dashboard-card{min-height:180px}.dashboard-section-heading h2{font-size:23px}.dashboard-account{flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.dashboard-card{transition:none}}
+
+
+/* Dashboard refinement: visible profile progress and accessible status */
+.dashboard-progress{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,220px) auto;align-items:center;gap:22px;margin:20px 0 25px;padding:20px 22px;background:linear-gradient(115deg,#fff 0%,#faf7ff 70%,#fff5fb 100%);border:1px solid #e9e1f7;border-radius:16px}
+.dashboard-progress-copy>div{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.dashboard-progress-label{font-size:9px;letter-spacing:1.4px;font-weight:800;color:#8b5cf6}
+.dashboard-progress-copy strong{font-size:16px;color:#6d28d9;font-variant-numeric:tabular-nums}
+.dashboard-progress-copy p{margin:0;color:#7b728c;font-size:11px;line-height:1.65}
+.dashboard-progress-track{height:8px;overflow:hidden;border-radius:99px;background:#e9e3f4}
+.dashboard-progress-track span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#6d28d9,#ec4899);transition:width .35s ease}
+.dashboard-progress-link{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;color:#6d28d9;font-size:11px;font-weight:800}
+.dashboard-progress-link:focus-visible{outline:3px solid #a78bfa;outline-offset:4px;border-radius:4px}
+@media(max-width:760px){.dashboard-progress{grid-template-columns:minmax(0,1fr) auto;gap:14px;padding:18px;margin:16px 0 22px}.dashboard-progress-copy{grid-column:1/-1}.dashboard-progress-track{grid-column:1}.dashboard-progress-link{grid-column:2;font-size:10px}.dashboard-progress-copy p{max-width:42ch}}
+@media(prefers-reduced-motion:reduce){.dashboard-progress-track span{transition:none}}
