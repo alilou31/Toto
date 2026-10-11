@@ -165,7 +165,7 @@ export default function RencontrePage() {
       ]);
       const matchesData = await matchesResponse.json();
       const sessionsData = await sessionsResponse.json();
-      if (matchesResponse.status === 401 || sessionsResponse.status === 401) throw new Error("Connectez-vous pour utiliser le Alchimie.");
+      if (matchesResponse.status === 401 || sessionsResponse.status === 401) throw new Error("Connectez-vous pour utiliser Alchimie.");
       if (!matchesResponse.ok) throw new Error(matchesData.error || "Impossible de charger vos matchs.");
       if (!sessionsResponse.ok) throw new Error(sessionsData.error || "Impossible de charger vos activités.");
       const nextMatches = Array.isArray(matchesData.matches) ? matchesData.matches as Match[] : [];
