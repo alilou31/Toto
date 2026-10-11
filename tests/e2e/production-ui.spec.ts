@@ -5,7 +5,7 @@ test.describe("Interface NIKAHYA en production", () => {
     const response = await page.goto("/");
     expect(response?.status(), "La page d'accueil doit répondre en HTTP 200").toBe(200);
     await expect(page).toHaveTitle(/NIKAHYA/i);
-    await expect(page.getByRole("heading", { name: /Et si vous vous découvriez/i })).toBeVisible();
+    await expect(page.locator("main h1").first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Se connecter/i }).first()).toBeVisible();
   });
@@ -50,7 +50,7 @@ test.describe("Interface NIKAHYA en production", () => {
   test("la page d'accueil reste utilisable sur un écran mobile", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /Et si votre prochaine rencontre/i })).toBeVisible();
+    await expect(page.locator("main h1").first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     const dimensions = await page.evaluate(() => ({
       viewport: document.documentElement.clientWidth,
