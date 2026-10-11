@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Gamepad2, Heart, LayoutDashboard, LockKeyhole, MessageCircle, Search, ShieldCheck, Sparkles, UserRound } from "lucide-react";
+import { ArrowRight, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, UserRound } from "lucide-react";
 
 type Profile = {
   public_name?: string | null;
@@ -67,7 +67,7 @@ export default function DashboardPage() {
         <nav aria-label="Navigation de l'espace personnel">
           <Link href="/tableau-de-bord" aria-current="page"><LayoutDashboard size={16}/> Mon espace</Link>
           <Link href="/profil"><UserRound size={16}/> Mon profil</Link>
-          <Link href="/decouvrir"><Search size={16}/> Découvrir</Link>\n          <Link href="/cockpit/jeux"><Gamepad2 size={16}/> Jouer</Link>\n          <Link href="/messages"><MessageCircle size={16}/> Discussions</Link>
+          <Link href="/decouvrir"><Search size={16}/> Découvrir</Link>\n          <Link href="/cockpit/jeux"><Gamepad2 size={16}/> Jouer</Link>
         </nav>
         <Link href="/profil" className="button button-dark button-small">Modifier mon profil <ArrowRight size={15}/></Link>
       </header>
