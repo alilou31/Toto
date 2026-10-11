@@ -1,9 +1,10 @@
 name: NIKAHYA Production Smoke Tests
 
-# TEMPORARILY PAUSED DURING UX/UI REDESIGN.
-# Manual-only to avoid scheduled production checks during active redesign.
+# Read-only checks against the currently published Cloudflare Worker.
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *"
 
 permissions:
   contents: read
@@ -18,17 +19,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      PRODUCTION_URL: https://10636d14-nikhaya.rassoul-ali.workers.dev
+      PRODUCTION_URL: https://nikahya.rassoul-ali.workers.dev
     steps:
       - name: Check production homepage
         run: |
-          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /dev/null --write-out 'Homepage HTTP %{http_code} in %{time_total}s\\n' "$PRODUCTION_URL/"
+          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /dev/null --write-out 'Homepage HTTP %{http_code} in %{time_total}s\n' "$PRODUCTION_URL/"
       - name: Check demo page
         run: |
-          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /dev/null --write-out 'Demo HTTP %{http_code} in %{time_total}s\\n' "$PRODUCTION_URL/demo"
+          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /dev/null --write-out 'Demo HTTP %{http_code} in %{time_total}s\n' "$PRODUCTION_URL/demo"
       - name: Check live Neon database connectivity
         run: |
-          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /tmp/db-check.json --write-out 'Database health endpoint HTTP %{http_code} in %{time_total}s\\n' "$PRODUCTION_URL/api/db-check"
+          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /tmp/db-check.json --write-out 'Database health endpoint HTTP %{http_code} in %{time_total}s\n' "$PRODUCTION_URL/api/db-check"
           node --input-type=module -e '
             import fs from "node:fs";
             const result = JSON.parse(fs.readFileSync("/tmp/db-check.json", "utf8"));
@@ -43,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      PLAYWRIGHT_BASE_URL: https://10636d14-nikhaya.rassoul-ali.workers.dev
+      PLAYWRIGHT_BASE_URL: https://nikahya.rassoul-ali.workers.dev
     steps:
       - name: Checkout
         uses: actions/checkout@v4
