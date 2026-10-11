@@ -39,7 +39,8 @@ jobs:
 
   deploy:
     name: Deploy to Cloudflare production
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    # Production is deployable only from main; PRs and manual runs on feature branches never deploy.
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: build
     runs-on: ubuntu-latest
     environment: production
