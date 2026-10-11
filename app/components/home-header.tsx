@@ -54,19 +54,6 @@ export default function HomeHeader() {
     setMenuOpen(false);
   }
 
-  useEffect(() => {
-    if (!menuOpen) return;
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setMenuOpen(false);
-    }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [menuOpen]);
-
-  function closeMenu() {
-    setMenuOpen(false);
-  }
-
   async function logout() {
     setLoggingOut(true);
     try {
