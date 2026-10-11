@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Heart, ArrowLeft, Mail, LockKeyhole } from "lucide-react";
 
@@ -10,6 +10,29 @@ export default function ConnexionPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Keep an authenticated member out of the sign-in page, including after browser Back/BFCache.
+  useEffect(() => {
+    let active = true;
+    const redirectIfAuthenticated = async () => {
+      try {
+        const response = await fetch("/api/auth/me", { cache: "no-store" });
+        const data = await response.json();
+        if (active && response.ok && data.user) {
+          router.replace("/tableau-de-bord");
+          router.refresh();
+        }
+      } catch {
+        // Keep the form available if session verification is temporarily unavailable.
+      }
+    };
+    void redirectIfAuthenticated();
+    window.addEventListener("pageshow", redirectIfAuthenticated);
+    return () => {
+      active = false;
+      window.removeEventListener("pageshow", redirectIfAuthenticated);
+    };
+  }, [router]);
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
