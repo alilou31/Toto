@@ -39,6 +39,19 @@ jobs:
             }
             console.log("Neon connectivity confirmed; databaseTime:", result.databaseTime ?? "not returned");
           '
+      - name: Verify game history requires authentication
+        run: |
+          status=$(curl --silent --show-error --location --max-time 20 --output /tmp/game-results.json --write-out '%{http_code}' "$PRODUCTION_URL/api/games/results")
+          test "$status" = "401"
+          node --input-type=module -e '
+            import fs from "node:fs";
+            const result = JSON.parse(fs.readFileSync("/tmp/game-results.json", "utf8"));
+            if (result.error !== "Authentification requise.") {
+              console.error("Game results endpoint did not reject an anonymous request as expected.");
+              process.exit(1);
+            }
+            console.log("Game results endpoint correctly rejects anonymous access.");
+          '
   interface:
     name: Playwright interface tests on production
     runs-on: ubuntu-latest
