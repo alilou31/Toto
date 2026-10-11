@@ -5,9 +5,9 @@ test.describe("Interface NIKAHYA en production", () => {
     const response = await page.goto("/");
     expect(response?.status(), "La page d'accueil doit répondre en HTTP 200").toBe(200);
     await expect(page).toHaveTitle(/NIKAHYA/i);
-    await expect(page.getByRole("heading", { name: /Et si votre prochaine rencontre/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Et si vous vous découvriez/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /Essayer la démo/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Se connecter/i }).first()).toBeVisible();
   });
 
   test("la navigation vers la connexion fonctionne", async ({ page }) => {
