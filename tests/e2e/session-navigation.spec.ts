@@ -1,6 +1,16 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Session et retour navigateur", () => {
+  test("un visiteur non connecté doit se connecter avant de modifier son profil", async ({ page }) => {
+    await page.route("**/api/profile", async route => {
+      await route.fulfill({ status: 401, contentType: "application/json", body: JSON.stringify({ error: "Authentification requise." }) });
+    });
+    await page.goto("/profil");
+    await expect(page.getByRole("heading", { name: "Connectez-vous pour continuer" })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Se connecter/i })).toHaveAttribute("href", "/connexion?next=%2Fprofil");
+    await expect(page.locator("form.personalize-form")).toHaveCount(0);
+  });
+
   test("une session active redirige la page connexion vers le tableau de bord", async ({ page }) => {
     await page.route("**/api/auth/me", async route => {
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: { id: "user-1", email: "mike@example.fr" } }) });
