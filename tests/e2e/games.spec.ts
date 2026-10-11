@@ -76,4 +76,25 @@ test.describe("Mini-jeux NIKAHYA", () => {
     await expect(page.getByRole("heading", { name: /partie est terminée/i })).toBeVisible();
     await expect(page.locator(".game-save-error")).toContainText(/Connectez-vous|Authentification/i);
   });
+
+  test("les endpoints de défis synchronisés refusent les accès sans session", async ({ request }) => {
+    const list = await request.get("/api/games/sessions");
+    expect(list.status()).toBe(401);
+    expect(await list.json()).toMatchObject({ error: "Authentification requise." });
+
+    const create = await request.post("/api/games/sessions", { data: { gameId: "enigme" } });
+    expect(create.status()).toBe(401);
+    expect(await create.json()).toMatchObject({ error: "Connectez-vous pour créer un défi." });
+
+    const join = await request.post("/api/games/sessions/join", { data: { code: "AB12CD34" } });
+    expect(join.status()).toBe(401);
+    expect(await join.json()).toMatchObject({ error: "Connectez-vous pour rejoindre un défi." });
+  });
+
+  test("la page défis présente création et accès par code", async ({ page }) => {
+    await page.goto("/cockpit/defis");
+    await expect(page.getByRole("heading", { name: "Inviter quelqu'un à jouer" })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Créer un défi/i })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Rejoindre/i })).toBeVisible();
+  });
 });
