@@ -12,6 +12,13 @@ type Profile = {
   relationship_intention?: string | null;
   birth_date?: string | null;
   visibility?: Visibility | null;
+  hobbies?: string[] | null;
+  favorite_games?: string[] | null;
+  interests?: string[] | null;
+  occupation?: string | null;
+  religion?: string | null;
+  ethnicity?: string | null;
+  show_sensitive_identity?: boolean | null;
 };
 
 const intentions = [
@@ -45,6 +52,13 @@ export default function ProfilePage() {
   const [birthDate, setBirthDate] = useState("");
   const [intention, setIntention] = useState("marriage");
   const [visibility, setVisibility] = useState<Visibility>("hidden");
+  const [hobbies, setHobbies] = useState("");
+  const [favoriteGames, setFavoriteGames] = useState("");
+  const [interests, setInterests] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [religion, setReligion] = useState("");
+  const [ethnicity, setEthnicity] = useState("");
+  const [showSensitiveIdentity, setShowSensitiveIdentity] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -73,6 +87,13 @@ export default function ProfilePage() {
           birthDate: profile?.birth_date ? String(profile.birth_date).slice(0, 10) : "",
           intention: profile?.relationship_intention ?? "marriage",
           visibility: profile?.visibility ?? "hidden" as Visibility,
+          hobbies: (profile?.hobbies ?? []).join(", "),
+          favoriteGames: (profile?.favorite_games ?? []).join(", "),
+          interests: (profile?.interests ?? []).join(", "),
+          occupation: profile?.occupation ?? "",
+          religion: profile?.religion ?? "",
+          ethnicity: profile?.ethnicity ?? "",
+          showSensitiveIdentity: profile?.show_sensitive_identity ?? false,
         };
         setPublicName(next.publicName);
         setCity(next.city);
@@ -80,6 +101,13 @@ export default function ProfilePage() {
         setBirthDate(next.birthDate);
         setIntention(next.intention);
         setVisibility(next.visibility as Visibility);
+        setHobbies(next.hobbies);
+        setFavoriteGames(next.favoriteGames);
+        setInterests(next.interests);
+        setOccupation(next.occupation);
+        setReligion(next.religion);
+        setEthnicity(next.ethnicity);
+        setShowSensitiveIdentity(next.showSensitiveIdentity);
         setSavedSnapshot(JSON.stringify(next));
       })
       .catch(cause => {
@@ -92,7 +120,7 @@ export default function ProfilePage() {
     return () => { active = false; };
   }, []);
 
-  const snapshot = useMemo(() => JSON.stringify({ publicName, city, bio, birthDate, intention, visibility }), [publicName, city, bio, birthDate, intention, visibility]);
+  const snapshot = useMemo(() => JSON.stringify({ publicName, city, bio, birthDate, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity }), [publicName, city, bio, birthDate, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity]);
   const dirty = Boolean(savedSnapshot) && snapshot !== savedSnapshot;
   const progress = getProfileProgress({ publicName, birthDate, city, bio, intention });
   const selectedIntention = intentions.find(item => item.value === intention)?.label ?? "À discuter";
@@ -110,7 +138,7 @@ export default function ProfilePage() {
       const response = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicName, city, bio, birthDate, relationshipIntention: intention, visibility }),
+        body: JSON.stringify({ publicName, city, bio, birthDate, relationshipIntention: intention, visibility, hobbies: hobbies.split(",").map(v => v.trim()).filter(Boolean), favoriteGames: favoriteGames.split(",").map(v => v.trim()).filter(Boolean), interests: interests.split(",").map(v => v.trim()).filter(Boolean), occupation, religion, ethnicity, showSensitiveIdentity }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Enregistrement impossible.");
@@ -164,7 +192,23 @@ export default function ProfilePage() {
               </section>
 
               <section className="personalize-section">
-                <div className="personalize-section-heading"><span className="personalize-step">03</span><div><h2>Vous choisissez la visibilité</h2><p>Changez ce réglage à tout moment.</p></div></div>
+                <div className="personalize-section-heading"><span className="personalize-step">03</span><div><h2>Vos points communs</h2><p>Des sujets concrets pour lancer une conversation et retrouver des personnes qui aiment les mêmes choses.</p></div></div>
+                <div className="personalize-fields">
+                  <label className="personalize-field personalize-field-full"><span>Jeux auxquels vous aimez jouer</span><input maxLength={500} value={favoriteGames} onChange={e=>setFavoriteGames(e.target.value)} placeholder="Ex. échecs, Mario Kart, jeux de société, énigmes…"/><small className="personalize-hint">Séparez les jeux par des virgules.</small></label>
+                  <label className="personalize-field personalize-field-full"><span>Hobbies et activités</span><input maxLength={500} value={hobbies} onChange={e=>setHobbies(e.target.value)} placeholder="Ex. randonnée, cuisine, lecture, photographie…"/></label>
+                  <label className="personalize-field personalize-field-full"><span>Centres d’intérêt</span><input maxLength={700} value={interests} onChange={e=>setInterests(e.target.value)} placeholder="Ex. voyages, technologie, famille, culture, sport…"/></label>
+                  <label className="personalize-field"><span>Métier ou domaine</span><input maxLength={100} value={occupation} onChange={e=>setOccupation(e.target.value)} placeholder="Ex. infirmier·ère, ingénierie…"/></label>
+                  <label className="personalize-field"><span>Religion ou spiritualité <small>Facultatif</small></span><input maxLength={100} value={religion} onChange={e=>setReligion(e.target.value)} placeholder="Si vous souhaitez le partager"/></label>
+                  <label className="personalize-field"><span>Origine / ethnicité <small>Facultatif</small></span><input maxLength={100} value={ethnicity} onChange={e=>setEthnicity(e.target.value)} placeholder="Si vous souhaitez le partager"/></label>
+                  <label className="personalize-field personalize-field-full" style={{display:"flex",alignItems:"flex-start",gap:10}}>
+                    <input type="checkbox" checked={showSensitiveIdentity} onChange={e=>setShowSensitiveIdentity(e.target.checked)} style={{marginTop:4,width:18,height:18}}/>
+                    <span>J’accepte explicitement d’afficher ma religion/spiritualité et mon origine sur mon profil public. <small>Sans cette case cochée, ces informations restent privées.</small></span>
+                  </label>
+                </div>
+              </section>
+
+              <section className="personalize-section">
+                <div className="personalize-section-heading"><span className="personalize-step">04</span><div><h2>Vous choisissez la visibilité</h2><p>Changez ce réglage à tout moment.</p></div></div>
                 <div className="personalize-visibility">{visibilityOptions.map(item=><button type="button" key={item.value} className={visibility === item.value ? "personalize-visibility-option is-selected" : "personalize-visibility-option"} onClick={()=>setVisibility(item.value)} aria-pressed={visibility === item.value}><span className="personalize-visibility-icon">{item.value === "visible" ? <Eye size={18}/> : item.value === "paused" ? <EyeOff size={18}/> : <LockKeyhole size={18}/>}</span><span><strong>{item.label}</strong><small>{item.detail}</small></span><span className="personalize-radio">{visibility === item.value && <Check size={12}/>}</span></button>)}</div>
               </section>
 
