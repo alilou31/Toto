@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowRight, Heart, LayoutDashboard, LogOut, Menu, MessageCircle, Search, UserRound, X } from "lucide-react";
+import { ArrowRight, Gamepad2, Heart, LayoutDashboard, LogOut, Menu, MessageCircle, Search, Sparkles, UserRound, X } from "lucide-react";
 
 type User = { id?: string; email?: string } | null;
 type Session = "checking" | "signed-in" | "signed-out";
