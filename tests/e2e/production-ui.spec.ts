@@ -12,13 +12,11 @@ test.describe("Interface NIKAHYA en production", () => {
 
   test("la navigation vers la connexion fonctionne", async ({ page }) => {
     await page.goto("/");
-    const visibleLoginLink = page.locator('header a[href="/connexion"]:visible').first();
-    if (await visibleLoginLink.count()) {
-      await visibleLoginLink.click();
-    } else {
-      await page.getByRole("button", { name: "Ouvrir le menu" }).click();
-      await page.locator('#mobile-navigation a[href="/connexion"]').click();
-    }
+    // The homepage hero exposes a visible login link even when header actions
+    // are hidden by responsive CSS. Select the first visible login link anywhere.
+    const visibleLoginLink = page.locator('a[href="/connexion"]:visible').first();
+    await expect(visibleLoginLink).toBeVisible();
+    await visibleLoginLink.click();
     await expect(page).toHaveURL(/\/connexion$/);
     await expect(page.getByRole("heading", { name: /Votre histoire/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /Se connecter/i })).toBeVisible();
