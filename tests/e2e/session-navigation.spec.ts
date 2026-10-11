@@ -9,6 +9,8 @@ test.describe("Session et retour navigateur", () => {
     await expect(page.getByRole("heading", { name: "Connectez-vous pour continuer" })).toBeVisible();
     await expect(page.getByRole("link", { name: /Se connecter/i })).toHaveAttribute("href", "/connexion?next=%2Fprofil");
     await expect(page.locator("form.personalize-form")).toHaveCount(0);
+    await expect(page.locator(".personalize-aside")).toHaveCount(0);
+    await expect(page.getByText("APERÇU DE VOTRE PROFIL")).toHaveCount(0);
   });
 
   test("une session active redirige la page connexion vers le tableau de bord", async ({ page }) => {
