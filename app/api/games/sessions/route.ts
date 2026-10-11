@@ -8,7 +8,8 @@ export const dynamic = "force-dynamic";
 const GAME_IDS = new Set(["mots-croises", "enigme", "calcul", "personnalite", "duel", "tournoi"]);
 
 function inviteCode() {
-  return randomBytes(5).toString("hex").slice(0, 8).toUpperCase();
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  return Array.from(randomBytes(8), (byte) => alphabet[byte % alphabet.length]).join("");
 }
 
 export async function GET() {
