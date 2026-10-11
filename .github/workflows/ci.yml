@@ -1,10 +1,8 @@
 name: NIKAHYA CI
 
+# TEMPORARILY PAUSED DURING UX/UI REDESIGN.
+# Run manually from Actions when a validation checkpoint is needed.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
