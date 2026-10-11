@@ -22,3 +22,24 @@
 .game-play-panel{margin:22px 0}.game-play-intro h2,.game-play-result h2{margin:10px 0}.game-play-intro>p:not(.game-eyebrow),.game-play-result>p{color:var(--muted,#656273);line-height:1.65}.game-play-progress{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px;font-size:.75rem;font-weight:800;letter-spacing:.08em}.game-play-question{margin:24px 0 18px;font-size:clamp(1.25rem,3vw,1.8rem);line-height:1.3}.game-answer-list{display:grid;gap:10px;margin:18px 0}.game-answer-option{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border:1px solid var(--line,#e7e2ee);border-radius:14px;text-align:left;background:var(--surface,#fff);color:inherit;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}.game-answer-option:hover{border-color:#a78bfa;transform:translateY(-1px)}.game-answer-option.selected{border-color:#8b5cf6;background:#f5f0ff;box-shadow:0 0 0 2px #8b5cf622}.game-answer-letter{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#f1edf7;font-weight:800}.game-answer-option.selected .game-answer-letter{background:#8b5cf6;color:white}.game-play-hint{color:var(--muted,#656273);font-size:.9rem;margin:12px 0 18px}.game-button:disabled{opacity:.45;cursor:not-allowed}.game-result-score{display:flex;align-items:center;gap:14px;margin:20px 0;padding:18px;border-radius:16px;background:#f5f0ff}.game-result-score strong{font-size:2.5rem;color:#7c3aed}.game-result-score span{color:#514563}.game-save-success{color:#087f5b!important;font-weight:700}.game-save-error{color:#b42318!important}@media(max-width:600px){.game-answer-option{padding:12px}.game-detail-actions{flex-wrap:wrap}}
 
 .game-history-list{margin-top:22px}.game-history-rows{display:grid;gap:0;margin:16px 0}.game-history-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--line,#e7e2ee)}.game-history-row>div:first-child{display:grid;gap:5px}.game-history-row>div:first-child span,.game-history-result span{font-size:.83rem;color:var(--muted,#656273)}.game-history-result{display:grid;text-align:right;gap:4px}.game-history-result strong{font-size:1.3rem;color:#7c3aed}@media(max-width:520px){.game-history-row{align-items:flex-start}.game-history-result strong{font-size:1.1rem}}
+
+
+/* Synchronized game challenges */
+.game-challenges-layout{display:grid;gap:1.25rem}
+.game-challenge-create-row{display:flex;align-items:flex-end;gap:.8rem;margin-top:1rem}
+.game-challenge-field{display:grid;gap:.45rem;flex:1;min-width:0;font-size:.85rem;font-weight:650;color:var(--ink,#18382f)}
+.game-challenge-field input,.game-challenge-field select{width:100%;min-height:46px;padding:.7rem .85rem;border:1px solid #d7e4dd;border-radius:12px;background:#fff;color:#17382e;font:inherit}
+.game-challenge-field input:focus,.game-challenge-field select:focus{outline:3px solid #b6e5d0;outline-offset:1px}
+.game-invite-card{display:grid;justify-items:start;gap:.75rem;padding:1.2rem;border:1px dashed #a8cdb9;border-radius:16px;background:#f5fbf7}
+.game-invite-card>strong{font-size:1.8rem;letter-spacing:.16em;color:#145a42}
+.game-challenge-link{max-width:100%;overflow-wrap:anywhere;font-size:.8rem;color:#557267}
+.game-challenge-session-list{display:grid;gap:.65rem}
+.game-challenge-session{display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;padding:.9rem 1rem;text-align:left;border:1px solid #e0e9e4;border-radius:13px;background:#fff;color:#17382e;cursor:pointer}
+.game-challenge-session.selected{border-color:#3d9a73;background:#f2faf5}
+.game-challenge-session>span:first-child{display:grid;gap:.25rem;min-width:0}
+.game-challenge-session small{font-size:.78rem;color:#61766d}
+.game-challenge-status{flex-shrink:0;font-size:.75rem;font-weight:700}
+.game-challenge-status.waiting{color:#94620b}.game-challenge-status.active{color:#17744e}.game-challenge-status.completed{color:#586a62}.game-challenge-status.cancelled{color:#9c4141}
+.game-challenge-sync{display:flex;align-items:center;gap:.45rem;margin-top:1rem;font-size:.8rem;color:#60776c}
+.game-challenges-layout .game-answer-option:disabled{cursor:not-allowed;opacity:.72}
+@media(max-width:640px){.game-challenge-create-row{align-items:stretch;flex-direction:column}.game-challenge-create-row .game-button{width:100%;justify-content:center}.game-challenge-session{align-items:flex-start;flex-direction:column}.game-invite-card{width:100%}}
