@@ -23,6 +23,6 @@ export function GameShell({ children, active = "/cockpit" }: { children: React.R
   </div>;
 }
 
-export function PageHeading({ eyebrow, title, description, action }: { eyebrow: string; title: string; description: string; action?: React.ReactNode }) {
+export function PageHeading({ eyebrow, title, description, action }: { eyebrow: string; title: React.ReactNode; description: string; action?: React.ReactNode }) {
   return <div className="game-page-heading"><div><p className="game-eyebrow"><Sparkles size={14}/>{eyebrow}</p><h1>{title}</h1><p className="game-page-description">{description}</p></div>{action}</div>;
 }
