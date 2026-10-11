@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowRight, Gamepad2, Heart, LayoutDashboard, LogOut, Menu, MessageCircle, Search, Sparkles, UserRound, X } from "lucide-react";
+import { ArrowRight, Gamepad2, Heart, LayoutDashboard, LogOut, Menu, Search, UserRound, X } from "lucide-react";
 
 type User = { id?: string; email?: string } | null;
 type Session = "checking" | "signed-in" | "signed-out";
@@ -126,11 +126,12 @@ export default function HomeHeader() {
         {session === "signed-in" ? (
           <div className="mobile-nav-section">
             <span className="mobile-nav-label">{publicName ? `Bonjour, ${publicName}` : "Mon espace"}{user?.email ? ` · ${user.email}` : ""}</span>
-            <Link href="/tableau-de-bord"><LayoutDashboard size={17}/> Tableau de bord</Link>
+            <Link href="/tableau-de-bord"><LayoutDashboard size={17}/> Mon espace</Link>
             <Link href="/profil"><UserRound size={17}/> Mon profil</Link>
             <Link href="/decouvrir"><Search size={17}/> Découvrir des profils</Link>
-            <Link href="/matchs"><Heart size={17}/> Mes affinités</Link>
-            <Link href="/rencontre"><MessageCircle size={17}/> Mode rencontre</Link>
+            <Link href="/matchs"><Heart size={17}/> Affinités</Link>
+            <Link href="/cockpit/jeux"><Gamepad2 size={17}/> Jouer</Link>
+            <Link href="/rencontre"><Heart size={17}/> Alchimie</Link>
             <button type="button" onClick={logout} disabled={loggingOut}><LogOut size={17}/>{loggingOut ? "Déconnexion…" : "Se déconnecter"}</button>
           </div>
         ) : (
