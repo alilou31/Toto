@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import type { FormEvent } from "react";
@@ -69,7 +70,6 @@ export function GameChallenges() {
 
   const activeSession = useMemo(() => sessions.find((item) => item.id === activeId) ?? live?.session ?? null, [sessions, activeId, live]);
   const questions = live ? QUESTIONS[live.session.game_id] : QUESTIONS.enigme;
-  const questionIndex = live?.question ?? live?.session.current_question ?? 0;
 
   const refreshSessions = useCallback(async () => {
     const response = await fetch("/api/games/sessions", { cache: "no-store" });
