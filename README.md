@@ -22,6 +22,8 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
    - `db/migrations/001_nikahya_initial.sql`
    - `db/migrations/002_authentication.sql`
    - `db/migrations/003_auth_rate_limits.sql`
+   - `db/migrations/004_games.sql`
+   - `db/migrations/005_game_sessions.sql`
 6. Lancer `npm run dev`, puis ouvrir `http://localhost:3000`.
 7. Vérifier la connexion sur `http://localhost:3000/api/db-check`. La route renvoie uniquement un état et l'heure de la base, jamais la chaîne de connexion.
 
@@ -85,6 +87,10 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [x] Signalement d’un profil depuis la découverte, avec validation serveur et limitation par compte
 - [ ] File de traitement des signalements et outils d’administration
 - [ ] Tests d'intégration navigateur et revue de sécurité/RGPD
+
+## Jeux et défis synchronisés
+
+Le catalogue propose six formats de mini-jeux. Les parties individuelles peuvent enregistrer leur résultat pour un compte connecté via `/api/games/results` (migration `004_games.sql`). La page `/cockpit/defis` permet de créer un défi, de partager un lien/code d’invitation, de rejoindre une partie et de répondre chacun à son rythme. Les réponses sont stockées côté serveur et l’avancement se synchronise par interrogation périodique ; aucun fournisseur externe ni WebSocket n’est requis. Appliquer `db/migrations/005_game_sessions.sql` dans le SQL Editor de Neon après la migration 004 avant d’utiliser les défis. Les deux joueurs doivent être connectés à leur compte NIKAHYA. Les questions et règles sont actuellement une première version MVP de quatre questions par partie.
 
 ## Authentification première partie (MVP)
 
