@@ -20,7 +20,7 @@ export async function GET() {
     const user = await getCurrentUser();
     if (!user) return NextResponse.json({ error: "Authentification requise." }, { status: 401, headers: { "Cache-Control": "no-store" } });
     const sql = getDb();
-    const rows = await sql`select id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed from public.profiles where id = ${user.id} limit 1`;
+    const rows = await sql`select id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed, hobbies, favorite_games, interests, occupation, religion, ethnicity, show_sensitive_identity from public.profiles where id = ${user.id} limit 1`;
     return NextResponse.json({ profile: rows[0] ?? null }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     console.error("NIKAHYA profile read failed.");
@@ -41,6 +41,18 @@ export async function PUT(request: Request) {
   const bio = typeof data.bio === "string" ? data.bio.trim() : "";
   const intention = typeof data.relationshipIntention === "string" ? data.relationshipIntention : "";
   const visibility = typeof data.visibility === "string" ? data.visibility : "hidden";
+  const listField = (value: unknown, max: number, label: string): string[] => {
+    if (value === undefined) return [];
+    if (!Array.isArray(value) || value.length > max || value.some(item => typeof item !== "string" || item.trim().length > 80)) throw new Error(`Le champ ${label} est invalide.`);
+    return [...new Set(value.map(item => item.trim()).filter(Boolean))].slice(0, max);
+  };
+  let hobbies: string[], favoriteGames: string[], interests: string[];
+  try { hobbies = listField(data.hobbies, 20, "hobbies"); favoriteGames = listField(data.favoriteGames, 20, "jeux"); interests = listField(data.interests, 30, "centres d’intérêt"); }
+  catch (cause) { return NextResponse.json({ error: cause instanceof Error ? cause.message : "Listes invalides." }, { status: 400 }); }
+  const occupation = typeof data.occupation === "string" ? data.occupation.trim().slice(0, 100) : "";
+  const religion = typeof data.religion === "string" ? data.religion.trim().slice(0, 100) : "";
+  const ethnicity = typeof data.ethnicity === "string" ? data.ethnicity.trim().slice(0, 100) : "";
+  const showSensitiveIdentity = data.showSensitiveIdentity === true;
   if (name.length < 2 || name.length > 40) return NextResponse.json({ error: "Le nom public doit contenir entre 2 et 40 caractères." }, { status: 400 });
   if (city.length > 100 || bio.length > 1000) return NextResponse.json({ error: "La ville ou la présentation dépasse la longueur autorisée." }, { status: 400 });
   if (!isAdultDate(data.birthDate)) return NextResponse.json({ error: "Saisissez une date de naissance valide confirmant que vous avez au moins 18 ans." }, { status: 400 });
@@ -49,11 +61,14 @@ export async function PUT(request: Request) {
 
   try {
     const sql = getDb();
-    const rows = await sql`insert into public.profiles (id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed)
-      values (${user.id}, ${name}, ${city || null}, ${bio}, ${intention}, ${data.birthDate as string}, ${visibility}, true)
+    const rows = await sql`insert into public.profiles (id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed, hobbies, favorite_games, interests, occupation, religion, ethnicity, show_sensitive_identity)
+      values (${user.id}, ${name}, ${city || null}, ${bio}, ${intention}, ${data.birthDate as string}, ${visibility}, true, ${hobbies}, ${favoriteGames}, ${interests}, ${occupation || null}, ${religion || null}, ${ethnicity || null}, ${showSensitiveIdentity})
       on conflict (id) do update set public_name = excluded.public_name, city = excluded.city, bio = excluded.bio,
-        relationship_intention = excluded.relationship_intention, birth_date = excluded.birth_date, visibility = excluded.visibility, onboarding_completed = true, updated_at = now()
-      returning id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed`;
+        relationship_intention = excluded.relationship_intention, birth_date = excluded.birth_date, visibility = excluded.visibility,
+        hobbies = excluded.hobbies, favorite_games = excluded.favorite_games, interests = excluded.interests,
+        occupation = excluded.occupation, religion = excluded.religion, ethnicity = excluded.ethnicity,
+        show_sensitive_identity = excluded.show_sensitive_identity, onboarding_completed = true, updated_at = now()
+      returning id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed, hobbies, favorite_games, interests, occupation, religion, ethnicity, show_sensitive_identity`;
     return NextResponse.json({ profile: rows[0] }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     console.error("NIKAHYA profile save failed.");
