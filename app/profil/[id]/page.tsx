@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Link from "next/link";
 import { ArrowLeft, BadgeCheck, Brain, Heart, LockKeyhole, MessageCircle, Puzzle, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { notFound } from "next/navigation";
