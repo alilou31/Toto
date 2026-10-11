@@ -1,8 +1,14 @@
 name: NIKAHYA CI
 
-# TEMPORARILY PAUSED DURING UX/UI REDESIGN.
-# Run manually from Actions when a validation checkpoint is needed.
+# Staging léger : validation locale/CI, sans déploiement ni base Neon de production.
+# Les changements doivent passer ces contrôles avant toute fusion vers main.
 on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
