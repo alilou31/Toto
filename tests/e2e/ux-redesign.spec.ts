@@ -31,7 +31,7 @@ test.describe("NIKAHYA — pages publiques", () => {
     await expect(page.getByLabel(/adresse e-mail/i)).toBeVisible();
     await expect(page.getByLabel(/mot de passe/i)).toBeVisible();
     await expect(page.getByRole("button", { name: /connecter|connexion|continuer/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /inscri|créer.*compte/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /inscri|créer.*(compte|profil)/i })).toBeVisible();
   });
 
   test("l'inscription empêche l'envoi sans les champs requis", async ({ page }) => {
