@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Ban, Heart, MapPin, RefreshCw, UserRound } from "lucide-react";
+import { ArrowLeft, Ban, Flag, Heart, MapPin, RefreshCw, UserRound } from "lucide-react";
 
 type PublicProfile = {
   id: string;
@@ -26,6 +26,10 @@ export default function DiscoverPage() {
   const [liking, setLiking] = useState<string | null>(null);
   const [blocking, setBlocking] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
+  const [reportTarget, setReportTarget] = useState<string | null>(null);
+  const [reportCategory, setReportCategory] = useState("fake_profile");
+  const [reportDetails, setReportDetails] = useState("");
+  const [submittingReport, setSubmittingReport] = useState(false);
 
   async function loadProfiles() {
     setLoading(true);
@@ -56,6 +60,29 @@ export default function DiscoverPage() {
       setNotice(data.matched ? "C’est réciproque ! Vous avez un nouveau match." : "Intérêt envoyé. Si cette personne vous choisit aussi, vous aurez un match.");
     } catch (e) { setNotice(e instanceof Error ? e.message : "Service indisponible."); }
     finally { setLiking(null); }
+  }
+
+  async function submitReport(event: React.FormEvent<HTMLFormElement>, profileId: string) {
+    event.preventDefault();
+    setSubmittingReport(true);
+    setNotice("");
+    try {
+      const response = await fetch("/api/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reportedUserId: profileId, category: reportCategory, details: reportDetails }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Impossible d’envoyer le signalement.");
+      setReportTarget(null);
+      setReportDetails("");
+      setReportCategory("fake_profile");
+      setNotice("Merci. Votre signalement a été transmis de manière confidentielle.");
+    } catch (e) {
+      setNotice(e instanceof Error ? e.message : "Service indisponible.");
+    } finally {
+      setSubmittingReport(false);
+    }
   }
 
   async function blockProfile(profile: PublicProfile) {
@@ -99,7 +126,27 @@ export default function DiscoverPage() {
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
           <button className="button button-green" type="button" onClick={() => void likeProfile(profile.id)} disabled={liking !== null || blocking !== null}><Heart size={16}/>{liking === profile.id ? "Envoi…" : "Envoyer un intérêt"}</button>
           <button className="button button-quiet" type="button" onClick={() => void blockProfile(profile)} disabled={blocking !== null || liking !== null} aria-label={`Bloquer ${profile.public_name}`}><Ban size={16}/>{blocking === profile.id ? "Blocage…" : "Bloquer"}</button>
+          <button className="button button-quiet" type="button" onClick={() => { setReportTarget(current => current === profile.id ? null : profile.id); setReportDetails(""); setNotice(""); }} disabled={blocking !== null || liking !== null || submittingReport} aria-expanded={reportTarget === profile.id} aria-label={`Signaler ${profile.public_name}`}><Flag size={16}/> Signaler</button>
         </div>
+        {reportTarget === profile.id && <form className="auth-form" onSubmit={event => void submitReport(event, profile.id)} style={{marginTop:16,borderTop:"1px solid var(--line, #e5e7eb)",paddingTop:16}}>
+          <h3>Signaler ce profil</h3>
+          <p className="password-hint">Votre signalement reste confidentiel. N’indiquez pas d’informations sensibles inutiles.</p>
+          <label htmlFor={`report-category-${profile.id}`}>Motif du signalement</label>
+          <select id={`report-category-${profile.id}`} className="form-control" value={reportCategory} onChange={event => setReportCategory(event.target.value)} required>
+            <option value="fake_profile">Faux profil ou usurpation</option>
+            <option value="harassment">Harcèlement ou comportement abusif</option>
+            <option value="scam">Arnaque ou demande d’argent</option>
+            <option value="inappropriate_content">Contenu inapproprié</option>
+            <option value="underage_concern">Suspicion de minorité</option>
+            <option value="other">Autre motif</option>
+          </select>
+          <label htmlFor={`report-details-${profile.id}`}>Précisions (facultatif)</label>
+          <textarea id={`report-details-${profile.id}`} className="form-control" rows={3} maxLength={3000} value={reportDetails} onChange={event => setReportDetails(event.target.value)} placeholder="Décrivez brièvement ce qui vous préoccupe."/>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+            <button className="button button-green" type="submit" disabled={submittingReport}>{submittingReport ? "Envoi…" : "Envoyer le signalement"}</button>
+            <button className="button button-quiet" type="button" onClick={() => setReportTarget(null)} disabled={submittingReport}>Annuler</button>
+          </div>
+        </form>}
       </article>)}</div>}
       <p className="auth-switch"><Link href="/profil">Gérer mon profil</Link> · <Link href="/">Accueil</Link></p>
     </section>

@@ -82,7 +82,8 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [ ] Gestion des photos avec stockage privé durable et modération
 - [ ] Recherche, intérêts et matchs via fonctions serveur sûres
 - [ ] Messagerie et contrôles d'autorisation
-- [ ] Signalements, blocages et outils d'administration
+- [x] Signalement d’un profil depuis la découverte, avec validation serveur et limitation par compte
+- [ ] File de traitement des signalements et outils d’administration
 - [ ] Tests d'intégration navigateur et revue de sécurité/RGPD
 
 ## Authentification première partie (MVP)
@@ -109,4 +110,4 @@ Ouvrir `/demo` pour tester les profils fictifs, enregistrer un profil local, aim
 - La chaîne `DATABASE_URL` doit rester exclusivement côté serveur. Ne jamais la renvoyer au navigateur, l'ajouter à Git ou la coller dans une conversation.
 - Toute lecture/écriture de données privées doit passer par des routes serveur authentifiées et autorisées.
 - La majorité doit être validée côté serveur avant toute publication de profil ; une case à cocher ne suffit pas à vérifier l'âge.
-- Les pages juridiques sont des brouillons et doivent être complétées puis vérifiées par un professionnel avant commercialisation.
+- Les signalements peuvent être envoyés depuis la découverte et sont enregistrés en base ; aucun tableau de modération administrateur n’est encore disponible. Les pages juridiques sont des brouillons et doivent être complétées puis vérifiées par un professionnel avant commercialisation.
