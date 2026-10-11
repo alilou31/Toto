@@ -13,6 +13,7 @@ export default function HomeHeader() {
   const pathname = usePathname();
   const [session, setSession] = useState<Session>("checking");
   const [user, setUser] = useState<User>(null);
+  const [publicName, setPublicName] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -28,6 +29,18 @@ export default function HomeHeader() {
         if (active) {
           setUser(currentUser);
           setSession(currentUser ? "signed-in" : "signed-out");
+          if (!currentUser) {
+            setPublicName(null);
+          } else {
+            fetch("/api/profile", { cache: "no-store" })
+              .then(async (profileResponse) => {
+                if (!profileResponse.ok) return null;
+                const profileData = await profileResponse.json();
+                return typeof profileData.profile?.public_name === "string" ? profileData.profile.public_name : null;
+              })
+              .then((name) => { if (active) setPublicName(name); })
+              .catch(() => { if (active) setPublicName(null); });
+          }
         }
       })
       .catch(() => {
@@ -91,7 +104,7 @@ export default function HomeHeader() {
       <div className="header-actions" aria-live="polite">
         {session === "checking" ? <span className="login-link" role="status">Vérification…</span> : session === "signed-in" ? (
           <>
-            <Link href="/tableau-de-bord" className="login-link">Tableau de bord</Link>
+            <Link href="/tableau-de-bord" className="login-link" aria-label="Ouvrir le tableau de bord">{publicName ? `Bonjour, ${publicName}` : "Tableau de bord"}</Link>
             <Link href="/profil" className="login-link">Mon profil</Link>
             <Link href="/decouvrir" className="login-link">Découvrir</Link>
             <button type="button" className="login-link header-logout" onClick={logout} disabled={loggingOut}>{loggingOut ? "Déconnexion…" : "Déconnexion"}</button>
@@ -112,7 +125,7 @@ export default function HomeHeader() {
         </div>
         {session === "signed-in" ? (
           <div className="mobile-nav-section">
-            <span className="mobile-nav-label">Mon espace{user?.email ? ` · ${user.email}` : ""}</span>
+            <span className="mobile-nav-label">{publicName ? `Bonjour, ${publicName}` : "Mon espace"}{user?.email ? ` · ${user.email}` : ""}</span>
             <Link href="/tableau-de-bord"><LayoutDashboard size={17}/> Tableau de bord</Link>
             <Link href="/profil"><UserRound size={17}/> Mon profil</Link>
             <Link href="/decouvrir"><Search size={17}/> Découvrir des profils</Link>
