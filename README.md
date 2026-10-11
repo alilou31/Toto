@@ -24,6 +24,7 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
    - `db/migrations/003_auth_rate_limits.sql`
    - `db/migrations/004_games.sql`
    - `db/migrations/005_game_sessions.sql`
+   - `db/migrations/006_shared_interests.sql`
 6. Lancer `npm run dev`, puis ouvrir `http://localhost:3000`.
 7. Vérifier la connexion sur `http://localhost:3000/api/db-check`. La route renvoie uniquement un état et l'heure de la base, jamais la chaîne de connexion.
 
@@ -74,7 +75,7 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [x] Schéma initial des profils, intérêts, matchs, conversations, messages, blocages et signalements
 - [x] Tables d'utilisateurs et de sessions pour l'authentification première partie
 - [x] Hashage de mot de passe avec scrypt et cookies de session HttpOnly
-- [ ] Exécuter la migration `002_authentication.sql` dans Neon avant de tester inscription/connexion
+- [ ] Exécuter les migrations `002_authentication.sql` à `006_shared_interests.sql` dans Neon avant de tester tous les parcours
 - [ ] Vérifier build, tests et parcours d'authentification en préproduction
 - [x] Ajouter limitation persistante des tentatives d’inscription et de connexion (migration 003 requise)
 - [x] Ajouter une suppression de compte protégée par revalidation du mot de passe, avec suppression en base des données dépendantes et révocation des sessions
@@ -87,6 +88,10 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [x] Signalement d’un profil depuis la découverte, avec validation serveur et limitation par compte
 - [ ] File de traitement des signalements et outils d’administration
 - [ ] Tests d'intégration navigateur et revue de sécurité/RGPD
+
+## Profils et affinités
+
+Les profils peuvent renseigner des jeux favoris, des hobbies, des centres d’intérêt et un métier afin de faciliter les conversations et de mettre en avant les points communs. Religion/spiritualité et origine/ethnicité sont facultatives et ne sont visibles sur les profils publics qu’après consentement explicite. Appliquer `db/migrations/006_shared_interests.sql` dans Neon après les migrations précédentes.
 
 ## Jeux et défis synchronisés
 

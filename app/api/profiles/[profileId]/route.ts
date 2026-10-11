@@ -15,13 +15,15 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
   try {
     const sql = getDb();
     if (profileId === user.id) {
-      const own = await sql`select id, public_name, city, bio, relationship_intention, visibility
+      const own = await sql`select id, public_name, city, bio, relationship_intention, visibility, hobbies, favorite_games, interests, occupation, religion, ethnicity, show_sensitive_identity
         from public.profiles where id = ${user.id} and onboarding_completed = true limit 1`;
       if (!own.length) return NextResponse.json({ error: "Profil introuvable." }, { status: 404, headers: { "Cache-Control": "no-store" } });
       return NextResponse.json({ profile: own[0] }, { headers: { "Cache-Control": "no-store" } });
     }
     const rows = await sql`
-      select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.visibility
+      select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.visibility, p.hobbies, p.favorite_games, p.interests, p.occupation,
+        case when p.show_sensitive_identity then p.religion else null end as religion,
+        case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
       from public.profiles p
       where p.id = ${profileId}
         and p.visibility = 'visible'
