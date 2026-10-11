@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, UserRound } from "lucide-react";
+import { ArrowRight, Gamepad2, Heart, LayoutDashboard, LockKeyhole, MessageCircle, Search, ShieldCheck, Sparkles, UserRound } from "lucide-react";
 
 type Profile = {
   public_name?: string | null;
@@ -65,9 +65,9 @@ export default function DashboardPage() {
       <header className="dashboard-header">
         <Link href="/" className="brand" aria-label="NIKAHYA, accueil"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
         <nav aria-label="Navigation de l'espace personnel">
-          <Link href="/tableau-de-bord" aria-current="page"><LayoutDashboard size={16}/> Tableau de bord</Link>
+          <Link href="/tableau-de-bord" aria-current="page"><LayoutDashboard size={16}/> Mon espace</Link>
           <Link href="/profil"><UserRound size={16}/> Mon profil</Link>
-          <Link href="/decouvrir"><Search size={16}/> Découvrir</Link>
+          <Link href="/decouvrir"><Search size={16}/> Découvrir</Link>\n          <Link href="/cockpit/jeux"><Gamepad2 size={16}/> Jouer</Link>\n          <Link href="/messages"><MessageCircle size={16}/> Discussions</Link>
         </nav>
         <Link href="/profil" className="button button-dark button-small">Modifier mon profil <ArrowRight size={15}/></Link>
       </header>
@@ -84,11 +84,11 @@ export default function DashboardPage() {
             {!profileComplete && <div className="dashboard-onboarding"><div className="dashboard-onboarding-icon"><Sparkles size={22}/></div><div><strong>Faites le premier pas : complétez votre profil</strong><p>Quelques informations permettent aux autres de mieux vous connaître. Votre profil reste masqué tant que vous ne choisissez pas de le rendre visible.</p></div><Link href="/profil" className="button button-green">Compléter mon profil <ArrowRight size={16}/></Link></div>}
 
             <div className="dashboard-section-heading"><h2>Votre espace</h2><span>Tout au même endroit</span></div>
-            <div className="dashboard-cards">
+            <div className="dashboard-cards">\n              <Link href="/decouvrir" className="dashboard-card"><span className="dashboard-card-icon"><Search size={22}/></span><span className="dashboard-card-title">Découvrir</span><span className="dashboard-card-description">Rencontrez des personnes et découvrez vos centres d’intérêt communs.</span><span className="dashboard-card-link">Découvrir des profils <ArrowRight size={15}/></span></Link>
               <Link href="/profil" className="dashboard-card"><span className="dashboard-card-icon"><UserRound size={22}/></span><span className="dashboard-card-title">Mon profil</span><span className="dashboard-card-description">Mettez à jour votre présentation, votre ville et vos intentions.</span><span className="dashboard-card-link">{profileComplete ? "Voir et modifier" : "Compléter mon profil"} <ArrowRight size={15}/></span></Link>
               <Link href="/decouvrir" className="dashboard-card"><span className="dashboard-card-icon"><Search size={22}/></span><span className="dashboard-card-title">Découvrir des profils</span><span className="dashboard-card-description">Prenez le temps de découvrir des personnes et ce qui vous rapproche.</span><span className="dashboard-card-link">Explorer <ArrowRight size={15}/></span></Link>
-              <Link href="/matchs" className="dashboard-card"><span className="dashboard-card-icon"><Heart size={22}/></span><span className="dashboard-card-title">Mes affinités</span><span className="dashboard-card-description">Retrouvez vos affinités et les connexions créées sur NIKAHYA.</span><span className="dashboard-card-link">Voir mes affinités <ArrowRight size={15}/></span></Link>
-              <Link href="/rencontre" className="dashboard-card"><span className="dashboard-card-icon"><Sparkles size={22}/></span><span className="dashboard-card-title">Mode rencontre</span><span className="dashboard-card-description">Découvrez une autre façon de faire connaissance à votre rythme.</span><span className="dashboard-card-link">Lancer le mode rencontre <ArrowRight size={15}/></span></Link>
+              <Link href="/matchs" className="dashboard-card"><span className="dashboard-card-icon"><Heart size={22}/></span><span className="dashboard-card-title">Affinités</span><span className="dashboard-card-description">Retrouvez vos affinités et les connexions créées sur NIKAHYA.</span><span className="dashboard-card-link">Voir mes affinités <ArrowRight size={15}/></span></Link>
+              <Link href="/rencontre" className="dashboard-card"><span className="dashboard-card-icon"><Sparkles size={22}/></span><span className="dashboard-card-title">Alchimie</span><span className="dashboard-card-description">Proposez un jeu ou un défi à un match existant, à votre rythme.</span><span className="dashboard-card-link">Découvrir Alchimie <ArrowRight size={15}/></span></Link>
             </div>
 
             <div className="dashboard-lower-grid">
