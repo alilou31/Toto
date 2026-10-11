@@ -10,6 +10,12 @@ type PublicProfile = {
   city: string | null;
   bio: string;
   relationship_intention: "marriage" | "serious" | "friendship" | "unspecified";
+  hobbies?: string[] | null;
+  favorite_games?: string[] | null;
+  interests?: string[] | null;
+  occupation?: string | null;
+  religion?: string | null;
+  ethnicity?: string | null;
 };
 
 const intentionLabels: Record<PublicProfile["relationship_intention"], string> = {
@@ -21,6 +27,9 @@ const intentionLabels: Record<PublicProfile["relationship_intention"], string> =
 
 export default function DiscoverPage() {
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
+  const [myInterests, setMyInterests] = useState<string[]>([]);
+  const [myGames, setMyGames] = useState<string[]>([]);
+  const [myHobbies, setMyHobbies] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [liking, setLiking] = useState<string | null>(null);
@@ -42,6 +51,8 @@ export default function DiscoverPage() {
         throw new Error(data.error || "Impossible de charger les profils.");
       }
       setProfiles(Array.isArray(data.profiles) ? data.profiles : []);
+      const ownResponse = await fetch("/api/profile", { cache: "no-store" });
+      if (ownResponse.ok) { const ownData = await ownResponse.json(); setMyInterests(Array.isArray(ownData.profile?.interests) ? ownData.profile.interests : []); setMyGames(Array.isArray(ownData.profile?.favorite_games) ? ownData.profile.favorite_games : []); setMyHobbies(Array.isArray(ownData.profile?.hobbies) ? ownData.profile.hobbies : []); }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Service indisponible.");
     } finally {
@@ -123,6 +134,7 @@ export default function DiscoverPage() {
         <h2><Link href={`/membre/${encodeURIComponent(profile.id)}`} aria-label={`Voir la fiche de ${profile.public_name}`}>{profile.public_name}</Link></h2>
         {profile.city && <p><MapPin size={14} style={{display:"inline",verticalAlign:"-2px"}}/> {profile.city}</p>}
         <p>{profile.bio || "Cette personne préfère faire connaissance au fil de la conversation."}</p>
+        {(() => { const mine = [...myInterests, ...myGames, ...myHobbies]; const theirs = [...(profile.interests ?? []), ...(profile.favorite_games ?? []), ...(profile.hobbies ?? [])]; const shared = theirs.filter(value => mine.some(item => item.trim().toLowerCase() === value.trim().toLowerCase())); return <div style={{margin:"10px 0"}}>{shared.length > 0 && <p style={{fontWeight:700,color:"#075b4b"}}>✨ {shared.length} point(s) commun(s) avec vous</p>}<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{shared.map(value => <span key={value} style={{padding:"5px 8px",borderRadius:20,background:"#e5f3ed",color:"#075b4b",fontSize:12}}>En commun · {value}</span>)}{(profile.favorite_games ?? []).filter(value => !shared.includes(value)).slice(0,3).map(value => <span key={value} style={{padding:"5px 8px",borderRadius:20,background:"#f3f5f0",fontSize:12}}>🎮 {value}</span>)}{(profile.hobbies ?? []).filter(value => !shared.includes(value)).slice(0,3).map(value => <span key={value} style={{padding:"5px 8px",borderRadius:20,background:"#f3f5f0",fontSize:12}}>♥ {value}</span>)}{profile.occupation && <span style={{padding:"5px 8px",borderRadius:20,background:"#f3f5f0",fontSize:12}}>Métier : {profile.occupation}</span>}</div></div>; })()}
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
           <Link href={`/membre/${encodeURIComponent(profile.id)}`} className="button button-quiet" aria-label={`Consulter la fiche de ${profile.public_name}`}>Voir la fiche <UserRound size={16}/></Link>
           <button className="button button-green" type="button" onClick={() => void likeProfile(profile.id)} disabled={liking !== null || blocking !== null}><Heart size={16}/>{liking === profile.id ? "Envoi…" : "Envoyer un intérêt"}</button>
