@@ -47,11 +47,22 @@ test.describe("Interface NIKAHYA en production", () => {
     await expect(page.locator("body")).not.toContainText("404");
   });
 
-  test("la page d'accueil reste utilisable sur un écran mobile", async ({ page }) => {
+  test("la page d'accueil et le menu hamburger restent utilisables sur mobile", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
     await expect(page.locator("main h1").first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
+
+    const menuButton = page.getByRole("button", { name: "Ouvrir le menu" });
+    await expect(menuButton).toBeVisible();
+    await menuButton.click();
+    const mobileNavigation = page.getByRole("navigation", { name: "Menu mobile" });
+    await expect(mobileNavigation).toBeVisible();
+    await expect(mobileNavigation.getByRole("link", { name: "Le concept" })).toBeVisible();
+    await mobileNavigation.getByRole("link", { name: "Le concept" }).click();
+    await expect(page).toHaveURL(/#concept$/);
+    await expect(page.getByRole("button", { name: "Ouvrir le menu" })).toBeVisible();
+
     const dimensions = await page.evaluate(() => ({
       viewport: document.documentElement.clientWidth,
       content: document.documentElement.scrollWidth,
