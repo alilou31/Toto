@@ -101,7 +101,7 @@ test.describe("NIKAHYA — responsive mobile", () => {
   test("la navigation mobile du cockpit est visible et utilisable", async ({ page }) => {
     await page.goto("/cockpit");
     await expect(page.locator(".game-mobile-nav")).toBeVisible();
-    await page.locator(".game-mobile-nav").getByRole("link", { name: /jeux/i }).click();
+    await page.locator(".game-mobile-nav").getByRole("link", { name: /jouer/i }).click();
     await expect(page).toHaveURL(/\/cockpit\/jeux$/);
   });
 });
