@@ -19,6 +19,6 @@ test.describe("Mini-jeux NIKAHYA", () => {
       await page.getByRole("button", { name: i === 3 ? /Voir mon résultat/i : /Valider et continuer/i }).click();
     }
     await expect(page.getByRole("heading", { name: /partie est terminée/i })).toBeVisible();
-    await expect(page.getByRole("alert")).toContainText(/Connectez-vous|Authentification/i);
+    await expect(page.locator(".game-save-error")).toContainText(/Connectez-vous|Authentification/i);
   });
 });
