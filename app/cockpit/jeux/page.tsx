@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Link from "next/link";
 import { ArrowRight, Brain, Calculator, Clock3, Heart, Lightbulb, Puzzle, Users, Zap } from "lucide-react";
 import { GameShell, PageHeading } from "@/app/components/game-shell";
