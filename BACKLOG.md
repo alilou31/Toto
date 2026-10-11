@@ -192,3 +192,29 @@ Une tâche est terminée quand :
 - les tests pertinents passent ;
 - aucune clé, chaîne de connexion ou donnée privée n'est exposée ;
 - la tâche est vérifiée en préproduction avant déploiement public.
+
+
+## EPIC 6 — Mini-jeux et défis synchronisés
+
+### NIK-GAME-001 — Catalogue et parties individuelles (P1)
+- [x] Rendre les filtres du catalogue interactifs et accessibles
+- [x] Proposer quatre questions jouables pour les six formats
+- [x] Distinguer les préférences du quiz de personnalité des scores notés
+- [x] Enregistrer et afficher l'historique des résultats pour un compte connecté
+- [x] Ajouter les tests Playwright des parcours individuels et filtres
+
+### NIK-GAME-002 — Invitation et partie à deux (P1)
+- [x] Créer une session serveur avec code d'invitation
+- [x] Rejoindre une session avec un code, sans autoriser l'auto-invitation
+- [x] Restreindre l'état et les réponses aux deux participants
+- [x] Enregistrer une réponse par joueur et question
+- [x] Avancer la partie lorsque les deux réponses sont reçues
+- [x] Synchroniser l'état côté client sans fournisseur externe
+- [x] Afficher les défis récents et les états en attente/en cours/terminé
+- [ ] Appliquer et vérifier la migration `005_game_sessions.sql` dans Neon
+- [ ] Tester le parcours complet avec deux comptes connectés distincts en production
+- [ ] Ajouter un mécanisme de reprise/expiration des défis abandonnés
+- [ ] Concevoir des questions et règles spécifiques par jeu, au-delà du premier lot générique
+
+**Critères d'acceptation :** les invitations et réponses sont autorisées côté serveur uniquement pour les participants, une question ne peut pas être modifiée après validation, les deux joueurs progressent ensemble et une session terminée ne peut pas recevoir de nouvelles réponses.
+
