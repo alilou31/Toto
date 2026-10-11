@@ -32,15 +32,15 @@ export async function GET(_request: Request, context: { params: Promise<{ sessio
           union select guest_user_id from public.game_sessions where id = ${sessionId} and guest_user_id is not null
         )
     `;
-    const mine = answers.find((answer: { user_id: string }) => answer.user_id === user.id);
+    const mine = answers.find((answer) => answer.user_id === user.id);
     const bothAnswered = answers.length >= 2;
     return NextResponse.json({
       session,
       question: session.status === "completed" ? null : questionIndex,
       myAnswer: mine ? Number(mine.answer_index) : null,
-      opponentAnswered: answers.some((answer: { user_id: string }) => answer.user_id !== user.id),
+      opponentAnswered: answers.some((answer) => answer.user_id !== user.id),
       bothAnswered,
-      answers: bothAnswered ? answers.map((answer: { user_id: string; answer_index: number }) => ({ isMe: answer.user_id === user.id, answerIndex: Number(answer.answer_index) })) : [],
+      answers: bothAnswered ? answers.map((answer) => ({ isMe: answer.user_id === user.id, answerIndex: Number(answer.answer_index) })) : [],
     }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     console.error("NIKAHYA game session state read failed.");
