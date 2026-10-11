@@ -19,5 +19,16 @@
   ],
   "images": {
     "binding": "IMAGES"
+  },
+  "env": {
+    "staging": {
+      "name": "nikahya-staging",
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "nikahya-staging"
+        }
+      ]
+    }
   }
 }
