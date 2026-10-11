@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, Brain, ChartNoAxesCombined, CircleUserRound, Compass, Gamepad2, Heart, History, House, MessagesSquare, ShieldCheck, Sparkles, Swords, Users, Eye } from "lucide-react";
+import { CircleUserRound, Gamepad2, Heart, History, House, ShieldCheck, Sparkles, Swords, Eye } from "lucide-react";
 
 const navigation = [
   { href: "/cockpit", label: "Mon cockpit", icon: House },
