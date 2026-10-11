@@ -28,9 +28,9 @@ export default function Home() {
 
       <section className="hero">
         <div className="hero-copy">
-          <div className="eyebrow"><span className="eyebrow-line"/> POUR LES HISTOIRES QUI COMPTENT</div>
-          <h1>Et si votre prochaine rencontre <em>était la bonne&nbsp;?</em></h1>
-          <p className="hero-lede">Une belle histoire commence bien avant le premier message. Rencontrez des personnes qui partagent vos intentions, vos valeurs et votre vision de l’avenir.</p>
+          <div className="eyebrow"><span className="eyebrow-line"/> LA RENCONTRE QUI CHANGE TOUT</div>
+          <h1>Et si vous vous découvriez <em>en jouant&nbsp;?</em></h1>
+          <p className="hero-lede">La rencontre qui change tout commence par une question, une énigme ou un défi partagé. Apprenez à vous connaître en jouant, sans swipe ni pression.</p>
           <div className="hero-actions">
             <Link href="/inscription" className="button button-green">Créer mon compte <ArrowRight size={17}/></Link>
             <Link href="/connexion" className="button button-quiet">Se connecter</Link>
@@ -45,7 +45,7 @@ export default function Home() {
             <div className="photo-quote"><span className="quote-mark">“</span><p>Les plus belles histoires commencent quand on se comprend vraiment.</p><span className="quote-rule"/></div>
             <div className="photo-caption"><span className="caption-symbol"><Heart size={18} fill="currentColor"/></span><span><strong>La rencontre qui change tout.</strong><small>Et si tout commençait ici&nbsp;?</small></span></div>
           </div>
-          <div className="floating-card floating-card-top"><span className="float-icon"><UsersRound size={17}/></span><span><strong>Ce qui vous rapproche</strong><small>Des valeurs, des projets, des envies</small></span></div>
+          <div className="floating-card floating-card-top"><span className="float-icon"><UsersRound size={17}/></span><span><strong>Ce qui vous rapproche</strong><small>Des jeux, des valeurs, des affinités</small></span></div>
           <div className="floating-card floating-card-bottom"><span className="float-check"><Check size={16}/></span><span><strong>À votre rythme</strong><small>Une connexion, jamais une pression</small></span></div>
           <div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/>
         </div>
@@ -54,8 +54,19 @@ export default function Home() {
 
       <section className="intro section-pad" id="concept">
         <div className="section-kicker"><span>01</span> / UNE RENCONTRE QUI A DU SENS</div>
-        <div className="intro-grid"><h2>Moins de défilement.<br/><em>Plus de profondeur.</em></h2><div className="intro-copy"><p>Et si vous preniez le temps de découvrir la personne derrière le profil&nbsp;? NIKAHYA place les intentions, les valeurs et les projets de vie au cœur de la rencontre.</p><p className="muted">Pas de promesses irréalistes. Juste un espace pour faire connaissance avec attention, respect et authenticité.</p></div></div>
+        <div className="intro-grid"><h2>Moins de swipe.<br/><em>Plus de découverte.</em></h2><div className="intro-copy"><p>Et si vous preniez le temps de découvrir la personne derrière le profil&nbsp;? NIKAHYA transforme le jeu en langage commun : vous réfléchissez, coopérez et découvrez la personne derrière le profil.</p><p className="muted">Pas de promesses irréalistes. Juste un espace pour faire connaissance avec attention, respect et authenticité.</p></div></div>
         <div className="value-grid">{values.map(({icon:Icon,title,text},i)=><article className="value-card" key={title}><div className="value-top"><span className="value-icon"><Icon size={21}/></span><span className="card-number">0{i+1}</span></div><h3>{title}</h3><p>{text}</p><span className="value-line"/></article>)}</div>
+      </section>
+
+      <section className="games-showcase section-pad" id="jeux">
+        <div className="section-kicker"><span>02</span> / JOUEZ POUR VOUS DÉCOUVRIR</div>
+        <div className="games-showcase-heading"><h2>Chaque jeu ouvre<br/><em>une nouvelle porte.</em></h2><p>Un peu de logique, une pointe de curiosité, et une conversation qui démarre naturellement.</p></div>
+        <div className="landing-game-grid">
+          <article className="landing-game-card"><span className="landing-game-icon lavender">✳</span><span className="landing-game-type">COOPÉRATION</span><h3>Mots croisés à deux</h3><p>Complétez une grille ensemble et découvrez vos façons de réfléchir.</p><span className="landing-game-time">5–8 MIN · À DEUX</span></article>
+          <article className="landing-game-card"><span className="landing-game-icon mint">?</span><span className="landing-game-type">LOGIQUE</span><h3>L’énigme partagée</h3><p>Deux indices, deux regards, une solution à construire ensemble.</p><span className="landing-game-time">3 MIN · ENSEMBLE</span></article>
+          <article className="landing-game-card"><span className="landing-game-icon rose">♡</span><span className="landing-game-type">PERSONNALITÉ</span><h3>Qui me connaît&nbsp;?</h3><p>Devinez les réponses de l’autre et laissez la curiosité faire le reste.</p><span className="landing-game-time">2–3 MIN · BRISER LA GLACE</span></article>
+        </div>
+        <div className="games-showcase-cta"><span>Pas besoin d’être un champion. Juste d’être soi.</span><Link href="/cockpit/jeux" className="button button-green">Explorer les jeux <ArrowRight size={16}/></Link></div>
       </section>
 
       <section className="method section-pad" id="methode">
