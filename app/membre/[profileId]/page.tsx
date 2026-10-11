@@ -11,6 +11,12 @@ type PublicProfile = {
   city: string | null;
   bio: string | null;
   relationship_intention: string;
+  hobbies?: string[] | null;
+  favorite_games?: string[] | null;
+  interests?: string[] | null;
+  occupation?: string | null;
+  religion?: string | null;
+  ethnicity?: string | null;
 };
 
 const intentions: Record<string, string> = {
@@ -68,6 +74,15 @@ export default function MemberProfilePage() {
               <h2>Ce qui compte pour moi</h2>
               <p>{profile.bio?.trim() || "Cette personne préfère faire connaissance au fil de la conversation."}</p>
             </div>
+            {(profile.favorite_games?.length || profile.hobbies?.length || profile.interests?.length || profile.occupation || profile.religion || profile.ethnicity) ? <div className="value-card" style={{ marginTop: 14 }}>
+              <h2>Ses passions et sujets de conversation</h2>
+              {profile.occupation && <p><strong>Métier :</strong> {profile.occupation}</p>}
+              {profile.favorite_games?.length ? <p><strong>Jeux favoris :</strong> {profile.favorite_games.join(" · ")}</p> : null}
+              {profile.hobbies?.length ? <p><strong>Hobbies :</strong> {profile.hobbies.join(" · ")}</p> : null}
+              {profile.interests?.length ? <p><strong>Centres d’intérêt :</strong> {profile.interests.join(" · ")}</p> : null}
+              {(profile.religion || profile.ethnicity) ? <p><strong>Informations partagées :</strong> {[profile.religion, profile.ethnicity].filter(Boolean).join(" · ")}</p> : null}
+              <p className="password-hint">Un jeu ou un centre d’intérêt en commun est un bon prétexte pour engager la conversation.</p>
+            </div> : null}
             <p className="password-hint" style={{ marginTop: 18 }}><ShieldCheck size={15} style={{ display: "inline", verticalAlign: "-3px" }} /> Les coordonnées privées et la date de naissance ne sont pas affichées.</p>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 20 }}>
               <Link href="/decouvrir" className="button button-quiet"><ArrowLeft size={16}/> Continuer la découverte</Link>
