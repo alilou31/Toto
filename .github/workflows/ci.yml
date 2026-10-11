@@ -1,8 +1,13 @@
 name: NIKAHYA CI
 
-# TEMPORARILY PAUSED DURING UX/UI REDESIGN.
-# Run manually from Actions when a validation checkpoint is needed.
+# Validation sur PR et main : staging léger sans déploiement Cloudflare ni accès à Neon de production.
 on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
