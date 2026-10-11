@@ -19,7 +19,7 @@ const games = [
   { id: "calcul", name: "Sprint de calcul", kind: "SPEED GAME", time: "2 min", desc: "Un petit défi mental amusant pour lancer la conversation avec légèreté.", icon: Calculator, tone: "amber", tag: "Une partie express", filter: "quick" as GameFilter },
   { id: "personnalite", name: "Qui me connaît ?", kind: "PERSONNALITÉ", time: "3 min", desc: "Répondez à des questions légères et utilisez vos choix pour lancer la conversation.", icon: Heart, tone: "pink", tag: "Découvrez vos ressemblances", filter: "quick" as GameFilter },
   { id: "duel", name: "Défi tête-à-tête", kind: "1 CONTRE 1", time: "3–5 min", desc: "Un défi amical où la curiosité compte autant que le résultat.", icon: Zap, tone: "purple", tag: "Le plaisir du défi", filter: "duel" as GameFilter },
-  { id: "tournoi", name: "Tournoi amical", kind: "MULTIJOUEUR", time: "Variable", desc: "Un format de tournoi prévu pour plusieurs manches. Le mode multijoueur sera activé dans une prochaine étape.", icon: Users, tone: "mint", tag: "Bientôt en communauté", filter: "duel" as GameFilter },
+  { id: "tournoi", name: "Tournoi amical", kind: "MULTIJOUEUR", time: "Variable", desc: "Lancez une partie à deux dès maintenant. Le tableau de tournoi et les classements communautaires arriveront plus tard.", icon: Users, tone: "mint", tag: "Bientôt en communauté", filter: "duel" as GameFilter },
 ];
 
 export default function JeuxPage() {
@@ -49,6 +49,7 @@ export default function JeuxPage() {
       <p className="game-filter-count" role="status">
         {visibleGames.length} {visibleGames.length > 1 ? "jeux disponibles" : "jeu disponible"}
       </p>
+      <p className="game-catalog-challenge-cta"><Link className="game-button game-button-secondary" href="/cockpit/defis"><Users size={16} /> Inviter quelqu’un à jouer à deux <ArrowRight size={16} /></Link></p>
       <div className="game-catalog-grid">
         {visibleGames.map(({ icon: Icon, ...game }) => (
           <article className="game-catalog-card" key={game.id}>
@@ -69,7 +70,7 @@ export default function JeuxPage() {
           </article>
         ))}
       </div>
-      <p className="game-disclaimer">Les six modes proposent actuellement une première partie individuelle de quatre questions. Les invitations, parties synchronisées à deux et classements seront ajoutés séparément ; le tournoi reste présenté comme un mode à venir.</p>
+      <p className="game-disclaimer">Les six modes proposent une partie individuelle de quatre questions. Vous pouvez aussi inviter une autre personne depuis « Défis » : chacun répond à son rythme et la progression se synchronise. Les tableaux de tournoi et classements communautaires restent à venir.</p>
     </GameShell>
   );
 }
