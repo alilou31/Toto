@@ -5,6 +5,13 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 8 * * *"
+  workflow_run:
+    workflows:
+      - Deploy NIKAHYA to Cloudflare Workers
+    types:
+      - completed
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -15,6 +22,7 @@ concurrency:
 
 jobs:
   smoke:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     name: Check live Cloudflare production and Neon
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -53,6 +61,7 @@ jobs:
             console.log("Game results endpoint correctly rejects anonymous access.");
           '
   interface:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     name: Playwright interface tests on production
     runs-on: ubuntu-latest
     timeout-minutes: 10
