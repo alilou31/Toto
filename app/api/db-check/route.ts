@@ -20,9 +20,9 @@ export async function GET() {
       { ok: true, status: "connected", databaseTime: rows[0]?.database_time ?? null },
       { headers: { "Cache-Control": "no-store" } },
     );
-  } catch (error) {
-    // Keep connection strings and database details out of the public response.
-    console.error("Neon database health check failed:", error);
+  } catch {
+    // Keep connection strings and database details out of both responses and logs.
+    console.error("Neon database health check failed.");
     return NextResponse.json(
       { ok: false, status: "connection_failed", message: "Database connection failed. Check server logs and DATABASE_URL." },
       { status: 503, headers: { "Cache-Control": "no-store" } },

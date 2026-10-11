@@ -73,4 +73,16 @@ test.describe("Interface NIKAHYA en production", () => {
     }));
     expect(dimensions.content, "La page ne doit pas déborder horizontalement sur mobile").toBeLessThanOrEqual(dimensions.viewport + 1);
   });
+
+  test("l'API de signalement valide les données et exige une session", async ({ request }) => {
+    const invalid = await request.post("/api/reports", {
+      data: { reportedUserId: "", category: "unknown", details: "" },
+    });
+    expect(invalid.status()).toBe(400);
+
+    const unauthenticated = await request.post("/api/reports", {
+      data: { reportedUserId: "profile-id", category: "other", details: "" },
+    });
+    expect(unauthenticated.status()).toBe(401);
+  });
 });

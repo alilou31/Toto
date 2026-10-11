@@ -118,10 +118,11 @@
 **Critères d'acceptation :** le blocage est appliqué côté serveur à toutes les opérations pertinentes.
 
 ### NIK-032 — Signaler un profil ou un message (P0)
-- [ ] Formulaire de signalement avec catégorie et détails facultatifs
-- [ ] Enregistrer le signalement en base
-- [ ] Éviter les doubles soumissions accidentelles
-- [ ] Confirmer l'envoi sans révéler d'informations sur l'enquête
+- [x] Formulaire de signalement avec catégorie et détails facultatifs sur les profils visibles
+- [x] Enregistrer le signalement en base via une route serveur authentifiée
+- [x] Limiter les soumissions par compte et éviter les doublons récents de même catégorie
+- [x] Confirmer l'envoi sans révéler d'informations sur l'enquête
+- [ ] Ajouter une file de traitement et des rôles d'administration protégés
 
 **Critères d'acceptation :** un signalement est stocké et accessible uniquement aux fonctions d'administration autorisées.
 
