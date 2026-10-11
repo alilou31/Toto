@@ -48,6 +48,7 @@ export default function ProfilePage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [needsAuth, setNeedsAuth] = useState(false);
   const [saving, setSaving] = useState(false);
   const [savedSnapshot, setSavedSnapshot] = useState("");
 
@@ -56,7 +57,11 @@ export default function ProfilePage() {
     fetch("/api/profile", { cache: "no-store" })
       .then(async response => {
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "Connectez-vous pour modifier votre profil.");
+        if (response.status === 401) {
+          if (active) setNeedsAuth(true);
+          throw new Error("Connectez-vous pour consulter et modifier votre profil.");
+        }
+        if (!response.ok) throw new Error(data.error || "Impossible de charger votre profil.");
         return data.profile as Profile | null;
       })
       .then(profile => {
@@ -133,7 +138,15 @@ export default function ProfilePage() {
           <h1>Un profil qui vous <em>ressemble.</em></h1>
           <p className="personalize-intro">Les bonnes rencontres commencent par ce qui compte vraiment pour vous. Prenez votre temps : vous gardez le contrôle sur chaque information.</p>
 
-          {loading ? <div className="personalize-loading" role="status">Chargement de votre profil…</div> : (
+          {loading ? <div className="personalize-loading" role="status">Chargement de votre profil…</div> : needsAuth ? (
+            <section className="personalize-section personalize-auth-required" aria-labelledby="profile-auth-title">
+              <div className="personalize-section-heading"><span className="personalize-step"><LockKeyhole size={17}/></span><div><h2 id="profile-auth-title">Connectez-vous pour continuer</h2><p>Votre profil personnel est protégé. Connectez-vous pour consulter vos informations, les modifier et les enregistrer en toute sécurité.</p></div></div>
+              <div className="personalize-auth-actions">
+                <Link href="/connexion?next=%2Fprofil" className="personalize-save">Se connecter <ArrowRight size={16}/></Link>
+                <Link href="/inscription" className="personalize-auth-secondary">Créer mon compte</Link>
+              </div>
+            </section>
+          ) : (
             <form className="personalize-form" onSubmit={submit}>
               <section className="personalize-section">
                 <div className="personalize-section-heading"><span className="personalize-step">01</span><div><h2>Votre identité</h2><p>Les premières choses que l’on découvre de vous.</p></div></div>
