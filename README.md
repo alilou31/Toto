@@ -75,6 +75,7 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [ ] Exécuter la migration `002_authentication.sql` dans Neon avant de tester inscription/connexion
 - [ ] Vérifier build, tests et parcours d'authentification en préproduction
 - [x] Ajouter limitation persistante des tentatives d’inscription et de connexion (migration 003 requise)
+- [x] Ajouter une suppression de compte protégée par revalidation du mot de passe, avec suppression en base des données dépendantes et révocation des sessions
 - [ ] Ajouter tests de sécurité complémentaires
 - [ ] Créer le parcours de profil relié au compte connecté
 - [ ] Enregistrer les profils via des routes serveur authentifiées

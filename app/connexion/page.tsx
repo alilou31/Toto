@@ -26,7 +26,7 @@ export default function ConnexionPage() {
         setMessage(result.error ?? "Connexion impossible.");
         return;
       }
-      router.replace("/profil");
+      router.replace("/tableau-de-bord");
       router.refresh();
     } catch {
       setMessage("Service indisponible. Vérifiez votre connexion puis réessayez.");

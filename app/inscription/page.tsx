@@ -28,7 +28,7 @@ export default function InscriptionPage() {
         setMessage(result.error ?? "La création du compte a échoué.");
         return;
       }
-      router.replace("/profil");
+      router.replace("/tableau-de-bord");
       router.refresh();
     } catch {
       setMessage("Service indisponible. Vérifiez votre connexion puis réessayez.");

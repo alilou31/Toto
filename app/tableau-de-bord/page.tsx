@@ -97,7 +97,7 @@ export default function DashboardPage() {
             </div>
           </>
         )}
-        <p className="dashboard-account">{user?.email ? `Connecté avec ${user.email}` : ""} <Link href="/">Retour à l’accueil</Link></p>
+        <p className="dashboard-account">{user?.email ? `Connecté avec ${user.email}` : ""} <Link href="/parametres/securite">Sécurité et suppression du compte</Link> · <Link href="/">Retour à l’accueil</Link></p>
       </section>
     </main>
   );
