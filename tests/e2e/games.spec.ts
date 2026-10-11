@@ -1,6 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Mini-jeux NIKAHYA", () => {
+  test("l'historique des résultats refuse les requêtes sans session", async ({ request }) => {
+    const response = await request.get("/api/games/results");
+    expect(response.status()).toBe(401);
+    expect(await response.json()).toMatchObject({
+      error: "Authentification requise.",
+    });
+  });
+
   test("chaque jeu propose une partie jouable", async ({ page }) => {
     for (const id of ["mots-croises", "enigme", "calcul", "personnalite", "duel", "tournoi"]) {
       await page.goto(`/cockpit/jeux/${id}`);
