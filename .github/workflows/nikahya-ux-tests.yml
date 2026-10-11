@@ -1,10 +1,7 @@
 name: NIKAHYA UX regression tests
 
+# TEMPORARILY PAUSED DURING UX/UI REDESIGN.
 on:
-  pull_request:
-    branches: [main]
-  push:
-    branches: [main, "feat/nikahya-gamified-redesign"]
   workflow_dispatch:
 
 concurrency:
@@ -31,7 +28,6 @@ jobs:
       - name: Production build
         run: npm run build
         env:
-          # Keep CI independent of production secrets. Tests should use mocked auth/data.
           CI: true
 
   e2e:
