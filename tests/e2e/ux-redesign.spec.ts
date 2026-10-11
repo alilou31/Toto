@@ -59,11 +59,11 @@ test.describe("NIKAHYA — cockpit et navigation", () => {
 
   test("la navigation donne accès aux principales sections du cockpit", async ({ page }) => {
     await page.goto("/cockpit");
-    await expect(page.getByRole("link", { name: /explorer les jeux/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /mes défis/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /likes.*matchs/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /visites/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /historique/i }).first()).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Mon espace" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Découvrir" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Jouer" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Affinités" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Mon profil" })).toBeVisible();
   });
 
   test("le catalogue ouvre un jeu et expose le parcours de découverte", async ({ page }) => {
