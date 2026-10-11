@@ -17,10 +17,7 @@ test("Affinités affiche les centres d’intérêt communs et permet de proposer
   });
   await page.goto("/matchs");
   const card = page.locator("article.value-card").filter({ has: page.getByRole("heading", { name: "Samira" }) });
-  await expect(card.getByRole("heading", { name: "Ce qui vous rapproche" })).toBeVisible();
-  await expect(card.getByText("Lecture", { exact: true })).toBeVisible();
-  await expect(card.getByText("Énigmes", { exact: true })).toBeVisible();
-  await expect(card.getByText("Randonnée", { exact: true })).toBeVisible();
+  await expect(card.getByText(/Ses centres d’intérêt/)).toContainText("Lecture, Voyages, Énigmes, Randonnée");
   await expect(card.getByRole("link", { name: /Proposer un jeu/i })).toHaveAttribute("href", "/rencontre");
   const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
