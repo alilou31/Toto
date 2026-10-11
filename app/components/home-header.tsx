@@ -41,6 +41,19 @@ export default function HomeHeader() {
 
   useEffect(() => { setMenuOpen(false); }, [pathname]);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setMenuOpen(false);
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
+
+  function closeMenu() {
+    setMenuOpen(false);
+  }
+
   async function logout() {
     setLoggingOut(true);
     try {
@@ -90,7 +103,7 @@ export default function HomeHeader() {
           </>
         )}
       </div>
-      <nav id="mobile-navigation" className={`mobile-navigation ${menuOpen ? "is-open" : ""}`} aria-label="Menu mobile" hidden={!menuOpen}>
+      <nav id="mobile-navigation" className={`mobile-navigation ${menuOpen ? "is-open" : ""}`} aria-label="Menu mobile" hidden={!menuOpen} onClick={(event) => { if ((event.target as HTMLElement).closest("a")) closeMenu(); }}>
         <div className="mobile-nav-section">
           <span className="mobile-nav-label">Découvrir NIKAHYA</span>
           <Link href="/#concept"><Heart size={17}/> Le concept</Link>
