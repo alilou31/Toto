@@ -19,7 +19,9 @@ export default function ConnexionPage() {
         const response = await fetch("/api/auth/me", { cache: "no-store" });
         const data = await response.json();
         if (active && response.ok && data.user) {
-          router.replace("/tableau-de-bord");
+          const requested = new URLSearchParams(window.location.search).get("next");
+          const destination = requested && requested.startsWith("/") && !requested.startsWith("//") ? requested : "/tableau-de-bord";
+          router.replace(destination);
           router.refresh();
         }
       } catch {
@@ -49,7 +51,9 @@ export default function ConnexionPage() {
         setMessage(result.error ?? "Connexion impossible.");
         return;
       }
-      router.replace("/tableau-de-bord");
+      const requested = new URLSearchParams(window.location.search).get("next");
+      const destination = requested && requested.startsWith("/") && !requested.startsWith("//") ? requested : "/tableau-de-bord";
+      router.replace(destination);
       router.refresh();
     } catch {
       setMessage("Service indisponible. Vérifiez votre connexion puis réessayez.");
