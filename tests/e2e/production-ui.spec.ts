@@ -7,12 +7,12 @@ test.describe("Interface NIKAHYA en production", () => {
     await expect(page).toHaveTitle(/NIKAHYA/i);
     await expect(page.locator("main h1").first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /Se connecter/i }).first()).toBeVisible();
+    await expect(page.locator('a[href="/connexion"]').first()).toBeVisible();
   });
 
   test("la navigation vers la connexion fonctionne", async ({ page }) => {
     await page.goto("/");
-    await page.locator("header").getByRole("link", { name: /Se connecter|Connexion/i }).first().click();
+    await page.locator('header a[href="/connexion"]').first().click();
     await expect(page).toHaveURL(/\/connexion$/);
     await expect(page.getByRole("heading", { name: /Votre histoire/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /Se connecter/i })).toBeVisible();
