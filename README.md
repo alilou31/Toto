@@ -41,12 +41,12 @@ Le projet utilise OpenNext pour exécuter Next.js App Router sur Cloudflare Work
 1. Créer un bucket R2 nommé `nikahya-next-cache` dans le compte Cloudflare (il sert au cache incrémental/ISR). Le workflow crée/déploie le Worker nommé `nikahya`.
 2. Dans GitHub, ajouter les secrets du dépôt ou de l'environnement `production` : `CLOUDFLARE_API_TOKEN` (droits Workers Scripts et R2 requis), `CLOUDFLARE_ACCOUNT_ID` et `DATABASE_URL` (chaîne Neon pooled avec `sslmode=require`). Ajouter la variable d'environnement `NEXT_PUBLIC_SITE_URL` avec l'URL publique prévue.
 3. Vérifier que le compte Cloudflare autorise le binding Images utilisé par Wrangler. Si le compte n'utilise pas Cloudflare Images, retirer le binding `images` de `wrangler.jsonc` et configurer la stratégie d'images avant déploiement.
-4. Dans GitHub Actions, lancer manuellement le workflow **Deploy NIKAHYA to Cloudflare Workers** (`workflow_dispatch`). Le workflow compile puis déploie l'application et configure le secret `DATABASE_URL` sur le Worker.
+4. Après configuration des secrets et variables, une fusion/poussée sur `main` déclenche le build puis le déploiement Cloudflare. Le workflow peut aussi être lancé manuellement avec `workflow_dispatch`. Il configure le secret `DATABASE_URL` sur le Worker.
 5. Vérifier les routes `/`, `/api/db-check`, `/api/auth/me`, l'inscription/connexion et les journaux du Worker avant de faire pointer le domaine de production vers Cloudflare.
 
 En local, copier `.dev.vars.example` vers `.dev.vars`, remplacer les valeurs de démonstration et lancer `npm run preview:worker`. Ne jamais committer `.dev.vars` ni de vrais secrets.
 
-Le workflow de déploiement est manuel : aucun déploiement Cloudflare ou changement DNS n'est déclenché automatiquement par cette branche. Les tests et le build Cloudflare doivent être verts avant fusion.
+Le workflow déploie automatiquement les commits poussés sur `main` après réussite du build Cloudflare. Les pull requests ne déploient pas en production. Le workflow ne modifie pas le DNS : la configuration du domaine personnalisé reste une opération Cloudflare distincte.
 
 ## Tests automatisés
 
