@@ -1,11 +1,9 @@
 name: NIKAHYA Production Smoke Tests
 
+# TEMPORARILY PAUSED DURING UX/UI REDESIGN.
+# Manual-only to avoid scheduled production checks during active redesign.
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [main]
-  schedule:
-    - cron: "17 * * * *"
 
 permissions:
   contents: read
@@ -24,41 +22,22 @@ jobs:
     steps:
       - name: Check production homepage
         run: |
-          curl --fail --silent --show-error --location \
-            --retry 3 --retry-all-errors --max-time 20 \
-            --output /dev/null \
-            --write-out 'Homepage HTTP %{http_code} in %{time_total}s\\n' \
-            "$PRODUCTION_URL/"
-
+          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /dev/null --write-out 'Homepage HTTP %{http_code} in %{time_total}s\\n' "$PRODUCTION_URL/"
       - name: Check demo page
         run: |
-          curl --fail --silent --show-error --location \
-            --retry 3 --retry-all-errors --max-time 20 \
-            --output /dev/null \
-            --write-out 'Demo HTTP %{http_code} in %{time_total}s\\n' \
-            "$PRODUCTION_URL/demo"
-
+          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /dev/null --write-out 'Demo HTTP %{http_code} in %{time_total}s\\n' "$PRODUCTION_URL/demo"
       - name: Check live Neon database connectivity
         run: |
-          curl --fail --silent --show-error --location \
-            --retry 3 --retry-all-errors --max-time 20 \
-            --output /tmp/db-check.json \
-            --write-out 'Database health endpoint HTTP %{http_code} in %{time_total}s\\n' \
-            "$PRODUCTION_URL/api/db-check"
+          curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /tmp/db-check.json --write-out 'Database health endpoint HTTP %{http_code} in %{time_total}s\\n' "$PRODUCTION_URL/api/db-check"
           node --input-type=module -e '
             import fs from "node:fs";
             const result = JSON.parse(fs.readFileSync("/tmp/db-check.json", "utf8"));
             if (result.ok !== true || result.status !== "connected") {
-              console.error("Database health check did not confirm connectivity:", {
-                ok: result.ok,
-                status: result.status,
-                message: result.message
-              });
+              console.error("Database health check did not confirm connectivity:", { ok: result.ok, status: result.status, message: result.message });
               process.exit(1);
             }
             console.log("Neon connectivity confirmed; databaseTime:", result.databaseTime ?? "not returned");
           '
-
   interface:
     name: Playwright interface tests on production
     runs-on: ubuntu-latest
