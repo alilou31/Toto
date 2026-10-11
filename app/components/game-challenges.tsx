@@ -1,5 +1,6 @@
 "use client";
 
+import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Clipboard, Copy, Gamepad2, RefreshCw, Swords, Users } from "lucide-react";
@@ -144,7 +145,7 @@ export function GameChallenges() {
     finally { setWorking(false); }
   }
 
-  async function joinChallenge(event: React.FormEvent<HTMLFormElement>) {
+  async function joinChallenge(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setWorking(true); setError(""); setNotice("");
     try {
       const response = await fetch("/api/games/sessions/join", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code }) });
