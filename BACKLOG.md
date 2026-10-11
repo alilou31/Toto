@@ -12,12 +12,16 @@
 
 ## État initial connu
 
-- [x] Dépôt GitHub et déploiement Vercel initialisés
-- [x] Base Neon créée
-- [x] Tables initiales créées : `profiles`, `profile_photos`, `interests`, `matches`, `conversations`, `messages`, `blocks`, `reports`
-- [x] Endpoint de contrôle de connexion DB préparé : `/api/db-check`
-- [ ] Vérifier que le contrôle DB renvoie `connected` en production
-- [ ] Remplacer les écrans de démonstration par des parcours réellement reliés au backend
+- [x] Dépôt GitHub et workflow de déploiement Cloudflare Workers présents
+- [x] Schéma SQL Neon défini dans les migrations versionnées
+- [x] Tables initiales définies : `profiles`, `profile_photos`, `interests`, `matches`, `conversations`, `messages`, `blocks`, `reports`
+- [x] Endpoint de contrôle de connexion DB : `/api/db-check`
+- [ ] Confirmer en production que `/api/db-check` renvoie `connected`
+- [ ] Confirmer dans Neon que les migrations 001, 002 et 003 ont été appliquées
+- [x] Authentification première partie : inscription, connexion, déconnexion et vérification de session
+- [x] Parcours de profil connecté et routes serveur authentifiées
+- [x] Suppression de compte avec revalidation du mot de passe
+- [ ] Tester les parcours connectés avec une vraie base de test et des comptes jetables
 
 ## EPIC 1 — Fondation technique et sécurité
 
@@ -30,10 +34,10 @@
 **Critères d'acceptation :** le site démarre, le endpoint de contrôle DB répond sans exposer de secret et les erreurs sont journalisées sans données sensibles.
 
 ### NIK-002 — Ajouter une authentification première partie (P0)
-- [ ] Créer le modèle utilisateur/identifiants et relier chaque compte à un profil
-- [ ] Inscription avec email et mot de passe
-- [ ] Stocker uniquement un hash robuste du mot de passe (jamais le mot de passe en clair)
-- [ ] Connexion, déconnexion et session sécurisée côté serveur
+- [x] Créer le modèle utilisateur/identifiants et relier le compte au parcours de profil
+- [x] Inscription avec email et mot de passe
+- [x] Stocker uniquement un hash robuste du mot de passe (jamais le mot de passe en clair)
+- [x] Connexion, déconnexion et session sécurisée côté serveur
 - [ ] Valider les entrées côté serveur, limiter les tentatives et ne pas révéler si un email existe
 - [ ] Protéger les routes et opérations privées
 - [ ] Ajouter des tests pour inscription, connexion et accès non autorisé
@@ -52,11 +56,11 @@
 ## EPIC 2 — Inscription et profil
 
 ### NIK-010 — Construire le parcours de création de profil (P0)
-- [ ] Étapes : pseudonyme, date de naissance, ville, intention de rencontre, biographie
-- [ ] Vérifier l'âge minimum de 18 ans côté serveur
+- [x] Étapes : pseudonyme, date de naissance, ville, intention de rencontre, biographie
+- [x] Vérifier l'âge minimum de 18 ans côté serveur
 - [ ] Enregistrer le brouillon et permettre de reprendre le parcours
-- [ ] Indiquer clairement les champs obligatoires et les erreurs
-- [ ] Choisir l'état du profil : masqué, visible ou en pause
+- [x] Indiquer clairement les champs obligatoires et les erreurs
+- [x] Choisir l'état du profil : masqué, visible ou en pause
 
 **Critères d'acceptation :** le profil est sauvegardé en base, les validations serveur sont appliquées et l'utilisateur peut le modifier.
 

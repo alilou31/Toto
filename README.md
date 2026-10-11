@@ -41,12 +41,12 @@ Le projet utilise OpenNext pour exécuter Next.js App Router sur Cloudflare Work
 1. Créer un bucket R2 nommé `nikahya-next-cache` dans le compte Cloudflare (il sert au cache incrémental/ISR). Le workflow crée/déploie le Worker nommé `nikahya`.
 2. Dans GitHub, ajouter les secrets du dépôt ou de l'environnement `production` : `CLOUDFLARE_API_TOKEN` (droits Workers Scripts et R2 requis), `CLOUDFLARE_ACCOUNT_ID` et `DATABASE_URL` (chaîne Neon pooled avec `sslmode=require`). Ajouter la variable d'environnement `NEXT_PUBLIC_SITE_URL` avec l'URL publique prévue.
 3. Vérifier que le compte Cloudflare autorise le binding Images utilisé par Wrangler. Si le compte n'utilise pas Cloudflare Images, retirer le binding `images` de `wrangler.jsonc` et configurer la stratégie d'images avant déploiement.
-4. Dans GitHub Actions, lancer manuellement le workflow **Deploy NIKAHYA to Cloudflare Workers** (`workflow_dispatch`). Le workflow compile puis déploie l'application et configure le secret `DATABASE_URL` sur le Worker.
-5. Vérifier les routes `/`, `/api/db-check`, `/api/auth/me`, l'inscription/connexion et les journaux du Worker avant de faire pointer le domaine de production vers Cloudflare.
+4. Les pull requests compilent et valident le Worker sans déployer la production. Chaque push sur `main` déclenche le déploiement Cloudflare en environnement `production`; le workflow peut aussi être lancé manuellement depuis `main` avec `workflow_dispatch`.
+5. Après le déploiement, vérifier les routes `/`, `/api/db-check`, `/api/auth/me`, puis tester l'inscription, la connexion, l'enregistrement du profil et la suppression de compte avec une base de test. Le workflow confirme la réussite du déploiement, mais ne prouve pas à lui seul que les migrations Neon ont été appliquées ni que les parcours métier fonctionnent.
 
 En local, copier `.dev.vars.example` vers `.dev.vars`, remplacer les valeurs de démonstration et lancer `npm run preview:worker`. Ne jamais committer `.dev.vars` ni de vrais secrets.
 
-Le workflow de déploiement est manuel : aucun déploiement Cloudflare ou changement DNS n'est déclenché automatiquement par cette branche. Les tests et le build Cloudflare doivent être verts avant fusion.
+Le déploiement Cloudflare est automatique après un push sur `main` et manuel via `workflow_dispatch` depuis `main`. Les pull requests ne déploient pas la production. Aucun changement DNS n'est effectué par le workflow.
 
 ## Tests automatisés
 
@@ -77,8 +77,8 @@ Pour installer les navigateurs en local après `npm install` : `npx playwright i
 - [x] Ajouter limitation persistante des tentatives d’inscription et de connexion (migration 003 requise)
 - [x] Ajouter une suppression de compte protégée par revalidation du mot de passe, avec suppression en base des données dépendantes et révocation des sessions
 - [ ] Ajouter tests de sécurité complémentaires
-- [ ] Créer le parcours de profil relié au compte connecté
-- [ ] Enregistrer les profils via des routes serveur authentifiées
+- [x] Créer le parcours de profil relié au compte connecté
+- [x] Enregistrer les profils via des routes serveur authentifiées
 - [ ] Gestion des photos avec stockage privé durable et modération
 - [ ] Recherche, intérêts et matchs via fonctions serveur sûres
 - [ ] Messagerie et contrôles d'autorisation
@@ -96,7 +96,7 @@ Les routes disponibles sont :
 
 Les mots de passe sont stockés sous forme de hash scrypt ; le cookie de session est HttpOnly, SameSite=Lax et marqué Secure en production. La base ne stocke qu'un hash du jeton de session. Ces protections constituent une première base, pas une validation de sécurité complète.
 
-**Limites actuelles :** la vérification d'e-mail et la récupération de mot de passe par e-mail sont reportées à la phase 2. La limitation de tentatives est implémentée via Neon (migration `003_auth_rate_limits.sql` obligatoire) : 5 tentatives de connexion par e-mail sur 15 minutes, 30 par IP Cloudflare sur 15 minutes, 5 inscriptions par e-mail et 10 par IP sur une heure. Les clés sont stockées sous forme de hash. La page de profil, les autorisations métier complètes et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
+**Limites actuelles :** la vérification d'e-mail et la récupération de mot de passe par e-mail sont reportées à la phase 2. La limitation de tentatives est implémentée via Neon (migration `003_auth_rate_limits.sql` obligatoire) : 5 tentatives de connexion par e-mail sur 15 minutes, 30 par IP Cloudflare sur 15 minutes, 5 inscriptions par e-mail et 10 par IP sur une heure. Les clés sont stockées sous forme de hash. Le parcours de profil et ses routes serveur authentifiées sont présents. Les autorisations métier de découverte/messagerie et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
 
 ## Démonstration sans base de données
 
