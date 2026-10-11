@@ -174,7 +174,7 @@ export default function ProfilePage() {
           )}
         </section>
 
-        <aside className="personalize-aside">
+        {!loading && !needsAuth && <aside className="personalize-aside">
           <section className="personalize-progress-card">
             <div className="personalize-progress-top"><span>VOTRE PROFIL</span><BadgeCheck size={18}/></div>
             <div className="personalize-progress-number">{progress.percent}<span>%</span></div>
@@ -201,7 +201,7 @@ export default function ProfilePage() {
 
           <section className="personalize-tip"><span><WandSparkles size={18}/></span><div><strong>Un conseil pour une rencontre sincère</strong><p>Parlez de ce qui compte pour vous plutôt que de chercher la phrase parfaite. L’authenticité est un bon début.</p></div></section>
           <Link href="/tableau-de-bord" className="personalize-dashboard-link">Retourner à mon tableau de bord <ArrowRight size={15}/></Link>
-        </aside>
+        </aside>}
       </div>
     </main>
   );
