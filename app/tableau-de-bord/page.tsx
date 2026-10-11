@@ -59,6 +59,15 @@ export default function DashboardPage() {
 
   const visibilityLabel = profile?.visibility === "visible" ? "Visible dans la découverte" : profile?.visibility === "paused" ? "En pause" : "Masqué";
   const profileComplete = Boolean(profile?.public_name && profile?.birth_date && profile?.onboarding_completed);
+  const profileSteps = [
+    Boolean(profile?.public_name),
+    Boolean(profile?.birth_date),
+    Boolean(profile?.city),
+    Boolean(profile?.bio?.trim()),
+    Boolean(profile?.relationship_intention && profile.relationship_intention !== "unspecified"),
+    Boolean(profile?.onboarding_completed),
+  ];
+  const profileProgress = Math.round((profileSteps.filter(Boolean).length / profileSteps.length) * 100);
 
   return (
     <main className="dashboard-page">
@@ -80,6 +89,17 @@ export default function DashboardPage() {
               <div><p className="dashboard-overline">RAVI DE VOUS RETROUVER</p><h1>Bonjour{profile?.public_name ? `, ${profile.public_name}` : ""}<em>.</em></h1><p>Votre espace pour avancer à votre rythme vers une rencontre qui vous ressemble.</p></div>
               <div className="dashboard-welcome-icon"><Heart size={33}/></div>
             </div>
+
+            <section className="dashboard-progress" aria-label="Progression de votre profil">
+              <div className="dashboard-progress-copy">
+                <div><span className="dashboard-progress-label">VOTRE PROGRESSION</span><strong>{profileProgress}%</strong></div>
+                <p>{profileProgress === 100 ? "Votre profil est prêt. Vous pouvez continuer à votre rythme." : "Chaque détail aide à présenter qui vous êtes, sans avoir à tout partager."}</p>
+              </div>
+              <div className="dashboard-progress-track" role="progressbar" aria-label="Profil complété" aria-valuemin={0} aria-valuemax={100} aria-valuenow={profileProgress}>
+                <span style={{ width: `${profileProgress}%` }} />
+              </div>
+              <Link href="/profil" className="dashboard-progress-link">{profileProgress === 100 ? "Revoir mon profil" : "Continuer mon profil"} <ArrowRight size={15}/></Link>
+            </section>
 
             {!profileComplete && <div className="dashboard-onboarding"><div className="dashboard-onboarding-icon"><Sparkles size={22}/></div><div><strong>Faites le premier pas : complétez votre profil</strong><p>Quelques informations permettent aux autres de mieux vous connaître. Votre profil reste masqué tant que vous ne choisissez pas de le rendre visible.</p></div><Link href="/profil" className="button button-green">Compléter mon profil <ArrowRight size={16}/></Link></div>}
 
