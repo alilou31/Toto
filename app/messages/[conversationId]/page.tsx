@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useState } from "react";
-import { ArrowLeft, Heart, Send } from "lucide-react";
+import { ArrowLeft, Gamepad2, Heart, Send } from "lucide-react";
 
 type Message = { id: string; sender_id: string; body: string; created_at: string; read_at: string | null };
 
@@ -53,6 +53,7 @@ export default function MessagesPage() {
       <div className="section-kicker auth-kicker">MESSAGERIE PRIVÉE</div>
       <h1 className="auth-title">Prenez le temps<br/><em>de vous découvrir.</em></h1>
       <p className="auth-description">Seuls les deux membres de ce match peuvent lire et envoyer des messages dans cette conversation.</p>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:12}}><Link href="/rencontre" className="button button-quiet"><Gamepad2 size={16}/> Proposer un jeu</Link><Link href="/matchs" className="button button-quiet">Voir mes affinités</Link></div>
       {error && <p className="auth-notice" role="alert">{error}</p>}
       <div style={{display:"flex",flexDirection:"column",gap:12,minHeight:160,maxHeight:"55vh",overflowY:"auto",padding:"12px 0"}} aria-live="polite">
         {loading ? <p>Chargement des messages…</p> : messages.length === 0 ? <p>La conversation est vide. Vous pouvez envoyer le premier message.</p> : messages.map(message => <div key={message.id} style={{alignSelf:message.sender_id === currentUserId ? "flex-end" : "flex-start",maxWidth:"85%",padding:"12px 15px",borderRadius:12,background:message.sender_id === currentUserId ? "#e4efe8" : "#fff",border:"1px solid #e5e8e1"}}><p style={{marginBottom:6,whiteSpace:"pre-wrap",overflowWrap:"anywhere"}}>{message.body}</p><small style={{color:"#68716b"}}>{new Date(message.created_at).toLocaleString("fr-FR", { dateStyle:"short", timeStyle:"short" })}</small></div>)}

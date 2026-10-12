@@ -46,3 +46,35 @@
 
 .game-catalog-challenge-cta{display:flex;justify-content:flex-end;margin:.8rem 0 1rem}
 @media(max-width:640px){.game-catalog-challenge-cta{justify-content:stretch}.game-catalog-challenge-cta .game-button{width:100%;justify-content:center}}
+
+
+/* Premium navigation refinement: forest, ivory and restrained champagne */
+.game-app{
+  --game-purple:#075b4b;
+  --game-pink:#c6a76b;
+  --game-mint:#e7f0e8;
+  --game-ink:#202824;
+  --game-muted:#68716b;
+  --game-line:#e5e8e1;
+  background:radial-gradient(ellipse at 80% 0%,rgba(198,167,107,.09),transparent 36%),#faf8f2;
+  color:var(--game-ink);
+  font-family:var(--sans, "DM Sans", Arial, sans-serif);
+}
+.game-sidebar{background:rgba(255,255,255,.94);border-color:#e5e8e1;backdrop-filter:blur(16px)}
+.game-brand-mark{background:linear-gradient(145deg,#075b4b,#12816b);border-radius:50% 50% 50% 10px}
+.game-brand-dot{color:#c6a76b}
+.game-nav-link{border-radius:9px}
+.game-nav-link:hover,.game-nav-link[aria-current=page]{background:#edf4ee;color:#075b4b}
+.game-nav-link-primary{font-weight:800;color:#075b4b;background:#f3f6ef;border:1px solid #dfe8dc}
+.game-nav-link-primary[aria-current=page]{background:#075b4b;color:#fff;border-color:#075b4b}
+.game-topbar{background:rgba(250,248,242,.86);backdrop-filter:blur(16px)}
+.game-top-actions{gap:12px}
+.game-top-actions .game-button{min-height:38px;padding:0 14px;font-size:11px}
+.game-avatar{display:grid;place-items:center;border:1px solid #dfe8dc;background:#fff;color:#075b4b}
+.game-mobile-nav{background:rgba(255,255,255,.94);border:1px solid rgba(7,91,75,.12);box-shadow:0 10px 35px rgba(32,40,36,.12);backdrop-filter:blur(18px)}
+.game-mobile-nav a{min-width:0}
+.game-mobile-nav a[aria-current=page]{color:#075b4b;font-weight:800}
+.game-mobile-nav-primary{color:#075b4b;font-weight:800}
+.game-mobile-nav-primary[aria-current=page]{background:#075b4b;color:#fff;border-radius:12px}
+@supports not (backdrop-filter:blur(1px)){.game-sidebar,.game-topbar,.game-mobile-nav{background:#fff}}
+@media(prefers-reduced-motion:reduce){.game-nav-link{transition:none}}

@@ -165,7 +165,7 @@ export default function RencontrePage() {
       ]);
       const matchesData = await matchesResponse.json();
       const sessionsData = await sessionsResponse.json();
-      if (matchesResponse.status === 401 || sessionsResponse.status === 401) throw new Error("Connectez-vous pour utiliser le Mode Rencontre.");
+      if (matchesResponse.status === 401 || sessionsResponse.status === 401) throw new Error("Connectez-vous pour utiliser Alchimie.");
       if (!matchesResponse.ok) throw new Error(matchesData.error || "Impossible de charger vos matchs.");
       if (!sessionsResponse.ok) throw new Error(sessionsData.error || "Impossible de charger vos activités.");
       const nextMatches = Array.isArray(matchesData.matches) ? matchesData.matches as Match[] : [];
@@ -273,12 +273,12 @@ export default function RencontrePage() {
 
   return (
     <main className="auth-page">
-      <Link href="/" className="auth-back"><ArrowLeft size={16} /> Retour à l’accueil</Link>
+      <Link href="/tableau-de-bord" className="auth-back"><ArrowLeft size={16} /> Retour à mon espace</Link>
       <section className="auth-card auth-card-wide">
         <Link href="/" className="brand auth-brand"><span className="brand-mark"><Gamepad2 size={20} /></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
         <div className="section-kicker auth-kicker">APPRENDRE À SE CONNAÎTRE AUTREMENT</div>
-        <h1 className="auth-title">Le Mode <em>Rencontre.</em></h1>
-        <p className="auth-description">Proposez une activité à une personne avec qui vous avez déjà un match. Les invitations et la progression sont partagées entre les deux membres du match.</p>
+        <h1 className="auth-title"><em>Alchimie.</em></h1>
+        <p className="auth-description">Découvrez une activité à partager avec une personne avec qui vous avez déjà un match. L’invitation et la progression restent liées à votre match.</p>
 
         <div className="value-grid" style={{ marginBottom: 28 }}>
           {games.map((game) => {

@@ -1,0 +1,46 @@
+import { expect, test } from "@playwright/test";
+
+test("Affinités affiche les centres d’intérêt communs et permet de proposer un jeu sur mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.route("**/api/matches", async (route) => {
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ matches: [{
+      match_id: "match-1", conversation_id: "conversation-1", profile_id: "profile-2",
+      public_name: "Samira", city: "Lyon", bio: "J’aime découvrir de nouveaux endroits.",
+      relationship_intention: "marriage", interests: ["Lecture", "Voyages"],
+      favorite_games: ["Énigmes"], hobbies: ["Randonnée"], last_message_at: null, last_message: null
+    }] }) });
+  });
+  await page.route("**/api/profile", async (route) => {
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({
+      profile: { interests: ["lecture", "Cuisine"], favorite_games: ["Énigmes"], hobbies: ["Randonnée"] }
+    }) });
+  });
+  await page.goto("/matchs");
+  const card = page.locator("article.value-card").filter({ has: page.getByRole("heading", { name: "Samira" }) });
+  await expect(card.locator("p").filter({ hasText: "En commun :" })).toContainText("Lecture, Énigmes, Randonnée");
+  await expect(card.locator("p").filter({ hasText: "Ses centres d’intérêt" })).toContainText("Lecture, Voyages, Énigmes, Randonnée");
+  await expect(card.getByRole("link", { name: /Proposer un jeu/i })).toHaveAttribute("href", "/rencontre");
+  const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
+  expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
+});
+
+test("Affinités reste accessible si le chargement du profil personnel échoue", async ({ page }) => {
+  await page.route("**/api/matches", async (route) => {
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ matches: [{
+      match_id: "match-2", conversation_id: "conversation-2", profile_id: "profile-3",
+      public_name: "Yanis", city: "Bordeaux", bio: "J’aime les discussions sincères.",
+      relationship_intention: "serious", interests: ["Musique"],
+      favorite_games: [], hobbies: [], last_message_at: null, last_message: null
+    }] }) });
+  });
+  await page.route("**/api/profile", async (route) => {
+    await route.fulfill({ status: 500, contentType: "application/json", body: JSON.stringify({ error: "Profil indisponible" }) });
+  });
+
+  await page.goto("/matchs");
+  const card = page.locator("article.value-card").filter({ has: page.getByRole("heading", { name: "Yanis" }) });
+  await expect(card).toBeVisible();
+  await expect(card).toContainText("Musique");
+  await expect(card.getByRole("link", { name: /Ouvrir la conversation/i })).toHaveAttribute("href", "/messages/conversation-2");
+});
+
