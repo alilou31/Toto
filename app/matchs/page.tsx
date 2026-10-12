@@ -8,6 +8,7 @@ type Match = { match_id: string; conversation_id: string; profile_id: string; pu
 
 export default function MatchesPage() {
   const [matches, setMatches] = useState<Match[]>([]);
+  const [myInterests, setMyInterests] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [blocking, setBlocking] = useState<string | null>(null);
@@ -20,6 +21,17 @@ export default function MatchesPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(response.status === 401 ? "Connectez-vous pour consulter vos matchs." : data.error || "Impossible de charger les matchs.");
       setMatches(Array.isArray(data.matches) ? data.matches : []);
+      // Own profile is optional for the match list: never hide matches if this secondary read fails.
+      const ownResponse = await fetch("/api/profile", { cache: "no-store" });
+      if (ownResponse.ok) {
+        const ownData = await ownResponse.json();
+        const ownProfile = ownData.profile ?? {};
+        setMyInterests([
+          ...(Array.isArray(ownProfile.interests) ? ownProfile.interests : []),
+          ...(Array.isArray(ownProfile.favorite_games) ? ownProfile.favorite_games : []),
+          ...(Array.isArray(ownProfile.hobbies) ? ownProfile.hobbies : []),
+        ].filter((value): value is string => typeof value === "string" && value.trim().length > 0));
+      }
     } catch (e) { setError(e instanceof Error ? e.message : "Service indisponible."); }
     finally { setLoading(false); }
   }
@@ -53,7 +65,7 @@ export default function MatchesPage() {
       <h1 className="auth-title">Vos matchs,<br/><em>vos prochaines histoires.</em></h1>
       <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:20}}><button className="button button-quiet" onClick={() => void load()} disabled={loading}><RefreshCw size={16}/> Actualiser</button><Link href="/decouvrir" className="button button-green">Découvrir des profils</Link></div>
       {notice && <p className="auth-notice" role="status">{notice}</p>}
-      {loading ? <p role="status">Chargement de vos matchs…</p> : error ? <><p className="auth-notice" role="alert">{error}</p><Link href="/connexion" className="button button-green">Se connecter</Link></> : matches.length === 0 ? <div className="value-card"><Heart size={28}/><h2>Vos rencontres commencent ici</h2><p>Quand deux personnes s’envoient un intérêt, leur match apparaîtra ici et elles pourront échanger.</p><Link href="/decouvrir" className="button button-green">Découvrir les profils</Link></div> : <div className="value-grid">{matches.map(match => <article className="value-card" key={match.match_id}><div className="value-top"><span className="value-icon"><UserRound size={22}/></span><span className="card-number">Match</span></div><h2>{match.public_name}</h2>{match.city && <p>{match.city}</p>}<p>{match.last_message || match.bio || "Votre conversation peut commencer."}</p><p><strong>Ses centres d’intérêt :</strong> {[...(match.interests ?? []), ...(match.favorite_games ?? []), ...(match.hobbies ?? [])].slice(0, 6).join(", ") || "À découvrir ensemble"}</p><div style={{display:"flex",gap:8,flexWrap:"wrap"}}><Link href={"/messages/" + match.conversation_id} className="button button-green"><MessageCircle size={16}/> Ouvrir la conversation</Link><Link href="/rencontre" className="button button-quiet"><Gamepad2 size={16}/> Proposer un jeu</Link><button className="button button-quiet" type="button" onClick={() => void blockMatch(match)} disabled={blocking !== null} aria-label={`Bloquer ${match.public_name}`}><Ban size={16}/>{blocking === match.profile_id ? "Blocage…" : "Bloquer"}</button></div></article>)}</div>}
+      {loading ? <p role="status">Chargement de vos matchs…</p> : error ? <><p className="auth-notice" role="alert">{error}</p><Link href="/connexion" className="button button-green">Se connecter</Link></> : matches.length === 0 ? <div className="value-card"><Heart size={28}/><h2>Vos rencontres commencent ici</h2><p>Quand deux personnes s’envoient un intérêt, leur match apparaîtra ici et elles pourront échanger.</p><Link href="/decouvrir" className="button button-green">Découvrir les profils</Link></div> : <div className="value-grid">{matches.map(match => { const theirs = [...(match.interests ?? []), ...(match.favorite_games ?? []), ...(match.hobbies ?? [])].filter(value => typeof value === "string" && value.trim()); const shared = [...new Set(theirs.filter(value => myInterests.some(own => own.trim().toLocaleLowerCase("fr") === value.trim().toLocaleLowerCase("fr"))))].slice(0, 6); return <article className="value-card" key={match.match_id}><div className="value-top"><span className="value-icon"><UserRound size={22}/></span><span className="card-number">Match</span></div><h2>{match.public_name}</h2>{match.city && <p>{match.city}</p>}<p>{match.last_message || match.bio || "Votre conversation peut commencer."}</p>{shared.length > 0 && <p><strong>En commun :</strong> {shared.join(", ")}</p>}<p><strong>Ses centres d’intérêt :</strong> {theirs.slice(0, 6).join(", ") || "À découvrir ensemble"}</p><div style={{display:"flex",gap:8,flexWrap:"wrap"}}><Link href={"/messages/" + match.conversation_id} className="button button-green"><MessageCircle size={16}/> Ouvrir la conversation</Link><Link href="/rencontre" className="button button-quiet"><Gamepad2 size={16}/> Proposer un jeu</Link><button className="button button-quiet" type="button" onClick={() => void blockMatch(match)} disabled={blocking !== null} aria-label={`Bloquer ${match.public_name}`}><Ban size={16}/>{blocking === match.profile_id ? "Blocage…" : "Bloquer"}</button></div></article>; })}</div>}
       <p className="auth-switch"><Link href="/profil">Gérer mon profil</Link> · <Link href="/">Accueil</Link></p>
     </section>
   </main>;
