@@ -23,15 +23,16 @@
 
 ## Inventaire actuel
 
-## Point de contrôle dépôt — 2026-10-12
+## Point de contrôle dépôt — 2026-10-12 (vérification Playwright production)
 
-- **HEAD de `main` :** `20e08c6fc7ddebc3b135fc4a14739be9359936d6` (mise à jour des notes de contrôle et de suivi).
-- **CI du HEAD courant :** **PASSÉE** — [run 38248707710](https://github.com/alilou31/Toto/actions/runs/38248707710), comprenant les quatre nouveaux cas négatifs d'authentification ajoutés dans `tests/e2e/auth-api.spec.ts`.
-- **Smoke tests de production :** **PASSÉS en lecture seule** — [run 38248829645](https://github.com/alilou31/Toto/actions/runs/38248829645). Ils valident l'instance servie au moment du run, pas nécessairement le HEAD courant.
-- **Déploiement Cloudflare du HEAD courant :** **EN COURS au dernier contrôle** — [run 38248707672](https://github.com/alilou31/Toto/actions/runs/38248707672). Ne pas déclarer ce SHA déployé avant la fin du workflow.
-- **Runs intermédiaires annulés :** CI et déploiement du commit `a3d40b8` annulés par les changements suivants ; le commit `20e08c6` a une CI réussie.
-- **PR ouvertes à réconcilier avant toute fusion :** [#3 Mode Rencontre](https://github.com/alilou31/Toto/pull/3), [#4 navigation après sauvegarde du profil](https://github.com/alilou31/Toto/pull/4), [#5 sélecteur Snake](https://github.com/alilou31/Toto/pull/5), [#6 sélecteurs Playwright navigation](https://github.com/alilou31/Toto/pull/6), [#8 tests négatifs auth](https://github.com/alilou31/Toto/pull/8). Ne pas fusionner sans vérifier si les changements sont déjà intégrés et si les branches ont encore une valeur distincte.
-- **Limites non levées :** l'application des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` dans Neon n'est pas confirmée ; le parcours E2E à deux comptes n'a pas été relancé car il peut écrire en production.
+- **HEAD de `main` :** `7b51f4bf27fb1adff424415c57cb345b7e60c3bf`.
+- **CI :** réussie, [run 38266697104](https://github.com/alilou31/Toto/actions/runs/38266697104).
+- **Déploiement Cloudflare Workers :** réussi, [run 38266697091](https://github.com/alilou31/Toto/actions/runs/38266697091).
+- **Playwright production en lecture seule :** **18 passés, 0 échec, 0 ignoré** dans [run 38267172805](https://github.com/alilou31/Toto/actions/runs/38267172805). Les fichiers exécutés sont uniquement `tests/e2e/production-ui.spec.ts` et `tests/e2e/api-json-contract.spec.ts`.
+- **Smoke production complémentaire :** accueil et `/demo` accessibles ; `/api/db-check` confirme `ok=true` et `status=connected` ; `/api/games/results` refuse une requête anonyme avec HTTP 401 et le JSON attendu.
+- **Parcours à deux utilisateurs : NON VALIDÉ par ce run.** Il n'est pas inclus dans le workflow Playwright de production en lecture seule. Une exécution autorisée nécessite deux comptes de test dédiés et les secrets/variable documentés dans `docs/testing-two-users.md`.
+- **État Neon :** le smoke confirme la connectivité, pas l'application des migrations `005_game_sessions.sql` ou `007_rencontre_sessions.sql`.
+- **PR ouvertes à réconcilier :** #3, #4, #5, #6 et #8. Aucun changement ne doit être fusionné sans comparaison du diff avec `main`.
 
 Les chemins ci-dessous ont été repérés dans l'arborescence de `main`. **La présence d'un chemin est une preuve d'implémentation dans le dépôt, pas une preuve de validation fonctionnelle en production.**
 

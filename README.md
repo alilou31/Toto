@@ -64,31 +64,21 @@ GitHub Actions exécute les tests unitaires, ESLint, le build Next.js et le buil
 
 Pour installer les navigateurs en local après `npm install` : `npx playwright install chromium`.
 
-## État actuel
+## État vérifié — 2026-10-12
 
-- [x] Landing page responsive et identité visuelle initiale
-- [x] Démonstration locale : profils fictifs, création de profil, likes et matchs simulés
-- [x] Page de tests manuels accessible via `/validation`
-- [x] Tests unitaires de validation et règles de démonstration (`npm test`)
-- [x] GitHub Actions pour lancer les tests sur push et pull request
-- [x] Pages d'inscription et de connexion reliées aux API d'authentification
-- [x] Client Neon côté serveur et route de diagnostic `/api/db-check`
-- [x] Schéma initial des profils, intérêts, matchs, conversations, messages, blocages et signalements
-- [x] Tables d'utilisateurs et de sessions pour l'authentification première partie
-- [x] Hashage de mot de passe avec scrypt et cookies de session HttpOnly
-- [ ] Exécuter les migrations `002_authentication.sql` à `006_shared_interests.sql` dans Neon avant de tester tous les parcours
-- [ ] Vérifier build, tests et parcours d'authentification en préproduction
-- [x] Ajouter limitation persistante des tentatives d’inscription et de connexion (migration 003 requise)
-- [x] Ajouter une suppression de compte protégée par revalidation du mot de passe, avec suppression en base des données dépendantes et révocation des sessions
-- [ ] Ajouter tests de sécurité complémentaires
-- [ ] Créer le parcours de profil relié au compte connecté
-- [ ] Enregistrer les profils via des routes serveur authentifiées
-- [ ] Gestion des photos avec stockage privé durable et modération
-- [ ] Recherche, intérêts et matchs via fonctions serveur sûres
-- [ ] Messagerie et contrôles d'autorisation
-- [x] Signalement d’un profil depuis la découverte, avec validation serveur et limitation par compte
-- [ ] File de traitement des signalements et outils d’administration
-- [ ] Tests d'intégration navigateur et revue de sécurité/RGPD
+Le suivi ci-dessous remplace les anciennes cases à cocher historiques de ce README. Pour éviter les doublons, consulter d'abord [FEATURES_INVENTORY.md](./FEATURES_INVENTORY.md) et [BACKLOG.md](./BACKLOG.md).
+
+- **Commit contrôlé :** `7b51f4bf27fb1adff424415c57cb345b7e60c3bf` — `ci: run production Playwright after successful deploy`.
+- **Hébergement officiel :** Cloudflare Workers ; base de données : Neon PostgreSQL. Vercel n'est pas la cible de déploiement.
+- **CI GitHub Actions :** réussie — [run 38266697104](https://github.com/alilou31/Toto/actions/runs/38266697104).
+- **Déploiement Cloudflare :** réussi — [run 38266697091](https://github.com/alilou31/Toto/actions/runs/38266697091).
+- **Playwright de production en lecture seule :** 18 tests réussis, 0 échoué, 0 ignoré dans le run — [run 38267172805](https://github.com/alilou31/Toto/actions/runs/38267172805). Les tests exécutés sont `production-ui.spec.ts` et `api-json-contract.spec.ts` uniquement.
+- **Smoke de production :** accueil, `/demo`, connexion Neon via `/api/db-check` et refus d'accès anonyme à `/api/games/results` confirmés par les logs.
+- **Non couvert par ce run :** parcours connecté complet, scénario à deux utilisateurs, persistance réelle profil/match/jeu/messages et statut des migrations dans Neon.
+- **Deux comptes E2E :** voir [docs/testing-two-users.md](./docs/testing-two-users.md). Les quatre secrets sont requis ; ne jamais fournir les mots de passe dans le dépôt ou une conversation. Ne lancer le scénario écrivant des données qu'avec des comptes de test dédiés et une autorisation adaptée.
+- **Règle de preuve :** un fichier présent ou un build vert ne prouve pas une fonctionnalité validée en production. Enregistrer les résultats datés dans [PRODUCTION_TEST_LOG.md](./PRODUCTION_TEST_LOG.md).
+
+Les sections de ce README qui décrivent les fonctionnalités et les limites restent des notes d'architecture ; en cas de divergence sur le statut de réalisation, utiliser l'inventaire et le registre de tests datés ci-dessus plutôt que les anciennes cases historiques.
 
 ## Profils et affinités
 
