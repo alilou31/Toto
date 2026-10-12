@@ -22,15 +22,20 @@ export default function MatchesPage() {
       if (!response.ok) throw new Error(response.status === 401 ? "Connectez-vous pour consulter vos matchs." : data.error || "Impossible de charger les matchs.");
       setMatches(Array.isArray(data.matches) ? data.matches : []);
       // Own profile is optional for the match list: never hide matches if this secondary read fails.
-      const ownResponse = await fetch("/api/profile", { cache: "no-store" });
-      if (ownResponse.ok) {
-        const ownData = await ownResponse.json();
-        const ownProfile = ownData.profile ?? {};
-        setMyInterests([
-          ...(Array.isArray(ownProfile.interests) ? ownProfile.interests : []),
-          ...(Array.isArray(ownProfile.favorite_games) ? ownProfile.favorite_games : []),
-          ...(Array.isArray(ownProfile.hobbies) ? ownProfile.hobbies : []),
-        ].filter((value): value is string => typeof value === "string" && value.trim().length > 0));
+      try {
+        const ownResponse = await fetch("/api/profile", { cache: "no-store" });
+        if (ownResponse.ok) {
+          const ownData = await ownResponse.json();
+          const ownProfile = ownData.profile ?? {};
+          setMyInterests([
+            ...(Array.isArray(ownProfile.interests) ? ownProfile.interests : []),
+            ...(Array.isArray(ownProfile.favorite_games) ? ownProfile.favorite_games : []),
+            ...(Array.isArray(ownProfile.hobbies) ? ownProfile.hobbies : []),
+          ].filter((value): value is string => typeof value === "string" && value.trim().length > 0));
+        }
+      } catch {
+        // Match data remains useful even if the optional shared-interest lookup fails.
+        setMyInterests([]);
       }
     } catch (e) { setError(e instanceof Error ? e.message : "Service indisponible."); }
     finally { setLoading(false); }
