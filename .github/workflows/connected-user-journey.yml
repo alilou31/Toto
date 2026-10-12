@@ -1,0 +1,78 @@
+name: NIKAHYA — Parcours utilisateur connecté (2 comptes)
+
+# Lancement manuel uniquement : ce scénario écrit des données de test en production
+# (intérêts, défi de jeu et messages) avec deux comptes dédiés.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_production_test:
+        description: "Confirmer le parcours E2E sur Cloudflare production (données de test créées)"
+        type: choice
+        required: true
+        default: "no"
+        options:
+          - "no"
+          - "yes"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nikahya-connected-user-journey
+  cancel-in-progress: false
+
+jobs:
+  connected-user-journey:
+    name: Connected user journey on Cloudflare production
+    if: ${{ github.ref == 'refs/heads/main' && inputs.confirm_production_test == 'yes' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PLAYWRIGHT_BASE_URL: https://nikahya.rassoul-ali.workers.dev
+      E2E_USER_A_EMAIL: ${{ secrets.E2E_USER_A_EMAIL || vars.E2E_USER_A_EMAIL }}
+      E2E_USER_A_PASSWORD: ${{ secrets.E2E_USER_A_PASSWORD }}
+      E2E_USER_B_EMAIL: ${{ secrets.E2E_USER_B_EMAIL || vars.E2E_USER_B_EMAIL }}
+      E2E_USER_B_PASSWORD: ${{ secrets.E2E_USER_B_PASSWORD }}
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate dedicated test accounts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$E2E_USER_A_EMAIL" || { echo "::error::Missing E2E_USER_A_EMAIL"; exit 1; }
+          test -n "$E2E_USER_A_PASSWORD" || { echo "::error::Missing E2E_USER_A_PASSWORD"; exit 1; }
+          test -n "$E2E_USER_B_EMAIL" || { echo "::error::Missing E2E_USER_B_EMAIL"; exit 1; }
+          test -n "$E2E_USER_B_PASSWORD" || { echo "::error::Missing E2E_USER_B_PASSWORD"; exit 1; }
+          test "${E2E_USER_A_EMAIL,,}" != "${E2E_USER_B_EMAIL,,}" || { echo "::error::The two E2E accounts must be different"; exit 1; }
+          echo "Two distinct E2E accounts are configured."
+
+      - name: Run connected-user journey against production
+        run: npx playwright test tests/e2e/two-user-full-journey.spec.ts --workers=1
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: connected-user-journey-playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
