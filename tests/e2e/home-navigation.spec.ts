@@ -56,3 +56,31 @@ test("dashboard redirects visitors to sign-in", async ({ page }) => {
   await page.goto("/tableau-de-bord");
   await expect(page).toHaveURL(/\/connexion\?next=\/tableau-de-bord$/);
 });
+
+
+test("browser back keeps an authenticated user in the app instead of returning to sign-in", async ({ page }) => {
+  await page.route("**/api/auth/me", async (route) => {
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: { id: "user-1", email: "test@example.fr" } }) });
+  });
+  await page.route("**/api/profile", async (route) => {
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ profile: {
+      public_name: "Camille",
+      city: "Bordeaux",
+      bio: "Présentation de test",
+      relationship_intention: "marriage",
+      birth_date: "1990-01-01",
+      visibility: "visible",
+      onboarding_completed: true
+    } }) });
+  });
+
+  await page.goto("/tableau-de-bord");
+  await expect(page.getByRole("heading", { name: "Bonjour, Camille." })).toBeVisible();
+  await page.getByRole("link", { name: /Découvrir des profils/ }).click();
+  await expect(page).toHaveURL(/\\/decouvrir(?:\\?.*)?$/);
+
+  await page.goBack();
+  await expect(page).toHaveURL(/\\/tableau-de-bord$/);
+  await expect(page.getByRole("heading", { name: "Bonjour, Camille." })).toBeVisible();
+  await expect(page).not.toHaveURL(/\\/connexion/);
+});
