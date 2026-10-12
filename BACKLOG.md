@@ -32,7 +32,7 @@ Ce backlog historique contient encore des cases non cochées qui peuvent corresp
 - [x] Déploiement Cloudflare du même commit terminé avec succès ([workflow](https://github.com/alilou31/Toto/actions/runs/38246981763)).
 - [x] Smoke tests en lecture seule : accueil, démo, connectivité Neon, protection de l'historique et tests UI passés ([workflow](https://github.com/alilou31/Toto/actions/runs/38247137335)).
 - [x] Obtenir une preuve de smoke test après déploiement pour le commit `1bdb5a456994aef3719a9eaad6e64c33c1fa2399` ([workflow 38247451465](https://github.com/alilou31/Toto/actions/runs/38247451465)). À revalider après le déploiement des commits de documentation postérieurs.
-- [ ] Confirmer dans Neon l'application des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql`.
+- [ ] Vérifier techniquement dans Neon la présence et la structure des tables des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` (**l'utilisateur confirme leur exécution; preuve indépendante encore manquante**).
 - [ ] Vérifier le rapport d'exécution du parcours à deux utilisateurs avant de le déclarer validé en production ; le workflow protégé peut écrire des données.
 - [ ] Réconcilier les PR ouvertes #3, #4, #5, #6 et #8 avec `main` avant toute fusion afin d'éviter les changements redondants.
 
@@ -42,6 +42,16 @@ Ce backlog historique contient encore des cases non cochées qui peuvent corresp
 - [x] Endpoint `/api/db-check` vérifié en production : connexion Neon confirmée
 - [x] Parcours connectés d'authentification, profil et jeux déjà présents ; éviter de les recréer
 - [ ] Vérifier les parcours métier de bout en bout avec deux comptes dédiés
+
+
+### Dernier contrôle de production — 2026-10-12 (commit f70d89b7)
+- [x] CI réussie ([run 38257712643](https://github.com/alilou31/Toto/actions/runs/38257712643)).
+- [x] Déploiement Cloudflare réussi ([run 38257712468](https://github.com/alilou31/Toto/actions/runs/38257712468)).
+- [x] Smoke post-déploiement réussi ([run 38258557694](https://github.com/alilou31/Toto/actions/runs/38258557694)).
+- [x] Contrôle navigateur en lecture seule : accueil et /demo chargés, actions d'inscription/connexion visibles ([rapport](https://agent.tinyfish.ai/runs/0b01121f-6f8e-4305-b4e1-bc800fef2c53)).
+- [ ] Tester le menu mobile directement sur production avec un viewport mobile explicite; le contrôle navigateur disponible ne prouve pas que la taille mobile a été appliquée.
+- [ ] Vérifier les tables Neon des migrations 005 et 007 en lecture seule. **Statut utilisateur : SQL déclaré effectué; contrôle technique non réalisé.**
+- [ ] Exécuter le parcours à deux comptes uniquement après confirmation explicite des comptes de test et de l'autorisation d'écrire des données de test en production.
 
 ## EPIC 1 — Fondation technique et sécurité
 
