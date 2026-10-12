@@ -25,6 +25,7 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
    - `db/migrations/004_games.sql`
    - `db/migrations/005_game_sessions.sql`
    - `db/migrations/006_shared_interests.sql`
+   - `db/migrations/007_rencontre_sessions.sql` (si non déjà appliquée ; vérifier l'état avant exécution)
 6. Lancer `npm run dev`, puis ouvrir `http://localhost:3000`.
 7. Vérifier la connexion sur `http://localhost:3000/api/db-check`. La route renvoie uniquement un état et l'heure de la base, jamais la chaîne de connexion.
 
