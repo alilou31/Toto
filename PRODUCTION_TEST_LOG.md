@@ -28,6 +28,14 @@
 
 ## Historique des exécutions
 
+### PROD-2026-10-12-06 — Nouveau smoke test de production en lecture seule
+- **Date/heure :** 2026-10-12, workflow démarré à 12:20:41 UTC et terminé à 12:21:54 UTC.
+- **Preuve :** [smoke tests 38248441636](https://github.com/alilou31/Toto/actions/runs/38248441636).
+- **Résultat :** **PASSÉ** — les deux jobs ont réussi : accueil Cloudflare, page de démo, connectivité Neon, contrôle d'authentification de l'historique des jeux et tests Playwright UI en lecture seule.
+- **Limite :** ce workflow a vérifié la production servie au moment de l'exécution. Le déploiement du commit de documentation `b1221d6` n'était pas confirmé comme terminé au moment du contrôle ; ne pas attribuer ce résultat au nouveau commit de tests `a3d40b8`.
+- **Aucune écriture métier en production** n'a été déclenchée.
+- **Suite :** attendre la CI et le déploiement du commit de tests `a3d40b8`, puis vérifier un smoke test post-déploiement. Le parcours à deux comptes et les migrations Neon `005`/`007` restent non validés indépendamment.
+
 ### PROD-2026-10-12-05 — Smoke tests en lecture seule pendant le déploiement du commit de documentation
 - **Date/heure :** 2026-10-12, workflow démarré à 12:16:44 UTC et terminé à 12:18:01 UTC.
 - **Commit de `main` à ce moment :** `0df719579122ceccf8acb20c6696cdd52131b89a` (mise à jour du backlog avec la preuve smoke précédente).

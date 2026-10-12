@@ -17,6 +17,8 @@
 Ce backlog historique contient encore des cases non cochées qui peuvent correspondre à du code et à des tests ajoutés depuis sa rédaction. Pour éviter les doublons, **ne pas prendre ces cases seules comme état réel** : consulter d'abord [`FEATURES_INVENTORY.md`](./FEATURES_INVENTORY.md) et [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md), puis vérifier le code, les PR et les preuves avant de modifier le statut d'une tâche.
 
 ### État confirmé lors du dernier contrôle
+- [x] Smoke tests de production en lecture seule passés : [workflow 38248441636](https://github.com/alilou31/Toto/actions/runs/38248441636). Ce test porte sur la version servie au moment du run et ne prouve pas que le dernier commit était déjà déployé.
+- [ ] CI des quatre nouveaux cas négatifs d'authentification, ajoutés à `tests/e2e/auth-api.spec.ts` dans le commit `a3d40b8a4d33b2382a2a5f32934a37a08749a59d`, à confirmer : [workflow 38248482584](https://github.com/alilou31/Toto/actions/runs/38248482584).
 - [x] CI sur le commit `0df719579122ceccf8acb20c6696cdd52131b89a` : réussie ([workflow](https://github.com/alilou31/Toto/actions/runs/38247750058)).
 - [x] Smoke tests de production en lecture seule : réussis ([workflow 38248030239](https://github.com/alilou31/Toto/actions/runs/38248030239)). **Réserve :** au dernier contrôle, le déploiement Cloudflare du commit `0df71957` était encore en cours/attente ; ce smoke test ne prouve pas que ce SHA était déjà en production.
 - [x] CI sur le commit `1bdb5a456994aef3719a9eaad6e64c33c1fa2399` : tests Playwright navigateur, unitaires, lint, build et build Worker réussis ([workflow](https://github.com/alilou31/Toto/actions/runs/38246981835)).
