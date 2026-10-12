@@ -78,7 +78,7 @@ export async function PATCH(request: Request) {
   const data = body && typeof body === "object" ? body as Record<string, unknown> : {};
   const { sessionId, action } = data;
   if (typeof sessionId !== "string" || !SESSION_ID.test(sessionId)) return NextResponse.json({ error: "Activité introuvable." }, { status: 404 });
-  if (!["accept", "complete", "cancel"].includes(String(action)) && action !== undefined) return NextResponse.json({ error: "Action invalide." }, { status: 400 });
+  if (!["accept", "complete", "cancel", "progress"].includes(String(action))) return NextResponse.json({ error: "Action invalide." }, { status: 400 });
   try {
     const sql = getDb();
     const found = await sql`select * from public.rencontre_sessions where id = ${sessionId} and (${user.id} = created_by or ${user.id} = invited_user_id) limit 1`;
