@@ -28,6 +28,15 @@
 
 ## Historique des exécutions
 
+### PROD-2026-10-12-08 — Smoke post-déploiement ignoré et réduction des doublons
+- **Date/heure :** 2026-10-12, workflow terminé à 12:29:45 UTC.
+- **Commit concerné :** `b9c61d9b6839fa402eeaede435d700d8eadd1629`.
+- **Déploiement Cloudflare :** **PASSÉ** — [run 38249302872](https://github.com/alilou31/Toto/actions/runs/38249302872).
+- **Smoke post-déploiement :** **NON EXÉCUTÉ** — [run 38249376116](https://github.com/alilou31/Toto/actions/runs/38249376116), les deux jobs ont été ignorés. La cause exacte de cette condition ignorée n'est pas établie par les métadonnées consultées ; ne pas interpréter ce run comme un test passé.
+- **Correction appliquée dans le workflow :** après un déploiement, conserver le smoke test léger (accueil, démo, Neon et refus d'accès anonyme). Le Playwright de production ne se relance plus à chaque déploiement ; il reste planifié quotidiennement et disponible manuellement. La CI continue d'exécuter les tests Playwright sur le code.
+- **Écritures en production :** aucune ; ces contrôles sont en lecture seule.
+- **Suite :** vérifier le prochain run déclenché par le déploiement de cette correction et confirmer que le job smoke s'exécute. Le test UI de production reste couvert par le run quotidien/manuellement déclenché.
+
 ### PROD-2026-10-12-07 — Smoke tests après les mises à jour de suivi
 - **Date/heure :** 2026-10-12, workflow terminé à 12:25:46 UTC.
 - **Commit testé par la CI et les smoke tests :** `20e08c6fc7ddebc3b135fc4a14739be9359936d6`.

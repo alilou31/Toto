@@ -17,6 +17,8 @@
 Ce backlog historique contient encore des cases non cochées qui peuvent correspondre à du code et à des tests ajoutés depuis sa rédaction. Pour éviter les doublons, **ne pas prendre ces cases seules comme état réel** : consulter d'abord [`FEATURES_INVENTORY.md`](./FEATURES_INVENTORY.md) et [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md), puis vérifier le code, les PR et les preuves avant de modifier le statut d'une tâche.
 
 ### État confirmé lors du dernier contrôle
+- [x] Réduction des doublons dans le workflow de smoke production : après déploiement, smoke léger HTTP/Neon uniquement ; Playwright de production quotidien ou manuel. La prochaine exécution post-déploiement doit confirmer le déclenchement effectif.
+- [ ] Confirmer que le prochain smoke post-déploiement s'exécute (le run 38249376116 a été ignoré : [preuve](https://github.com/alilou31/Toto/actions/runs/38249376116)).
 - [x] CI du HEAD `20e08c6fc7ddebc3b135fc4a14739be9359936d6` : réussie ([workflow 38248707710](https://github.com/alilou31/Toto/actions/runs/38248707710)).
 - [x] Smoke tests de production en lecture seule : réussis ([workflow 38248829645](https://github.com/alilou31/Toto/actions/runs/38248829645)); le déploiement de ce HEAD est encore à confirmer ([workflow Cloudflare 38248707672](https://github.com/alilou31/Toto/actions/runs/38248707672)).
 - [x] Smoke tests de production en lecture seule passés : [workflow 38248441636](https://github.com/alilou31/Toto/actions/runs/38248441636). Ce test porte sur la version servie au moment du run et ne prouve pas que le dernier commit était déjà déployé.
