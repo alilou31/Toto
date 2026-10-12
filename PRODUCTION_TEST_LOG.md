@@ -23,10 +23,22 @@
 - URL de production attendue : https://nikahya.rassoul-ali.workers.dev/
 - Le parcours Playwright à deux utilisateurs existe dans `tests/e2e/two-user-full-journey.spec.ts`. Son exécution dépend de quatre secrets de comptes de test (`E2E_USER_A_EMAIL`, `E2E_USER_A_PASSWORD`, `E2E_USER_B_EMAIL`, `E2E_USER_B_PASSWORD`). Ne pas exposer leurs valeurs.
 - Le workflow manuel `.github/workflows/connected-user-journey.yml` est protégé : branche `main`, confirmation `confirm_production_test=yes` et comptes dédiés. Il peut créer des données en production ; ne pas le déclencher sans accord explicite.
-- La présence de migrations SQL dans le dépôt ne confirme pas qu'elles ont été appliquées à Neon. Notamment, la confirmation en base des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` reste à obtenir.
+- La présence de migrations SQL dans le dépôt ne confirme pas qu'elles ont été appliquées à Neon. L'utilisateur a déclaré le 2026-10-12 que les migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` sont effectuées; la vérification technique indépendante en base reste à obtenir.
 - L'historique ci-dessous ne prétend pas certifier des tests dont les journaux complets n'ont pas été inspectés. Les statuts « rapporté » sont volontairement séparés des résultats d'exécution vérifiés.
 
 ## Historique des exécutions
+
+### PROD-2026-10-12-11 — Smoke après déploiement et contrôle navigateur en lecture seule
+- **Date/heure :** 2026-10-12, après le déploiement du commit `f70d89b7aabcd06bb988416db5be5b76d840834d`.
+- **CI :** **PASSÉE** — [run 38257712643](https://github.com/alilou31/Toto/actions/runs/38257712643).
+- **Déploiement Cloudflare Workers :** **PASSÉ** — [run 38257712468](https://github.com/alilou31/Toto/actions/runs/38257712468).
+- **Smoke post-déploiement :** **PASSÉ** — [run 38258557694](https://github.com/alilou31/Toto/actions/runs/38258557694) : accueil, /demo, connectivité Neon et rejet d'accès anonyme à l'API des résultats de jeux.
+- **Contrôle navigateur manuel en lecture seule :** accueil et /demo chargés, boutons de connexion/création visibles, aucun compte utilisé ni aucune donnée créée/modifiée. [Rapport TinyFish](https://agent.tinyfish.ai/runs/0b01121f-6f8e-4305-b4e1-bc800fef2c53).
+- **Limite du contrôle navigateur :** la taille de viewport mobile n'est pas démontrée par le rapport; le contrôle ne permet donc pas de certifier le menu hamburger en production. Le test Playwright `home-navigation.spec.ts` couvre un viewport 390×844 en CI, mais avec des réponses API simulées. Le job Playwright production du smoke reste ignoré car ce workflow ne le lance qu'en planifié ou en manuel.
+- **Migrations Neon 005 et 007 :** **DÉCLARÉES EFFECTUÉES PAR L'UTILISATEUR** le 2026-10-12; aucune lecture indépendante du schéma Neon n'a été exécutée. Ne pas marquer la vérification technique comme passée.
+- **Parcours complet à deux utilisateurs :** non exécuté; le workflow peut créer des données de production et reste soumis à autorisation explicite.
+- **Écritures métier en production :** aucune.
+- **Conclusion :** CI, déploiement et smoke légers sont verts sur `f70d89b7`. Les pages publiques sont accessibles; les parcours connectés, la présence effective des tables en base et le menu mobile en production restent à vérifier séparément.
 
 ### PROD-2026-10-12-09 — Vérification après correction anti-doublons
 - **Date/heure :** 2026-10-12, smoke terminé après le déploiement du commit `21f9b27218f77a31200ff9848abb01ea53996013`.
