@@ -1,4 +1,4 @@
-import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
+import { expect, test, type APIRequestContext } from "@playwright/test";
 
 const API_BASE_PATHS = [
   { method: "GET", path: "/api/auth/me" },
@@ -56,7 +56,7 @@ test.describe("Contrat JSON des API — prévention de Unexpected token '<'", ()
   test("les pages métier ne déclenchent pas de réponses HTML sur les routes API", async ({ page }) => {
     const problems: string[] = [];
     const browserErrors: string[] = [];
-    const origin = new URL(page.context().browser()?.contexts()[0]?.pages()[0]?.url() || "http://127.0.0.1:3000").origin;
+    const origin = new URL(process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3000").origin;
 
     page.on("pageerror", error => {
       browserErrors.push(error.message);
