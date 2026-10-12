@@ -2,7 +2,7 @@ import { expect, test, type APIRequestContext } from "@playwright/test";
 
 const API_BASE_PATHS = [
   { method: "GET", path: "/api/auth/me" },
-  { method: "GET", path: "/api/db-check" },
+  { method: "GET", path: "/api/db-check", allowUnavailable: true },
   { method: "GET", path: "/api/profile" },
   { method: "GET", path: "/api/discover" },
   { method: "GET", path: "/api/matches" },
@@ -23,6 +23,7 @@ async function requestEndpoint(request: APIRequestContext, endpoint: (typeof API
 async function assertJsonResponse(
   response: Awaited<ReturnType<typeof requestEndpoint>>,
   label: string,
+  allowUnavailable = false,
 ) {
   const contentType = response.headers()["content-type"] ?? "";
   const body = await response.text();
@@ -41,7 +42,11 @@ async function assertJsonResponse(
     );
   }
 
-  expect(response.status(), `${label}: une API ne doit pas tomber en erreur serveur`).toBeLessThan(500);
+  if (allowUnavailable) {
+    expect([200, 503], `${label}: seuls 200 (connecté) ou 503 (DB indisponible) sont attendus`).toContain(response.status());
+  } else {
+    expect(response.status(), `${label}: une API ne doit pas tomber en erreur serveur`).toBeLessThan(500);
+  }
   expect(parsed).toBeDefined();
 }
 
@@ -49,7 +54,7 @@ test.describe("Contrat JSON des API — prévention de Unexpected token '<'", ()
   for (const endpoint of API_BASE_PATHS) {
     test(`${endpoint.method} ${endpoint.path} renvoie du JSON même en cas d'erreur`, async ({ request }) => {
       const response = await requestEndpoint(request, endpoint);
-      await assertJsonResponse(response, `${endpoint.method} ${endpoint.path}`);
+      await assertJsonResponse(response, `${endpoint.method} ${endpoint.path}`, "allowUnavailable" in endpoint && endpoint.allowUnavailable);
     });
   }
 
@@ -62,20 +67,13 @@ test.describe("Contrat JSON des API — prévention de Unexpected token '<'", ()
       browserErrors.push(error.message);
     });
 
-    page.on("response", async response => {
+    page.on("response", response => {
       const url = new URL(response.url());
       if (url.origin !== origin || !url.pathname.startsWith("/api/")) return;
 
       const contentType = response.headers()["content-type"] ?? "";
       if (!contentType.toLowerCase().includes("application/json")) {
         problems.push(`${response.status()} ${url.pathname} Content-Type=${contentType || "(absent)"}`);
-        return;
-      }
-
-      try {
-        JSON.parse(await response.text());
-      } catch {
-        problems.push(`${response.status()} ${url.pathname} corps JSON invalide`);
       }
     });
 
@@ -95,9 +93,9 @@ test.describe("Contrat JSON des API — prévention de Unexpected token '<'", ()
       await page.goto(route, { waitUntil: "domcontentloaded" });
     }
 
-    // Allow response handlers to finish reading their bodies.
+    // The dedicated API contract tests parse response bodies; here we check headers and client-side parsing failures.
     await page.waitForTimeout(300);
-    expect(problems, "Des endpoints API renvoient du HTML ou du JSON invalide").toEqual([]);
+    expect(problems, "Des endpoints API renvoient du HTML au lieu du JSON").toEqual([]);
     expect(
       browserErrors.filter(message => /Unexpected token ['"]?</i.test(message)),
       "Aucune page ne doit échouer en parsant du HTML comme du JSON",
