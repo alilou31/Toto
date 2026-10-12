@@ -20,7 +20,7 @@ Ce backlog historique contient encore des cases non cochées qui peuvent corresp
 - [x] CI sur le commit `1bdb5a456994aef3719a9eaad6e64c33c1fa2399` : tests Playwright navigateur, unitaires, lint, build et build Worker réussis ([workflow](https://github.com/alilou31/Toto/actions/runs/38246981835)).
 - [x] Déploiement Cloudflare du même commit terminé avec succès ([workflow](https://github.com/alilou31/Toto/actions/runs/38246981763)).
 - [x] Smoke tests en lecture seule : accueil, démo, connectivité Neon, protection de l'historique et tests UI passés ([workflow](https://github.com/alilou31/Toto/actions/runs/38247137335)).
-- [ ] Refaire/obtenir une preuve de smoke test après la fin du déploiement : le dernier workflow smoke a commencé avant la fin du déploiement.
+- [x] Obtenir une preuve de smoke test après déploiement pour le commit `1bdb5a456994aef3719a9eaad6e64c33c1fa2399` ([workflow 38247451465](https://github.com/alilou31/Toto/actions/runs/38247451465)). À revalider après le déploiement des commits de documentation postérieurs.
 - [ ] Confirmer dans Neon l'application des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql`.
 - [ ] Vérifier le rapport d'exécution du parcours à deux utilisateurs avant de le déclarer validé en production ; le workflow protégé peut écrire des données.
 - [ ] Réconcilier les PR ouvertes #3, #4, #5, #6 et #8 avec `main` avant toute fusion afin d'éviter les changements redondants.
