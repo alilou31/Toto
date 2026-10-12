@@ -23,6 +23,15 @@
 
 ## Inventaire actuel
 
+## Point de contrôle dépôt — 2026-10-12
+
+- **HEAD de `main` :** `1bdb5a456994aef3719a9eaad6e64c33c1fa2399`.
+- **CI sur HEAD :** réussie — [NIKAHYA CI](https://github.com/alilou31/Toto/actions/runs/38246981835).
+- **Déploiement Cloudflare sur HEAD :** réussi — [déploiement](https://github.com/alilou31/Toto/actions/runs/38246981763).
+- **Smoke tests :** les assertions sont passées — [run 38247137335](https://github.com/alilou31/Toto/actions/runs/38247137335). Attention : ce run a commencé avant la fin du déploiement ; il ne certifie pas à lui seul que la version fraîchement déployée a été testée après déploiement. Voir `PRODUCTION_TEST_LOG.md`.
+- **PR ouvertes à réconcilier avant toute fusion :** [#3 Mode Rencontre](https://github.com/alilou31/Toto/pull/3), [#4 navigation après sauvegarde du profil](https://github.com/alilou31/Toto/pull/4), [#5 sélecteur Snake](https://github.com/alilou31/Toto/pull/5), [#6 sélecteurs Playwright navigation](https://github.com/alilou31/Toto/pull/6), [#8 tests négatifs auth](https://github.com/alilou31/Toto/pull/8). Les branches ont été créées avant les derniers commits de `main`; ne pas fusionner sans vérifier si leurs changements sont déjà intégrés et si la CI de la branche reste utile. Les PR #3 et #5 touchent notamment au Mode Rencontre/backlog ; #4 et #6 ajoutent le même composant d'en-tête dans leurs branches, donc leur fusion sans comparaison provoquerait potentiellement des conflits ou doublons.
+- **Limites non levées :** les fichiers de migration `005_game_sessions.sql` et `007_rencontre_sessions.sql` existent dans le dépôt, mais leur application effective dans Neon n'est pas prouvée par le simple contrôle de connectivité. Le test E2E à deux utilisateurs n'a pas été relancé, car il peut écrire des données de production.
+
 Les chemins ci-dessous ont été repérés dans l'arborescence de `main`. **La présence d'un chemin est une preuve d'implémentation dans le dépôt, pas une preuve de validation fonctionnelle en production.**
 
 | Domaine | Capacités / emplacement repéré | Tests repérés | État actuel / garde-fou anti-doublon |
