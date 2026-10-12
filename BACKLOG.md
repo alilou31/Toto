@@ -260,3 +260,19 @@ Une tâche est terminée quand :
 - [ ] Valider le parcours à deux comptes distincts en production via le workflow protégé, après confirmation des comptes de test et autorisation explicite.
 - **Preuves :** [CI](https://github.com/alilou31/Toto/actions/runs/38255440096), [déploiement](https://github.com/alilou31/Toto/actions/runs/38255439954), [smoke test](https://github.com/alilou31/Toto/actions/runs/38257599484). Détails et limites consignés dans `PRODUCTION_TEST_LOG.md`.
 
+
+
+## Vérification anti-doublons et preuves production — 2026-10-12 (mise à jour)
+
+Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisent avec les preuves ci-dessous. Les anciennes entrées sont conservées comme historique ; ne pas reprendre les cases anciennes comme état actuel.
+
+- [x] Vérifier la CI du commit `7b51f4bf27fb1adff424415c57cb345b7e60c3bf` : [run 38266697104](https://github.com/alilou31/Toto/actions/runs/38266697104) — réussie.
+- [x] Vérifier le déploiement Cloudflare de ce commit : [run 38266697091](https://github.com/alilou31/Toto/actions/runs/38266697091) — réussi.
+- [x] Exécuter Playwright de production après déploiement : [run 38267172805](https://github.com/alilou31/Toto/actions/runs/38267172805) — 18 passés, 0 échoué, 0 ignoré. Fichiers exécutés : `tests/e2e/production-ui.spec.ts` et `tests/e2e/api-json-contract.spec.ts`.
+- [x] Contrôler le smoke HTTP/Neon et la protection anonyme de l'API des résultats de jeux dans le même run — réussi.
+- [ ] Exécuter le parcours métier complet à deux utilisateurs avec des comptes de test dédiés ; ce scénario n'est pas inclus dans le run Playwright de production ci-dessus.
+- [ ] Vérifier indépendamment dans Neon l'application des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` ; le smoke `/api/db-check` ne confirme que la connectivité.
+- [ ] Réconcilier les PR ouvertes #3, #4, #5, #6 et #8 en comparant les différences restantes avec `main` ; éviter toute fusion redondante.
+- [ ] Analyser les vulnérabilités npm signalées dans les logs, identifier les paquets et choisir des mises à jour compatibles sans utiliser de mise à jour forcée non évaluée.
+
+**Règle anti-doublon :** avant d'ajouter une page, une API, un test ou une migration, vérifier `FEATURES_INVENTORY.md`, le code existant, les tests E2E et les PR ouvertes. Une fonctionnalité n'est marquée « production validée » que si un rapport récent couvre explicitement le scénario métier visé.

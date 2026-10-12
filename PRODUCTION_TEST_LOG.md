@@ -177,3 +177,17 @@
 - **Anomalies constatées :** premier déploiement en échec avec `504 Gateway Timeout` lors de `assets-upload-session`; la relance a réussi. Aucune modification de code applicatif effectuée pour cette erreur.
 - **Prochaine action :** exécuter les tests d'interface production en mode manuel (sans mutation) puis planifier séparément le parcours à deux comptes uniquement si les comptes de test et l'autorisation de test en production sont confirmés.
 
+
+
+### PROD-2026-10-12-11 — Playwright lecture seule après déploiement
+- **Date/heure (UTC) :** 2026-10-12, workflow démarré à 15:01 UTC et terminé à 15:03 UTC.
+- **Commit SHA du dépôt :** `7b51f4bf27fb1adff424415c57cb345b7e60c3bf` (`ci: run production Playwright after successful deploy`).
+- **Environnement :** production Cloudflare Workers, https://nikahya.rassoul-ali.workers.dev/.
+- **Déclencheur :** workflow `workflow_run` après réussite du déploiement Cloudflare.
+- **Résultat :** **PASSÉ — vérifié dans les logs GitHub Actions**. Le job Playwright a exécuté `npx playwright test tests/e2e/production-ui.spec.ts tests/e2e/api-json-contract.spec.ts` : **18 passés, 0 échec, 0 ignoré dans ce run**, en 8,9 secondes. Le job de smoke complémentaire a également réussi.
+- **Contrôles smoke :** accueil HTTP, `/demo`, `/api/db-check` avec `ok=true` et `status=connected`, et refus d'accès anonyme à `/api/games/results` avec HTTP 401 et JSON attendu.
+- **Preuves :** [Playwright production, run 38267172805](https://github.com/alilou31/Toto/actions/runs/38267172805) ; [CI, run 38266697104](https://github.com/alilou31/Toto/actions/runs/38266697104) ; [déploiement Cloudflare, run 38266697091](https://github.com/alilou31/Toto/actions/runs/38266697091).
+- **Portée exacte :** ce run couvre seulement `production-ui.spec.ts` et `api-json-contract.spec.ts`. Il ne valide pas le parcours métier à deux utilisateurs, la sauvegarde connectée du profil, les matchs, les jeux partagés ou la messagerie persistante.
+- **Parcours à deux utilisateurs :** **NON EXÉCUTÉ dans ce run**. Il requiert quatre secrets de comptes de test dédiés et `ENABLE_TWO_USER_E2E=true`; le scénario crée des données métier et doit être lancé uniquement avec des comptes de test autorisés.
+- **Limites restantes :** le résultat du smoke ne confirme pas indépendamment l'état des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` dans Neon.
+- **Anomalies / suite :** aucun échec dans ce run. Conserver le parcours à deux comptes comme contrôle distinct et vérifier le rapport associé lors d'une exécution autorisée.
