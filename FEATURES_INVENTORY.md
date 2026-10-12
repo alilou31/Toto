@@ -25,10 +25,10 @@
 
 ## Point de contrôle dépôt — 2026-10-12
 
-- **HEAD de `main` :** `1bdb5a456994aef3719a9eaad6e64c33c1fa2399`.
-- **CI sur HEAD :** réussie — [NIKAHYA CI](https://github.com/alilou31/Toto/actions/runs/38246981835).
-- **Déploiement Cloudflare sur HEAD :** réussi — [déploiement](https://github.com/alilou31/Toto/actions/runs/38246981763).
-- **Smoke tests post-déploiement :** passés pour le commit `1bdb5a456994aef3719a9eaad6e64c33c1fa2399` — [run 38247451465](https://github.com/alilou31/Toto/actions/runs/38247451465). Les commits de documentation postérieurs ont déclenché de nouveaux workflows ; voir `PRODUCTION_TEST_LOG.md` pour distinguer les SHA.
+- **HEAD de `main` au dernier contrôle :** `0df719579122ceccf8acb20c6696cdd52131b89a` (mise à jour du backlog après les smoke tests).
+- **CI sur ce HEAD :** réussie — [NIKAHYA CI](https://github.com/alilou31/Toto/actions/runs/38247750058).
+- **Build Worker :** réussi ; le déploiement de production était encore en cours/attente lors du dernier contrôle — [run Cloudflare](https://github.com/alilou31/Toto/actions/runs/38247749566). Ne pas déclarer ce SHA déployé avant la fin du workflow.
+- **Smoke tests de production les plus récents :** passés en lecture seule — [run 38248030239](https://github.com/alilou31/Toto/actions/runs/38248030239) : accueil, démo, connectivité Neon, protection de l'historique des jeux et tests UI Playwright. Le run valide la production effectivement servie au moment du test, mais ne prouve pas que le commit `0df71957` était déjà déployé.
 - **PR ouvertes à réconcilier avant toute fusion :** [#3 Mode Rencontre](https://github.com/alilou31/Toto/pull/3), [#4 navigation après sauvegarde du profil](https://github.com/alilou31/Toto/pull/4), [#5 sélecteur Snake](https://github.com/alilou31/Toto/pull/5), [#6 sélecteurs Playwright navigation](https://github.com/alilou31/Toto/pull/6), [#8 tests négatifs auth](https://github.com/alilou31/Toto/pull/8). Les branches ont été créées avant les derniers commits de `main`; ne pas fusionner sans vérifier si leurs changements sont déjà intégrés et si la CI de la branche reste utile. Les PR #3 et #5 touchent notamment au Mode Rencontre/backlog ; #4 et #6 ajoutent le même composant d'en-tête dans leurs branches, donc leur fusion sans comparaison provoquerait potentiellement des conflits ou doublons.
 - **Limites non levées :** les fichiers de migration `005_game_sessions.sql` et `007_rencontre_sessions.sql` existent dans le dépôt, mais leur application effective dans Neon n'est pas prouvée par le simple contrôle de connectivité. Le test E2E à deux utilisateurs n'a pas été relancé, car il peut écrire des données de production.
 

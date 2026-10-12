@@ -28,6 +28,16 @@
 
 ## Historique des exécutions
 
+### PROD-2026-10-12-05 — Smoke tests en lecture seule pendant le déploiement du commit de documentation
+- **Date/heure :** 2026-10-12, workflow démarré à 12:16:44 UTC et terminé à 12:18:01 UTC.
+- **Commit de `main` à ce moment :** `0df719579122ceccf8acb20c6696cdd52131b89a` (mise à jour du backlog avec la preuve smoke précédente).
+- **Preuve :** [smoke tests 38248030239](https://github.com/alilou31/Toto/actions/runs/38248030239).
+- **Résultat :** **PASSÉ** — les contrôles en lecture seule ont réussi : accueil Cloudflare, page de démo, connectivité Neon, historique des jeux protégé et tests UI Playwright.
+- **Limite de rattachement :** au moment de ce contrôle, le workflow de déploiement du commit `0df71957` ([run 38247749566](https://github.com/alilou31/Toto/actions/runs/38247749566)) n'était pas terminé. Ce résultat valide les assertions sur la production effectivement servie à cet instant, mais ne prouve pas que le commit `0df71957` était déjà déployé.
+- **CI sur ce commit :** **PASSÉE** — [run 38247750058](https://github.com/alilou31/Toto/actions/runs/38247750058).
+- **Aucune écriture métier en production** n'a été déclenchée.
+- **Suite :** vérifier la fin du déploiement, puis exécuter/consulter un smoke test post-déploiement avant d'affirmer que `0df71957` est en production. Garder les migrations Neon et le parcours E2E à deux comptes comme points ouverts.
+
 ### PROD-2026-10-12-04 — Smoke tests confirmés après le déploiement Cloudflare
 - **Date/heure :** 2026-10-12 à 12:11:17 UTC (démarrage du workflow)
 - **Commit déployé testé :** `1bdb5a456994aef3719a9eaad6e64c33c1fa2399`
