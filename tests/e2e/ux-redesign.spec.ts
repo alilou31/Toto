@@ -105,3 +105,35 @@ test.describe("NIKAHYA — responsive mobile", () => {
     await expect(page).toHaveURL(/\/cockpit\/jeux$/);
   });
 });
+
+test.describe("Connexion premium — expérience responsive", () => {
+  test("présente la promesse produit et un formulaire accessible sur mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.route("**/api/auth/me", async route => {
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: null }) });
+    });
+    await page.goto("/connexion");
+    await expect(page.locator(".auth-story-copy")).toContainText("Moins de swipe.");
+    await expect(page.locator(".auth-story-copy")).toContainText("Plus de vrai.");
+    await expect(page.getByRole("heading", { name: /Votre histoire.*continue ici/i })).toBeVisible();
+    await expect(page.getByLabel(/adresse e-mail/i)).toBeVisible();
+    await expect(page.getByLabel(/mot de passe/i)).toBeVisible();
+    await expect(page.getByRole("link", { name: /Créer mon profil/i })).toHaveAttribute("href", "/inscription");
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    expect(overflow, "la page de connexion ne doit pas déborder horizontalement sur mobile").toBe(false);
+  });
+
+  test("conserve la destination demandée après une connexion réussie", async ({ page }) => {
+    await page.route("**/api/auth/me", async route => {
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: null }) });
+    });
+    await page.route("**/api/auth/login", async route => {
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true }) });
+    });
+    await page.goto("/connexion?next=%2Fcockpit%2Fjeux");
+    await page.getByLabel(/adresse e-mail/i).fill("membre@example.fr");
+    await page.getByLabel(/mot de passe/i).fill("motdepasse-test");
+    await page.getByRole("button", { name: /Se connecter/i }).click();
+    await expect(page).toHaveURL(/\/cockpit\/jeux$/);
+  });
+});
