@@ -23,3 +23,24 @@ test("Affinités affiche les centres d’intérêt communs et permet de proposer
   const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
+
+test("Affinités reste accessible si le chargement du profil personnel échoue", async ({ page }) => {
+  await page.route("**/api/matches", async (route) => {
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ matches: [{
+      match_id: "match-2", conversation_id: "conversation-2", profile_id: "profile-3",
+      public_name: "Yanis", city: "Bordeaux", bio: "J’aime les discussions sincères.",
+      relationship_intention: "serious", interests: ["Musique"],
+      favorite_games: [], hobbies: [], last_message_at: null, last_message: null
+    }] }) });
+  });
+  await page.route("**/api/profile", async (route) => {
+    await route.fulfill({ status: 500, contentType: "application/json", body: JSON.stringify({ error: "Profil indisponible" }) });
+  });
+
+  await page.goto("/matchs");
+  const card = page.locator("article.value-card").filter({ has: page.getByRole("heading", { name: "Yanis" }) });
+  await expect(card).toBeVisible();
+  await expect(card).toContainText("Musique");
+  await expect(card.getByRole("link", { name: /Ouvrir la conversation/i })).toHaveAttribute("href", "/messages/conversation-2");
+});
+
