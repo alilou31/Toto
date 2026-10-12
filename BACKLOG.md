@@ -242,3 +242,11 @@ Une tâche est terminée quand :
 
 **Critères d'acceptation :** les invitations et réponses sont autorisées côté serveur uniquement pour les participants, une question ne peut pas être modifiée après validation, les deux joueurs progressent ensemble et une session terminée ne peut pas recevoir de nouvelles réponses.
 
+## État de livraison — 2026-10-12
+- [x] Relancer le déploiement Cloudflare après l'erreur transitoire 504 : la tentative relancée a réussi.
+- [x] Vérifier le smoke test post-déploiement : accueil, `/demo`, connectivité Neon et protection anonyme de `/api/games/results` validés.
+- [ ] Lancer les tests Playwright d'interface de production via le déclenchement manuel prévu, en lecture seule.
+- [ ] Confirmer l'application des migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql`.
+- [ ] Valider le parcours à deux comptes distincts en production via le workflow protégé, après confirmation des comptes de test et autorisation explicite.
+- **Preuves :** [CI](https://github.com/alilou31/Toto/actions/runs/38255440096), [déploiement](https://github.com/alilou31/Toto/actions/runs/38255439954), [smoke test](https://github.com/alilou31/Toto/actions/runs/38257599484). Détails et limites consignés dans `PRODUCTION_TEST_LOG.md`.
+
