@@ -28,6 +28,16 @@
 
 ## Historique des exécutions
 
+### PROD-2026-10-12-07 — Smoke tests après les mises à jour de suivi
+- **Date/heure :** 2026-10-12, workflow terminé à 12:25:46 UTC.
+- **Commit testé par la CI et les smoke tests :** `20e08c6fc7ddebc3b135fc4a14739be9359936d6`.
+- **CI :** **PASSÉE** — [run 38248707710](https://github.com/alilou31/Toto/actions/runs/38248707710). Cette CI couvre notamment les quatre nouveaux cas négatifs ajoutés à `tests/e2e/auth-api.spec.ts`.
+- **Smoke tests production :** **PASSÉS** — [run 38248829645](https://github.com/alilou31/Toto/actions/runs/38248829645), en lecture seule.
+- **Déploiement Cloudflare de ce commit :** **EN COURS au dernier contrôle** — [run 38248707672](https://github.com/alilou31/Toto/actions/runs/38248707672). Les smoke tests attestent le comportement de l'instance de production testée, mais ne prouvent pas que ce commit était déjà déployé.
+- **Runs intermédiaires annulés :** la CI et le déploiement du commit `a3d40b8` ont été annulés à cause des commits suivants ; ne pas les traiter comme des échecs de test. Le commit plus récent `20e08c6` a une CI verte.
+- **Aucune écriture métier en production** n'a été déclenchée.
+- **Suite :** vérifier le résultat du déploiement `38248707672`; après succès, vérifier un smoke post-déploiement. Le parcours E2E à deux comptes et l'état des migrations Neon `005`/`007` restent non confirmés.
+
 ### PROD-2026-10-12-06 — Nouveau smoke test de production en lecture seule
 - **Date/heure :** 2026-10-12, workflow démarré à 12:20:41 UTC et terminé à 12:21:54 UTC.
 - **Preuve :** [smoke tests 38248441636](https://github.com/alilou31/Toto/actions/runs/38248441636).
