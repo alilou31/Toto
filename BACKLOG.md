@@ -12,18 +12,18 @@
 
 ## État initial connu
 
-- [x] Dépôt GitHub et déploiement Vercel initialisés
+- [x] Dépôt GitHub et déploiement Cloudflare Workers initialisés
 - [x] Base Neon créée
 - [x] Tables initiales créées : `profiles`, `profile_photos`, `interests`, `matches`, `conversations`, `messages`, `blocks`, `reports`
-- [x] Endpoint de contrôle de connexion DB préparé : `/api/db-check`
-- [ ] Vérifier que le contrôle DB renvoie `connected` en production
-- [ ] Remplacer les écrans de démonstration par des parcours réellement reliés au backend
+- [x] Endpoint `/api/db-check` vérifié en production : connexion Neon confirmée
+- [x] Parcours connectés d'authentification, profil et jeux déjà présents ; éviter de les recréer
+- [ ] Vérifier les parcours métier de bout en bout avec deux comptes dédiés
 
 ## EPIC 1 — Fondation technique et sécurité
 
 ### NIK-001 — Vérifier le socle de déploiement (P0)
 - [ ] Vérifier le build et le démarrage en production
-- [ ] Vérifier `DATABASE_URL` côté Vercel sans jamais afficher sa valeur dans les logs
+- [ ] Vérifier `DATABASE_URL` côté Cloudflare sans jamais afficher sa valeur dans les logs
 - [ ] Vérifier les erreurs API et afficher des messages non sensibles
 - [ ] Documenter les commandes locales et les variables d'environnement nécessaires
 
@@ -211,8 +211,8 @@ Une tâche est terminée quand :
 - [x] Avancer la partie lorsque les deux réponses sont reçues
 - [x] Synchroniser l'état côté client sans fournisseur externe
 - [x] Afficher les défis récents et les états en attente/en cours/terminé
-- [ ] Appliquer et vérifier la migration `005_game_sessions.sql` dans Neon
-- [ ] Tester le parcours complet avec deux comptes connectés distincts en production
+- [ ] Confirmer l'application de la migration `005_game_sessions.sql` dans Neon
+- [ ] Tester le parcours complet avec deux comptes connectés distincts en production via le workflow manuel protégé
 - [ ] Ajouter un mécanisme de reprise/expiration des défis abandonnés
 - [ ] Concevoir des questions et règles spécifiques par jeu, au-delà du premier lot générique
 
