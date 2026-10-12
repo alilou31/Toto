@@ -61,4 +61,40 @@ test.describe("API d'authentification — validations sans compte réel", () => 
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({ user: null });
   });
+  
+  test("refuse un JSON mal formé à l'inscription", async ({ request }) => {
+    const response = await request.post("/api/auth/register", {
+      data: "{",
+      headers: { "content-type": "application/json" },
+    });
+    expect(response.status()).toBe(400);
+    expect(await response.json()).toMatchObject({ error: "Requête invalide." });
+  });
+
+  test("refuse un corps JSON qui n'est pas un objet", async ({ request }) => {
+    const response = await request.post("/api/auth/register", {
+      data: null,
+      headers: { "content-type": "application/json" },
+    });
+    expect(response.status()).toBe(400);
+    expect(await response.json()).toMatchObject({ error: "Requête invalide." });
+  });
+
+  test("refuse les champs de connexion d'un type incorrect", async ({ request }) => {
+    const response = await request.post("/api/auth/login", {
+      data: { email: "test@example.fr", password: 123456789012 },
+    });
+    expect(response.status()).toBe(401);
+    expect(await response.json()).toMatchObject({
+      error: "Adresse e-mail ou mot de passe incorrect.",
+    });
+  });
+
+  test("la réponse de session ne met pas en cache les données utilisateur", async ({ request }) => {
+    const response = await request.get("/api/auth/me");
+    expect(response.status()).toBe(200);
+    expect(response.headers()["cache-control"]).toContain("no-store");
+    expect(await response.json()).toEqual({ user: null });
+  });
+
 });
