@@ -153,3 +153,15 @@
 - Inspecter les rapports détaillés des workflows référencés plus haut avant d'affirmer la couverture exacte des assertions.
 - Vérifier les autorisations négatives sur les routes API et le parcours complet de suppression/anonymisation du compte.
 - Le stockage durable et la modération des photos en production ne sont pas considérés comme validés par ce registre.
+
+### PROD-2026-10-12-10 — Redéploiement et smoke test après erreur Cloudflare 504
+- **Date/heure (UTC) :** 2026-10-12, vers 13:42
+- **Commit SHA réellement testé :** `7280631233317276b05ba39d4f74f5190f9f0b03`
+- **URL/environnement :** production Cloudflare Workers, `https://nikahya.rassoul-ali.workers.dev/`
+- **Déclencheur :** relance du job de déploiement après un premier échec 504 de l'API Cloudflare pendant l'upload des assets.
+- **Résultat :** **PASSÉ** pour le déploiement relancé et le smoke test léger. Le job `Deploy to Cloudflare production` a réussi ; le smoke test post-déploiement a validé l'accueil, `/demo`, la connectivité Neon via `/api/db-check` et le refus d'accès anonyme à `/api/games/results` (401 attendu).
+- **Preuves :** [déploiement relancé](https://github.com/alilou31/Toto/actions/runs/38255439954) ; [smoke test post-déploiement](https://github.com/alilou31/Toto/actions/runs/38257599484) ; [CI](https://github.com/alilou31/Toto/actions/runs/38255440096).
+- **Limites :** les tests Playwright d'interface de production ont été ignorés conformément à la configuration actuelle ; le parcours réel à deux comptes et l'état des migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql` ne sont pas validés par ce smoke test.
+- **Anomalies constatées :** premier déploiement en échec avec `504 Gateway Timeout` lors de `assets-upload-session`; la relance a réussi. Aucune modification de code applicatif effectuée pour cette erreur.
+- **Prochaine action :** exécuter les tests d'interface production en mode manuel (sans mutation) puis planifier séparément le parcours à deux comptes uniquement si les comptes de test et l'autorisation de test en production sont confirmés.
+
