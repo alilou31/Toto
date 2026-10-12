@@ -60,11 +60,10 @@ jobs:
             }
             console.log("Game results endpoint correctly rejects anonymous access.");
           '
-  # Playwright sur la production est plus coûteux et recouvre partiellement la CI.
-  # Après déploiement, on garde uniquement les contrôles HTTP/Neon légers ci-dessus.
-  # Les tests UI de production tournent quotidiennement ou à la demande.
+  # Exécuter Playwright après chaque déploiement réussi, et aussi lors du cron ou d'un lancement manuel.
+  # Ces tests sont en lecture seule et ne créent aucun compte ni donnée métier.
   interface:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     name: Playwright interface tests on production
     runs-on: ubuntu-latest
     timeout-minutes: 10
