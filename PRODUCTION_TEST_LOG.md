@@ -28,6 +28,17 @@
 
 ## Historique des exécutions
 
+### PROD-2026-10-12-03 — CI, déploiement Cloudflare et smoke tests après documentation
+- **Date/heure de référence :** 2026-10-12, entre 12:06 et 12:11 UTC
+- **Commit :** `1bdb5a456994aef3719a9eaad6e64c33c1fa2399`
+- **Environnement :** GitHub Actions / Cloudflare Workers / Neon
+- **CI :** **PASSÉ** — [run 38246981835](https://github.com/alilou31/Toto/actions/runs/38246981835) ; tests Playwright navigateur, tests unitaires, lint, build Next.js et build Worker réussis.
+- **Déploiement :** **PASSÉ** — [run 38246981763](https://github.com/alilou31/Toto/actions/runs/38246981763), terminé avec succès à 12:11 UTC.
+- **Smoke tests production :** **PASSÉ pour les assertions exécutées** — [run 38247137335](https://github.com/alilou31/Toto/actions/runs/38247137335) : accueil, page de démonstration, connectivité Neon, protection de l'historique des jeux et tests UI Playwright en lecture seule.
+- **Réserve importante :** le workflow de smoke tests a démarré à 12:08 UTC, avant la fin du déploiement à 12:11 UTC. Même si les deux workflows ont réussi sur le même SHA, ce smoke test ne prouve pas à lui seul que toutes les assertions ont été exécutées après la fin du déploiement. Une vérification post-déploiement distincte reste à faire.
+- **Aucune écriture métier en production n'a été déclenchée** par ces vérifications.
+- **Suite :** confirmer la version réellement servie après le déploiement, puis valider les migrations Neon et le parcours à deux comptes seulement avec le garde-fou d'autorisation requis.
+
 ### PROD-2026-10-12-01 — Statut CI / déploiement / smoke tests connu
 - **Date de référence :** 2026-10-12 (heure exacte non disponible)
 - **Commit :** `41039868292e4d6152ed6c43de9bc994685b9f7e`
