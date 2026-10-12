@@ -77,10 +77,10 @@ test("browser back keeps an authenticated user in the app instead of returning t
   await page.goto("/tableau-de-bord");
   await expect(page.getByRole("heading", { name: "Bonjour, Camille." })).toBeVisible();
   await page.getByRole("link", { name: /Découvrir des profils/ }).click();
-  await expect(page).toHaveURL(/\\/decouvrir(?:\\?.*)?$/);
+  await expect(page).toHaveURL(/\/decouvrir(?:\?.*)?$/);
 
   await page.goBack();
-  await expect(page).toHaveURL(/\\/tableau-de-bord$/);
+  await expect(page).toHaveURL(/\/tableau-de-bord$/);
   await expect(page.getByRole("heading", { name: "Bonjour, Camille." })).toBeVisible();
-  await expect(page).not.toHaveURL(/\\/connexion/);
+  await expect(page).not.toHaveURL(/\/connexion/);
 });
