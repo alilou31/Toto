@@ -17,6 +17,9 @@
 Ce backlog historique contient encore des cases non cochées qui peuvent correspondre à du code et à des tests ajoutés depuis sa rédaction. Pour éviter les doublons, **ne pas prendre ces cases seules comme état réel** : consulter d'abord [`FEATURES_INVENTORY.md`](./FEATURES_INVENTORY.md) et [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md), puis vérifier le code, les PR et les preuves avant de modifier le statut d'une tâche.
 
 ### État confirmé lors du dernier contrôle
+- [x] CI verte pour le commit `21f9b27218f77a31200ff9848abb01ea53996013` ([run 38250340762](https://github.com/alilou31/Toto/actions/runs/38250340762)).
+- [x] Déploiement Cloudflare du même commit réussi ([run 38250340411](https://github.com/alilou31/Toto/actions/runs/38250340411)).
+- [x] Smoke léger post-déploiement réussi : accueil, démo, Neon et protection de l'historique des jeux ([run 38250709449](https://github.com/alilou31/Toto/actions/runs/38250709449)). Le job Playwright de production a été ignoré comme prévu par la configuration anti-doublons.
 - [x] Réduction des doublons dans le workflow de smoke production : après déploiement, smoke léger HTTP/Neon uniquement ; Playwright de production quotidien ou manuel. La prochaine exécution post-déploiement doit confirmer le déclenchement effectif.
 - [ ] Confirmer que le prochain smoke post-déploiement s'exécute (le run 38249376116 a été ignoré : [preuve](https://github.com/alilou31/Toto/actions/runs/38249376116)).
 - [x] CI du HEAD `20e08c6fc7ddebc3b135fc4a14739be9359936d6` : réussie ([workflow 38248707710](https://github.com/alilou31/Toto/actions/runs/38248707710)).

@@ -28,6 +28,16 @@
 
 ## Historique des exécutions
 
+### PROD-2026-10-12-09 — Vérification après correction anti-doublons
+- **Date/heure :** 2026-10-12, smoke terminé après le déploiement du commit `21f9b27218f77a31200ff9848abb01ea53996013`.
+- **CI :** **PASSÉE** — [run 38250340762](https://github.com/alilou31/Toto/actions/runs/38250340762).
+- **Déploiement Cloudflare :** **PASSÉ** — [run 38250340411](https://github.com/alilou31/Toto/actions/runs/38250340411).
+- **Smoke post-déploiement :** **PASSÉ** — [run 38250709449](https://github.com/alilou31/Toto/actions/runs/38250709449). Les contrôles de l'accueil, de `/demo`, de la connectivité Neon et du refus d'accès anonyme à l'historique des jeux ont tous réussi.
+- **Playwright production dans ce run :** **IGNORÉ CONFORMÉMENT À LA NOUVELLE CONFIGURATION** ; il reste planifié quotidiennement et déclenchable manuellement. La CI Playwright sur le code a passé.
+- **Écritures métier en production :** aucune.
+- **Conclusion :** la nouvelle configuration anti-doublons fonctionne ; CI, déploiement et smoke léger post-déploiement sont verts pour le SHA indiqué.
+- **Suite :** continuer à surveiller le prochain run quotidien Playwright et garder séparément ouverts le parcours E2E à deux comptes et la confirmation des migrations Neon `005`/`007`.
+
 ### PROD-2026-10-12-08 — Smoke post-déploiement ignoré et réduction des doublons
 - **Date/heure :** 2026-10-12, workflow terminé à 12:29:45 UTC.
 - **Commit concerné :** `b9c61d9b6839fa402eeaede435d700d8eadd1629`.
