@@ -12,6 +12,19 @@
 
 ## État initial connu
 
+## État de suivi vérifié — 2026-10-12
+
+Ce backlog historique contient encore des cases non cochées qui peuvent correspondre à du code et à des tests ajoutés depuis sa rédaction. Pour éviter les doublons, **ne pas prendre ces cases seules comme état réel** : consulter d'abord [`FEATURES_INVENTORY.md`](./FEATURES_INVENTORY.md) et [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md), puis vérifier le code, les PR et les preuves avant de modifier le statut d'une tâche.
+
+### État confirmé lors du dernier contrôle
+- [x] CI sur le commit `1bdb5a456994aef3719a9eaad6e64c33c1fa2399` : tests Playwright navigateur, unitaires, lint, build et build Worker réussis ([workflow](https://github.com/alilou31/Toto/actions/runs/38246981835)).
+- [x] Déploiement Cloudflare du même commit terminé avec succès ([workflow](https://github.com/alilou31/Toto/actions/runs/38246981763)).
+- [x] Smoke tests en lecture seule : accueil, démo, connectivité Neon, protection de l'historique et tests UI passés ([workflow](https://github.com/alilou31/Toto/actions/runs/38247137335)).
+- [ ] Refaire/obtenir une preuve de smoke test après la fin du déploiement : le dernier workflow smoke a commencé avant la fin du déploiement.
+- [ ] Confirmer dans Neon l'application des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql`.
+- [ ] Vérifier le rapport d'exécution du parcours à deux utilisateurs avant de le déclarer validé en production ; le workflow protégé peut écrire des données.
+- [ ] Réconcilier les PR ouvertes #3, #4, #5, #6 et #8 avec `main` avant toute fusion afin d'éviter les changements redondants.
+
 - [x] Dépôt GitHub et déploiement Cloudflare Workers initialisés
 - [x] Base Neon créée
 - [x] Tables initiales créées : `profiles`, `profile_photos`, `interests`, `matches`, `conversations`, `messages`, `blocks`, `reports`
