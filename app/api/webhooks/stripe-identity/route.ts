@@ -55,7 +55,8 @@ export async function POST(request: Request) {
       const outputs = session?.verified_outputs as { dob?: { day?: number; month?: number; year?: number } } | undefined;
       const dob = outputs?.dob;
       const profileRows = await sql`select birth_date from public.profiles where id = ${userId} limit 1`;
-      const declaredDate = profileRows[0]?.birth_date ? String(profileRows[0].birth_date).slice(0, 10) : "";
+      const declaredValue = profileRows[0]?.birth_date;
+      const declaredDate = declaredValue ? (declaredValue instanceof Date ? declaredValue.toISOString().slice(0, 10) : String(declaredValue).slice(0, 10)) : "";
       const verifiedDate = dob?.year && dob.month && dob.day
         ? `${String(dob.year).padStart(4, "0")}-${String(dob.month).padStart(2, "0")}-${String(dob.day).padStart(2, "0")}`
         : "";
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
     } else if (event.type === "identity.verification_session.processing") {
       await sql`update public.profile_identity_verification_sessions set status = 'processing', updated_at = now() where provider_session_id = ${sessionId}`;
     } else {
-      const status = event.type.endsWith(".canceled") ? "canceled" : "requires_input";
+      const status = event.type.endsWith(".canceled") ? "canceled" : "rejected";
       await sql`update public.profile_identity_verification_sessions set status = ${status}, updated_at = now() where provider_session_id = ${sessionId}`;
       if (status === "canceled") await sql`update public.profiles set verification_status = 'unverified' where id = ${userId} and verification_status = 'pending'`;
     }
