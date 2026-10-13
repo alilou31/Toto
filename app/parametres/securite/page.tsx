@@ -42,7 +42,7 @@ export default function SecuritySettingsPage() {
     <main className="auth-page">
       <Link href="/tableau-de-bord" className="auth-back"><ArrowLeft size={16}/> Retour au tableau de bord</Link>
       <section className="auth-card auth-card-wide">
-        <Link href="/" className="brand auth-brand"><span className="brand-mark"><ShieldCheck size={20}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+        <Link href="/" className="brand auth-brand"><span className="brand-mark"><ShieldCheck size={20}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
         <div className="section-kicker auth-kicker">SÉCURITÉ / VOTRE COMPTE</div>
         <h1 className="auth-title">Garder le contrôle,<br/><em>jusqu’au bout.</em></h1>
         <p className="auth-description">Vous pouvez supprimer votre compte sans contacter un prestataire. La suppression retire votre profil, vos intérêts, matchs, conversations, messages, blocages, signalements associés et vos sessions de connexion.</p>

@@ -65,7 +65,7 @@ export default function MatchesPage() {
   return <main className="auth-page">
     <Link href="/decouvrir" className="auth-back"><ArrowLeft size={16}/> Retour à la découverte</Link>
     <section className="auth-card auth-card-wide">
-      <Link href="/" className="brand auth-brand"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+      <Link href="/" className="brand auth-brand"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
       <div className="section-kicker auth-kicker">UNE RENCONTRE RÉCIPROQUE</div>
       <h1 className="auth-title">Vos matchs,<br/><em>vos prochaines histoires.</em></h1>
       <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:20}}><button className="button button-quiet" onClick={() => void load()} disabled={loading}><RefreshCw size={16}/> Actualiser</button><Link href="/decouvrir" className="button button-green">Découvrir des profils</Link></div>

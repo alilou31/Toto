@@ -84,9 +84,9 @@ export default function ReinitialiserMotDePassePage() {
     <main className="auth-page auth-page-premium">
       <Link href="/connexion" className="auth-back"><ArrowLeft size={16} /> Retour à la connexion</Link>
       <section className="auth-card auth-card-premium" aria-labelledby="reset-title">
-        <Link href="/" className="brand auth-brand" aria-label="NIKAHYA, accueil">
+        <Link href="/" className="brand auth-brand" aria-label="NAKAHYA, accueil">
           <span className="brand-mark"><Heart size={20} /></span>
-          <span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span>
+          <span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span>
         </Link>
         <div className="section-kicker auth-kicker">{token ? "SÉCURITÉ DU COMPTE" : "RETROUVER VOTRE ACCÈS"}</div>
         <h1 id="reset-title" className="auth-title">{token ? <>Un nouveau départ,<br /><em>en toute sécurité.</em></> : <>Retrouvons le chemin<br /><em>vers votre histoire.</em></>}</h1>

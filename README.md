@@ -1,4 +1,4 @@
-# NIKAHYA
+# NAKAHYA
 
 **La rencontre qui change tout.**
 
@@ -97,7 +97,7 @@ Les profils peuvent renseigner des jeux favoris, des hobbies, des centres d’in
 
 ## Jeux et défis synchronisés
 
-Le catalogue propose six formats de mini-jeux. Les parties individuelles peuvent enregistrer leur résultat pour un compte connecté via `/api/games/results` (migration `004_games.sql`). La page `/cockpit/defis` permet de créer un défi, de partager un lien/code d’invitation, de rejoindre une partie et de répondre chacun à son rythme. Les réponses sont stockées côté serveur et l’avancement se synchronise par interrogation périodique ; aucun fournisseur externe ni WebSocket n’est requis. Appliquer `db/migrations/005_game_sessions.sql` dans le SQL Editor de Neon après la migration 004 avant d’utiliser les défis. Les deux joueurs doivent être connectés à leur compte NIKAHYA. Les questions et règles sont actuellement une première version MVP de quatre questions par partie.
+Le catalogue propose six formats de mini-jeux. Les parties individuelles peuvent enregistrer leur résultat pour un compte connecté via `/api/games/results` (migration `004_games.sql`). La page `/cockpit/defis` permet de créer un défi, de partager un lien/code d’invitation, de rejoindre une partie et de répondre chacun à son rythme. Les réponses sont stockées côté serveur et l’avancement se synchronise par interrogation périodique ; aucun fournisseur externe ni WebSocket n’est requis. Appliquer `db/migrations/005_game_sessions.sql` dans le SQL Editor de Neon après la migration 004 avant d’utiliser les défis. Les deux joueurs doivent être connectés à leur compte NAKAHYA. Les questions et règles sont actuellement une première version MVP de quatre questions par partie.
 
 ## Authentification première partie (MVP)
 

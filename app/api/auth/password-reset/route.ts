@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   const clientIp = getTrustedClientIp(request);
   try {
     if (!process.env.RESEND_API_KEY) {
-      console.error("NIKAHYA password reset email is not configured.");
+      console.error("NAKAHYA password reset email is not configured.");
       return NextResponse.json({ error: "La récupération par e-mail est momentanément indisponible." }, { status: 503, headers: noStore });
     }
 
@@ -59,8 +59,8 @@ export async function POST(request: Request) {
 
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
     const resetUrl = `${siteUrl}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}`;
-    const from = process.env.RESEND_FROM_EMAIL || "NIKAHYA <onboarding@resend.dev>";
-    const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head><body style="margin:0;background:#faf8f2;font-family:Arial,sans-serif;color:#202824"><main style="max-width:560px;margin:32px auto;padding:32px 24px;background:#fff;border-radius:16px"><p style="font-size:12px;letter-spacing:2px;color:#075b4b;font-weight:bold">NIKAHYA</p><h1 style="font-size:26px">Réinitialisez votre mot de passe</h1><p>Vous avez demandé à modifier le mot de passe de votre compte NIKAHYA.</p><p style="margin:28px 0"><a href="${resetUrl}" style="display:inline-block;padding:15px 22px;background:#075b4b;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold">Choisir un nouveau mot de passe</a></p><p>Ce lien est valable pendant 60 minutes et ne peut être utilisé qu'une seule fois.</p><p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail. Votre mot de passe ne changera pas.</p><p style="font-size:12px;color:#68716b">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><a href="${resetUrl}">${resetUrl}</a></p></main></body></html>`;
+    const from = process.env.RESEND_FROM_EMAIL || "NAKAHYA <onboarding@resend.dev>";
+    const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head><body style="margin:0;background:#faf8f2;font-family:Arial,sans-serif;color:#202824"><main style="max-width:560px;margin:32px auto;padding:32px 24px;background:#fff;border-radius:16px"><p style="font-size:12px;letter-spacing:2px;color:#075b4b;font-weight:bold">NAKAHYA</p><h1 style="font-size:26px">Réinitialisez votre mot de passe</h1><p>Vous avez demandé à modifier le mot de passe de votre compte NAKAHYA.</p><p style="margin:28px 0"><a href="${resetUrl}" style="display:inline-block;padding:15px 22px;background:#075b4b;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold">Choisir un nouveau mot de passe</a></p><p>Ce lien est valable pendant 60 minutes et ne peut être utilisé qu'une seule fois.</p><p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail. Votre mot de passe ne changera pas.</p><p style="font-size:12px;color:#68716b">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><a href="${resetUrl}">${resetUrl}</a></p></main></body></html>`;
     let response: Response;
     try {
       response = await fetch("https://api.resend.com/emails", {
@@ -69,26 +69,26 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           from,
           to: [email],
-          subject: "Réinitialisation de votre mot de passe NIKAHYA",
+          subject: "Réinitialisation de votre mot de passe NAKAHYA",
           html,
-          text: `Vous avez demandé à réinitialiser votre mot de passe NIKAHYA. Ouvrez ce lien (valable 60 minutes) : ${resetUrl}\n\nSi cette demande ne vient pas de vous, ignorez cet e-mail.`,
+          text: `Vous avez demandé à réinitialiser votre mot de passe NAKAHYA. Ouvrez ce lien (valable 60 minutes) : ${resetUrl}\n\nSi cette demande ne vient pas de vous, ignorez cet e-mail.`,
         }),
       });
     } catch {
       // A network failure must not leave a live token or reveal that the account exists.
       await sql`delete from public.password_reset_tokens where token_hash = ${tokenHash}`.catch(() => []);
-      console.error("NIKAHYA password reset email request failed before receiving a response.");
+      console.error("NAKAHYA password reset email request failed before receiving a response.");
       return NextResponse.json({ message: GENERIC_MESSAGE }, { headers: noStore });
     }
 
     if (!response.ok) {
       await sql`delete from public.password_reset_tokens where token_hash = ${tokenHash}`.catch(() => []);
-      console.error("NIKAHYA password reset email delivery failed with HTTP status", response.status);
+      console.error("NAKAHYA password reset email delivery failed with HTTP status", response.status);
     }
     // Identical response for existing and unknown accounts prevents account enumeration.
     return NextResponse.json({ message: GENERIC_MESSAGE }, { headers: noStore });
   } catch {
-    console.error("NIKAHYA password reset request failed.");
+    console.error("NAKAHYA password reset request failed.");
     return NextResponse.json({ error: "La demande n’a pas pu être traitée. Réessayez plus tard." }, { status: 503, headers: noStore });
   }
 }

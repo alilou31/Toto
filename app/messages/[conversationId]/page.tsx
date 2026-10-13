@@ -49,7 +49,7 @@ export default function MessagesPage() {
   return <main className="auth-page">
     <Link href="/matchs" className="auth-back"><ArrowLeft size={16}/> Retour à mes matchs</Link>
     <section className="auth-card auth-card-wide">
-      <Link href="/" className="brand auth-brand"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+      <Link href="/" className="brand auth-brand"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
       <div className="section-kicker auth-kicker">MESSAGERIE PRIVÉE</div>
       <h1 className="auth-title">Prenez le temps<br/><em>de vous découvrir.</em></h1>
       <p className="auth-description">Seuls les deux membres de ce match peuvent lire et envoyer des messages dans cette conversation.</p>

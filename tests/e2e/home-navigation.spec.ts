@@ -12,7 +12,7 @@ test("homepage makes sign-in and account creation obvious", async ({ page }) => 
   await expect(page.getByRole("heading", { name: /Et si vous trouviez la bonne personne en jouant/i })).toBeVisible();
   await expect(page.getByRole("link", { name: /Faire le premier pas/i })).toHaveAttribute("href", "/inscription");
   await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(1);
-  await expect(page).toHaveTitle(/NIKAHYA.*rencontres sérieuses/i);
+  await expect(page).toHaveTitle(/NAKAHYA.*rencontres sérieuses/i);
   await expect(page.getByRole("link", { name: "Se connecter" }).first()).toHaveAttribute("href", "/connexion");
   await expect(header.getByRole("button", { name: "Ouvrir le menu" })).toBeVisible();
   await header.getByRole("button", { name: "Ouvrir le menu" }).click();

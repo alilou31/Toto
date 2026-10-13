@@ -165,7 +165,7 @@ export default function ProfilePage() {
     <main className="personalize-page">
       <header className="personalize-header">
         <Link href="/tableau-de-bord" className="personalize-back"><ArrowLeft size={17} /> Mon espace</Link>
-        <Link href="/" className="brand" aria-label="NIKAHYA, accueil"><span className="brand-mark"><Heart size={19}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+        <Link href="/" className="brand" aria-label="NAKAHYA, accueil"><span className="brand-mark"><Heart size={19}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
         <Link href="/parametres/securite" className="personalize-security"><ShieldCheck size={16} /><span>Confidentialité</span></Link>
       </header>
 
@@ -190,7 +190,7 @@ export default function ProfilePage() {
                 <div className="personalize-fields">
                   <label className="personalize-field"><span>Prénom ou nom public <b>*</b></span><input required minLength={2} maxLength={40} value={publicName} onChange={e=>setPublicName(e.target.value)} autoComplete="nickname" placeholder="Comment souhaitez-vous être appelé·e ?" /></label>
                   <label className="personalize-field"><span>Ville <small>Facultatif</small></span><input maxLength={100} value={city} onChange={e=>setCity(e.target.value)} autoComplete="address-level2" placeholder="Ex. Bordeaux" /></label>
-                  <label className="personalize-field personalize-field-full"><span>Date de naissance <b>*</b></span><input type="date" required max={maxBirthDateValue} value={birthDate} onChange={e=>setBirthDate(e.target.value)} autoComplete="bday" /><small className="personalize-hint"><LockKeyhole size={13} /> Votre date de naissance n’est jamais affichée sur le profil public. NIKAHYA est réservé aux adultes de 18 ans et plus.</small></label>
+                  <label className="personalize-field personalize-field-full"><span>Date de naissance <b>*</b></span><input type="date" required max={maxBirthDateValue} value={birthDate} onChange={e=>setBirthDate(e.target.value)} autoComplete="bday" /><small className="personalize-hint"><LockKeyhole size={13} /> Votre date de naissance n’est jamais affichée sur le profil public. NAKAHYA est réservé aux adultes de 18 ans et plus.</small></label>
                   <label className="personalize-field"><span>Votre genre <b>*</b></span><select required value={gender} onChange={e=>setGender(e.target.value)}><option value="man">Homme</option><option value="woman">Femme</option><option value="other">Autre</option><option value="prefer_not_to_say">Je préfère ne pas préciser</option></select></label>
                   <label className="personalize-field"><span>Qui souhaitez-vous découvrir ?</span><select value={preferredGender} onChange={e=>setPreferredGender(e.target.value)}><option value="opposite">Genre opposé (par défaut)</option><option value="women">Femmes</option><option value="men">Hommes</option><option value="all">Tous les genres</option></select><small className="personalize-hint">Vous pourrez ajuster ce filtre dans Découvrir.</small></label>
                 </div>

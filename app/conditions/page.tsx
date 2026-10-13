@@ -10,15 +10,15 @@ export default function Conditions() {
   return (
     <main className="legal-page">
       <Link href="/" className="text-link">← Retour à l’accueil</Link>
-      <p className="section-kicker">NIKAHYA / CADRE DE CONFIANCE</p>
+      <p className="section-kicker">NAKAHYA / CADRE DE CONFIANCE</p>
       <h1>Conditions d’utilisation</h1>
       <aside className="legal-draft-notice" role="note">
         <strong>Document de travail — non contractuel</strong>
-        <p>« NIKAHYA Studio » est un nom fictif de travail et ne désigne pas une société immatriculée. Ces conditions sont un cadre de préparation, à compléter et faire valider avant ouverture commerciale. Elles ne remplacent pas un avis juridique.</p>
+        <p>« NAKAHYA Studio » est un nom fictif de travail et ne désigne pas une société immatriculée. Ces conditions sont un cadre de préparation, à compléter et faire valider avant ouverture commerciale. Elles ne remplacent pas un avis juridique.</p>
       </aside>
 
       <h2>1. Objet et accès</h2>
-      <p>NIKAHYA est un projet de service de rencontre destiné aux adultes de 18 ans et plus qui souhaitent faire connaissance au moyen de profils, d’affinités, de jeux et de conversations. L’accès public et les fonctionnalités disponibles peuvent évoluer pendant la phase pilote.</p>
+      <p>NAKAHYA est un projet de service de rencontre destiné aux adultes de 18 ans et plus qui souhaitent faire connaissance au moyen de profils, d’affinités, de jeux et de conversations. L’accès public et les fonctionnalités disponibles peuvent évoluer pendant la phase pilote.</p>
 
       <h2>2. Compte et informations</h2>
       <ul>
@@ -41,7 +41,7 @@ export default function Conditions() {
       <p>Aucun prix, abonnement, renouvellement ou moyen de paiement n’est défini par cette page. Si des offres payantes sont lancées, les conditions commerciales, le prix TTC, la facturation, les règles de résiliation, le droit de rétractation lorsqu’il s’applique et les coordonnées du médiateur compétent devront être publiés avant la souscription.</p>
 
       <h2>7. Éditeur et contact</h2>
-      <p>Identité légale, adresse, contact et informations d’immatriculation : à renseigner par l’éditeur réel. « NIKAHYA Studio » est un nom fictif de travail et ne doit pas être utilisé comme identité légale.</p>
+      <p>Identité légale, adresse, contact et informations d’immatriculation : à renseigner par l’éditeur réel. « NAKAHYA Studio » est un nom fictif de travail et ne doit pas être utilisé comme identité légale.</p>
 
       <p><Link href="/mentions-legales" className="text-link">Mentions légales de travail</Link> · <Link href="/confidentialite" className="text-link">Politique de confidentialité de travail</Link></p>
     </main>

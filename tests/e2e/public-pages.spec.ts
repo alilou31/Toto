@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("Pages publiques NIKAHYA", () => {
+test.describe("Pages publiques NAKAHYA", () => {
   test("la page d'accueil affiche la marque et les accès principaux", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/NIKAHYA/i);
+    await expect(page).toHaveTitle(/NAKAHYA/i);
+    await expect(page.getByRole("link", { name: /NAKAHYA/i }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Voir comment ça marche/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /Voir comment ça marche/i })).toHaveAttribute("href", "/demo");
@@ -48,7 +49,7 @@ test.describe("Pages publiques NIKAHYA", () => {
 
   test("la démo possède ses propres métadonnées SEO et son URL canonique", async ({ page }) => {
     await page.goto("/demo");
-    await expect(page).toHaveTitle("Démo NIKAHYA — Découvrez les rencontres en jouant");
+    await expect(page).toHaveTitle("Démo NAKAHYA — Découvrez les rencontres en jouant");
     await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /profils fictifs/);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/demo$/);
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", /\/demo$/);

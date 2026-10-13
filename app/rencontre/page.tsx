@@ -275,7 +275,7 @@ export default function RencontrePage() {
     <main className="auth-page">
       <Link href="/tableau-de-bord" className="auth-back"><ArrowLeft size={16} /> Retour à mon espace</Link>
       <section className="auth-card auth-card-wide">
-        <Link href="/" className="brand auth-brand"><span className="brand-mark"><Gamepad2 size={20} /></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+        <Link href="/" className="brand auth-brand"><span className="brand-mark"><Gamepad2 size={20} /></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
         <div className="section-kicker auth-kicker">APPRENDRE À SE CONNAÎTRE AUTREMENT</div>
         <h1 className="auth-title"><em>Alchimie.</em></h1>
         <p className="auth-description">Découvrez une activité à partager avec une personne avec qui vous avez déjà un match. L’invitation et la progression restent liées à votre match.</p>

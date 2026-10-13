@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     if (code === "23505") {
       return NextResponse.json({ error: "Impossible de créer ce compte avec ces informations." }, { status: 409 });
     }
-    console.error("NIKAHYA registration failed.");
+    console.error("NAKAHYA registration failed.");
     return NextResponse.json({ error: "La création du compte a échoué. Réessayez plus tard." }, { status: 500 });
   }
 }

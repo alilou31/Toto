@@ -44,7 +44,7 @@ export default function ValidationPage() {
     const birthDate = document.querySelector<HTMLInputElement>("#test-birthdate");
     const terms = document.querySelector<HTMLInputElement>("#test-terms");
     if (email) email.value = "test@example.fr";
-    if (password) password.value = "NIKAHYAtest2026";
+    if (password) password.value = "NAKAHYAtest2026";
     if (birthDate) birthDate.value = "1995-06-15";
     if (terms) terms.checked = true;
     setChecks([]);
@@ -67,7 +67,7 @@ export default function ValidationPage() {
   return (
     <main className="auth-page">
       <section className="auth-card" style={{ maxWidth: 720 }}>
-        <Link href="/" className="auth-brand">♥ <span>NIKAHYA</span></Link>
+        <Link href="/" className="auth-brand">♥ <span>NAKAHYA</span></Link>
         <p className="auth-eyebrow">ENVIRONNEMENT DE DÉVELOPPEMENT</p>
         <h1 className="auth-title">Banc de validation</h1>
         <p className="auth-subtitle">Lancez des contrôles manuels de formulaire sans base de données. Cette page ne crée aucun compte et n’envoie aucune donnée.</p>
@@ -76,7 +76,7 @@ export default function ValidationPage() {
             <input className="auth-input" id="test-email" type="email" defaultValue="test@example.fr" required placeholder="vous@exemple.fr" />
           </label>
           <label className="auth-label" htmlFor="test-password">Mot de passe de test
-            <input className="auth-input" id="test-password" type="text" defaultValue="NIKAHYAtest2026" required minLength={10} placeholder="10 caractères minimum" />
+            <input className="auth-input" id="test-password" type="text" defaultValue="NAKAHYAtest2026" required minLength={10} placeholder="10 caractères minimum" />
           </label>
           <label className="auth-label" htmlFor="test-birthdate">Date de naissance
             <input className="auth-input" id="test-birthdate" type="date" defaultValue="1995-06-15" required />

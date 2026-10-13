@@ -92,7 +92,7 @@ export async function POST(request: Request) {
       { headers: noStore },
     );
   } catch {
-    console.error("NIKAHYA password reset confirmation failed.");
+    console.error("NAKAHYA password reset confirmation failed.");
     return NextResponse.json({ error: "La modification n’a pas pu être effectuée. Réessayez plus tard." }, { status: 503, headers: noStore });
   }
 }

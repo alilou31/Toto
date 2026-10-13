@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("Interface NIKAHYA en production", () => {
+test.describe("Interface NAKAHYA en production", () => {
   test("la page d'accueil s'affiche et propose les actions principales", async ({ page }) => {
     const response = await page.goto("/");
     expect(response?.status(), "La page d'accueil doit répondre en HTTP 200").toBe(200);
-    await expect(page).toHaveTitle(/NIKAHYA/i);
+    await expect(page).toHaveTitle(/NAKAHYA/i);
     await expect(page.locator("main h1").first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     await expect(page.locator('a[href="/connexion"]').first()).toBeVisible();

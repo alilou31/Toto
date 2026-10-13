@@ -23,17 +23,17 @@ const games = [
   { icon: "♡", tone: "mint", type: "CONNEXION", title: "Les questions complices", text: "Parlez de vos goûts, de vos rêves et de ce qui compte vraiment pour vous.", duration: "À VOTRE RYTHME" },
 ];
 const faqs = [
-  { q: "À qui s’adresse NIKAHYA ?", a: "NIKAHYA s’adresse aux adultes de 18 ans et plus qui souhaitent une relation sérieuse et veulent prendre le temps de découvrir une personne au-delà de son apparence." },
+  { q: "À qui s’adresse NAKAHYA ?", a: "NAKAHYA s’adresse aux adultes de 18 ans et plus qui souhaitent une relation sérieuse et veulent prendre le temps de découvrir une personne au-delà de son apparence." },
   { q: "Pourquoi faire connaissance en jouant ?", a: "Un jeu partagé donne un point de départ naturel à la conversation. Il permet de découvrir les façons de réfléchir, les centres d’intérêt et le sens de l’humour, sans prétendre résumer une personne à un score." },
-  { q: "Est-ce une application de rencontre sérieuse ?", a: "Oui, NIKAHYA est pensé pour des rencontres intentionnelles : les jeux facilitent les premiers échanges, tandis que les valeurs, les intentions et les projets de vie restent au centre." },
+  { q: "Est-ce une application de rencontre sérieuse ?", a: "Oui, NAKAHYA est pensé pour des rencontres intentionnelles : les jeux facilitent les premiers échanges, tandis que les valeurs, les intentions et les projets de vie restent au centre." },
   { q: "Mes informations personnelles sont-elles publiques ?", a: "Votre adresse e-mail et votre date de naissance complète ne sont pas destinées à être affichées sur votre profil. La page de confidentialité publiée est encore en cours de finalisation et doit préciser les données traitées, les durées de conservation et vos droits." },
   { q: "Puis-je bloquer ou signaler un profil ?", a: "Oui. Depuis la page Découvrir, vous pouvez bloquer un profil ou envoyer un signalement en choisissant une catégorie et en ajoutant, si besoin, des détails. Si une interaction vous met mal à l’aise, interrompez-la et utilisez ces outils." },
 ];
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
 
 export const metadata: Metadata = {
-  title: "NIKAHYA — Rencontres sérieuses : faites connaissance en jouant",
-  description: "Envie d’une relation sérieuse ? Découvrez NIKAHYA, l’application de rencontre qui vous aide à faire connaissance grâce aux jeux, aux affinités, aux valeurs et aux projets de vie.",
+  title: "NAKAHYA — Rencontres sérieuses : faites connaissance en jouant",
+  description: "Envie d’une relation sérieuse ? Découvrez NAKAHYA, l’application de rencontre qui vous aide à faire connaissance grâce aux jeux, aux affinités, aux valeurs et aux projets de vie.",
   alternates: { canonical: "/" },
 };
 
@@ -43,8 +43,8 @@ export default async function Home() {
   const t = localeMessages[locale];
   const currentUser = await getCurrentUser().catch(() => null);
   const structuredData = [
-    { "@context": "https://schema.org", "@type": "Organization", name: "NIKAHYA", url: siteUrl, description: "NIKAHYA aide les adultes qui recherchent une relation sérieuse à faire connaissance grâce aux jeux, aux centres d’intérêt et aux conversations." },
-    { "@context": "https://schema.org", "@type": "WebSite", name: "NIKAHYA", url: siteUrl, inLanguage: "fr-FR", description: "L’application de rencontre sérieuse pour faire connaissance en jouant." },
+    { "@context": "https://schema.org", "@type": "Organization", name: "NAKAHYA", url: siteUrl, description: "NAKAHYA aide les adultes qui recherchent une relation sérieuse à faire connaissance grâce aux jeux, aux centres d’intérêt et aux conversations." },
+    { "@context": "https://schema.org", "@type": "WebSite", name: "NAKAHYA", url: siteUrl, inLanguage: "fr-FR", description: "L’application de rencontre sérieuse pour faire connaissance en jouant." },
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
   ];
   return (
@@ -55,7 +55,7 @@ export default async function Home() {
         <div className="hero-copy landing-hero-copy">
           <div className="eyebrow"><span className="eyebrow-line" /> LA RENCONTRE, AUTREMENT</div>
           <h1 id="landing-title">{t.hero}</h1>
-          <p className="hero-lede">{t.intro} <strong>Avec NIKAHYA, la rencontre sérieuse commence par la complicité.</strong></p>
+          <p className="hero-lede">{t.intro} <strong>Avec NAKAHYA, la rencontre sérieuse commence par la complicité.</strong></p>
           <div className="hero-actions landing-hero-actions">
             <Link href="/inscription" className="button button-green landing-primary-cta">{t.heroCta} <ArrowRight size={17} /></Link>
             <Link href="/demo" className="button button-quiet landing-secondary-cta">Voir comment ça marche <ArrowDown size={16} /></Link>
@@ -78,7 +78,7 @@ export default async function Home() {
       </section>
       <section className="intro section-pad landing-intro" id="concept">
         <div className="section-kicker"><span>01</span> / UNE RENCONTRE QUI A DU SENS</div>
-        <div className="intro-grid"><h2>Moins de swipe.<br /><em>Plus de complicité.</em></h2><div className="intro-copy"><p>Un profil ne raconte jamais toute une personne. Chez NIKAHYA, les jeux deviennent un prétexte pour échanger, rire, réfléchir ensemble et découvrir ce qui vous rapproche.</p><p className="muted">Parce qu’une relation durable se construit sur plus qu’une photo : les intentions, les valeurs, les centres d’intérêt et les projets de vie comptent aussi.</p></div></div>
+        <div className="intro-grid"><h2>Moins de swipe.<br /><em>Plus de complicité.</em></h2><div className="intro-copy"><p>Un profil ne raconte jamais toute une personne. Chez NAKAHYA, les jeux deviennent un prétexte pour échanger, rire, réfléchir ensemble et découvrir ce qui vous rapproche.</p><p className="muted">Parce qu’une relation durable se construit sur plus qu’une photo : les intentions, les valeurs, les centres d’intérêt et les projets de vie comptent aussi.</p></div></div>
         <div className="value-grid">{values.map(({ icon: Icon, title, text }, i) => <article className="value-card landing-glass-value" key={title}><div className="value-top"><span className="value-icon"><Icon size={21} /></span><span className="card-number">0{i + 1}</span></div><h3>{title}</h3><p>{text}</p><span className="value-line" /></article>)}</div>
       </section>
       <section className="games-showcase section-pad landing-games" id="jeux">
@@ -98,8 +98,8 @@ export default async function Home() {
       </section>
       <section className="faq section-pad landing-faq" id="faq"><div className="faq-heading"><div className="section-kicker"><span>05</span> / LES QUESTIONS QUE VOUS VOUS POSEZ</div><h2>Avant de se rencontrer,<br /><em>faisons connaissance.</em></h2><p>Tout commence par la confiance et la transparence.</p></div><div className="faq-list">{faqs.map((f, i) => <details className="faq-item" key={f.q} open={i === 0}><summary><span>{f.q}</span><span className="faq-plus">+</span></summary><p>{f.a}</p></details>)}</div></section>
       {!currentUser && <NewsletterSignup />}
-      <section className="final-cta landing-final-cta"><div className="cta-flower">✳</div><div className="section-kicker">VOTRE HISTOIRE PEUT COMMENCER ICI</div><h2>La bonne rencontre<br />commence parfois <em>par un jeu.</em></h2><p>Faites le premier pas. Le reste se découvre à deux.</p><Link href="/inscription" className="button button-light landing-final-button">Créer mon compte gratuitement <ArrowRight size={17} /></Link><span className="cta-signature">NIKAHYA — La rencontre qui change tout.</span></section>
-      <footer className="footer landing-footer"><div className="footer-main"><Link href="/" className="brand brand-footer" aria-label="NIKAHYA, accueil"><span className="brand-mark"><Heart size={19} /></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link><p>Faire connaissance en jouant.<br />Se rapprocher pour ce qui compte.</p><div className="footer-social">FAIT AVEC INTENTION <Heart size={13} /></div></div><div className="footer-links"><div><strong>Découvrir</strong><a href="#concept">Notre concept</a><a href="#jeux">Les jeux</a><a href="#methode">Comment ça marche</a><a href="#securite">Confidentialité</a></div><div><strong>Votre espace</strong><Link href="/inscription">Créer un profil</Link><Link href="/connexion">Connexion</Link><Link href="/demo">Découvrir la démo</Link></div><div><strong>Informations</strong><Link href="/confidentialite">Confidentialité</Link><Link href="/conditions">Conditions d’utilisation</Link><Link href="/mentions-legales#contact">Contact éditeur</Link></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} NIKAHYA. Tous droits réservés.</span><span>Réservé aux adultes de 18 ans et plus.</span><span>Conçu avec soin, en France.</span></div></footer>
+      <section className="final-cta landing-final-cta"><div className="cta-flower">✳</div><div className="section-kicker">VOTRE HISTOIRE PEUT COMMENCER ICI</div><h2>La bonne rencontre<br />commence parfois <em>par un jeu.</em></h2><p>Faites le premier pas. Le reste se découvre à deux.</p><Link href="/inscription" className="button button-light landing-final-button">Créer mon compte gratuitement <ArrowRight size={17} /></Link><span className="cta-signature">NAKAHYA — La rencontre qui change tout.</span></section>
+      <footer className="footer landing-footer"><div className="footer-main"><Link href="/" className="brand brand-footer" aria-label="NAKAHYA, accueil"><span className="brand-mark"><Heart size={19} /></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link><p>Faire connaissance en jouant.<br />Se rapprocher pour ce qui compte.</p><div className="footer-social">FAIT AVEC INTENTION <Heart size={13} /></div></div><div className="footer-links"><div><strong>Découvrir</strong><a href="#concept">Notre concept</a><a href="#jeux">Les jeux</a><a href="#methode">Comment ça marche</a><a href="#securite">Confidentialité</a></div><div><strong>Votre espace</strong><Link href="/inscription">Créer un profil</Link><Link href="/connexion">Connexion</Link><Link href="/demo">Découvrir la démo</Link></div><div><strong>Informations</strong><Link href="/confidentialite">Confidentialité</Link><Link href="/conditions">Conditions d’utilisation</Link><Link href="/mentions-legales#contact">Contact éditeur</Link></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} NAKAHYA. Tous droits réservés.</span><span>Réservé aux adultes de 18 ans et plus.</span><span>Conçu avec soin, en France.</span></div></footer>
     </main>
   );
 }

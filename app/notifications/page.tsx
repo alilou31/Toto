@@ -69,7 +69,7 @@ export default function NotificationsPage() {
 
   return <main className="notifications-page">
     <header className="notifications-header">
-      <Link href="/tableau-de-bord" className="brand" aria-label="NIKAHYA, accueil"><span className="brand-mark"><Heart size={19}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+      <Link href="/tableau-de-bord" className="brand" aria-label="NAKAHYA, accueil"><span className="brand-mark"><Heart size={19}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
       <Link href="/parametres/securite" className="notifications-preferences">Confidentialité & sécurité</Link>
     </header>
     <section className="notifications-content">
