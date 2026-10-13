@@ -144,3 +144,18 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Configuration attendue** : `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `NEXT_PUBLIC_SITE_URL`. Aucun secret n'est stocké dans Git.
 - **Blocage fournisseur** : aucun domaine expéditeur n'est configuré dans Resend au dernier contrôle. `onboarding@resend.dev` est uniquement une solution de test soumise aux restrictions Resend ; ne pas considérer la livraison à tous les membres comme opérationnelle avant vérification d'un domaine expéditeur.
 - **Statut global** : EN COURS — code candidat présent ; migration exécutée selon confirmation utilisateur ; CI à relancer après le dernier correctif ; livraison réelle non testée (test volontairement reporté) ; pas encore déployé en production.
+
+## Consolidation pré-lancement — 2026-10-13 (référence après fusion #50)
+
+- **HEAD de référence :** `0706d26eb3ada57ad84bc95bfa29bce9b41c6f12` — récupération du mot de passe fusionnée dans `main`; CI, déploiement Cloudflare Workers et smoke tests ont réussi sur ce SHA :
+  - [CI #289](https://github.com/alilou31/Toto/actions/runs/38448491934)
+  - [Déploiement Cloudflare #198](https://github.com/alilou31/Toto/actions/runs/38448491949)
+  - [Smoke tests de production #98](https://github.com/alilou31/Toto/actions/runs/38448990089)
+- **Sécurité API sans session : TESTS PRÉSENTS.** `tests/e2e/security-and-mobile-navigation.spec.ts` couvre déjà les lectures/écritures anonymes de plusieurs API privées. Les contrôles doivent rester dans la CI à chaque changement.
+- **Navigation mobile : TESTS PRÉSENTS.** Les tests à viewport explicite 390×844 couvrent l'ouverture, la fermeture, Échap et un lien du menu. Ne pas ajouter un second jeu de tests identiques.
+- **Suppression de compte : CODE PRÉSENT.** `DELETE /api/account` demande une session, le mot de passe et la confirmation `SUPPRIMER`. La couverture non destructive de ses validations et du refus sans session est ajoutée dans `tests/e2e/account-deletion-api.spec.ts`.
+- **Récupération du mot de passe : CODE FUSIONNÉ, livraison réelle NON VALIDÉE.** Les tests de formulaire et de validation existent. Le test réel d'envoi et de consommation du jeton est reporté à la demande de l'utilisateur ; ne pas envoyer d'e-mail ni déclencher ce scénario sans accord et configuration Resend appropriée.
+- **Documents juridiques : À COMPLÉTER PAR L'ÉDITEUR.** Les pages restent explicitement provisoires et en `noindex`. Il faut les informations réelles de l'éditeur, le contact de signalement et une revue juridique ; ne jamais inventer d'identité, d'adresse ou de numéro d'immatriculation.
+- **Paiements : REPORTÉS.** La page d'offres est présente, mais Stripe et les contrôles d'accès Premium ne sont pas configurés. Ne pas activer ou présenter un paiement comme fonctionnel.
+- **Tests de production avec écritures : AUTORISATION REQUISE.** Le parcours à deux comptes peut créer des données. Le workflow manuel reste protégé ; ne pas le déclencher automatiquement dans le cadre d'une simple consolidation.
+- **État de lancement : NON CERTIFIÉ.** Les workflows verts attestent les contrôles qu'ils exécutent, pas la livraison d'e-mails, la conformité juridique, la facturation ni une revue de sécurité exhaustive.
