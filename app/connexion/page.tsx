@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Heart, ArrowLeft, Mail, LockKeyhole, Sparkles, Brain, Puzzle, ShieldCheck } from "lucide-react";
+import SocialAuthButtons from "@/components/auth/social-auth-buttons";
 
 export default function ConnexionPage() {
   const router = useRouter();
@@ -106,6 +107,7 @@ export default function ConnexionPage() {
             <button className="button button-green auth-submit" type="submit" disabled={loading}>{loading ? "Connexion…" : "Se connecter"} <span>→</span></button>
             {message && <p className="auth-notice" role="status">{message}</p>}
           </form>
+          <SocialAuthButtons mode="login" />
           <p className="auth-switch">Vous n’avez pas de compte&nbsp;? <Link href="/inscription">Créer mon profil</Link></p>
           <p className="auth-legal"><ShieldCheck size={13} /> Réservé aux adultes de 18 ans et plus.</p>
         </section>

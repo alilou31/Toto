@@ -133,3 +133,18 @@
 @media(max-width:960px){.personalize-layout{grid-template-columns:minmax(0,1fr) 290px;gap:22px;padding:35px 20px 65px}.personalize-section{padding:22px}.personalize-progress-card,.personalize-preview-card{padding:18px}}
 @media(max-width:760px){.personalize-header{height:66px;padding:0 5%;grid-template-columns:1fr auto 1fr}.personalize-back,.personalize-security{font-size:0;gap:0}.personalize-back svg,.personalize-security svg{width:19px;height:19px}.personalize-header .brand-word{font-size:15px;letter-spacing:1.5px}.personalize-header .brand-mark{width:31px;height:31px}.personalize-layout{display:flex;flex-direction:column;padding:32px 5% 85px;gap:24px}.personalize-main{width:100%}.personalize-main>h1{font-size:42px;margin-top:17px}.personalize-intro{font-size:12px;margin-bottom:25px}.personalize-aside{position:static;width:100%;grid-template-columns:1fr}.personalize-section{padding:20px 17px}.personalize-section-heading{gap:11px;margin-bottom:20px}.personalize-section-heading h2{font-size:22px}.personalize-fields{grid-template-columns:1fr;gap:17px}.personalize-field-full{grid-column:auto}.personalize-intentions{grid-template-columns:1fr}.personalize-intention{padding:13px}.personalize-submit-row{align-items:stretch;flex-direction:column}.personalize-save-note{max-width:none}.personalize-save{width:100%;min-height:51px}.personalize-character-count{align-items:flex-start;flex-direction:column;gap:4px}.personalize-progress-card,.personalize-preview-card{padding:22px}.personalize-preview-card{order:0}.personalize-tip{order:1}.personalize-dashboard-link{order:2}.personalize-progress-card{order:-1}}
 @media(prefers-reduced-motion:reduce){.personalize-save,.personalize-progress-track span,.personalize-intention,.personalize-visibility-option{transition:none}}
+
+/* Social authentication buttons */
+.social-auth{margin-top:20px}
+.social-auth-divider{display:flex;align-items:center;gap:12px;color:#8b928a;font-size:11px;margin:0 0 14px}
+.social-auth-divider:before,.social-auth-divider:after{content:"";height:1px;flex:1;background:#e5e8e1}
+.social-auth-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.social-auth-button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:10px 14px;border:1px solid #e1e5dd;border-radius:12px;background:#fff;color:#26362e;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.social-auth-button:hover:not(:disabled){border-color:#b9c8ba;box-shadow:0 5px 16px #193b2b0d;transform:translateY(-1px)}
+.social-auth-button:focus-visible{outline:3px solid #b5d8c4;outline-offset:2px}
+.social-auth-button:disabled{cursor:not-allowed;opacity:.48}
+.social-auth-button svg{flex-shrink:0}
+.social-auth-hint,.social-auth-message{font-size:11px;line-height:1.6;margin:10px 0 0}
+.social-auth-hint{color:#7b8179}
+.social-auth-message{padding:10px 12px;border-radius:9px;background:#fff4e8;border:1px solid #f0d8b8;color:#8a4c19}
+@media(max-width:420px){.social-auth-buttons{gap:8px}.social-auth-button{gap:7px;padding:10px 8px;font-size:12px}}
