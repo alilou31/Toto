@@ -46,8 +46,8 @@ test.describe("Découverte compacte et offres", () => {
     await page.goto("/offres");
     await expect(page.getByRole("heading", { name: "Essentiel" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Premium" })).toBeVisible();
-    await expect(page.getByText("9,99 €")).toBeVisible();
-    await expect(page.getByText("79,99 € / an")).toBeVisible();
+    await expect(page.locator(".pricing-card-premium .pricing-price")).toContainText("9,99 €");
+    await expect(page.locator(".pricing-card-premium .pricing-annual")).toContainText("79,99 € / an");
     await expect(page.getByRole("button", { name: "Paiement bientôt disponible" })).toBeDisabled();
     await expect(page.getByText(/aucun prélèvement n’est possible/i)).toBeVisible();
   });
