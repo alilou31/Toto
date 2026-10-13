@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ConnectedAppChrome from "@/app/components/connected-app-chrome";
 import "./globals.css";
 import "./gamified.css";
 import "./profile-ui.css";
@@ -19,5 +20,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body>{children}</body></html>;
+  return <html lang="fr"><body><ConnectedAppChrome>{children}</ConnectedAppChrome></body></html>;
 }
