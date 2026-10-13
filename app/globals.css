@@ -417,3 +417,21 @@ body:has(.connected-bottom-nav){padding-bottom:calc(88px + env(safe-area-inset-b
 
 
 .nikahya-verified-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;background:rgba(37,126,94,.12);color:#237653;border:1px solid rgba(37,126,94,.25);font-size:.76rem;font-weight:700;vertical-align:middle;white-space:nowrap}.landing-verification-trust{max-width:34rem;margin-top:1rem;padding:1rem;border:1px solid rgba(37,126,94,.22);border-radius:18px;background:rgba(255,255,255,.52);backdrop-filter:blur(14px)}.landing-verification-trust p{margin:.55rem 0 0;font-size:.86rem;line-height:1.5;color:var(--muted,#62666b)}.discovery-card h2 .nikahya-verified-badge{margin-inline-start:.45rem}.discovery-last-seen{font-size:.78rem;opacity:.72;margin:.2rem 0 .5rem}.discovery-results-bar label{display:inline-flex;align-items:center;gap:.5rem;font-size:.85rem;flex-wrap:wrap}.discovery-results-bar select,.personalize-field select{max-width:100%;padding:.65rem .8rem;border-radius:12px;border:1px solid rgba(40,50,45,.2);background:rgba(255,255,255,.85);color:inherit}
+
+
+/* Public landing-page newsletter: glassmorphism, accessible and responsive */
+.newsletter-section{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(280px,.9fr);align-items:center;gap:26px;padding:clamp(30px,5vw,58px) 10%;background:radial-gradient(ellipse at 8% 10%,#dfece4aa,transparent 42%),linear-gradient(135deg,#ffffffd9,#f3f0e6e8);border-block:1px solid #e2e9e0;backdrop-filter:blur(18px)}
+.newsletter-icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;color:var(--green);background:#e7f0e9;border:1px solid #d4e4d8}
+.newsletter-copy .section-kicker{margin-bottom:12px}
+.newsletter-copy h2{font-size:clamp(24px,2.8vw,35px);line-height:1.18;letter-spacing:-.7px;margin:0 0 10px}
+.newsletter-copy>p:last-child{color:var(--muted);font-size:12px;line-height:1.7;margin:0;max-width:490px}
+.newsletter-form label{display:block;font-size:11px;font-weight:700;margin-bottom:8px}
+.newsletter-input-row{display:flex;gap:8px}
+.newsletter-input-row input{min-width:0;flex:1;border:1px solid #d7e0d7;border-radius:7px;background:#ffffffd9;padding:13px 14px;font:inherit;font-size:12px;outline-offset:3px}
+.newsletter-input-row .button{white-space:nowrap;padding:13px 15px;min-height:46px}
+.newsletter-privacy{font-size:10px;line-height:1.6;color:var(--muted);margin:9px 0 0}
+.newsletter-privacy a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
+.newsletter-message{font-size:11px;line-height:1.6;color:var(--green);margin:8px 0 0}
+.newsletter-honeypot{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(max-width:850px){.newsletter-section{grid-template-columns:auto 1fr;gap:18px;padding-inline:6%}.newsletter-form{grid-column:1/-1}.newsletter-copy h2{max-width:620px}}
+@media(max-width:520px){.newsletter-section{grid-template-columns:1fr;gap:14px;padding:30px 6%}.newsletter-icon{width:46px;height:46px}.newsletter-form{grid-column:auto}.newsletter-input-row{flex-direction:column}.newsletter-input-row .button{width:100%}}
