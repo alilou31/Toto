@@ -63,7 +63,7 @@ export default function DashboardPage() {
   return (
     <main className="dashboard-page">
       <header className="dashboard-header">
-        <Link href="/" className="brand" aria-label="NIKAHYA, accueil"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+        <Link href="/tableau-de-bord" className="brand" aria-label="NIKAHYA, mon espace"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
         <nav aria-label="Navigation de l'espace personnel">
           <Link href="/tableau-de-bord" aria-current="page"><LayoutDashboard size={16}/> Mon espace</Link>
           <Link href="/profil"><UserRound size={16}/> Mon profil</Link>
@@ -100,7 +100,7 @@ export default function DashboardPage() {
             </div>
           </>
         )}
-        <p className="dashboard-account">{user?.email ? `Connecté avec ${user.email}` : ""} <Link href="/parametres/securite">Sécurité et suppression du compte</Link> · <Link href="/">Retour à l’accueil</Link></p>
+        <p className="dashboard-account">{user?.email ? `Connecté avec ${user.email}` : ""} <Link href="/parametres/securite">Sécurité et suppression du compte</Link></p>
       </section>
     </main>
   );
