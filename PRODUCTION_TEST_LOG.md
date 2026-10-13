@@ -1,4 +1,4 @@
-# Registre des tests de production — NIKAHYA
+# Registre des tests de production — NAKAHYA
 
 > **Référence obligatoire pour les futurs tests de production.** Consulter ce fichier avant un test, puis ajouter une entrée datée après chaque exécution, qu'elle réussisse ou échoue.
 >

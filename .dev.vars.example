@@ -10,4 +10,4 @@ STRIPE_IDENTITY_WEBHOOK_SECRET=
 
 # Resend newsletter confirmation (server-side only).
 RESEND_API_KEY=
-RESEND_FROM_EMAIL=NIKAHYA <onboarding@resend.dev>
+RESEND_FROM_EMAIL=NAKAHYA <onboarding@resend.dev>

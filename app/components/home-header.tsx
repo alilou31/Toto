@@ -97,9 +97,9 @@ export default function HomeHeader({ locale = "fr" }: { locale?: SupportedLocale
       >
         {menuOpen ? <X size={23} /> : <Menu size={23} />}
       </button>
-      <Link href="/" className="brand" aria-label="NIKAHYA, accueil">
+      <Link href="/" className="brand" aria-label="NAKAHYA, accueil">
         <span className="brand-mark"><Heart size={20} strokeWidth={2.1} /></span>
-        <span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span>
+        <span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span>
       </Link>
       <nav className="desktop-nav" aria-label="Navigation principale">
         <Link href="/#concept">Le concept</Link><Link href="/#methode">Comment ça marche</Link><Link href="/#securite">Sécurité</Link>
@@ -121,7 +121,7 @@ export default function HomeHeader({ locale = "fr" }: { locale?: SupportedLocale
       </div>
       <nav id="mobile-navigation" className={`mobile-navigation ${menuOpen ? "is-open" : ""}`} aria-label="Menu mobile" hidden={!menuOpen} onClick={(event) => { if ((event.target as HTMLElement).closest("a")) closeMenu(); }}>
         <div className="mobile-nav-section">
-          <span className="mobile-nav-label">Découvrir NIKAHYA</span>
+          <span className="mobile-nav-label">Découvrir NAKAHYA</span>
           <Link href="/#concept"><Heart size={17}/> Le concept</Link>
           <Link href="/#methode"><ArrowRight size={17}/> Comment ça marche</Link>
           <Link href="/#securite"><UserRound size={17}/> Sécurité et confidentialité</Link>

@@ -223,7 +223,7 @@ export function GameChallenges() {
       <div className="game-section-title"><div><p className="game-eyebrow">VOTRE HISTORIQUE</p><h2>Défis récents</h2></div><Clipboard size={20}/></div>
       {loading ? <p role="status">Chargement de vos défis…</p> : sessions.length === 0 ? <p>Vous n'avez pas encore de défi. Créez-en un ou rejoignez quelqu'un avec son code.</p> : <div className="game-challenge-session-list">{sessions.map((session) => <button type="button" key={session.id} className={"game-challenge-session" + (activeId === session.id ? " selected" : "")} onClick={() => { setActiveId(session.id); setError(""); }}><span><strong>{titleFor(session.game_id)}</strong><small>{session.is_host ? "Créé par vous" : "Invitation reçue"} · {session.invite_code}</small></span><span className={"game-challenge-status " + session.status}>{session.status === "waiting" ? "En attente" : session.status === "active" ? "En cours" : session.status === "completed" ? "Terminée" : "Annulée"}</span></button>)}</div>}
     </section>
-    <p className="game-disclaimer">Les défis utilisent votre session NIKAHYA et la base Neon. Si le serveur signale que la migration 005 manque, elle doit être appliquée une fois dans Neon avant de pouvoir créer ou rejoindre des parties.</p>
+    <p className="game-disclaimer">Les défis utilisent votre session NAKAHYA et la base Neon. Si le serveur signale que la migration 005 manque, elle doit être appliquée une fois dans Neon avant de pouvoir créer ou rejoindre des parties.</p>
     <p><Link href="/cockpit/jeux" className="game-back-link">← Retour au catalogue des jeux</Link></p>
   </div>;
 }

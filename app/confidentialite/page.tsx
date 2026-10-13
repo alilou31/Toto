@@ -10,18 +10,18 @@ export default function Confidentialite() {
   return (
     <main className="legal-page">
       <Link href="/" className="text-link">← Retour à l’accueil</Link>
-      <p className="section-kicker">NIKAHYA / TRANSPARENCE</p>
+      <p className="section-kicker">NAKAHYA / TRANSPARENCE</p>
       <h1>Politique de confidentialité</h1>
       <aside className="legal-draft-notice" role="note">
         <strong>Document de travail — non définitif</strong>
-        <p>Le nom « NIKAHYA Studio » est une identité fictive de travail, pas une société déclarée. Cette page ne constitue pas encore une information juridique suffisante pour l’ouverture commerciale. Les éléments manquants doivent être complétés et vérifiés avant l’ouverture publique.</p>
+        <p>Le nom « NAKAHYA Studio » est une identité fictive de travail, pas une société déclarée. Cette page ne constitue pas encore une information juridique suffisante pour l’ouverture commerciale. Les éléments manquants doivent être complétés et vérifiés avant l’ouverture publique.</p>
       </aside>
 
       <h2>Qui est responsable du service ?</h2>
-      <p>Responsable de traitement : à confirmer par l’éditeur réel du service. Nom de travail utilisé dans le projet : « NIKAHYA Studio » (fictif et non contractuel). Adresse postale, adresse de contact dédiée et coordonnées du responsable : à renseigner avant lancement. Ne transmettez pas de demande juridique à une coordonnée fictive.</p>
+      <p>Responsable de traitement : à confirmer par l’éditeur réel du service. Nom de travail utilisé dans le projet : « NAKAHYA Studio » (fictif et non contractuel). Adresse postale, adresse de contact dédiée et coordonnées du responsable : à renseigner avant lancement. Ne transmettez pas de demande juridique à une coordonnée fictive.</p>
 
       <h2>Quelles données le service peut-il traiter ?</h2>
-      <p>Selon les fonctionnalités utilisées, NIKAHYA peut traiter l’adresse e-mail et les données d’authentification, les informations de profil renseignées par la personne, ses centres d’intérêt, ses intentions de rencontre, ses interactions (intérêts, matchs, messages et jeux partagés), ainsi que les signalements et blocages nécessaires à la sécurité. Les données techniques de fonctionnement peuvent aussi apparaître dans les journaux du fournisseur d’hébergement.</p>
+      <p>Selon les fonctionnalités utilisées, NAKAHYA peut traiter l’adresse e-mail et les données d’authentification, les informations de profil renseignées par la personne, ses centres d’intérêt, ses intentions de rencontre, ses interactions (intérêts, matchs, messages et jeux partagés), ainsi que les signalements et blocages nécessaires à la sécurité. Les données techniques de fonctionnement peuvent aussi apparaître dans les journaux du fournisseur d’hébergement.</p>
       <p>Ne saisissez pas dans un profil ou un message des informations que vous ne souhaitez pas partager. Les données relatives aux convictions ou à d’autres catégories particulières nécessitent une analyse juridique spécifique et des garanties renforcées ; leur traitement ne doit pas être activé sans cette validation.</p>
 
       <h2>Pourquoi et sur quelle base ?</h2>
@@ -33,7 +33,7 @@ export default function Confidentialite() {
       </ul>
 
       <h2>Prestataires et hébergement</h2>
-      <p>Le projet utilise Cloudflare Workers pour l’hébergement applicatif et Neon pour la base de données. Le service peut utiliser Resend pour envoyer les e-mails de confirmation de newsletter et Stripe Identity pour la vérification automatisée d’un document et, lorsque le parcours le prévoit, d’un selfie. Dans ce parcours, les données d’identité sont transmises directement au prestataire; NIKAHYA conserve le statut du contrôle et la date de naissance vérifiée nécessaire à la comparaison avec le profil, pas une copie du document fournie au prestataire. Les durées de conservation, les rôles contractuels, les transferts internationaux et les conditions applicables à d’éventuelles données biométriques doivent être vérifiés et précisés avant l’activation publique. Les autres fournisseurs d’e-mail, d’authentification sociale, d’analytique, de modération ou de paiement doivent être listés après vérification de leur activation réelle.</p>
+      <p>Le projet utilise Cloudflare Workers pour l’hébergement applicatif et Neon pour la base de données. Le service peut utiliser Resend pour envoyer les e-mails de confirmation de newsletter et Stripe Identity pour la vérification automatisée d’un document et, lorsque le parcours le prévoit, d’un selfie. Dans ce parcours, les données d’identité sont transmises directement au prestataire; NAKAHYA conserve le statut du contrôle et la date de naissance vérifiée nécessaire à la comparaison avec le profil, pas une copie du document fournie au prestataire. Les durées de conservation, les rôles contractuels, les transferts internationaux et les conditions applicables à d’éventuelles données biométriques doivent être vérifiés et précisés avant l’activation publique. Les autres fournisseurs d’e-mail, d’authentification sociale, d’analytique, de modération ou de paiement doivent être listés après vérification de leur activation réelle.</p>
 
       <h2>Conservation et sécurité</h2>
       <p>Les durées de conservation par catégorie de données doivent être définies et publiées avant lancement. Les mesures prévues comprennent le contrôle d’accès, la limitation des données renvoyées par les API, la protection des sessions et des mécanismes de blocage/signalement ; elles ne constituent pas une garantie de sécurité absolue ni un audit indépendant.</p>

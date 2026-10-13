@@ -10,15 +10,15 @@ export default function MentionsLegales() {
   return (
     <main className="legal-page">
       <Link href="/" className="text-link">← Retour à l’accueil</Link>
-      <p className="section-kicker">NIKAHYA / INFORMATIONS</p>
+      <p className="section-kicker">NAKAHYA / INFORMATIONS</p>
       <h1>Mentions légales</h1>
       <aside className="legal-draft-notice" role="note">
         <strong>Maquette juridique — ne pas considérer comme des mentions légales définitives</strong>
-        <p>Le nom fictif « NIKAHYA Studio » est utilisé uniquement comme repère temporaire. Il ne correspond pas à une entité juridique vérifiée. Les champs d’identité ci-dessous doivent être remplacés par les informations réelles avant toute ouverture publique.</p>
+        <p>Le nom fictif « NAKAHYA Studio » est utilisé uniquement comme repère temporaire. Il ne correspond pas à une entité juridique vérifiée. Les champs d’identité ci-dessous doivent être remplacés par les informations réelles avant toute ouverture publique.</p>
       </aside>
       <h2>Éditeur du service</h2>
       <ul>
-        <li>Nom de projet temporaire : NIKAHYA Studio (fictif, non contractuel).</li>
+        <li>Nom de projet temporaire : NAKAHYA Studio (fictif, non contractuel).</li>
         <li>Nom ou raison sociale réel(le) : À renseigner.</li>
         <li>Forme juridique et capital social, le cas échéant : À renseigner si applicable.</li>
         <li>Adresse du siège ou adresse professionnelle requise : À renseigner.</li>

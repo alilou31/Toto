@@ -44,7 +44,7 @@ export default function VisitsList() {
           </Link>
           <div className="profile-visit-details">
             <Link href={"/membre/" + encodeURIComponent(visit.visitor_id)} className="profile-visit-name">{visit.public_name}</Link>
-            <span>{visit.city || "Membre NIKAHYA"} · {visit.is_online ? "En ligne" : "Hors ligne"}</span>
+            <span>{visit.city || "Membre NAKAHYA"} · {visit.is_online ? "En ligne" : "Hors ligne"}</span>
           </div>
           <time dateTime={visit.visited_at}>{new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Paris" }).format(new Date(visit.visited_at))}</time>
           <Link href={"/membre/" + encodeURIComponent(visit.visitor_id)} className="profile-visit-open" aria-label={"Ouvrir le profil de " + visit.public_name}><ArrowRight size={17}/></Link>

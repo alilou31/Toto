@@ -1,4 +1,4 @@
-# Tests NIKAHYA
+# Tests NAKAHYA
 
 Ce document décrit les familles de tests existantes. Les résultats récents sont consignés avec leurs liens et leur portée dans [PRODUCTION_TEST_LOG.md](../PRODUCTION_TEST_LOG.md).
 

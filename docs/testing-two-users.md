@@ -11,7 +11,7 @@ Configurer dans **Settings → Secrets and variables → Actions → Repository 
 - `E2E_USER_B_EMAIL`
 - `E2E_USER_B_PASSWORD`
 
-Dans **Settings → Secrets and variables → Actions → Variables**, ajouter aussi `ENABLE_TWO_USER_E2E` avec la valeur `true`. Ensuite, lancer manuellement le workflow **NIKAHYA CI** via **Actions → NIKAHYA CI → Run workflow** pour démarrer le parcours réel sur Cloudflare. Le job échoue explicitement si un des quatre secrets manque.
+Dans **Settings → Secrets and variables → Actions → Variables**, ajouter aussi `ENABLE_TWO_USER_E2E` avec la valeur `true`. Ensuite, lancer manuellement le workflow **NAKAHYA CI** via **Actions → NAKAHYA CI → Run workflow** pour démarrer le parcours réel sur Cloudflare. Le job échoue explicitement si un des quatre secrets manque.
 
 Les deux comptes doivent être différents, adultes, avec un profil complété et réglé sur **Visible**. Ils doivent être autorisés à se découvrir mutuellement. Ne jamais placer les mots de passe dans le dépôt ou dans un message.
 

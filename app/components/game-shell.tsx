@@ -18,7 +18,7 @@ function isActiveRoute(active: string, href: string) {
 export function GameShell({ children, active = "/cockpit" }: { children: React.ReactNode; active?: string }) {
   return <div className="game-app">
     <aside className="game-sidebar">
-      <Link href="/" className="game-brand"><span className="game-brand-mark"><Heart size={19} fill="currentColor"/></span><span>NIKAHYA<span className="game-brand-dot">.</span><small>SE RENCONTRER AUTREMENT</small></span></Link>
+      <Link href="/" className="game-brand"><span className="game-brand-mark"><Heart size={19} fill="currentColor"/></span><span>NAKAHYA<span className="game-brand-dot">.</span><small>SE RENCONTRER AUTREMENT</small></span></Link>
       <p className="game-nav-label">VOTRE ESPACE</p>
       <nav aria-label="Navigation principale">{navigation.map(({href,label,icon:Icon,primary})=><Link key={href} href={href} aria-current={isActiveRoute(active,href)?"page":undefined} className={`game-nav-link${primary ? " game-nav-link-primary" : ""}`}><Icon size={18}/><span>{label}</span></Link>)}</nav>
       <div className="game-sidebar-bottom"><div className="game-safety"><ShieldCheck size={18}/><span><strong>Un espace bienveillant</strong><small>Votre rythme, vos règles.</small></span></div><Link href="/" className="game-back-home">← Retour au site</Link></div>

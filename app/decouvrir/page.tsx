@@ -135,7 +135,7 @@ export default function DiscoverPage() {
     <main className="discovery-page">
       <header className="discovery-header">
         <Link href="/tableau-de-bord" className="discovery-back"><ArrowLeft size={16}/> Mon espace</Link>
-        <Link href="/" className="brand" aria-label="NIKAHYA, accueil"><span className="brand-mark"><Heart size={18}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+        <Link href="/" className="brand" aria-label="NAKAHYA, accueil"><span className="brand-mark"><Heart size={18}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
         <nav aria-label="Navigation découverte">
           <Link href="/matchs">Mes affinités</Link>
           <Link href="/profil">Mon profil</Link>
@@ -179,7 +179,7 @@ export default function DiscoverPage() {
                     <span className="discovery-avatar-wrap"><span className="discovery-avatar" aria-hidden="true">{profile.public_name.trim().slice(0, 1).toLocaleUpperCase()}</span>{profile.is_online && <span className="profile-online-dot" aria-label="En ligne" title="En ligne"/>}</span>
                     <span className="discovery-intention">{intentionLabels[profile.relationship_intention] ?? "À discuter"}</span>
                   </div>
-                  <h2><Link href={`/membre/${encodeURIComponent(profile.id)}`} aria-label={`Voir la fiche de ${profile.public_name}`}>{profile.public_name}</Link>{profile.is_verified && <span className="nikahya-verified-badge" title="Identité contrôlée par l’équipe NIKAHYA"><BadgeCheck size={15}/> Vérifié</span>}</h2>
+                  <h2><Link href={`/membre/${encodeURIComponent(profile.id)}`} aria-label={`Voir la fiche de ${profile.public_name}`}>{profile.public_name}</Link>{profile.is_verified && <span className="nikahya-verified-badge" title="Identité contrôlée par l’équipe NAKAHYA"><BadgeCheck size={15}/> Vérifié</span>}</h2>
                   {profile.city && <p className="discovery-city"><MapPin size={13}/>{profile.city}</p>}{profile.last_seen_label && <p className="discovery-last-seen">{profile.last_seen_label}</p>}
                   <p className="discovery-bio">{profile.bio?.trim() || "Préfère faire connaissance au fil de la conversation."}</p>
                   {shared.length > 0 && <p className="discovery-shared"><Sparkles size={13}/>{shared.length} point{shared.length > 1 ? "s" : ""} en commun</p>}

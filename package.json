@@ -2,7 +2,7 @@
   "name": "nikahya",
   "version": "0.1.0",
   "private": true,
-  "description": "NIKAHYA — La rencontre qui change tout.",
+  "description": "NAKAHYA — La rencontre qui change tout.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

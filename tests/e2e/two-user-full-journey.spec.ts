@@ -108,7 +108,7 @@ test("parcours complet à deux comptes : découverte, match, défi à 4 question
     await expect(pageB.locator(".game-play-result")).toBeVisible({ timeout: 15_000 });
 
     // Exchange a message in each direction and verify persistence from the other account.
-    const firstMessage = `Bonjour ! Petit test de conversation NIKAHYA ${Date.now()}.`;
+    const firstMessage = `Bonjour ! Petit test de conversation NAKAHYA ${Date.now()}.`;
     await pageA.goto(`/messages/${conversationA}`);
     await pageA.getByLabel("Votre message").fill(firstMessage);
     await pageA.getByRole("button", { name: /Envoyer le message/i }).click();

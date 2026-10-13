@@ -1,4 +1,4 @@
-# Activer Google et Facebook sur NIKAHYA
+# Activer Google et Facebook sur NAKAHYA
 
 Les boutons et les routes OAuth sont intégrés, mais l’authentification réelle reste inactive tant que les fournisseurs et la migration Neon ne sont pas configurés.
 

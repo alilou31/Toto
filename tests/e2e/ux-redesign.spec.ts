@@ -17,7 +17,7 @@ const cockpitRoutes = [
   { path: "/profil/edit", heading: /profil|faire connaissance|mon profil/i },
 ];
 
-test.describe("NIKAHYA — pages publiques", () => {
+test.describe("NAKAHYA — pages publiques", () => {
   for (const route of publicRoutes) {
     test(`affiche ${route.path}`, async ({ page }) => {
       const response = await page.goto(route.path);
@@ -48,7 +48,7 @@ test.describe("NIKAHYA — pages publiques", () => {
   });
 });
 
-test.describe("NIKAHYA — cockpit et navigation", () => {
+test.describe("NAKAHYA — cockpit et navigation", () => {
   for (const route of cockpitRoutes) {
     test(`ouvre ${route.path} sans erreur HTTP`, async ({ page }) => {
       const response = await page.goto(route.path);
@@ -86,7 +86,7 @@ test.describe("NIKAHYA — cockpit et navigation", () => {
   });
 });
 
-test.describe("NIKAHYA — responsive mobile", () => {
+test.describe("NAKAHYA — responsive mobile", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 
   test("la landing page n'a pas de débordement horizontal", async ({ page }) => {

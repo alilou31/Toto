@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     await createSession(user.id);
     return NextResponse.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
   } catch {
-    console.error("NIKAHYA login failed.");
+    console.error("NAKAHYA login failed.");
     return NextResponse.json({ error: "Connexion indisponible. Réessayez plus tard." }, { status: 500 });
   }
 }

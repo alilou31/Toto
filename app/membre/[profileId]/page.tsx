@@ -92,7 +92,7 @@ export default function MemberProfilePage() {
     <main className="auth-page">
       <Link href="/decouvrir" className="auth-back"><ArrowLeft size={16}/> Retour aux profils</Link>
       <section className="auth-card auth-card-wide member-detail-card">
-        <Link href="/tableau-de-bord" className="brand auth-brand"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+        <Link href="/tableau-de-bord" className="brand auth-brand"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
         <div className="section-kicker auth-kicker">UNE RENCONTRE QUI A DU SENS</div>
         {loading ? <p role="status">Chargement de la fiche…</p> : error ? (
           <div role="alert" className="auth-notice"><p>{error}</p><Link href="/decouvrir" className="button button-green">Revenir à la découverte</Link></div>
@@ -125,7 +125,7 @@ export default function MemberProfilePage() {
               <section className="member-detail-panel member-detail-games">
                 <h2><Gamepad2 size={17}/> Jeux auxquels cette personne a joué</h2>
                 {profile.played_games?.length ? <>
-                  <p className="member-detail-muted">Activité de jeu enregistrée sur NIKAHYA, sans afficher ses réponses ni ses scores privés.</p>
+                  <p className="member-detail-muted">Activité de jeu enregistrée sur NAKAHYA, sans afficher ses réponses ni ses scores privés.</p>
                   <div className="member-game-list">{profile.played_games.map(game => <div key={game.game_id}><span>{gameLabels[game.game_id] ?? game.game_id}</span><strong>{game.games_played} partie{game.games_played > 1 ? "s" : ""}</strong></div>)}</div>
                 </> : <p>Pas encore de partie enregistrée à afficher. Vous pourrez peut-être découvrir un jeu ensemble.</p>}
               </section>

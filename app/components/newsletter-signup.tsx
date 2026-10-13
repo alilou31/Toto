@@ -47,7 +47,7 @@ export default function NewsletterSignup() {
       <div className="newsletter-copy">
         <p className="section-kicker">LES NOUVELLES QUI ONT DU SENS</p>
         <h2 id="newsletter-title">Un peu plus de complicité dans votre boîte mail.</h2>
-        <p>Recevez les nouveautés NIKAHYA, des idées de jeux à deux et des conseils pour faire connaissance, sans spam.</p>
+        <p>Recevez les nouveautés NAKAHYA, des idées de jeux à deux et des conseils pour faire connaissance, sans spam.</p>
       </div>
       <form className="newsletter-form" onSubmit={submit}>
         <label htmlFor="newsletter-email">Votre adresse e-mail</label>
@@ -55,7 +55,7 @@ export default function NewsletterSignup() {
           <input id="newsletter-email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={(event) => setEmail(event.target.value)} placeholder="vous@exemple.fr" />
           <button className="button button-green" type="submit" disabled={loading}>{loading ? "Envoi…" : "M’inscrire"} <ArrowRight size={16} /></button>
         </div>
-        <label className="check-row newsletter-consent"><input type="checkbox" required checked={consent} onChange={(event) => setConsent(event.target.checked)} /><span>J’accepte de recevoir la newsletter NIKAHYA par e-mail. Je pourrai me désinscrire à tout moment.</span></label>
+        <label className="check-row newsletter-consent"><input type="checkbox" required checked={consent} onChange={(event) => setConsent(event.target.checked)} /><span>J’accepte de recevoir la newsletter NAKAHYA par e-mail. Je pourrai me désinscrire à tout moment.</span></label>
         <div className="newsletter-honeypot" aria-hidden="true">
           <label htmlFor="newsletter-website">Ne pas remplir</label>
           <input id="newsletter-website" tabIndex={-1} autoComplete="off" value={website} onChange={(event) => setWebsite(event.target.value)} />

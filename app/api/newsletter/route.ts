@@ -56,15 +56,15 @@ export async function POST(request: Request) {
 
     const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
     const confirmationUrl = `${baseUrl}/api/newsletter/confirm?token=${encodeURIComponent(token)}`;
-    const from = process.env.RESEND_FROM_EMAIL || "NIKAHYA <onboarding@resend.dev>";
+    const from = process.env.RESEND_FROM_EMAIL || "NAKAHYA <onboarding@resend.dev>";
     const sent = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from,
         to: [email],
-        subject: "Confirmez votre inscription à la newsletter NIKAHYA",
-        html: `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#202824"><h1>Un peu plus de complicité ?</h1><p>Vous avez demandé à recevoir les nouvelles de NIKAHYA.</p><p><a href="${confirmationUrl}" style="display:inline-block;background:#075b4b;color:white;padding:14px 20px;text-decoration:none;border-radius:6px">Confirmer mon inscription</a></p><p>Ce lien expire dans 24 heures. Si vous n’êtes pas à l’origine de cette demande, ignorez ce message.</p><p style="font-size:12px;color:#68716b">NIKAHYA — La rencontre qui change tout.</p></div>`,
+        subject: "Confirmez votre inscription à la newsletter NAKAHYA",
+        html: `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#202824"><h1>Un peu plus de complicité ?</h1><p>Vous avez demandé à recevoir les nouvelles de NAKAHYA.</p><p><a href="${confirmationUrl}" style="display:inline-block;background:#075b4b;color:white;padding:14px 20px;text-decoration:none;border-radius:6px">Confirmer mon inscription</a></p><p>Ce lien expire dans 24 heures. Si vous n’êtes pas à l’origine de cette demande, ignorez ce message.</p><p style="font-size:12px;color:#68716b">NAKAHYA — La rencontre qui change tout.</p></div>`,
       }),
     });
     if (!sent.ok) {

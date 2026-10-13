@@ -1,4 +1,4 @@
-# Inventaire fonctionnel — NIKAHYA
+# Inventaire fonctionnel — NAKAHYA
 
 > **Objectif : éviter les doublons de développement.** Avant de créer une fonctionnalité, une page, une API ou un test, consulter ce document et rechercher dans le dépôt. Mettre cet inventaire à jour lorsqu'une fonctionnalité est ajoutée, modifiée, fusionnée ou retirée.
 >

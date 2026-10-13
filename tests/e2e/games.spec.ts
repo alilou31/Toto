@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("Mini-jeux NIKAHYA", () => {
+test.describe("Mini-jeux NAKAHYA", () => {
   test("l'historique des résultats refuse les requêtes sans session", async ({ request }) => {
     const response = await request.get("/api/games/results");
     expect(response.status()).toBe(401);

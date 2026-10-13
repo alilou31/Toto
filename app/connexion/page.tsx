@@ -68,10 +68,10 @@ export default function ConnexionPage() {
     <main className="auth-page auth-page-premium">
       <Link href="/" className="auth-back"><ArrowLeft size={16} /> Retour à l’accueil</Link>
       <div className="auth-layout">
-        <aside className="auth-story" aria-label="La méthode NIKAHYA">
-          <Link href="/" className="brand auth-story-brand" aria-label="NIKAHYA, accueil">
+        <aside className="auth-story" aria-label="La méthode NAKAHYA">
+          <Link href="/" className="brand auth-story-brand" aria-label="NAKAHYA, accueil">
             <span className="brand-mark"><Heart size={20} /></span>
-            <span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span>
+            <span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span>
           </Link>
           <div className="auth-story-copy">
             <span className="auth-story-eyebrow"><Sparkles size={14} /> LA RENCONTRE, AUTREMENT</span>
@@ -94,7 +94,7 @@ export default function ConnexionPage() {
         </aside>
         <section className="auth-card auth-card-premium" aria-labelledby="auth-login-title">
           <div className="auth-mobile-brand">
-            <Link href="/" className="brand auth-brand"><span className="brand-mark"><Heart size={20} /></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+            <Link href="/" className="brand auth-brand"><span className="brand-mark"><Heart size={20} /></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
           </div>
           <div className="auth-card-topline"><span className="auth-status-dot" /> VOTRE ESPACE PERSONNEL</div>
           <div className="section-kicker auth-kicker">HEUREUX DE VOUS REVOIR</div>

@@ -21,14 +21,14 @@ export default function OffersPage() {
     <main className="pricing-page">
       <header className="pricing-header">
         <Link href="/tableau-de-bord" className="pricing-back"><ArrowLeft size={16}/> Mon espace</Link>
-        <Link href="/" className="brand" aria-label="NIKAHYA, accueil"><span className="brand-mark"><Heart size={18}/></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link>
+        <Link href="/" className="brand" aria-label="NAKAHYA, accueil"><span className="brand-mark"><Heart size={18}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
         <span className="pricing-header-note"><ShieldCheck size={14}/> Sans engagement caché</span>
       </header>
       <section className="pricing-content">
         <div className="pricing-intro">
           <div className="section-kicker">PRENDRE LE TEMPS DE SE RENCONTRER</div>
           <h1>La sincérité d’abord.<br/><em>Le bon rythme pour vous.</em></h1>
-          <p>NIKAHYA restera utile gratuitement. L’offre Premium est pensée pour celles et ceux qui veulent approfondir leurs découvertes, sans publicité intrusive ni swipe infini.</p>
+          <p>NAKAHYA restera utile gratuitement. L’offre Premium est pensée pour celles et ceux qui veulent approfondir leurs découvertes, sans publicité intrusive ni swipe infini.</p>
           <div className="pricing-promise"><ShieldCheck size={17}/> Pas de paiement activé pour le moment : aucun prélèvement n’est possible sur cette page.</div>
         </div>
 

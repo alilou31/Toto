@@ -1,4 +1,4 @@
-# Backlog produit — NIKAHYA
+# Backlog produit — NAKAHYA
 
 > Objectif : livrer un MVP de rencontre utilisable, sécurisé et responsive.
 > Règle de périmètre : toute intégration nécessitant un prestataire externe est reportée en phase 2. Prévoir des interfaces/adaptateurs propres, sans bloquer le MVP.
@@ -208,7 +208,7 @@ Ce backlog historique contient encore des cases non cochées qui peuvent corresp
 ## EPIC 5 — Finition produit et conformité
 
 ### NIK-040 — Navigation et interface responsive (P0)
-- [ ] Harmoniser les pages avec l'identité NIKAHYA (ivoire, vert émeraude/forêt)
+- [ ] Harmoniser les pages avec l'identité NAKAHYA (ivoire, vert émeraude/forêt)
 - [ ] Prévoir les états non connecté, connecté, vide, chargement et erreur
 - [ ] Tester les parcours sur mobile et ordinateur
 - [ ] Ajouter les libellés accessibles et la navigation clavier
