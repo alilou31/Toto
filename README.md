@@ -26,9 +26,13 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
    - `db/migrations/005_game_sessions.sql`
    - `db/migrations/006_shared_interests.sql`
    - `db/migrations/007_rencontre_sessions.sql` (si non déjà appliquée ; vérifier l'état avant exécution)
-   - `db/migrations/011_gender_preferences_and_verification.sql` (si non déjà appliquée)
+   - `db/migrations/008_oauth_identities.sql`
+   - `db/migrations/009_profile_visits_and_presence.sql`
+   - `db/migrations/010_password_reset_tokens.sql`
+   - `db/migrations/011_gender_preferences_and_verification.sql`
    - `db/migrations/012_consents_newsletter.sql`
    - `db/migrations/013_automatic_identity_verification.sql`
+   Exécuter uniquement les migrations non encore appliquées, dans cet ordre, en vérifiant l'état Neon avant toute relance.
 6. Lancer `npm run dev`, puis ouvrir `http://localhost:3000`.
 7. Vérifier la connexion sur `http://localhost:3000/api/db-check`. La route renvoie uniquement un état et l'heure de la base, jamais la chaîne de connexion.
 
@@ -69,7 +73,9 @@ GitHub Actions exécute les tests unitaires, ESLint, le build Next.js et le buil
 
 Pour installer les navigateurs en local après `npm install` : `npx playwright install chromium`.
 
-## État vérifié — 2026-10-12
+## État historique vérifié — 2026-10-12
+
+> Cette photographie est historique et ne décrit pas nécessairement le commit courant. Pour le statut actuel, consulter les checks GitHub du commit et le registre de tests de production.
 
 Le suivi ci-dessous remplace les anciennes cases à cocher historiques de ce README. Pour éviter les doublons, consulter d'abord [FEATURES_INVENTORY.md](./FEATURES_INVENTORY.md) et [BACKLOG.md](./BACKLOG.md).
 
@@ -97,14 +103,14 @@ Le catalogue propose six formats de mini-jeux. Les parties individuelles peuvent
 
 Les routes disponibles sont :
 
-- `POST /api/auth/register` : créer un compte avec e-mail, mot de passe, confirmation 18+ et acceptation des conditions.
+- `POST /api/auth/register` : créer un compte avec e-mail, mot de passe, confirmation 18+, acceptation des conditions et accusé de lecture de la politique de confidentialité.
 - `POST /api/auth/login` : ouvrir une session.
 - `POST /api/auth/logout` : fermer la session.
 - `GET /api/auth/me` : vérifier la session courante.
 
 Les mots de passe sont stockés sous forme de hash scrypt ; le cookie de session est HttpOnly, SameSite=Lax et marqué Secure en production. La base ne stocke qu'un hash du jeton de session. Ces protections constituent une première base, pas une validation de sécurité complète.
 
-**Limites actuelles :** la vérification d'e-mail et la récupération de mot de passe par e-mail sont reportées à la phase 2. La limitation de tentatives est implémentée via Neon (migration `003_auth_rate_limits.sql` obligatoire) : 5 tentatives de connexion par e-mail sur 15 minutes, 30 par IP Cloudflare sur 15 minutes, 5 inscriptions par e-mail et 10 par IP sur une heure. Les clés sont stockées sous forme de hash. La page de profil, les autorisations métier complètes et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
+**Limites actuelles :** la vérification de l'adresse e-mail du compte et le parcours complet de récupération de mot de passe par e-mail ne doivent être considérés comme opérationnels qu'après configuration du fournisseur d'envoi et validation E2E de bout en bout. La limitation de tentatives est implémentée via Neon (migration `003_auth_rate_limits.sql` obligatoire) : 5 tentatives de connexion par e-mail sur 15 minutes, 30 par IP Cloudflare sur 15 minutes, 5 inscriptions par e-mail et 10 par IP sur une heure. Les clés sont stockées sous forme de hash. La page de profil, les autorisations métier complètes et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
 
 ## Démonstration sans base de données
 
