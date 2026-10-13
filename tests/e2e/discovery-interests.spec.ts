@@ -41,5 +41,5 @@ test("discovery cards show shared and non-shared interests", async ({ page }) =>
   await expect(page.locator(".discovery-tags span.is-shared").filter({ hasText: "Cuisine" })).toBeVisible();
   await expect(page.locator(".discovery-tags span.is-shared").filter({ hasText: "Lecture" })).toBeVisible();
   await expect(page.locator(".discovery-tags span").filter({ hasText: "Randonnée" })).toBeVisible();
-  await expect(page.locator(".discovery-tags span").filter({ hasText: "Échecs" })).toBeVisible();
+  await expect(page.locator(".discovery-tags span").filter({ hasText: "+1" })).toBeVisible();
 });
