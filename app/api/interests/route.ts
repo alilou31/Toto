@@ -42,7 +42,7 @@ export async function POST(request: Request) {
   if (!recipientId || recipientId.length > 128) return NextResponse.json({ error: "Profil destinataire invalide." }, { status: 400 });
 
   const user = await getCurrentUser().catch(() => null);
-  if (!user) return NextResponse.json({ error: "Authentification requise." }, { status: 401 });
+  if (!user) return NextResponse.json({ error: "Authentification requise." }, { status: 401, headers: { "Cache-Control": "no-store" } });
   if (recipientId === user.id) return NextResponse.json({ error: "Vous ne pouvez pas vous envoyer un intérêt." }, { status: 400 });
 
   try {
