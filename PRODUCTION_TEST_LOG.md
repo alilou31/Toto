@@ -28,6 +28,21 @@
 
 ## Historique des exécutions
 
+## PROD-2026-10-13-02 — Audit navigateur production en lecture seule
+
+- **Résultat : PARTIELLEMENT PASSÉ — audit de navigation publique, contrôle mobile non concluant.**
+- **Application :** https://nikahya.rassoul-ali.workers.dev/
+- **Rapport navigateur :** [audit TinyFish](https://agent.tinyfish.ai/runs/4159be8a-c14f-40e6-9052-efcc0dbd043f).
+- **Routes visitées :** accueil, connexion, inscription, démo, cockpit, catalogue jeux, mots croisés, énigme, défis, découvrir, matchs, profil, validation, confidentialité et conditions — **15 routes, aucun échec HTTP observé** durant ce contrôle.
+- **Actions :** navigation en lecture seule uniquement ; aucun formulaire soumis, aucune connexion/inscription et aucune écriture métier déclenchée.
+- **Constats :**
+  - Les liens d'accueil vers connexion et inscription sont présents ; la démo, les jeux, les défis et les pages légales répondent.
+  - Aucun lien « mot de passe oublié » n'a été détecté sur `/connexion`.
+  - Aucun hamburger n'a été détecté dans le rendu desktop examiné. Le rapport précise que le viewport n'a pas été forcé à 390×844 : **le comportement mobile reste donc non validé**, et l'absence du hamburger sur desktop ne prouve pas son absence sur mobile.
+  - Les routes `/cockpit`, `/decouvrir`, `/matchs` et `/profil` répondent en HTTP 200 sans session créée par cet audit. HTTP 200 seul ne prouve ni fuite de données ni protection correcte : un test dédié doit vérifier que l'API et les données privées restent protégées sans authentification.
+- **Suite prioritaire :** vérifier la protection réelle des API/données privées sans session, puis tester la navigation avec un viewport mobile explicite et un compte de test déjà autorisé, sans créer de données.
+- **Limite :** cet audit est une inspection navigateur exploratoire, pas un audit de sécurité complet ni une certification de toutes les fonctionnalités.
+
 ## PROD-2026-10-13-01 — Parcours complet à deux utilisateurs en production
 
 - **Résultat : PASSÉ — exécution Playwright vérifiée.**
