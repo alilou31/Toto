@@ -43,7 +43,7 @@ test.describe("Session et retour navigateur", () => {
     });
     await page.goto("/");
     await page.getByRole("link", { name: "Se connecter" }).first().click();
-    await expect(page).toHaveURL(/\\/connexion$/);
+    await expect(page).toHaveURL(/\/connexion$/);
 
     // Wait for the login page's client effect to run before typing. Otherwise
     // Playwright can fill controlled inputs before hydration and React can reset them.
