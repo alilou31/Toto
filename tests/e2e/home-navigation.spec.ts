@@ -8,7 +8,7 @@ test("homepage makes sign-in and account creation obvious", async ({ page }) => 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   const header = page.locator("header.site-header");
-  await expect(page.locator('a[href="/inscription"]').first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /Faire le premier pas/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /Et si vous trouviez la bonne personne en jouant/i })).toBeVisible();
   await expect(page.getByRole("link", { name: /Faire le premier pas/i })).toHaveAttribute("href", "/inscription");
   await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(1);
