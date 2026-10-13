@@ -17,6 +17,7 @@ test.describe("Connexion sociale Google et Facebook", () => {
     await expect(facebook).toBeDisabled();
     await page.getByRole("checkbox").nth(0).check();
     await page.getByRole("checkbox").nth(1).check();
+    await page.getByRole("checkbox").nth(2).check();
     await expect(google).toBeEnabled();
     await expect(facebook).toBeEnabled();
   });
@@ -28,7 +29,7 @@ test.describe("Connexion sociale Google et Facebook", () => {
 
   test("refuse l’inscription sociale sans consentements", async ({ request }) => {
     const response = await request.post("/api/auth/oauth/start", {
-      data: { provider: "google", mode: "signup", ageConfirmed: false, acceptedTerms: false },
+      data: { provider: "google", mode: "signup", ageConfirmed: false, acceptedTerms: false, acceptedPrivacy: false },
     });
     expect(response.status()).toBe(400);
   });
