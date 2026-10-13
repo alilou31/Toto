@@ -36,9 +36,10 @@ test("discovery cards show shared and non-shared interests", async ({ page }) =>
 
   await page.goto("/decouvrir");
 
-  await expect(page.getByRole("heading", { name: "Découvrez des profils en toute sincérité." })).toBeVisible();
-  await expect(page.getByText("En commun · Cuisine")).toBeVisible();
-  await expect(page.getByText("En commun · Lecture")).toBeVisible();
-  await expect(page.getByText("✦ Intérêt · Randonnée")).toBeVisible();
-  await expect(page.getByText("🎮 Échecs")).toBeVisible();
+  await expect(page.locator(".discovery-heading h1")).toContainText("commence par un détail");
+  await expect(page.locator(".discovery-shared")).toContainText("2 points en commun");
+  await expect(page.locator(".discovery-tags span.is-shared").filter({ hasText: "Cuisine" })).toBeVisible();
+  await expect(page.locator(".discovery-tags span.is-shared").filter({ hasText: "Lecture" })).toBeVisible();
+  await expect(page.locator(".discovery-tags span").filter({ hasText: "Randonnée" })).toBeVisible();
+  await expect(page.locator(".discovery-tags span").filter({ hasText: "+1" })).toBeVisible();
 });

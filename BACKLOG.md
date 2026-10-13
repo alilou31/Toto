@@ -310,3 +310,14 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [ ] Appliquer db/migrations/008_oauth_identities.sql dans Neon avant le premier test OAuth réel.
 - [ ] Ajouter les secrets Google/Meta et NEXT_PUBLIC_SITE_URL dans Cloudflare Worker ; enregistrer l’URI de callback dans les consoles fournisseurs.
 - [ ] Réaliser les parcours réels Google et Facebook après configuration des identifiants de test.
+
+
+### Découverte compacte et offres Premium — 2026-10-13
+
+- [x] Grille de découverte compacte et responsive sur la branche `feat/discovery-dashboard-membership`.
+- [x] Fiche membre avec activités de jeu enregistrées, sans afficher scores ou réponses privées.
+- [x] Accès aux offres depuis le tableau de bord.
+- [x] Proposition tarifaire : Gratuit ; Premium 9,99 €/mois ou 79,99 €/an.
+- [ ] Ajouter Stripe (ou un prestataire de paiement compatible), gérer webhooks et statut d’abonnement côté serveur avant d’activer tout paiement.
+- [ ] Appliquer les avantages Premium côté API, ajouter les tests de renouvellement/annulation et vérifier les obligations légales de vente à distance avant lancement.
+- [ ] Confirmer CI, déploiement Cloudflare et tests de production avant de marquer ces changements comme validés.

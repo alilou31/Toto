@@ -38,7 +38,23 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
       limit 1
     `;
     if (!rows.length) return NextResponse.json({ error: "Ce profil n’est pas disponible." }, { status: 404, headers: { "Cache-Control": "no-store" } });
-    return NextResponse.json({ profile: rows[0] }, { headers: { "Cache-Control": "no-store" } });
+    const playedGames = await sql`
+      select game_id, count(*)::int as games_played
+      from public.game_results
+      where user_id = ${profileId}
+      group by game_id
+      order by max(completed_at) desc
+      limit 6
+    `;
+    return NextResponse.json({
+      profile: {
+        ...rows[0],
+        played_games: playedGames.map((game) => ({
+          game_id: game.game_id,
+          games_played: game.games_played,
+        })),
+      },
+    }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     console.error("NIKAHYA public profile read failed.");
     return NextResponse.json({ error: "Fiche profil indisponible." }, { status: 503, headers: { "Cache-Control": "no-store" } });

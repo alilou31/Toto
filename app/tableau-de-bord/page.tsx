@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, UserRound } from "lucide-react";
+import { ArrowRight, CreditCard, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, UserRound } from "lucide-react";
 
 type Profile = {
   public_name?: string | null;
@@ -69,6 +69,7 @@ export default function DashboardPage() {
           <Link href="/profil"><UserRound size={16}/> Mon profil</Link>
           <Link href="/decouvrir"><Search size={16}/> Découvrir</Link>
           <Link href="/cockpit/jeux"><Gamepad2 size={16}/> Jouer</Link>
+          <Link href="/offres"><CreditCard size={16}/> Offres</Link>
         </nav>
         <Link href="/profil" className="button button-dark button-small">Modifier mon profil <ArrowRight size={15}/></Link>
       </header>
@@ -90,6 +91,7 @@ export default function DashboardPage() {
               <Link href="/profil" className="dashboard-card"><span className="dashboard-card-icon"><UserRound size={22}/></span><span className="dashboard-card-title">Mon profil</span><span className="dashboard-card-description">Mettez à jour votre présentation, votre ville et vos intentions.</span><span className="dashboard-card-link">{profileComplete ? "Voir et modifier" : "Compléter mon profil"} <ArrowRight size={15}/></span></Link>
               <Link href="/matchs" className="dashboard-card"><span className="dashboard-card-icon"><Heart size={22}/></span><span className="dashboard-card-title">Affinités</span><span className="dashboard-card-description">Retrouvez vos affinités et les connexions créées sur NIKAHYA.</span><span className="dashboard-card-link">Voir mes affinités <ArrowRight size={15}/></span></Link>
               <Link href="/rencontre" className="dashboard-card"><span className="dashboard-card-icon"><Sparkles size={22}/></span><span className="dashboard-card-title">Alchimie</span><span className="dashboard-card-description">Proposez un jeu ou un défi à un match existant, à votre rythme.</span><span className="dashboard-card-link">Découvrir Alchimie <ArrowRight size={15}/></span></Link>
+              <Link href="/offres" className="dashboard-card dashboard-offers-card"><span className="dashboard-card-icon"><CreditCard size={22}/></span><span className="dashboard-card-title">Les offres NIKAHYA</span><span className="dashboard-card-description">Découvrez les formules prévues, leurs avantages et le tarif sans surprise.</span><span className="dashboard-card-link">Comparer les offres <ArrowRight size={15}/></span></Link>
             </div>
 
             <div className="dashboard-lower-grid">

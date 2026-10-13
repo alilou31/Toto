@@ -5,7 +5,8 @@ test.describe("Fiche publique membre", () => {
     await page.route("**/api/profiles/member-2", async route => {
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ profile: {
         id: "member-2", public_name: "Mike", city: "Bordeaux", bio: "J’aime les énigmes et les échanges sincères.",
-        relationship_intention: "marriage", visibility: "visible"
+        relationship_intention: "marriage", visibility: "visible",
+        played_games: [{ game_id: "enigme", games_played: 3 }, { game_id: "calcul", games_played: 1 }]
       } }) });
     });
     await page.goto("/membre/member-2");
@@ -13,6 +14,10 @@ test.describe("Fiche publique membre", () => {
     await expect(page.getByText("Bordeaux")).toBeVisible();
     await expect(page.getByText(/échanges sincères/i)).toBeVisible();
     await expect(page.getByText(/1990-01-01|mike@example/i)).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: /Jeux auxquels cette personne a joué/i })).toBeVisible();
+    await expect(page.getByText("Énigmes", { exact: true })).toBeVisible();
+    await expect(page.getByText("3 parties")).toBeVisible();
+    await expect(page.getByText("Défis de calcul")).toBeVisible();
   });
 
   test("un profil indisponible affiche un message clair", async ({ page }) => {
