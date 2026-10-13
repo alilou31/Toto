@@ -15,7 +15,7 @@ test.describe("Fiche publique membre", () => {
     await expect(page.getByText(/échanges sincères/i)).toBeVisible();
     await expect(page.getByText(/1990-01-01|mike@example/i)).toHaveCount(0);
     await expect(page.getByRole("heading", { name: /Jeux auxquels cette personne a joué/i })).toBeVisible();
-    await expect(page.getByText("Énigmes")).toBeVisible();
+    await expect(page.getByText("Énigmes", { exact: true })).toBeVisible();
     await expect(page.getByText("3 parties")).toBeVisible();
     await expect(page.getByText("Défis de calcul")).toBeVisible();
   });
