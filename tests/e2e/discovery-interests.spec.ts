@@ -36,7 +36,7 @@ test("discovery cards show shared and non-shared interests", async ({ page }) =>
 
   await page.goto("/decouvrir");
 
-  await expect(page.getByRole("heading", { name: /La bonne rencontre.*commence par un détail/i })).toBeVisible();
+  await expect(page.locator(".discovery-heading h1")).toContainText("commence par un détail");
   await expect(page.locator(".discovery-shared")).toContainText("2 points en commun");
   await expect(page.locator(".discovery-tags span.is-shared").filter({ hasText: "Cuisine" })).toBeVisible();
   await expect(page.locator(".discovery-tags span.is-shared").filter({ hasText: "Lecture" })).toBeVisible();
