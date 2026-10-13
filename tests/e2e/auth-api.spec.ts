@@ -46,7 +46,15 @@ test.describe("API d'authentification — validations sans compte réel", () => 
     });
   });
 
-  test("refuse une inscription sans acceptation de la confidentialité", async ({ request }) => {\n    const response = await request.post("/api/auth/register", {\n      data: { email: "test@example.fr", password: "MotdepasseLong123!", ageConfirmed: true, acceptedTerms: true, acceptedPrivacy: false },\n    });\n    expect(response.status()).toBe(400);\n    expect(await response.json()).toMatchObject({ error: "Confirmez votre majorité, acceptez les conditions et confirmez la lecture de la politique de confidentialité pour continuer." });\n  });\n\n  test("refuse un e-mail mal formé à la connexion sans interroger la base", async ({ request }) => {
+  test("refuse une inscription sans acceptation de la confidentialité", async ({ request }) => {
+    const response = await request.post("/api/auth/register", {
+      data: { email: "test@example.fr", password: "MotdepasseLong123!", ageConfirmed: true, acceptedTerms: true, acceptedPrivacy: false },
+    });
+    expect(response.status()).toBe(400);
+    expect(await response.json()).toMatchObject({ error: "Confirmez votre majorité, acceptez les conditions et confirmez la lecture de la politique de confidentialité pour continuer." });
+  });
+
+  test("refuse un e-mail mal formé à la connexion sans interroger la base", async ({ request }) => {
     const response = await request.post("/api/auth/login", {
       data: { email: "invalide", password: "un-mot-de-passe" },
     });
