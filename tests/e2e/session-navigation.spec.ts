@@ -43,8 +43,22 @@ test.describe("Session et retour navigateur", () => {
     });
     await page.goto("/");
     await page.getByRole("link", { name: "Se connecter" }).first().click();
-    await page.getByLabel("Adresse e-mail").fill("mike@example.fr");
-    await page.getByLabel("Mot de passe").fill("a-valid-password");
+    await expect(page).toHaveURL(/\\/connexion$/);
+
+    // Wait for the login page's client effect to run before typing. Otherwise
+    // Playwright can fill controlled inputs before hydration and React can reset them.
+    await page.waitForResponse(response => {
+      if (!response.url().endsWith("/api/auth/me") || response.request().method() !== "GET") return false;
+      const referer = response.request().headers()["referer"] ?? "";
+      return new URL(referer).pathname === "/connexion";
+    });
+
+    const emailInput = page.getByLabel("Adresse e-mail");
+    const passwordInput = page.getByLabel("Mot de passe");
+    await emailInput.fill("mike@example.fr");
+    await passwordInput.fill("a-valid-password");
+    await expect(emailInput).toHaveValue("mike@example.fr");
+    await expect(passwordInput).toHaveValue("a-valid-password");
     await page.getByRole("button", { name: /Se connecter/i }).click();
     await expect(page).toHaveURL(/tableau-de-bord$/);
     await page.goBack();
