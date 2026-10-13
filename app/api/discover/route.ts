@@ -15,6 +15,7 @@ export async function GET() {
     const sql = getDb();
     const profiles = await sql`
       select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.hobbies, p.favorite_games, p.interests, p.occupation,
+        (p.last_seen_at >= now() - interval '2 minutes') as is_online,
         case when p.show_sensitive_identity then p.religion else null end as religion,
         case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
       from public.profiles p
