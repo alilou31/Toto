@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { normalizeLocale, localeMessages } from "@/lib/i18n";
 import Link from "next/link";
 import HomeHeader from "@/app/components/home-header";
 import { ArrowRight, ArrowDown, Brain, Heart, LockKeyhole, ShieldCheck, Check, MessageCircleHeart } from "lucide-react";
@@ -33,7 +35,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default function Home() {
+export default async function Home() {
+  const cookieStore = await cookies();
+  const locale = normalizeLocale(cookieStore.get("nikahya_locale")?.value);
+  const t = localeMessages[locale];
   const structuredData = [
     { "@context": "https://schema.org", "@type": "Organization", name: "NIKAHYA", url: siteUrl, description: "NIKAHYA aide les adultes qui recherchent une relation sérieuse à faire connaissance grâce aux jeux, aux centres d’intérêt et aux conversations." },
     { "@context": "https://schema.org", "@type": "WebSite", name: "NIKAHYA", url: siteUrl, inLanguage: "fr-FR", description: "L’application de rencontre sérieuse pour faire connaissance en jouant." },
@@ -42,14 +47,14 @@ export default function Home() {
   return (
     <main className="landing-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
-      <HomeHeader />
+      <HomeHeader locale={locale} />
       <section className="hero landing-hero" aria-labelledby="landing-title">
         <div className="hero-copy landing-hero-copy">
           <div className="eyebrow"><span className="eyebrow-line" /> LA RENCONTRE, AUTREMENT</div>
-          <h1 id="landing-title">Et si vous trouviez la bonne personne <em>en jouant&nbsp;?</em></h1>
-          <p className="hero-lede">Une énigme pour briser la glace. Un jeu pour se découvrir. Une conversation pour voir si vos chemins peuvent se rejoindre. <strong>Avec NIKAHYA, la rencontre sérieuse commence par la complicité.</strong></p>
+          <h1 id="landing-title">{t.hero}</h1>
+          <p className="hero-lede">{t.intro} <strong>Avec NIKAHYA, la rencontre sérieuse commence par la complicité.</strong></p>
           <div className="hero-actions landing-hero-actions">
-            <Link href="/inscription" className="button button-green landing-primary-cta">Faire le premier pas <ArrowRight size={17} /></Link>
+            <Link href="/inscription" className="button button-green landing-primary-cta">{t.heroCta} <ArrowRight size={17} /></Link>
             <Link href="/demo" className="button button-quiet landing-secondary-cta">Voir comment ça marche <ArrowDown size={16} /></Link>
           </div>
           <div className="landing-login-line">Déjà membre&nbsp;? <Link href="/connexion">Se connecter <ArrowRight size={14} /></Link></div>

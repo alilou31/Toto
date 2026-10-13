@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { normalizeLocale } from "@/lib/i18n";
 import ConnectedAppChrome from "@/app/components/connected-app-chrome";
 import "./gamified.css";
 import "./profile-ui.css";
@@ -26,6 +28,8 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: siteTitle, description: siteDescription, images: ["https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=85"] },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body><ConnectedAppChrome>{children}</ConnectedAppChrome></body></html>;
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const cookieStore = await cookies();
+  const locale = normalizeLocale(cookieStore.get("nikahya_locale")?.value);
+  return <html lang={locale}><body><ConnectedAppChrome>{children}</ConnectedAppChrome></body></html>;
 }

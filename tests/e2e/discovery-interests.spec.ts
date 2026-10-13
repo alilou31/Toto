@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("discovery cards show shared and non-shared interests", async ({ page }) => {
-  await page.route("**/api/discover", async (route) => {
+  await page.route("**/api/discover**", async (route) => {
     await route.fulfill({
       status: 200,
       contentType: "application/json",

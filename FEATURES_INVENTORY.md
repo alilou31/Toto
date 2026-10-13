@@ -159,3 +159,14 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Paiements : REPORTÉS.** La page d'offres est présente, mais Stripe et les contrôles d'accès Premium ne sont pas configurés. Ne pas activer ou présenter un paiement comme fonctionnel.
 - **Tests de production avec écritures : AUTORISATION REQUISE.** Le parcours à deux comptes peut créer des données. Le workflow manuel reste protégé ; ne pas le déclencher automatiquement dans le cadre d'une simple consolidation.
 - **État de lancement : NON CERTIFIÉ.** Les workflows verts attestent les contrôles qu'ils exécutent, pas la livraison d'e-mails, la conformité juridique, la facturation ni une revue de sécurité exhaustive.
+
+
+## Préférences, vérification et internationalisation — 2026-10-13
+
+- Complexité du mot de passe : inscription avec au moins 12 caractères, minuscule, majuscule, chiffre et caractère spécial. La confirmation de réinitialisation applique la même politique.
+- Préférences de genre : migration 011, champs genre/préférence dans le profil et filtre Découvrir. Le choix par défaut est le genre opposé pour les profils renseignés comme homme/femme ; les filtres Femmes/Hommes/Tous restent disponibles.
+- Présence : migration 009 et heartbeat existaient déjà. Découvrir affiche un libellé approximatif (« en ligne », « vu récemment », « vu aujourd'hui »), sans exposer d'horodatage précis.
+- Badge Vérifié : demande avec photo/vidéo privée, consentement, file de revue protégée par VERIFICATION_REVIEWER_EMAILS, décision humaine et suppression de la preuve après décision. Le badge public n'est activé qu'après approbation. Aucune estimation automatique de l'âge ou reconnaissance faciale n'est effectuée.
+- Limite importante : la vérification humaine doit comparer la preuve à une photo de profil effectivement disponible et examiner la date de naissance déclarée. La gestion actuelle des photos de profil doit être vérifiée/complétée avant de promettre une comparaison automatisée. Une revue juridique et une politique de conservation restent nécessaires.
+- Internationalisation : infrastructure de langue fr/en/es/it, choix de langue et attribut html lang. La traduction intégrale de chaque page et des messages API n'est pas achevée dans ce lot ; les textes statiques existants ne doivent pas être annoncés comme tous traduits.
+- Déploiement : appliquer db/migrations/011_gender_preferences_and_verification.sql dans Neon avant d'activer les nouveaux écrans/API. Ajouter VERIFICATION_REVIEWER_EMAILS sur Cloudflare avec une liste d'adresses de réviseurs autorisés. Ne jamais ajouter de secrets dans Git.

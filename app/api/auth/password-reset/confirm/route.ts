@@ -32,6 +32,9 @@ export async function POST(request: Request) {
   if (typeof password !== "string" || password.length < 12 || password.length > 256) {
     return NextResponse.json({ error: "Le mot de passe doit contenir entre 12 et 256 caractères." }, { status: 400, headers: noStore });
   }
+  if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+    return NextResponse.json({ error: "Renforcez votre mot de passe : ajoutez une minuscule, une majuscule, un chiffre et un caractère spécial." }, { status: 400, headers: noStore });
+  }
 
   try {
     const clientIp = getTrustedClientIp(request);

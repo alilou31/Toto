@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Ban, Flag, Heart, MapPin, RefreshCw, UserRound, Sparkles } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Ban, Flag, Heart, MapPin, RefreshCw, UserRound, Sparkles } from "lucide-react";
 
 type PublicProfile = {
   id: string;
@@ -15,6 +15,8 @@ type PublicProfile = {
   interests?: string[] | null;
   occupation?: string | null;
   is_online?: boolean;
+  last_seen_label?: string | null;
+  is_verified?: boolean;
   religion?: string | null;
   ethnicity?: string | null;
 };
@@ -28,6 +30,7 @@ const intentionLabels: Record<PublicProfile["relationship_intention"], string> =
 
 export default function DiscoverPage() {
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
+  const [genderFilter, setGenderFilter] = useState("opposite");
   const [myInterests, setMyInterests] = useState<string[]>([]);
   const [myGames, setMyGames] = useState<string[]>([]);
   const [myHobbies, setMyHobbies] = useState<string[]>([]);
@@ -45,7 +48,7 @@ export default function DiscoverPage() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/discover", { cache: "no-store" });
+      const response = await fetch(`/api/discover?gender=${encodeURIComponent(genderFilter)}`, { cache: "no-store" });
       const data = await response.json();
       if (!response.ok) {
         if (response.status === 401) throw new Error("Connectez-vous pour découvrir les profils.");
@@ -66,7 +69,7 @@ export default function DiscoverPage() {
     }
   }
 
-  useEffect(() => { void loadProfiles(); }, []);
+  useEffect(() => { void loadProfiles(); }, [genderFilter]);
 
   async function likeProfile(profileId: string) {
     setLiking(profileId);
@@ -157,7 +160,7 @@ export default function DiscoverPage() {
           : error ? <div className="discovery-state" role="alert"><p>{error}</p><Link href="/connexion" className="button button-green">Se connecter</Link></div>
           : profiles.length === 0 ? <div className="discovery-empty"><span><UserRound size={25}/></span><h2>De nouvelles rencontres bientôt</h2><p>Il n’y a pas encore de profils visibles à vous présenter. Complétez le vôtre pour rejoindre la découverte.</p><Link href="/profil" className="button button-green">Compléter mon profil</Link></div>
           : <>
-            <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><span>Profils visibles · 18+</span></div>
+            <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><label>Filtrer par genre <select value={genderFilter} onChange={event=>setGenderFilter(event.target.value)}><option value="opposite">Genre opposé (par défaut)</option><option value="women">Femmes</option><option value="men">Hommes</option><option value="all">Tous les genres</option></select></label><span>Profils visibles · 18+</span></div>
             <div className="discovery-grid">
               {profiles.map(profile => {
                 const mine = [...myInterests, ...myGames, ...myHobbies];
@@ -176,8 +179,8 @@ export default function DiscoverPage() {
                     <span className="discovery-avatar-wrap"><span className="discovery-avatar" aria-hidden="true">{profile.public_name.trim().slice(0, 1).toLocaleUpperCase()}</span>{profile.is_online && <span className="profile-online-dot" aria-label="En ligne" title="En ligne"/>}</span>
                     <span className="discovery-intention">{intentionLabels[profile.relationship_intention] ?? "À discuter"}</span>
                   </div>
-                  <h2><Link href={`/membre/${encodeURIComponent(profile.id)}`} aria-label={`Voir la fiche de ${profile.public_name}`}>{profile.public_name}</Link></h2>
-                  {profile.city && <p className="discovery-city"><MapPin size={13}/>{profile.city}</p>}
+                  <h2><Link href={`/membre/${encodeURIComponent(profile.id)}`} aria-label={`Voir la fiche de ${profile.public_name}`}>{profile.public_name}</Link>{profile.is_verified && <span className="nikahya-verified-badge" title="Identité contrôlée par l’équipe NIKAHYA"><BadgeCheck size={15}/> Vérifié</span>}</h2>
+                  {profile.city && <p className="discovery-city"><MapPin size={13}/>{profile.city}</p>}{profile.last_seen_label && <p className="discovery-last-seen">{profile.last_seen_label}</p>}
                   <p className="discovery-bio">{profile.bio?.trim() || "Préfère faire connaissance au fil de la conversation."}</p>
                   {shared.length > 0 && <p className="discovery-shared"><Sparkles size={13}/>{shared.length} point{shared.length > 1 ? "s" : ""} en commun</p>}
                   <div className="discovery-tags">

@@ -113,3 +113,14 @@ Ouvrir `/demo` pour tester les profils fictifs, enregistrer un profil local, aim
 - Toute lecture/écriture de données privées doit passer par des routes serveur authentifiées et autorisées.
 - La majorité doit être validée côté serveur avant toute publication de profil ; une case à cocher ne suffit pas à vérifier l'âge.
 - Les signalements peuvent être envoyés depuis la découverte et sont enregistrés en base ; aucun tableau de modération administrateur n’est encore disponible. Les pages juridiques sont des brouillons et doivent être complétées puis vérifiées par un professionnel avant commercialisation.
+
+
+## Préférences de découverte et vérification de profil
+
+Avant d'utiliser les nouveaux champs de genre et le workflow de badge, appliquer db/migrations/011_gender_preferences_and_verification.sql dans Neon après la migration 010. La découverte propose le genre opposé par défaut lorsque le genre du membre est renseigné comme homme ou femme, avec un filtre modifiable Femmes/Hommes/Tous.
+
+L'inscription et la réinitialisation exigent au moins 12 caractères, une minuscule, une majuscule, un chiffre et un caractère spécial.
+
+La demande de badge accepte une photo ou une courte vidéo (8 Mo maximum) et nécessite un consentement explicite. La décision est humaine : configurez VERIFICATION_REVIEWER_EMAILS sur Cloudflare avec les adresses autorisées. Le badge ne doit être activé qu'après contrôle des 18 ans déclarés et de la cohérence de la preuve avec la photo du profil. Les preuves privées sont supprimées au moment de la décision. Aucune reconnaissance faciale automatisée n'est activée.
+
+Le sélecteur de langue supporte le français, l'anglais, l'espagnol et l'italien au niveau de l'infrastructure de langue. Les traductions intégrales de toutes les pages et de tous les messages d'erreur API restent à terminer avant de présenter le produit comme entièrement internationalisé.
