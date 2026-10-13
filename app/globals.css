@@ -314,7 +314,7 @@ h1 em,h2 em,.brand-dot{color:var(--green)!important}
 .game-welcome-copy>p{color:#e4eee8!important}
 .game-button-primary{box-shadow:0 8px 18px #075b4b20!important}
 .game-nav-link-primary{background:#eaf2ed!important;color:var(--green)!important}
-.game-mobile-nav{display:none!important}
+body:has(.connected-bottom-nav) .game-mobile-nav{display:none!important}
 .game-feature-icon.mint,.game-stat-icon.mint,.float-icon{background:#eaf2ed!important;color:var(--green)!important}
 .game-feature-icon.purple,.game-stat-icon.purple,.game-feature-icon.pink,.game-stat-icon.pink{background:#eaf2ed!important;color:var(--green)!important}
 .game-progress i,.game-progress i.purple,.game-progress i.pink,.game-progress i.mint{background:var(--green-2)!important}
