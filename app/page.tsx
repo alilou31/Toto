@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import HomeHeader from "@/app/components/home-header";
 import { ArrowRight, ArrowDown, Brain, Heart, LockKeyhole, ShieldCheck, Check, MessageCircleHeart } from "lucide-react";
@@ -25,6 +26,12 @@ const faqs = [
   { q: "Puis-je bloquer ou signaler un profil ?", a: "Les fonctionnalités disponibles peuvent évoluer. Consultez les outils accessibles dans votre espace et les informations de sécurité du service avant de poursuivre une interaction qui vous met mal à l’aise." },
 ];
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
+
+export const metadata: Metadata = {
+  title: "Rencontres sérieuses : faites connaissance en jouant",
+  description: "Envie d’une relation sérieuse ? Découvrez NIKAHYA, l’application de rencontre qui vous aide à faire connaissance grâce aux jeux, aux affinités, aux valeurs et aux projets de vie.",
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   const structuredData = [
