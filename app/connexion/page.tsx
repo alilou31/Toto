@@ -54,7 +54,9 @@ export default function ConnexionPage() {
       }
       const requested = new URLSearchParams(window.location.search).get("next");
       const destination = requested && requested.startsWith("/") && !requested.startsWith("//") ? requested : "/tableau-de-bord";
-      router.replace(destination);
+      // A full document navigation ensures the newly issued session cookie is observed immediately by protected routes.
+      // replace() also prevents the sign-in form from remaining in the browser history.
+      window.location.replace(destination);
     } catch {
       setMessage("Service indisponible. Vérifiez votre connexion puis réessayez.");
     } finally {
