@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     consentAccepted: mode === "signup" && body.ageConfirmed === true && body.acceptedTerms === true,
   };
   const callbackUri = new URL("/api/auth/oauth/callback", origin).toString();
-  const version = process.env.FACEBOOK_GRAPH_API_VERSION && /^v\\d+\\.\\d+$/.test(process.env.FACEBOOK_GRAPH_API_VERSION)
+  const version = process.env.FACEBOOK_GRAPH_API_VERSION && /^v\d+\.\d+$/.test(process.env.FACEBOOK_GRAPH_API_VERSION)
     ? process.env.FACEBOOK_GRAPH_API_VERSION : "v26.0";
   let authorizationUrl: URL;
   if (provider === "google") {

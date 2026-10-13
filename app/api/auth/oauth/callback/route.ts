@@ -107,7 +107,7 @@ export async function GET(request: Request) {
   try {
     const identity = await getProviderIdentity(transaction.provider, code, transaction, callbackUri);
     const email = identity.email.trim().toLowerCase();
-    if (!email || email.length > 254 || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+    if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return errorRedirect(transaction, "email_required", origin);
     }
     if (transaction.provider === "google" && !identity.emailVerified) {

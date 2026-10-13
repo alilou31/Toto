@@ -48,5 +48,5 @@ export function decodeOAuthTransaction(value: string | undefined): OAuthTransact
 }
 export function getFacebookGraphVersion(): string {
   const configured = process.env.FACEBOOK_GRAPH_API_VERSION;
-  return configured && /^v\\d+\\.\\d+$/.test(configured) ? configured : "v26.0";
+  return configured && /^v\d+\.\d+$/.test(configured) ? configured : "v26.0";
 }
