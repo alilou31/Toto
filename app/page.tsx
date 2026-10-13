@@ -22,13 +22,13 @@ const faqs = [
   { q: "À qui s’adresse NIKAHYA ?", a: "NIKAHYA s’adresse aux adultes de 18 ans et plus qui souhaitent une relation sérieuse et veulent prendre le temps de découvrir une personne au-delà de son apparence." },
   { q: "Pourquoi faire connaissance en jouant ?", a: "Un jeu partagé donne un point de départ naturel à la conversation. Il permet de découvrir les façons de réfléchir, les centres d’intérêt et le sens de l’humour, sans prétendre résumer une personne à un score." },
   { q: "Est-ce une application de rencontre sérieuse ?", a: "Oui, NIKAHYA est pensé pour des rencontres intentionnelles : les jeux facilitent les premiers échanges, tandis que les valeurs, les intentions et les projets de vie restent au centre." },
-  { q: "Mes informations personnelles sont-elles publiques ?", a: "Les informations privées comme votre e-mail et votre date de naissance complète ne sont pas destinées à être affichées sur votre profil. Consultez la politique de confidentialité pour comprendre les données utilisées par le service." },
-  { q: "Puis-je bloquer ou signaler un profil ?", a: "Les fonctionnalités disponibles peuvent évoluer. Consultez les outils accessibles dans votre espace et les informations de sécurité du service avant de poursuivre une interaction qui vous met mal à l’aise." },
+  { q: "Mes informations personnelles sont-elles publiques ?", a: "Votre adresse e-mail et votre date de naissance complète ne sont pas destinées à être affichées sur votre profil. La page de confidentialité publiée est encore en cours de finalisation et doit préciser les données traitées, les durées de conservation et vos droits." },
+  { q: "Puis-je bloquer ou signaler un profil ?", a: "Oui. Depuis la page Découvrir, vous pouvez bloquer un profil ou envoyer un signalement en choisissant une catégorie et en ajoutant, si besoin, des détails. Si une interaction vous met mal à l’aise, interrompez-la et utilisez ces outils." },
 ];
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
 
 export const metadata: Metadata = {
-  title: "NIKAHYA — Rencontres sérieuses : faites connaissance en jouant",
+  title: "Rencontres sérieuses : faites connaissance en jouant",
   description: "Envie d’une relation sérieuse ? Découvrez NIKAHYA, l’application de rencontre qui vous aide à faire connaissance grâce aux jeux, aux affinités, aux valeurs et aux projets de vie.",
   alternates: { canonical: "/" },
 };
