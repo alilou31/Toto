@@ -22,6 +22,7 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
     }
     const rows = await sql`
       select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.visibility, p.hobbies, p.favorite_games, p.interests, p.occupation,
+        (p.last_seen_at >= now() - interval '2 minutes') as is_online,
         case when p.show_sensitive_identity then p.religion else null end as religion,
         case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
       from public.profiles p
@@ -38,6 +39,15 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
       limit 1
     `;
     if (!rows.length) return NextResponse.json({ error: "Ce profil n’est pas disponible." }, { status: 404, headers: { "Cache-Control": "no-store" } });
+    // Record a real visit, but never count a member viewing their own profile.
+    // A visit-tracking failure must not make an otherwise valid profile unavailable.
+    try {
+      await sql`insert into public.profile_visits (visitor_id, profile_id, visited_at)
+        values (${user.id}, ${profileId}, now())
+        on conflict (visitor_id, profile_id) do update set visited_at = excluded.visited_at`;
+    } catch {
+      console.error("NIKAHYA profile visit tracking failed.");
+    }
     const playedGames = await sql`
       select game_id, count(*)::int as games_played
       from public.game_results
