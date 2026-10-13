@@ -12,6 +12,16 @@
 - **P2 — phase 2 / amélioration**
 - **REPORTÉ — nécessite un prestataire externe**
 
+## Consolidation MVP sans nouveau prestataire — 2026-10-14
+
+Cette passe privilégie les contrôles reproductibles et les correctifs locaux, sans ajouter d'intégration payante ni dépendance à un nouveau fournisseur.
+
+- **Automatisation ajoutée dans ce changement :** le smoke de production exécute aussi les tests Playwright en lecture seule des API d'authentification/autorisation, de récupération de mot de passe et des garde-fous de suppression de compte.
+- **Couverture ajoutée :** accès anonyme aux API de messages d'une conversation en lecture et écriture. Ces requêtes doivent être rejetées avant toute lecture ou écriture métier.
+- **À confirmer après le commit :** CI générale, déploiement Cloudflare et nouveau smoke Playwright. Ne pas déclarer ces étapes réussies avant d'avoir consulté les exécutions associées au SHA.
+- **Toujours bloquant avant lancement public :** identité réelle de l'éditeur et revue des documents juridiques, procédure de modération opérationnelle, et validation de la suppression/anonymisation des données.
+- **Explicitement hors périmètre de cette passe :** configuration ou activation de Resend, Stripe/Stripe Identity, OAuth social et tout autre service externe. Les fonctionnalités qui en dépendent ne doivent pas être présentées comme opérationnelles.
+
 ## État initial connu
 
 ## État de suivi vérifié — 2026-10-12

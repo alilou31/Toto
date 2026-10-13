@@ -116,6 +116,7 @@ test.describe("Autorisation des API privées — sans session", () => {
       "/api/blocks",
       "/api/games/sessions",
       "/api/profile-visits",
+      "/api/conversations/00000000-0000-0000-0000-000000000000/messages",
     ];
 
     for (const path of paths) {
@@ -131,6 +132,7 @@ test.describe("Autorisation des API privées — sans session", () => {
       { method: "post", path: "/api/blocks", data: { blockedUserId: "anonymous-test-user" } },
       { method: "post", path: "/api/interests", data: { recipientId: "anonymous-test-user" } },
       { method: "post", path: "/api/games/sessions", data: { gameId: "mots-croises" } },
+      { method: "post", path: "/api/conversations/00000000-0000-0000-0000-000000000000/messages", data: { body: "message de test sans session" } },
       { method: "delete", path: "/api/account", data: { password: "not-a-real-password", confirmation: "SUPPRIMER" } },
     ] as const;
 
