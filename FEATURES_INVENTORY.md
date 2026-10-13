@@ -107,3 +107,12 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - [Backlog produit](./BACKLOG.md)
 - [Dépôt GitHub](https://github.com/alilou31/Toto)
 - [Application de production](https://nikahya.rassoul-ali.workers.dev/)
+
+
+## Mise à jour produit — Découverte, fiche membre et offres (2026-10-13)
+
+- **Découverte compacte : CODE PRÉSENT sur la branche** `feat/discovery-dashboard-membership` : grille responsive multi-profils, intérêts communs résumés, accès à la fiche, intérêt, blocage et signalement conservés.
+- **Fiche membre enrichie : CODE PRÉSENT sur la branche** : résumé des jeux réellement enregistrés (types et nombre de parties, sans score ni réponses privées) ; l’API continue d’exclure les profils invisibles, mineurs, soi-même et les relations bloquées.
+- **Tableau de bord : CODE PRÉSENT sur la branche** : navigation plus adaptée au mobile et accès direct aux offres.
+- **Offres : CODE PRÉSENT sur la branche** : page `/offres` avec Gratuit et Premium (prix proposés 9,99 €/mois ou 79,99 €/an). Les boutons de paiement restent désactivés : Stripe et les contrôles d’entitlement ne sont pas configurés ; ne pas présenter le paiement comme fonctionnel.
+- **Tests ajoutés/modifiés** : `tests/e2e/discovery-dashboard-pricing.spec.ts` et `tests/e2e/public-profile.spec.ts`. La validation CI et la production restent à confirmer après PR et déploiement.
