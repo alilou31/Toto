@@ -2,6 +2,8 @@
 
 > Objectif : livrer un MVP de rencontre utilisable, sécurisé et responsive.
 > Règle de périmètre : toute intégration nécessitant un prestataire externe est reportée en phase 2. Prévoir des interfaces/adaptateurs propres, sans bloquer le MVP.
+>
+> **Attention :** le backlog conserve des instantanés historiques et des tâches initiales parfois dépassées. Les lignes datées ne décrivent que l'exécution qu'elles citent ; elles ne certifient pas le commit courant. Avant d'agir, recouper avec `FEATURES_INVENTORY.md`, `PRODUCTION_TEST_LOG.md`, le diff de la PR active et les checks GitHub du SHA candidat. Ne pas fusionner une PR sur la seule base d'une ancienne case cochée.
 
 ## Priorités
 
@@ -68,7 +70,7 @@ Ce backlog historique contient encore des cases non cochées qui peuvent corresp
 - [ ] Vérifier les parcours métier de bout en bout avec deux comptes dédiés
 
 
-### Dernier contrôle de production — 2026-10-12 (commit f70d89b7)
+### Instantané historique — dernier contrôle de production du 2026-10-12 (commit f70d89b7)
 - [x] CI réussie ([run 38257712643](https://github.com/alilou31/Toto/actions/runs/38257712643)).
 - [x] Déploiement Cloudflare réussi ([run 38257712468](https://github.com/alilou31/Toto/actions/runs/38257712468)).
 - [x] Smoke post-déploiement réussi ([run 38258557694](https://github.com/alilou31/Toto/actions/runs/38258557694)).
