@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import ConnectedAppChrome from "@/app/components/connected-app-chrome";
-import "./globals.css";
 import "./gamified.css";
 import "./profile-ui.css";
 import "./auth.css";
 import "./legal.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "NIKAHYA — La rencontre qui change tout",
