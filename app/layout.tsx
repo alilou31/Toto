@@ -22,9 +22,9 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   openGraph: {
     title: siteTitle, description: siteDescription, url: siteUrl, siteName: "NIKAHYA", type: "website", locale: "fr_FR",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "NIKAHYA — Faites connaissance en jouant" }],
+    images: [{ url: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=85", width: 1200, height: 630, alt: "NIKAHYA — Faites connaissance en jouant" }],
   },
-  twitter: { card: "summary_large_image", title: siteTitle, description: siteDescription, images: ["/opengraph-image"] },
+  twitter: { card: "summary_large_image", title: siteTitle, description: siteDescription, images: ["https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=85"] },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
