@@ -104,6 +104,7 @@ export default function ConnexionPage() {
             <div className="input-wrap"><Mail size={17} /><input id="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="vous@exemple.fr" maxLength={254} /></div>
             <label htmlFor="password">Mot de passe</label>
             <div className="input-wrap"><LockKeyhole size={17} /><input id="password" type="password" autoComplete="current-password" required minLength={1} maxLength={256} value={password} onChange={e => setPassword(e.target.value)} placeholder="Votre mot de passe" /></div>
+            <p className="auth-switch auth-forgot-password"><Link href="/reinitialiser-mot-de-passe">Mot de passe oublié ?</Link></p>
             <button className="button button-green auth-submit" type="submit" disabled={loading}>{loading ? "Connexion…" : "Se connecter"} <span>→</span></button>
             {message && <p className="auth-notice" role="status">{message}</p>}
           </form>
