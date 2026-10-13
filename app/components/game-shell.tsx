@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CircleUserRound, Gamepad2, Heart, House, Search, ShieldCheck, Sparkles } from "lucide-react";
+import { CircleUserRound, Eye, Gamepad2, Heart, House, Search, ShieldCheck, Sparkles } from "lucide-react";
 
 const navigation = [
   { href: "/cockpit", label: "Mon espace", shortLabel: "Accueil", icon: House },
@@ -7,6 +7,7 @@ const navigation = [
   { href: "/cockpit/jeux", label: "Jouer", shortLabel: "Jouer", icon: Gamepad2 },
   { href: "/matchs", label: "Affinités", shortLabel: "Affinités", icon: Sparkles },
   { href: "/profil", label: "Mon profil", shortLabel: "Profil", icon: CircleUserRound },
+  { href: "/cockpit/visites", label: "Visites de profil", shortLabel: "Visites", icon: Eye },
 ];
 
 function isActiveRoute(active: string, href: string) {
