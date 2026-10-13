@@ -46,7 +46,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
 
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium

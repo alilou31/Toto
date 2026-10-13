@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 22
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
       - name: Build Worker (no deployment)
         run: npm run build:worker
         env:
@@ -52,7 +52,7 @@ jobs:
         with:
           node-version: 22
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
       - name: Validate deployment secrets
         run: test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID" && test -n "$DATABASE_URL" && test -n "$NEXT_PUBLIC_SITE_URL"
         env:
