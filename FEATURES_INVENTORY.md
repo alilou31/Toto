@@ -21,6 +21,16 @@
 6. Après fusion/déploiement, mettre à jour cet inventaire et ajouter le résultat vérifié au registre de production. Ne jamais marquer « production validée » sur la seule base de la présence du code ou d'un build vert.
 7. Ne jamais mettre de secrets, identifiants réels ou données privées dans ce fichier.
 
+## Audit anti-doublons et derniers points de contrôle — 2026-10-13
+
+- **Baseline vérifiée :** `main` au commit `9e2d4929c8de5bc2afedd4d994827d64a7249ff9`; CI, déploiement Cloudflare Workers et smoke tests post-déploiement sont réussis. Les liens de preuve sont dans GitHub Actions : [CI](https://github.com/alilou31/Toto/actions/runs/38407898846), [déploiement](https://github.com/alilou31/Toto/actions/runs/38407899482), [smoke tests](https://github.com/alilou31/Toto/actions/runs/38408379915).
+- **SEO de la démo :** le layout dédié et le test des métadonnées (title, description, canonical et Open Graph) sont ajoutés ensemble ; la réussite sera confirmée par la CI de cette modification et le smoke après déploiement.
+- **Menu mobile :** les tests existent déjà dans `tests/e2e/security-and-mobile-navigation.spec.ts` à 390×844 (ouverture/fermeture, Échap et navigation). Ne pas ajouter un deuxième jeu de tests identiques ; corriger uniquement en cas d'échec.
+- **Parcours à deux utilisateurs :** `tests/e2e/two-user-full-journey.spec.ts` existe déjà. Le workflow qui écrit en production nécessite les comptes de test dédiés et une autorisation explicite ; ne pas le déclencher automatiquement dans cette consolidation.
+- **Récupération de mot de passe :** la branche `feat/resend-password-reset` et la migration 010 ne constituent pas une fonctionnalité terminée. Ne pas fusionner cette branche ni exécuter la migration avant que le parcours complet (demande, livraison e-mail, jeton expirant à usage unique, confirmation et invalidation) soit implémenté et testé.
+- **Lancement public :** les pages légales restent des brouillons et nécessitent l'identité réelle de l'éditeur ainsi qu'une validation humaine/juridique. Aucun code ne peut inventer ces informations ; le statut reste bloquant avant ouverture commerciale.
+- **Branches historiques :** plusieurs branches de fonctionnalités sont fortement en retard sur `main`. Ne pas les fusionner telles quelles ; comparer les diffs et ne reprendre que des changements encore absents, afin d'éviter les régressions et doublons.
+
 ## Correctifs et couverture — 2026-10-13
 
 - Les tests API anonymes sont centralisés dans `tests/e2e/auth-api.spec.ts`; ils couvrent lectures privées et écritures sans session. Leur statut est **à valider par CI** tant que le run du commit candidat n’est pas terminé.
