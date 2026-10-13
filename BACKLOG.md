@@ -14,6 +14,13 @@
 
 ## État de suivi vérifié — 2026-10-12
 
+## Suivi immédiat — 2026-10-13
+
+- [ ] **Parcours E2E réel à deux utilisateurs : BLOQUÉ / NON EXÉCUTÉ lors du dernier contrôle.** Le scénario et le workflow manuel sont présents, mais le rapport d'une exécution réelle manque. Suivre les instructions de [`docs/testing-two-users.md`](./docs/testing-two-users.md) et consigner le run dans [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md). L'exécution peut écrire des données de test en production.
+- [ ] Vérifier indépendamment dans Neon les migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql`; l'exécution SQL a été déclarée par l'utilisateur mais la preuve de schéma reste manquante.
+- [x] Documenter le blocage d'exécution dans cette session : l'intégration GitHub utilisée ne permet pas de déclencher `workflow_dispatch`; aucune donnée de production n'a été créée ou modifiée. Voir le registre des tests.
+
+
 Ce backlog historique contient encore des cases non cochées qui peuvent correspondre à du code et à des tests ajoutés depuis sa rédaction. Pour éviter les doublons, **ne pas prendre ces cases seules comme état réel** : consulter d'abord [`FEATURES_INVENTORY.md`](./FEATURES_INVENTORY.md) et [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md), puis vérifier le code, les PR et les preuves avant de modifier le statut d'une tâche.
 
 ### État confirmé lors du dernier contrôle
