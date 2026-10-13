@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import ConnectedAppChrome from "@/app/components/connected-app-chrome";
 import "./gamified.css";
 import "./profile-ui.css";
 import "./auth.css";
 import "./legal.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "NIKAHYA — La rencontre qui change tout",
@@ -19,5 +20,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body>{children}</body></html>;
+  return <html lang="fr"><body><ConnectedAppChrome>{children}</ConnectedAppChrome></body></html>;
 }
