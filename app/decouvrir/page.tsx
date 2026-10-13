@@ -164,6 +164,12 @@ export default function DiscoverPage() {
                 const shared = theirs.filter(value => mine.some(item => item.trim().toLowerCase() === value.trim().toLowerCase()));
                 const tags = [...(profile.interests ?? []), ...(profile.favorite_games ?? []), ...(profile.hobbies ?? [])]
                   .filter((value, index, values) => values.indexOf(value) === index);
+                // Show shared interests first so the compact card surfaces the most useful compatibility signals.
+                const visibleTags = [...tags].sort((a, b) => {
+                  const aShared = shared.some(value => value.toLowerCase() === a.toLowerCase());
+                  const bShared = shared.some(value => value.toLowerCase() === b.toLowerCase());
+                  return Number(bShared) - Number(aShared);
+                });
                 return <article className="discovery-card" key={profile.id}>
                   <div className="discovery-card-top">
                     <span className="discovery-avatar" aria-hidden="true">{profile.public_name.trim().slice(0, 1).toLocaleUpperCase()}</span>
@@ -174,7 +180,7 @@ export default function DiscoverPage() {
                   <p className="discovery-bio">{profile.bio?.trim() || "Préfère faire connaissance au fil de la conversation."}</p>
                   {shared.length > 0 && <p className="discovery-shared"><Sparkles size={13}/>{shared.length} point{shared.length > 1 ? "s" : ""} en commun</p>}
                   <div className="discovery-tags">
-                    {tags.slice(0, 3).map(tag => <span key={tag} className={shared.some(value => value.toLowerCase() === tag.toLowerCase()) ? "is-shared" : ""}>{tag}</span>)}
+                    {visibleTags.slice(0, 3).map(tag => <span key={tag} className={shared.some(value => value.toLowerCase() === tag.toLowerCase()) ? "is-shared" : ""}>{tag}</span>)}
                     {tags.length > 3 && <span className="discovery-more">+{tags.length - 3}</span>}
                     {tags.length === 0 && <span>À découvrir</span>}
                   </div>
