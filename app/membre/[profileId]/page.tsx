@@ -19,6 +19,7 @@ type PublicProfile = {
   religion?: string | null;
   ethnicity?: string | null;
   played_games?: PlayedGame[];
+  is_online?: boolean;
 };
 
 const intentions: Record<string, string> = {
@@ -102,6 +103,7 @@ export default function MemberProfilePage() {
               <div>
                 <div className="card-number">PROFIL MEMBRE</div>
                 <h1 className="auth-title">{profile.public_name}<em>.</em></h1>
+                <p className={"profile-presence-label" + (profile.is_online ? " is-online" : "")}><span className="profile-online-dot" aria-hidden="true"/>{profile.is_online ? "En ligne" : "Hors ligne"}</p>
                 {profile.city && <p className="member-detail-city"><MapPin size={15}/>{profile.city}</p>}
                 <p className="member-detail-intention">{intentions[profile.relationship_intention] || intentions.unspecified}</p>
               </div>

@@ -7,6 +7,8 @@ test.describe("Expérience mobile connectée", () => {
     await expect(page.getByRole("heading", { name: /Vos alertes/i })).toBeVisible();
     const response = await request.get("/api/interests");
     expect(response.status()).toBe(401);
+    expect((await request.post("/api/presence")).status()).toBe(401);
+    expect((await request.get("/api/profile-visits")).status()).toBe(401);
   });
 
   test("la navigation mobile garde Découvrir comme action centrale", async ({ page }) => {

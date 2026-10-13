@@ -14,6 +14,7 @@ type PublicProfile = {
   favorite_games?: string[] | null;
   interests?: string[] | null;
   occupation?: string | null;
+  is_online?: boolean;
   religion?: string | null;
   ethnicity?: string | null;
 };
@@ -172,7 +173,7 @@ export default function DiscoverPage() {
                 });
                 return <article className="discovery-card" key={profile.id}>
                   <div className="discovery-card-top">
-                    <span className="discovery-avatar" aria-hidden="true">{profile.public_name.trim().slice(0, 1).toLocaleUpperCase()}</span>
+                    <span className="discovery-avatar-wrap"><span className="discovery-avatar" aria-hidden="true">{profile.public_name.trim().slice(0, 1).toLocaleUpperCase()}</span>{profile.is_online && <span className="profile-online-dot" aria-label="En ligne" title="En ligne"/>}</span>
                     <span className="discovery-intention">{intentionLabels[profile.relationship_intention] ?? "À discuter"}</span>
                   </div>
                   <h2><Link href={`/membre/${encodeURIComponent(profile.id)}`} aria-label={`Voir la fiche de ${profile.public_name}`}>{profile.public_name}</Link></h2>

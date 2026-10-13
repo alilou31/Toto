@@ -76,6 +76,28 @@ export default function ConnectedAppChrome({ children }: { children: React.React
     return () => { active = false; window.clearTimeout(timer); };
   }, [authenticated, pathname]);
 
+  useEffect(() => {
+    if (!authenticated) return;
+    let inFlight = false;
+    const heartbeat = async () => {
+      if (inFlight || document.visibilityState !== "visible") return;
+      inFlight = true;
+      try {
+        await fetch("/api/presence", { method: "POST", cache: "no-store" });
+      } catch {
+        // Presence is best-effort; it must never block navigation.
+      } finally {
+        inFlight = false;
+      }
+    };
+    void heartbeat();
+    const interval = window.setInterval(() => void heartbeat(), 45000);
+    document.addEventListener("visibilitychange", heartbeat);
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", heartbeat);
+    };
+  }, [authenticated]);
   const connected = authenticated && isConnectedArea(pathname);
   const totalAlerts = counts.interests + counts.games;
   const items = [
