@@ -23,7 +23,7 @@
 - URL de production attendue : https://nikahya.rassoul-ali.workers.dev/
 - Le parcours Playwright à deux utilisateurs existe dans `tests/e2e/two-user-full-journey.spec.ts`. Son exécution dépend de quatre secrets de comptes de test (`E2E_USER_A_EMAIL`, `E2E_USER_A_PASSWORD`, `E2E_USER_B_EMAIL`, `E2E_USER_B_PASSWORD`). Ne pas exposer leurs valeurs.
 - Le workflow manuel `.github/workflows/connected-user-journey.yml` est protégé : branche `main`, confirmation `confirm_production_test=yes` et comptes dédiés. Il peut créer des données en production ; ne pas le déclencher sans accord explicite.
-- La présence de migrations SQL dans le dépôt ne confirme pas qu'elles ont été appliquées à Neon. L'utilisateur a déclaré le 2026-10-12 que les migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` sont effectuées; la vérification technique indépendante en base reste à obtenir.
+- Les migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql` ont été déclarées exécutées le 2026-10-12 puis confirmées comme déjà vérifiées par l'utilisateur le 2026-10-13. Ne pas les rouvrir dans le backlog courant sans nouvel indice concret de régression.
 - L'historique ci-dessous ne prétend pas certifier des tests dont les journaux complets n'ont pas été inspectés. Les statuts « rapporté » sont volontairement séparés des résultats d'exécution vérifiés.
 
 ## Historique des exécutions
@@ -41,7 +41,7 @@
 - **Smoke tests de production :** **PASSÉS** — [run 38326406552](https://github.com/alilou31/Toto/actions/runs/38326406552).
 - **Écritures en production :** le parcours E2E a utilisé les comptes dédiés et peut créer des données de test ; ne pas interpréter cette exécution comme une vérification exhaustive de toutes les fonctionnalités.
 - **Secrets :** aucune valeur de secret, aucun mot de passe et aucun identifiant de compte n'est consigné ici.
-- **Conclusion :** le parcours métier complet à deux utilisateurs est désormais validé par une exécution Playwright vérifiable. Les migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql` restent à vérifier indépendamment dans le schéma de la base.
+- **Conclusion :** le parcours métier complet à deux utilisateurs est validé par une exécution Playwright vérifiable. Selon la confirmation de l'utilisateur du 2026-10-13, les migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql` sont déjà vérifiées ; elles ne constituent plus un point ouvert du backlog.
 - **Suite :** garder la vérification des migrations Neon et le contrôle explicite du menu/navigation mobile en production comme points ouverts ; ne pas recréer un test E2E équivalent sans besoin identifié.
 
 ### PROD-2026-10-12-11 — Smoke après déploiement et contrôle navigateur en lecture seule
@@ -156,7 +156,7 @@
 | PROD-MATCH | Intérêt réciproque et unicité du match/conversation | Après changement interactions | Parcours à deux comptes déclaré fait par l'utilisateur ; rapport à rattacher |
 | PROD-MSG | Lecture/envoi de messages et refus d'accès hors conversation | Après changement messagerie/sécurité | Dernier résultat production à consigner |
 | PROD-BLOCK-REPORT | Blocage et signalement | Après changement confiance/sécurité | Dernier résultat production à consigner |
-| PROD-GAMES | Catalogue, session/invitation, participation et réponses | Après changement jeux | Vérifier également l'état des migrations Neon requises |
+| PROD-GAMES | Catalogue, session/invitation, participation et réponses | Après changement jeux | les migrations Neon requises sont déclarées vérifiées par l'utilisateur |
 | PROD-RENCONTRE | Défi partagé réservé aux membres d'un match et sans blocage | Après changement mode Rencontre | Dernier résultat production à consigner |
 | PROD-NAV-MOBILE | Menu mobile, retour navigateur, liens tableau de bord/profil | Après changement navigation/UI | Dernier résultat production à consigner |
 | PROD-ACCOUNT | Suppression/anonymisation du compte et données associées | Avant ouverture publique et après changement compte | À vérifier ; ne pas exécuter destructivement sans compte de test dédié et autorisation |
