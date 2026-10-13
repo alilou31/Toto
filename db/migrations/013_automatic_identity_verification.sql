@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS public.profile_identity_verification_sessions (
   provider_session_id text NOT NULL UNIQUE,
   status text NOT NULL DEFAULT 'requires_input'
     CHECK (status IN ('requires_input', 'processing', 'verified', 'rejected', 'canceled')),
+  consent_at timestamptz NOT NULL DEFAULT now(),
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
   verified_at timestamptz,
