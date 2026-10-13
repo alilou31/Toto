@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   description: siteDescription,
   applicationName: "NIKAHYA",
   category: "social",
-  alternates: { canonical: "/" },
   keywords: ["rencontre sérieuse", "application de rencontre", "faire connaissance en jouant", "rencontre par affinités", "rencontre par centres d’intérêt", "compatibilité amoureuse", "relation durable", "rencontre francophone", "jeux pour faire connaissance"],
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   openGraph: {
