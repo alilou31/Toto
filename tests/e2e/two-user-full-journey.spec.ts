@@ -25,7 +25,7 @@ async function ownProfileId(page: Page): Promise<string> {
 
 async function sendInterest(page: Page, targetId: string) {
   await page.goto("/decouvrir");
-  const targetCard = page.locator("article.value-card").filter({
+  const targetCard = page.locator("article.discovery-card").filter({
     has: page.locator(`a[href="/membre/${targetId}"]`),
   });
   await expect(targetCard, `Le profil ${targetId} doit apparaître dans Découvrir`).toBeVisible({ timeout: 15_000 });
