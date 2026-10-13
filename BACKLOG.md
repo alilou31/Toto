@@ -23,6 +23,13 @@
 
 Ce backlog historique contient encore des cases non cochées qui peuvent correspondre à du code et à des tests ajoutés depuis sa rédaction. Pour éviter les doublons, **ne pas prendre ces cases seules comme état réel** : consulter d'abord [`FEATURES_INVENTORY.md`](./FEATURES_INVENTORY.md) et [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md), puis vérifier le code, les PR et les preuves avant de modifier le statut d'une tâche.
 
+### Audit production — navigation publique (2026-10-13)
+- [x] Audit exploratoire en lecture seule : 15 routes ont répondu sans échec HTTP observé ; rapport [TinyFish](https://agent.tinyfish.ai/runs/4159be8a-c14f-40e6-9052-efcc0dbd043f), détails dans [PRODUCTION_TEST_LOG.md](./PRODUCTION_TEST_LOG.md).
+- [ ] Vérifier avec tests négatifs que les données/API privées des routes cockpit, découverte, matchs et profil ne sont pas accessibles sans session. Un HTTP 200 sur la page seule ne prouve pas une fuite, mais nécessite un contrôle d'autorisation ciblé.
+- [ ] Tester le menu/navigation à viewport mobile explicite (390×844) : l'audit courant n'a pas modifié le viewport, donc ce point reste non vérifié.
+- [ ] Évaluer le besoin d'un parcours « mot de passe oublié » ; aucun lien n'a été détecté sur `/connexion`.
+- **Limite :** audit navigateur exploratoire, non équivalent à un audit sécurité exhaustif.
+
 ### Validation récente — parcours de production à deux utilisateurs (2026-10-13)
 - [x] Parcours Playwright à deux utilisateurs validé sur production : [run 38326586838](https://github.com/alilou31/Toto/actions/runs/38326586838), **1 passé en 30,1 s** sur le commit `2ad818574809603043aec912d0ce211eecde21c0`.
 - [x] CI générale verte sur le même commit : [run 38325829244](https://github.com/alilou31/Toto/actions/runs/38325829244).
