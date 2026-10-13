@@ -61,17 +61,25 @@ export async function POST(request: Request) {
     const resetUrl = `${siteUrl}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}`;
     const from = process.env.RESEND_FROM_EMAIL || "NIKAHYA <onboarding@resend.dev>";
     const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head><body style="margin:0;background:#faf8f2;font-family:Arial,sans-serif;color:#202824"><main style="max-width:560px;margin:32px auto;padding:32px 24px;background:#fff;border-radius:16px"><p style="font-size:12px;letter-spacing:2px;color:#075b4b;font-weight:bold">NIKAHYA</p><h1 style="font-size:26px">Réinitialisez votre mot de passe</h1><p>Vous avez demandé à modifier le mot de passe de votre compte NIKAHYA.</p><p style="margin:28px 0"><a href="${resetUrl}" style="display:inline-block;padding:15px 22px;background:#075b4b;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold">Choisir un nouveau mot de passe</a></p><p>Ce lien est valable pendant 60 minutes et ne peut être utilisé qu'une seule fois.</p><p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail. Votre mot de passe ne changera pas.</p><p style="font-size:12px;color:#68716b">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><a href="${resetUrl}">${resetUrl}</a></p></main></body></html>`;
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [email],
-        subject: "Réinitialisation de votre mot de passe NIKAHYA",
-        html,
-        text: `Vous avez demandé à réinitialiser votre mot de passe NIKAHYA. Ouvrez ce lien (valable 60 minutes) : ${resetUrl}\n\nSi vous n'avez pas demandé ce changement, ignorez cet e-mail.`,
-      }),
-    });
+    let response: Response;
+    try {
+      response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from,
+          to: [email],
+          subject: "Réinitialisation de votre mot de passe NIKAHYA",
+          html,
+          text: `Vous avez demandé à réinitialiser votre mot de passe NIKAHYA. Ouvrez ce lien (valable 60 minutes) : ${resetUrl}\n\nSi cette demande ne vient pas de vous, ignorez cet e-mail.`,
+        }),
+      });
+    } catch {
+      // A network failure must not leave a live token or reveal that the account exists.
+      await sql`delete from public.password_reset_tokens where token_hash = ${tokenHash}`.catch(() => []);
+      console.error("NIKAHYA password reset email request failed before receiving a response.");
+      return NextResponse.json({ message: GENERIC_MESSAGE }, { headers: noStore });
+    }
 
     if (!response.ok) {
       await sql`delete from public.password_reset_tokens where token_hash = ${tokenHash}`.catch(() => []);
