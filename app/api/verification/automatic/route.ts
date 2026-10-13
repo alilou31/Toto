@@ -5,7 +5,12 @@ import { getDb } from "@/lib/db";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function POST() {
+export async function POST(request: Request) {
+  let body: unknown;
+  try { body = await request.json(); } catch { return NextResponse.json({ error: "Consentement requis." }, { status: 400 }); }
+  if (!body || typeof body !== "object" || (body as Record<string, unknown>).identityConsent !== true) {
+    return NextResponse.json({ error: "Votre consentement au contrôle d’identité par le prestataire est requis." }, { status: 400, headers: { "Cache-Control": "no-store" } });
+  }
   const user = await getCurrentUser().catch(() => null);
   if (!user) return NextResponse.json({ error: "Connectez-vous pour vérifier votre profil." }, { status: 401, headers: { "Cache-Control": "no-store" } });
 
