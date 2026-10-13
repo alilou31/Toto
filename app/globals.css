@@ -435,3 +435,9 @@ body:has(.connected-bottom-nav){padding-bottom:calc(88px + env(safe-area-inset-b
 .newsletter-honeypot{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 @media(max-width:850px){.newsletter-section{grid-template-columns:auto 1fr;gap:18px;padding-inline:6%}.newsletter-form{grid-column:1/-1}.newsletter-copy h2{max-width:620px}}
 @media(max-width:520px){.newsletter-section{grid-template-columns:1fr;gap:14px;padding:30px 6%}.newsletter-icon{width:46px;height:46px}.newsletter-form{grid-column:auto}.newsletter-input-row{flex-direction:column}.newsletter-input-row .button{width:100%}}
+
+.newsletter-consent{display:flex;align-items:flex-start;gap:9px;margin:10px 0 0;font-size:11px;line-height:1.6;color:var(--muted)}
+.newsletter-consent input{margin-top:3px;flex:0 0 auto;accent-color:var(--green)}
+.verification-automatic{display:grid;gap:10px;margin:20px 0;padding:18px;border:1px solid #dce8df;border-radius:16px;background:rgba(255,255,255,.65);backdrop-filter:blur(12px)}
+.verification-automatic .auth-submit{margin:0}
+.verification-automatic .password-hint{margin:0;line-height:1.7}
