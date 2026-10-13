@@ -145,14 +145,14 @@ export async function GET(request: Request) {
     const acceptedAt = new Date().toISOString();
     try {
       await sql`
-        insert into public.auth_users (id, email, email_normalized, password_hash)
-        values (${userId}, ${email}, ${email}, ${passwordHash})
+        insert into public.auth_users (id, email, email_normalized, password_hash, age_confirmed_at, terms_accepted_at, privacy_acknowledged_at)
+        values (${userId}, ${email}, ${email}, ${passwordHash}, ${acceptedAt}, ${acceptedAt}, ${acceptedAt})
       `;
       await sql`
         insert into public.oauth_identities
-          (user_id, provider, provider_user_id, email, age_confirmed_at, terms_accepted_at)
+          (user_id, provider, provider_user_id, email, age_confirmed_at, terms_accepted_at, privacy_acknowledged_at)
         values
-          (${userId}, ${transaction.provider}, ${identity.id}, ${email}, ${acceptedAt}, ${acceptedAt})
+          (${userId}, ${transaction.provider}, ${identity.id}, ${email}, ${acceptedAt}, ${acceptedAt}, ${acceptedAt})
       `;
     } catch (error) {
       await sql`delete from public.auth_users where id = ${userId}`.catch(() => undefined);
