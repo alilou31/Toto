@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowRight, Eye, UserRound } from "lucide-react";
+import { ArrowRight, Eye } from "lucide-react";
 
 type ProfileVisit = {
   visitor_id: string;
