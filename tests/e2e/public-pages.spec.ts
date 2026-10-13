@@ -5,7 +5,8 @@ test.describe("Pages publiques NIKAHYA", () => {
     await page.goto("/");
     await expect(page).toHaveTitle(/NIKAHYA/i);
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /Essayer la démo/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Voir comment ça marche/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Voir comment ça marche/i })).toHaveAttribute("href", "/demo");
   });
 
   test("la navigation mène au formulaire de connexion", async ({ page }) => {
