@@ -50,15 +50,16 @@ export async function GET(_request: Request, context: RouteContext) {
 }
 
 export async function POST(request: Request, context: RouteContext) {
+  const user = await getCurrentUser().catch(() => null);
+  if (!user) return NextResponse.json({ error: "Authentification requise." }, { status: 401, headers: { "Cache-Control": "no-store" } });
+
   let body: unknown;
-  try { body = await request.json(); } catch { return NextResponse.json({ error: "Requête invalide." }, { status: 400 }); }
+  try { body = await request.json(); } catch { return NextResponse.json({ error: "Requête invalide." }, { status: 400, headers: { "Cache-Control": "no-store" } }); }
   if (!body || typeof body !== "object" || typeof (body as Record<string, unknown>).body !== "string") {
-    return NextResponse.json({ error: "Message invalide." }, { status: 400 });
+    return NextResponse.json({ error: "Message invalide." }, { status: 400, headers: { "Cache-Control": "no-store" } });
   }
   const text = ((body as Record<string, unknown>).body as string).trim();
-  if (!text || text.length > 5000) return NextResponse.json({ error: "Le message doit contenir entre 1 et 5 000 caractères." }, { status: 400 });
-  const user = await getCurrentUser().catch(() => null);
-  if (!user) return NextResponse.json({ error: "Authentification requise." }, { status: 401 });
+  if (!text || text.length > 5000) return NextResponse.json({ error: "Le message doit contenir entre 1 et 5 000 caractères." }, { status: 400, headers: { "Cache-Control": "no-store" } });
   try {
     const { conversationId } = await context.params;
     if (!/^[0-9a-f-]{36}$/i.test(conversationId)) return NextResponse.json({ error: "Conversation introuvable." }, { status: 404 });
