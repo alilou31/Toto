@@ -1,8 +1,9 @@
 -- Password-reset tokens are stored only as SHA-256 hashes.
 -- Apply this migration to Neon before enabling the password-reset endpoints.
+-- auth_users.id is TEXT in 002_authentication.sql, so user_id must remain TEXT too.
 create table if not exists public.password_reset_tokens (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references public.auth_users(id) on delete cascade,
+  user_id text not null references public.auth_users(id) on delete cascade,
   token_hash char(64) not null unique,
   expires_at timestamptz not null,
   used_at timestamptz,
