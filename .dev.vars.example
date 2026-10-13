@@ -7,3 +7,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:8771
 # Stripe Identity automatic verification (server-side secrets only).
 STRIPE_SECRET_KEY=
 STRIPE_IDENTITY_WEBHOOK_SECRET=
+
+# Resend newsletter confirmation (server-side only).
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=NIKAHYA <onboarding@resend.dev>
