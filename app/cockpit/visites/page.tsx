@@ -1,4 +1,4 @@
-import { Eye, LockKeyhole } from "lucide-react";
+import { LockKeyhole } from "lucide-react";
 import { GameShell, PageHeading } from "@/app/components/game-shell";
 import VisitsList from "./visits-list";
 
