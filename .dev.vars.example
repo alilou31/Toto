@@ -3,3 +3,7 @@
 NEXTJS_ENV=development
 DATABASE_URL=postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require
 NEXT_PUBLIC_SITE_URL=http://localhost:8771
+
+# Stripe Identity automatic verification (server-side secrets only).
+STRIPE_SECRET_KEY=
+STRIPE_IDENTITY_WEBHOOK_SECRET=
