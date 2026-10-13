@@ -55,7 +55,6 @@ export default function ConnexionPage() {
       const requested = new URLSearchParams(window.location.search).get("next");
       const destination = requested && requested.startsWith("/") && !requested.startsWith("//") ? requested : "/tableau-de-bord";
       router.replace(destination);
-      router.refresh();
     } catch {
       setMessage("Service indisponible. Vérifiez votre connexion puis réessayez.");
     } finally {
