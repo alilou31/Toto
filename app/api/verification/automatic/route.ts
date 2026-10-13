@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { consumeAuthRateLimit, getTrustedClientIp } from "@/lib/auth-rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +19,13 @@ export async function POST(request: Request) {
   if (!secret) return NextResponse.json({ error: "La vérification automatique n’est pas encore configurée. Le prestataire d’identité doit être activé dans Cloudflare." }, { status: 503, headers: { "Cache-Control": "no-store" } });
 
   try {
+    const userLimit = await consumeAuthRateLimit("identity-verification-user", user.id, 3, 60 * 60);
+    const clientIp = getTrustedClientIp(request);
+    const ipLimit = clientIp ? await consumeAuthRateLimit("identity-verification-ip", clientIp, 10, 60 * 60) : { allowed: true, retryAfterSeconds: 0 };
+    if (!userLimit.allowed || !ipLimit.allowed) {
+      const retryAfter = Math.max(userLimit.allowed ? 0 : userLimit.retryAfterSeconds, ipLimit.allowed ? 0 : ipLimit.retryAfterSeconds);
+      return NextResponse.json({ error: "Trop de demandes de vérification. Réessayez plus tard." }, { status: 429, headers: { "Cache-Control": "no-store", "Retry-After": String(retryAfter) } });
+    }
     const sql = getDb();
     const profileRows = await sql`select birth_date, verification_status from public.profiles where id = ${user.id} limit 1`;
     const profile = profileRows[0];
@@ -38,6 +46,7 @@ export async function POST(request: Request) {
       method: "POST",
       headers: { Authorization: `Bearer ${secret}`, "Content-Type": "application/x-www-form-urlencoded" },
       body: form.toString(),
+      signal: AbortSignal.timeout(15000),
     });
     const session = await response.json() as { id?: string; url?: string; status?: string; error?: { message?: string } };
     if (!response.ok || !session.id || !session.url) {
