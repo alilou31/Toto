@@ -37,7 +37,7 @@ export async function GET() {
   
     } catch {
       // Keep discovery usable until migration 009 is applied in Neon.
-      const profiles = await sql`
+      profiles = await sql`
         select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.hobbies, p.favorite_games, p.interests, p.occupation,
           false as is_online,
           case when p.show_sensitive_identity then p.religion else null end as religion,
