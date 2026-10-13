@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Découverte compacte et offres", () => {
   test("affiche plusieurs profils compacts et permet d’ouvrir une fiche complète", async ({ page }) => {
-    await page.route("**/api/discover", async route => {
+    await page.route("**/api/discover**", async route => {
       await route.fulfill({
         status: 200,
         contentType: "application/json",

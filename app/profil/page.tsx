@@ -19,6 +19,9 @@ type Profile = {
   religion?: string | null;
   ethnicity?: string | null;
   show_sensitive_identity?: boolean | null;
+  gender?: string | null;
+  preferred_gender?: string | null;
+  verification_status?: string | null;
 };
 
 const intentions = [
@@ -50,6 +53,8 @@ export default function ProfilePage() {
   const [city, setCity] = useState("");
   const [bio, setBio] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [gender, setGender] = useState("prefer_not_to_say");
+  const [preferredGender, setPreferredGender] = useState("opposite");
   const [intention, setIntention] = useState("marriage");
   const [visibility, setVisibility] = useState<Visibility>("hidden");
   const [hobbies, setHobbies] = useState("");
@@ -85,6 +90,8 @@ export default function ProfilePage() {
           city: profile?.city ?? "",
           bio: profile?.bio ?? "",
           birthDate: profile?.birth_date ? String(profile.birth_date).slice(0, 10) : "",
+          gender: profile?.gender ?? "prefer_not_to_say",
+          preferredGender: profile?.preferred_gender ?? "opposite",
           intention: profile?.relationship_intention ?? "marriage",
           visibility: profile?.visibility ?? "hidden" as Visibility,
           hobbies: (profile?.hobbies ?? []).join(", "),
@@ -99,6 +106,8 @@ export default function ProfilePage() {
         setCity(next.city);
         setBio(next.bio);
         setBirthDate(next.birthDate);
+        setGender(next.gender);
+        setPreferredGender(next.preferredGender);
         setIntention(next.intention);
         setVisibility(next.visibility as Visibility);
         setHobbies(next.hobbies);
@@ -120,7 +129,7 @@ export default function ProfilePage() {
     return () => { active = false; };
   }, []);
 
-  const snapshot = useMemo(() => JSON.stringify({ publicName, city, bio, birthDate, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity }), [publicName, city, bio, birthDate, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity]);
+  const snapshot = useMemo(() => JSON.stringify({ publicName, city, bio, birthDate, gender, preferredGender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity }), [publicName, city, bio, birthDate, gender, preferredGender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity]);
   const dirty = Boolean(savedSnapshot) && snapshot !== savedSnapshot;
   const progress = getProfileProgress({ publicName, birthDate, city, bio, intention });
   const selectedIntention = intentions.find(item => item.value === intention)?.label ?? "À discuter";
@@ -138,7 +147,7 @@ export default function ProfilePage() {
       const response = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicName, city, bio, birthDate, relationshipIntention: intention, visibility, hobbies: hobbies.split(",").map(v => v.trim()).filter(Boolean), favoriteGames: favoriteGames.split(",").map(v => v.trim()).filter(Boolean), interests: interests.split(",").map(v => v.trim()).filter(Boolean), occupation, religion, ethnicity, showSensitiveIdentity }),
+        body: JSON.stringify({ publicName, city, bio, birthDate, gender, preferredGender, relationshipIntention: intention, visibility, hobbies: hobbies.split(",").map(v => v.trim()).filter(Boolean), favoriteGames: favoriteGames.split(",").map(v => v.trim()).filter(Boolean), interests: interests.split(",").map(v => v.trim()).filter(Boolean), occupation, religion, ethnicity, showSensitiveIdentity }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Enregistrement impossible.");
@@ -182,6 +191,8 @@ export default function ProfilePage() {
                   <label className="personalize-field"><span>Prénom ou nom public <b>*</b></span><input required minLength={2} maxLength={40} value={publicName} onChange={e=>setPublicName(e.target.value)} autoComplete="nickname" placeholder="Comment souhaitez-vous être appelé·e ?" /></label>
                   <label className="personalize-field"><span>Ville <small>Facultatif</small></span><input maxLength={100} value={city} onChange={e=>setCity(e.target.value)} autoComplete="address-level2" placeholder="Ex. Bordeaux" /></label>
                   <label className="personalize-field personalize-field-full"><span>Date de naissance <b>*</b></span><input type="date" required max={maxBirthDateValue} value={birthDate} onChange={e=>setBirthDate(e.target.value)} autoComplete="bday" /><small className="personalize-hint"><LockKeyhole size={13} /> Votre date de naissance n’est jamais affichée sur le profil public. NIKAHYA est réservé aux adultes de 18 ans et plus.</small></label>
+                  <label className="personalize-field"><span>Votre genre <b>*</b></span><select required value={gender} onChange={e=>setGender(e.target.value)}><option value="man">Homme</option><option value="woman">Femme</option><option value="other">Autre</option><option value="prefer_not_to_say">Je préfère ne pas préciser</option></select></label>
+                  <label className="personalize-field"><span>Qui souhaitez-vous découvrir ?</span><select value={preferredGender} onChange={e=>setPreferredGender(e.target.value)}><option value="opposite">Genre opposé (par défaut)</option><option value="women">Femmes</option><option value="men">Hommes</option><option value="all">Tous les genres</option></select><small className="personalize-hint">Vous pourrez ajuster ce filtre dans Découvrir.</small></label>
                 </div>
               </section>
 

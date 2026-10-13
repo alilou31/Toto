@@ -4,11 +4,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ArrowRight, Gamepad2, Heart, LayoutDashboard, LogOut, Menu, Search, UserRound, X } from "lucide-react";
+import LocaleSwitcher from "@/app/components/locale-switcher";
+import { localeMessages, type SupportedLocale } from "@/lib/i18n";
 
 type User = { id?: string; email?: string } | null;
 type Session = "checking" | "signed-in" | "signed-out";
 
-export default function HomeHeader() {
+export default function HomeHeader({ locale = "fr" }: { locale?: SupportedLocale }) {
+  const t = localeMessages[locale];
   const router = useRouter();
   const pathname = usePathname();
   const [session, setSession] = useState<Session>("checking");
@@ -101,18 +104,18 @@ export default function HomeHeader() {
       <nav className="desktop-nav" aria-label="Navigation principale">
         <Link href="/#concept">Le concept</Link><Link href="/#methode">Comment ça marche</Link><Link href="/#securite">Sécurité</Link>
       </nav>
-      <div className="header-actions" aria-live="polite">
+      <div className="header-actions" aria-live="polite"><LocaleSwitcher />
         {session === "checking" ? <span className="login-link" role="status">Vérification…</span> : session === "signed-in" ? (
           <>
             <Link href="/tableau-de-bord" className="login-link" aria-label="Ouvrir le tableau de bord">{publicName ? `Bonjour, ${publicName}` : "Tableau de bord"}</Link>
             <Link href="/profil" className="login-link">Mon profil</Link>
-            <Link href="/decouvrir" className="login-link">Découvrir</Link>
+            <Link href="/decouvrir" className="login-link">{t.discover}</Link>
             <button type="button" className="login-link header-logout" onClick={logout} disabled={loggingOut}>{loggingOut ? "Déconnexion…" : "Déconnexion"}</button>
           </>
         ) : (
           <>
-            <Link href="/connexion" className="login-link">Se connecter</Link>
-            <Link href="/inscription" className="button button-dark button-small">Créer un compte <ArrowRight size={15} /></Link>
+            <Link href="/connexion" className="login-link">{t.login}</Link>
+            <Link href="/inscription" className="button button-dark button-small">{t.signup} <ArrowRight size={15} /></Link>
           </>
         )}
       </div>

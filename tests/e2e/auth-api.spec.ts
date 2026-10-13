@@ -5,7 +5,7 @@ test.describe("API d'authentification — validations sans compte réel", () => 
     const response = await request.post("/api/auth/register", {
       data: {
         email: "pas-une-adresse",
-        password: "MotdepasseLong123",
+        password: "MotdepasseLong123!",
         ageConfirmed: true,
         acceptedTerms: true,
       },
@@ -35,7 +35,7 @@ test.describe("API d'authentification — validations sans compte réel", () => 
     const response = await request.post("/api/auth/register", {
       data: {
         email: "test@example.fr",
-        password: "MotdepasseLong123",
+        password: "MotdepasseLong123!",
         ageConfirmed: false,
         acceptedTerms: true,
       },
