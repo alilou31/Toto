@@ -28,7 +28,7 @@ const faqs = [
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
 
 export const metadata: Metadata = {
-  title: "Rencontres sérieuses : faites connaissance en jouant",
+  title: "NIKAHYA — Rencontres sérieuses : faites connaissance en jouant",
   description: "Envie d’une relation sérieuse ? Découvrez NIKAHYA, l’application de rencontre qui vous aide à faire connaissance grâce aux jeux, aux affinités, aux valeurs et aux projets de vie.",
   alternates: { canonical: "/" },
 };
