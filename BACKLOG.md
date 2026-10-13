@@ -16,9 +16,9 @@
 
 ## Suivi immédiat — 2026-10-13
 
-- [ ] **Parcours E2E réel à deux utilisateurs : BLOQUÉ / NON EXÉCUTÉ lors du dernier contrôle.** Le scénario et le workflow manuel sont présents, mais le rapport d'une exécution réelle manque. Suivre les instructions de [`docs/testing-two-users.md`](./docs/testing-two-users.md) et consigner le run dans [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md). L'exécution peut écrire des données de test en production.
-- [ ] Vérifier indépendamment dans Neon les migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql`; l'exécution SQL a été déclarée par l'utilisateur mais la preuve de schéma reste manquante.
-- [x] Documenter le blocage d'exécution dans cette session : l'intégration GitHub utilisée ne permet pas de déclencher `workflow_dispatch`; aucune donnée de production n'a été créée ou modifiée. Voir le registre des tests.
+- [x] **Parcours E2E réel à deux utilisateurs : PASSÉ.** [Run Playwright 38326586838](https://github.com/alilou31/Toto/actions/runs/38326586838), 1 test réussi en 30,1 s ; détails dans [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md).
+- [x] Migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql` : déjà vérifiées selon la confirmation de l'utilisateur du 2026-10-13 ; ne pas rouvrir ce point sans anomalie nouvelle.
+- [x] Historique du blocage initial conservé dans le registre de production ; il a été levé par l'exécution réussie du workflow ci-dessus.
 
 
 Ce backlog historique contient encore des cases non cochées qui peuvent correspondre à du code et à des tests ajoutés depuis sa rédaction. Pour éviter les doublons, **ne pas prendre ces cases seules comme état réel** : consulter d'abord [`FEATURES_INVENTORY.md`](./FEATURES_INVENTORY.md) et [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md), puis vérifier le code, les PR et les preuves avant de modifier le statut d'une tâche.
@@ -28,7 +28,7 @@ Ce backlog historique contient encore des cases non cochées qui peuvent corresp
 - [x] CI générale verte sur le même commit : [run 38325829244](https://github.com/alilou31/Toto/actions/runs/38325829244).
 - [x] Déploiement Cloudflare et configuration du secret Neon réussis : [run 38325829240](https://github.com/alilou31/Toto/actions/runs/38325829240).
 - [x] Smoke tests post-déploiement réussis : [run 38326406552](https://github.com/alilou31/Toto/actions/runs/38326406552).
-- [ ] Vérifier indépendamment dans Neon les migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` ; la connectivité DB ne suffit pas à prouver leur application.
+- [x] Migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql` déjà vérifiées (confirmation utilisateur du 2026-10-13). Ne pas répéter ce contrôle sans motif concret.
 - [ ] Contrôler le menu et la navigation mobile sur la production avec un viewport mobile explicite.
 - [ ] Réconcilier les PR ouvertes après comparaison de leurs diffs avec `main`, sans fusion redondante.
 - **Détail du scénario et limites :** voir [PRODUCTION_TEST_LOG.md](./PRODUCTION_TEST_LOG.md), entrée `PROD-2026-10-13-01`.
@@ -49,7 +49,7 @@ Ce backlog historique contient encore des cases non cochées qui peuvent corresp
 - [x] Déploiement Cloudflare du même commit terminé avec succès ([workflow](https://github.com/alilou31/Toto/actions/runs/38246981763)).
 - [x] Smoke tests en lecture seule : accueil, démo, connectivité Neon, protection de l'historique et tests UI passés ([workflow](https://github.com/alilou31/Toto/actions/runs/38247137335)).
 - [x] Obtenir une preuve de smoke test après déploiement pour le commit `1bdb5a456994aef3719a9eaad6e64c33c1fa2399` ([workflow 38247451465](https://github.com/alilou31/Toto/actions/runs/38247451465)). À revalider après le déploiement des commits de documentation postérieurs.
-- [ ] Vérifier techniquement dans Neon la présence et la structure des tables des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` (**l'utilisateur confirme leur exécution; preuve indépendante encore manquante**).
+- [x] Migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql` déjà vérifiées (confirmation utilisateur du 2026-10-13).
 - [x] Vérifier le rapport d'exécution du parcours à deux utilisateurs en production : [run 38326586838](https://github.com/alilou31/Toto/actions/runs/38326586838), 1 test passé ; détails dans [PRODUCTION_TEST_LOG.md](./PRODUCTION_TEST_LOG.md).
 - [ ] Réconcilier les PR ouvertes #3, #4, #5, #6 et #8 avec `main` avant toute fusion afin d'éviter les changements redondants.
 
