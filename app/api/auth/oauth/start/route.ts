@@ -42,7 +42,8 @@ export async function POST(request: Request) {
     }
   }
   const clientId = provider === "google" ? process.env.GOOGLE_CLIENT_ID : process.env.FACEBOOK_APP_ID;
-  if (!clientId) {
+  const clientSecret = provider === "google" ? process.env.GOOGLE_CLIENT_SECRET : process.env.FACEBOOK_APP_SECRET;
+  if (!clientId || !clientSecret) {
     return NextResponse.json({ error: "Ce fournisseur n'est pas encore activé. Réessayez plus tard." }, { status: 503, headers: { "Cache-Control": "no-store" } });
   }
 
