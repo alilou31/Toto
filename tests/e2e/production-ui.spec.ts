@@ -66,6 +66,10 @@ test.describe("Interface NIKAHYA en production", () => {
     await mobileNavigation.getByRole("link", { name: "Le concept" }).click();
     await expect(page).toHaveURL(/#concept$/);
     await expect(page.getByRole("button", { name: "Ouvrir le menu" })).toBeVisible();
+    await page.getByRole("button", { name: "Ouvrir le menu" }).click();
+    await expect(page.getByRole("navigation", { name: "Menu mobile" })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("navigation", { name: "Menu mobile" })).toBeHidden();
 
     const dimensions = await page.evaluate(() => ({
       viewport: document.documentElement.clientWidth,
@@ -85,4 +89,14 @@ test.describe("Interface NIKAHYA en production", () => {
     });
     expect(unauthenticated.status()).toBe(401);
   });
+});
+
+
+test("les pages légales sont accessibles mais exclues de l'index tant qu'elles sont provisoires", async ({ page }) => {
+  for (const path of ["/mentions-legales", "/confidentialite", "/conditions"]) {
+    const response = await page.goto(path);
+    expect(response?.status(), path + " doit répondre en HTTP 200").toBe(200);
+    await expect(page.getByRole("note")).toContainText(/document de travail|maquette juridique/i);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  }
 });

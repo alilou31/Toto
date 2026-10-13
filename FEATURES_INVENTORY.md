@@ -21,6 +21,13 @@
 6. Après fusion/déploiement, mettre à jour cet inventaire et ajouter le résultat vérifié au registre de production. Ne jamais marquer « production validée » sur la seule base de la présence du code ou d'un build vert.
 7. Ne jamais mettre de secrets, identifiants réels ou données privées dans ce fichier.
 
+## Correctifs et couverture — 2026-10-13
+
+- Les tests API anonymes sont centralisés dans `tests/e2e/auth-api.spec.ts`; ils couvrent lectures privées et écritures sans session. Leur statut est **à valider par CI** tant que le run du commit candidat n’est pas terminé.
+- Le test mobile de la landing et du menu est déjà présent dans `tests/e2e/production-ui.spec.ts` à 390×844 ; le test `connected-mobile-experience.spec.ts` couvre aussi l’espace mobile en mode anonyme. Ne pas dupliquer ces scénarios.
+- Les pages `/mentions-legales`, `/confidentialite` et `/conditions` sont accessibles, explicitement marquées comme documents de travail et exclues de l’indexation tant que l’identité réelle et le contenu définitif ne sont pas renseignés.
+- La récupération de mot de passe n’est pas implémentée : fournisseur d’e-mail et paramètres de livraison non configurés. À ne pas marquer comme terminée avant un test de bout en bout du message, du jeton et de l’invalidation.
+
 ## Inventaire actuel
 
 ## Point de contrôle dépôt — 2026-10-12 (vérification Playwright production)

@@ -52,6 +52,13 @@ Les pages légales présentes dans le dépôt indiquent explicitement qu'elles s
 - [ ] Définir les limites de lancement : nombre d'invitations, zone géographique, support et capacité de modération.
 - [ ] Démarrer par un pilote fermé, mesurer la qualité des profils et la sécurité, puis augmenter progressivement l'accès.
 
+## État du dépôt après le correctif du 2026-10-13
+
+- Le test d’autorisation des API privées est inclus dans `tests/e2e/auth-api.spec.ts`. Une première exécution de ce test a révélé une erreur de syntaxe dans le fichier de test ; le correctif doit être validé par la CI du commit suivant. Ne pas considérer cette couverture comme validée tant que la CI n’est pas verte.
+- Le contrôle du menu mobile à 390×844 existe déjà dans `tests/e2e/production-ui.spec.ts` ; ne pas créer un second test équivalent. L’exécution de ce test doit être vérifiée sur le commit candidat.
+- Les pages légales utilisent le nom fictif de travail « NIKAHYA Studio », affichent un avertissement explicite et sont `noindex` jusqu’à leur finalisation. Les informations réelles de l’éditeur, la revue juridique et l’adresse de support restent à fournir.
+- Le flux « mot de passe oublié » reste bloqué par l’absence d’un fournisseur de livraison d’e-mails configuré et vérifié. Ne pas ajouter un faux formulaire ou exposer des jetons de récupération dans les logs. Pour le terminer, configurer un fournisseur d’e-mails et les secrets associés, puis implémenter et tester le cycle complet de jeton à durée limitée.
+
 ## Capacités déjà présentes à ne pas dupliquer
 
 - Authentification par e-mail/mot de passe et limitation de tentatives.

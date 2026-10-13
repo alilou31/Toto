@@ -100,62 +100,38 @@ test.describe("API d'authentification — validations sans compte réel", () => 
 });
 
 test.describe("Autorisation des API privées — sans session", () => {
-  test("protège les lectures de profil, matchs, intérêts, blocages et défis", async ({ request }) => {
-    const checks = [
-      { method: "get", path: "/api/profile" },
-      { method: "get", path: "/api/matches" },
-      { method: "get", path: "/api/interests" },
-      { method: "get", path: "/api/blocks" },
-      { method: "get", path: "/api/games/sessions" },
-      { method: "get", path: "/api/profile-visits" },
-    ] as const;
+  test("les lectures privées exigent une session et ne sont pas mises en cache", async ({ request }) => {
+    const paths = [
+      "/api/profile",
+      "/api/matches",
+      "/api/interests",
+      "/api/blocks",
+      "/api/games/sessions",
+      "/api/profile-visits",
+    ];
 
-    for (const check of checks) {
-      const response = await request[check.method](check.path);
-      expect(
-        response.status(),
-        \`\${check.method.toUpperCase()} \${check.path} doit exiger une session\`,
-      ).toBe(401);
-      expect(response.headers()["cache-control"]).toContain("no-store");
+    for (const path of paths) {
+      const response = await request.get(path);
+      expect(response.status(), "GET " + path + " doit exiger une session").toBe(401);
+      expect(response.headers()["cache-control"], "GET " + path + " doit interdire le cache").toContain("no-store");
     }
   });
 
-  test("protège les écritures de signalement, blocage, intérêt et suppression de compte", async ({ request }) => {
+  test("les écritures privées exigent une session et ne sont pas mises en cache", async ({ request }) => {
     const checks = [
-      {
-        method: "post",
-        path: "/api/reports",
-        data: { reportedUserId: "anonymous-test-user", category: "other", details: "" },
-      },
-      {
-        method: "post",
-        path: "/api/blocks",
-        data: { blockedUserId: "anonymous-test-user" },
-      },
-      {
-        method: "post",
-        path: "/api/interests",
-        data: { recipientId: "anonymous-test-user" },
-      },
-      {
-        method: "post",
-        path: "/api/games/sessions",
-        data: { gameId: "mots-croises" },
-      },
-      {
-        method: "delete",
-        path: "/api/account",
-        data: { password: "not-a-real-password", confirmation: "SUPPRIMER" },
-      },
+      { method: "post", path: "/api/reports", data: { reportedUserId: "anonymous-test-user", category: "other", details: "" } },
+      { method: "post", path: "/api/blocks", data: { blockedUserId: "anonymous-test-user" } },
+      { method: "post", path: "/api/interests", data: { recipientId: "anonymous-test-user" } },
+      { method: "post", path: "/api/games/sessions", data: { gameId: "mots-croises" } },
+      { method: "delete", path: "/api/account", data: { password: "not-a-real-password", confirmation: "SUPPRIMER" } },
     ] as const;
 
     for (const check of checks) {
-      const response = await request[check.method](check.path, { data: check.data });
-      expect(
-        response.status(),
-        \`\${check.method.toUpperCase()} \${check.path} doit exiger une session\`,
-      ).toBe(401);
-      expect(response.headers()["cache-control"]).toContain("no-store");
+      const response = check.method === "delete"
+        ? await request.delete(check.path, { data: check.data })
+        : await request.post(check.path, { data: check.data });
+      expect(response.status(), check.method.toUpperCase() + " " + check.path + " doit exiger une session").toBe(401);
+      expect(response.headers()["cache-control"], check.method.toUpperCase() + " " + check.path + " doit interdire le cache").toContain("no-store");
     }
   });
 });
