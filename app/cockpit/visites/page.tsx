@@ -13,7 +13,7 @@ export default function VisitesPage() {
       <VisitsList />
       <div className="game-privacy-inline">
         <LockKeyhole size={19} />
-        <span><strong>Respect de la vie privée.</strong> Seuls les visiteurs dont le profil est visible et accessible apparaissent ici. Les visites sont mises à jour lors d'une nouvelle consultation.</span>
+        <span><strong>Respect de la vie privée.</strong> Seuls les visiteurs dont le profil est visible et accessible apparaissent ici. Les visites sont mises à jour lors d’une nouvelle consultation.</span>
       </div>
     </GameShell>
   );
