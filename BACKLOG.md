@@ -23,6 +23,16 @@
 
 Ce backlog historique contient encore des cases non cochées qui peuvent correspondre à du code et à des tests ajoutés depuis sa rédaction. Pour éviter les doublons, **ne pas prendre ces cases seules comme état réel** : consulter d'abord [`FEATURES_INVENTORY.md`](./FEATURES_INVENTORY.md) et [`PRODUCTION_TEST_LOG.md`](./PRODUCTION_TEST_LOG.md), puis vérifier le code, les PR et les preuves avant de modifier le statut d'une tâche.
 
+### Validation récente — parcours de production à deux utilisateurs (2026-10-13)
+- [x] Parcours Playwright à deux utilisateurs validé sur production : [run 38326586838](https://github.com/alilou31/Toto/actions/runs/38326586838), **1 passé en 30,1 s** sur le commit `2ad818574809603043aec912d0ce211eecde21c0`.
+- [x] CI générale verte sur le même commit : [run 38325829244](https://github.com/alilou31/Toto/actions/runs/38325829244).
+- [x] Déploiement Cloudflare et configuration du secret Neon réussis : [run 38325829240](https://github.com/alilou31/Toto/actions/runs/38325829240).
+- [x] Smoke tests post-déploiement réussis : [run 38326406552](https://github.com/alilou31/Toto/actions/runs/38326406552).
+- [ ] Vérifier indépendamment dans Neon les migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` ; la connectivité DB ne suffit pas à prouver leur application.
+- [ ] Contrôler le menu et la navigation mobile sur la production avec un viewport mobile explicite.
+- [ ] Réconcilier les PR ouvertes après comparaison de leurs diffs avec `main`, sans fusion redondante.
+- **Détail du scénario et limites :** voir [PRODUCTION_TEST_LOG.md](./PRODUCTION_TEST_LOG.md), entrée `PROD-2026-10-13-01`.
+
 ### État confirmé lors du dernier contrôle
 - [x] CI verte pour le commit `21f9b27218f77a31200ff9848abb01ea53996013` ([run 38250340762](https://github.com/alilou31/Toto/actions/runs/38250340762)).
 - [x] Déploiement Cloudflare du même commit réussi ([run 38250340411](https://github.com/alilou31/Toto/actions/runs/38250340411)).
@@ -40,7 +50,7 @@ Ce backlog historique contient encore des cases non cochées qui peuvent corresp
 - [x] Smoke tests en lecture seule : accueil, démo, connectivité Neon, protection de l'historique et tests UI passés ([workflow](https://github.com/alilou31/Toto/actions/runs/38247137335)).
 - [x] Obtenir une preuve de smoke test après déploiement pour le commit `1bdb5a456994aef3719a9eaad6e64c33c1fa2399` ([workflow 38247451465](https://github.com/alilou31/Toto/actions/runs/38247451465)). À revalider après le déploiement des commits de documentation postérieurs.
 - [ ] Vérifier techniquement dans Neon la présence et la structure des tables des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` (**l'utilisateur confirme leur exécution; preuve indépendante encore manquante**).
-- [ ] Vérifier le rapport d'exécution du parcours à deux utilisateurs avant de le déclarer validé en production ; le workflow protégé peut écrire des données.
+- [x] Vérifier le rapport d'exécution du parcours à deux utilisateurs en production : [run 38326586838](https://github.com/alilou31/Toto/actions/runs/38326586838), 1 test passé ; détails dans [PRODUCTION_TEST_LOG.md](./PRODUCTION_TEST_LOG.md).
 - [ ] Réconcilier les PR ouvertes #3, #4, #5, #6 et #8 avec `main` avant toute fusion afin d'éviter les changements redondants.
 
 - [x] Dépôt GitHub et déploiement Cloudflare Workers initialisés
@@ -264,7 +274,7 @@ Une tâche est terminée quand :
 - [x] Vérifier le smoke test post-déploiement : accueil, `/demo`, connectivité Neon et protection anonyme de `/api/games/results` validés.
 - [ ] Lancer les tests Playwright d'interface de production via le déclenchement manuel prévu, en lecture seule.
 - [ ] Confirmer l'application des migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql`.
-- [ ] Valider le parcours à deux comptes distincts en production via le workflow protégé, après confirmation des comptes de test et autorisation explicite.
+- [x] Valider le parcours à deux comptes distincts en production via le workflow protégé : [run 38326586838](https://github.com/alilou31/Toto/actions/runs/38326586838).
 - **Preuves :** [CI](https://github.com/alilou31/Toto/actions/runs/38255440096), [déploiement](https://github.com/alilou31/Toto/actions/runs/38255439954), [smoke test](https://github.com/alilou31/Toto/actions/runs/38257599484). Détails et limites consignés dans `PRODUCTION_TEST_LOG.md`.
 
 
@@ -277,7 +287,7 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [x] Vérifier le déploiement Cloudflare de ce commit : [run 38266697091](https://github.com/alilou31/Toto/actions/runs/38266697091) — réussi.
 - [x] Exécuter Playwright de production après déploiement : [run 38267172805](https://github.com/alilou31/Toto/actions/runs/38267172805) — 18 passés, 0 échoué, 0 ignoré. Fichiers exécutés : `tests/e2e/production-ui.spec.ts` et `tests/e2e/api-json-contract.spec.ts`.
 - [x] Contrôler le smoke HTTP/Neon et la protection anonyme de l'API des résultats de jeux dans le même run — réussi.
-- [ ] Exécuter le parcours métier complet à deux utilisateurs avec des comptes de test dédiés ; ce scénario n'est pas inclus dans le run Playwright de production ci-dessus.
+- [x] Exécuter le parcours métier complet à deux utilisateurs avec des comptes dédiés : [run 38326586838](https://github.com/alilou31/Toto/actions/runs/38326586838), 1 test passé. La preuve est distincte des 18 tests UI/API du run [38267172805](https://github.com/alilou31/Toto/actions/runs/38267172805).
 - [ ] Vérifier indépendamment dans Neon l'application des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` ; le smoke `/api/db-check` ne confirme que la connectivité.
 - [ ] Réconcilier les PR ouvertes #3, #4, #5, #6 et #8 en comparant les différences restantes avec `main` ; éviter toute fusion redondante.
 - [ ] Analyser les vulnérabilités npm signalées dans les logs, identifier les paquets et choisir des mises à jour compatibles sans utiliser de mise à jour forcée non évaluée.
