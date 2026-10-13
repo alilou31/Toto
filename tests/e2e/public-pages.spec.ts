@@ -44,6 +44,14 @@ test.describe("Pages publiques NIKAHYA", () => {
     await expect(page.getByRole("button", { name: /Se connecter/i })).toBeVisible();
   });
 
+  test("la démo possède ses propres métadonnées SEO et son URL canonique", async ({ page }) => {
+    await page.goto("/demo");
+    await expect(page).toHaveTitle("Démo NIKAHYA — Découvrez les rencontres en jouant");
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /profils fictifs/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/demo$/);
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", /\/demo$/);
+  });
+
   test("la démo et la page de validation sont accessibles", async ({ page }) => {
     await page.goto("/demo");
     await expect(page.locator("body")).not.toContainText("404");
