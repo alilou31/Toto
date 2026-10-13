@@ -300,3 +300,13 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [ ] Analyser les vulnérabilités npm signalées dans les logs, identifier les paquets et choisir des mises à jour compatibles sans utiliser de mise à jour forcée non évaluée.
 
 **Règle anti-doublon :** avant d'ajouter une page, une API, un test ou une migration, vérifier `FEATURES_INVENTORY.md`, le code existant, les tests E2E et les PR ouvertes. Une fonctionnalité n'est marquée « production validée » que si un rapport récent couvre explicitement le scénario métier visé.
+
+
+## Authentification sociale — 2026-10-13
+
+- [x] Boutons Google/Facebook avec logos, états de chargement et erreurs explicites sur connexion et inscription.
+- [x] Routes OAuth serveur avec état anti-CSRF, PKCE Google, vérification de l’adresse Google et refus de liaison automatique par simple correspondance d’e-mail.
+- [x] Tests Playwright d’affichage, consentement 18+/conditions et validation des entrées.
+- [ ] Appliquer db/migrations/008_oauth_identities.sql dans Neon avant le premier test OAuth réel.
+- [ ] Ajouter les secrets Google/Meta et NEXT_PUBLIC_SITE_URL dans Cloudflare Worker ; enregistrer l’URI de callback dans les consoles fournisseurs.
+- [ ] Réaliser les parcours réels Google et Facebook après configuration des identifiants de test.
