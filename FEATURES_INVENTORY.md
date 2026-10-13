@@ -139,8 +139,8 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 
 - **Code sur la branche** `feat/resend-password-reset-complete` : demande de lien, e-mail HTML/texte, formulaire de réinitialisation et confirmation sécurisée.
 - **Sécurité implémentée dans le code candidat** : réponses génériques pour comptes inconnus, limitation des demandes, jeton aléatoire dont seul le SHA-256 est stocké, expiration après 60 minutes, usage unique et révocation des sessions après changement du mot de passe.
-- **Migration candidate** : `db/migrations/010_password_reset_tokens.sql`. **Ne pas l'exécuter dans Neon avant validation CI et revue du parcours complet.**
+- **Migration** : `db/migrations/010_password_reset_tokens.sql`. L’utilisateur a confirmé le succès de son exécution dans Neon le 2026-10-13 ; l’état de la base n’a pas été vérifié directement par cette CI.
 - **Tests Playwright ajoutés** : `tests/e2e/password-reset.spec.ts` pour l'interface et les validations des entrées. Le parcours de livraison e-mail et la consommation réelle du jeton restent à valider avec une configuration Resend autorisée.
 - **Configuration attendue** : `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `NEXT_PUBLIC_SITE_URL`. Aucun secret n'est stocké dans Git.
 - **Blocage fournisseur** : aucun domaine expéditeur n'est configuré dans Resend au dernier contrôle. `onboarding@resend.dev` est uniquement une solution de test soumise aux restrictions Resend ; ne pas considérer la livraison à tous les membres comme opérationnelle avant vérification d'un domaine expéditeur.
-- **Statut global** : EN COURS — code candidat présent, migration non exécutée, CI et livraison réelle non validées, pas encore déployé en production.
+- **Statut global** : EN COURS — code candidat présent ; migration exécutée selon confirmation utilisateur ; CI à relancer après le dernier correctif ; livraison réelle non testée (test volontairement reporté) ; pas encore déployé en production.
