@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, MailCheck } from "lucide-react";
 
 export default function NewsletterSignup() {
@@ -9,6 +9,13 @@ export default function NewsletterSignup() {
   const [consent, setConsent] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const status = new URLSearchParams(window.location.search).get("newsletter");
+    if (status === "confirmed") setMessage("Votre inscription à la newsletter est confirmée. Merci !");
+    else if (status === "invalid") setMessage("Ce lien de confirmation est invalide ou expiré. Vous pouvez demander un nouveau lien.");
+    else if (status === "error") setMessage("La confirmation a échoué temporairement. Réessayez plus tard.");
+  }, []);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -53,7 +60,7 @@ export default function NewsletterSignup() {
           <label htmlFor="newsletter-website">Ne pas remplir</label>
           <input id="newsletter-website" tabIndex={-1} autoComplete="off" value={website} onChange={(event) => setWebsite(event.target.value)} />
         </div>
-        <p className="newsletter-privacy">Inscription volontaire, confirmée par e-mail. Désinscription possible à tout moment. <a href="/confidentialite">Confidentialité</a>.</p>
+        <p className="newsletter-privacy">Inscription volontaire avec confirmation par e-mail. Consultez notre politique de confidentialité. <a href="/confidentialite">Confidentialité</a>.</p>
         {message && <p className="newsletter-message" role="status">{message}</p>}
       </form>
     </section>
