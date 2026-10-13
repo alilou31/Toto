@@ -33,8 +33,8 @@ test.describe("Découverte compacte et offres", () => {
 
     await page.goto("/decouvrir");
     await expect(page.locator(".discovery-card")).toHaveCount(2);
-    await expect(page.getByRole("heading", { name: "Amina", exact: true })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Sarah", exact: true })).toBeVisible();
+    await expect(page.locator(".discovery-card h2").filter({ hasText: "Amina" })).toBeVisible();
+    await expect(page.locator(".discovery-card h2").filter({ hasText: "Sarah" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Bloquer Amina" })).toBeVisible();
     await page.getByRole("link", { name: "Voir la fiche de Amina" }).click();
     await expect(page).toHaveURL(/\/membre\/amina$/);
