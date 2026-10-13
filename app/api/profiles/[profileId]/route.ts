@@ -20,24 +20,49 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
       if (!own.length) return NextResponse.json({ error: "Profil introuvable." }, { status: 404, headers: { "Cache-Control": "no-store" } });
       return NextResponse.json({ profile: own[0] }, { headers: { "Cache-Control": "no-store" } });
     }
-    const rows = await sql`
-      select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.visibility, p.hobbies, p.favorite_games, p.interests, p.occupation,
-        coalesce(p.last_seen_at >= now() - interval '2 minutes', false) as is_online,
-        case when p.show_sensitive_identity then p.religion else null end as religion,
-        case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
-      from public.profiles p
-      where p.id = ${profileId}
-        and p.visibility = 'visible'
-        and p.onboarding_completed = true
-        and p.birth_date is not null
-        and p.birth_date <= (current_date - interval '18 years')::date
-        and not exists (
-          select 1 from public.blocks b
-          where (b.blocker_id = ${user.id} and b.blocked_id = p.id)
-             or (b.blocker_id = p.id and b.blocked_id = ${user.id})
-        )
-      limit 1
-    `;
+    let rows;
+    try {
+      const rows = await sql`
+        select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.visibility, p.hobbies, p.favorite_games, p.interests, p.occupation,
+          coalesce(p.last_seen_at >= now() - interval '2 minutes', false) as is_online,
+          case when p.show_sensitive_identity then p.religion else null end as religion,
+          case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
+        from public.profiles p
+        where p.id = ${profileId}
+          and p.visibility = 'visible'
+          and p.onboarding_completed = true
+          and p.birth_date is not null
+          and p.birth_date <= (current_date - interval '18 years')::date
+          and not exists (
+            select 1 from public.blocks b
+            where (b.blocker_id = ${user.id} and b.blocked_id = p.id)
+               or (b.blocker_id = p.id and b.blocked_id = ${user.id})
+          )
+        limit 1
+      `;
+  
+    } catch {
+      // Preserve profile access until migration 009 is applied in Neon.
+      const rows = await sql`
+        select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.visibility, p.hobbies, p.favorite_games, p.interests, p.occupation,
+          false as is_online,
+          case when p.show_sensitive_identity then p.religion else null end as religion,
+          case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
+        from public.profiles p
+        where p.id = ${profileId}
+          and p.visibility = 'visible'
+          and p.onboarding_completed = true
+          and p.birth_date is not null
+          and p.birth_date <= (current_date - interval '18 years')::date
+          and not exists (
+            select 1 from public.blocks b
+            where (b.blocker_id = ${user.id} and b.blocked_id = p.id)
+               or (b.blocker_id = p.id and b.blocked_id = ${user.id})
+          )
+        limit 1
+      `;
+  
+    }
     if (!rows.length) return NextResponse.json({ error: "Ce profil n’est pas disponible." }, { status: 404, headers: { "Cache-Control": "no-store" } });
     // Record a real visit, but never count a member viewing their own profile.
     // A visit-tracking failure must not make an otherwise valid profile unavailable.
