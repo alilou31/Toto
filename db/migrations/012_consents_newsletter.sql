@@ -5,6 +5,9 @@ ALTER TABLE public.auth_users
   ADD COLUMN IF NOT EXISTS terms_accepted_at timestamptz,
   ADD COLUMN IF NOT EXISTS privacy_acknowledged_at timestamptz;
 
+ALTER TABLE public.oauth_identities
+  ADD COLUMN IF NOT EXISTS privacy_acknowledged_at timestamptz;
+
 CREATE TABLE IF NOT EXISTS public.newsletter_subscriptions (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email text NOT NULL,
