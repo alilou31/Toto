@@ -28,6 +28,19 @@
 
 ## Historique des exécutions
 
+## Tentative de validation — 2026-10-13 — parcours connecté à deux utilisateurs
+
+- **Résultat : BLOQUÉ / NON EXÉCUTÉ dans cette session.**
+- **Environnement cible :** production Cloudflare Workers, https://nikahya.rassoul-ali.workers.dev/.
+- **Scénario visé :** connexion indépendante des utilisateurs A et B, découverte mutuelle, intérêt réciproque, match/conversation, défi partagé, réponses synchronisées, messagerie dans les deux sens et persistance après relecture.
+- **Workflow prévu :** [connected-user-journey.yml](https://github.com/alilou31/Toto/blob/main/.github/workflows/connected-user-journey.yml), lancé depuis `main` avec `confirm_production_test=yes`.
+- **Pourquoi non exécuté :** l'intégration GitHub disponible dans cette session permet d'inspecter le dépôt, mais n'expose pas d'action pour déclencher `workflow_dispatch`. La présence des quatre secrets requis n'est pas vérifiable depuis cette interface. Aucun mot de passe n'a été demandé ni affiché.
+- **Autorisation :** l'utilisateur a demandé explicitement de valider le parcours à deux comptes. Le workflow doit néanmoins confirmer que les quatre variables/secrets de comptes de test sont configurés et distincts avant d'écrire des données de test.
+- **Écritures en production pendant cette session :** aucune.
+- **Conclusion :** ne pas déclarer le parcours validé sur la seule base des 18 tests Playwright de lecture seule du run [38267172805](https://github.com/alilou31/Toto/actions/runs/38267172805) : ce run n'exécute pas `two-user-full-journey.spec.ts`.
+- **Action suivante :** ouvrir [Actions → NIKAHYA — Parcours utilisateur connecté (2 comptes)](https://github.com/alilou31/Toto/actions/workflows/connected-user-journey.yml), choisir la branche `main`, sélectionner `yes` pour `confirm_production_test`, puis lancer le workflow après avoir vérifié les secrets `E2E_USER_A_EMAIL`, `E2E_USER_A_PASSWORD`, `E2E_USER_B_EMAIL` et `E2E_USER_B_PASSWORD`. Après exécution, reporter le lien du run, le SHA et le résultat Playwright ici.
+
+
 ### PROD-2026-10-12-11 — Smoke après déploiement et contrôle navigateur en lecture seule
 - **Date/heure :** 2026-10-12, après le déploiement du commit `f70d89b7aabcd06bb988416db5be5b76d840834d`.
 - **CI :** **PASSÉE** — [run 38257712643](https://github.com/alilou31/Toto/actions/runs/38257712643).
