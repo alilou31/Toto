@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });
   }
 
-  const { email, password, ageConfirmed, acceptedTerms } = body as Record<string, unknown>;
+  const { email, password, ageConfirmed, acceptedTerms, acceptedPrivacy } = body as Record<string, unknown>;
   if (typeof email !== "string" || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     return NextResponse.json({ error: "Veuillez saisir une adresse e-mail valide." }, { status: 400 });
   }
@@ -29,8 +29,8 @@ export async function POST(request: Request) {
   if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
     return NextResponse.json({ error: "Renforcez votre mot de passe : ajoutez une minuscule, une majuscule, un chiffre et un caractère spécial." }, { status: 400, headers: { "Cache-Control": "no-store" } });
   }
-  if (ageConfirmed !== true || acceptedTerms !== true) {
-    return NextResponse.json({ error: "Confirmez votre majorité et acceptez les conditions pour continuer." }, { status: 400 });
+  if (ageConfirmed !== true || acceptedTerms !== true || acceptedPrivacy !== true) {
+    return NextResponse.json({ error: "Confirmez votre majorité, acceptez les conditions et confirmez la lecture de la politique de confidentialité pour continuer." }, { status: 400 });
   }
 
   const normalizedEmail = email.trim().toLowerCase();
@@ -51,8 +51,8 @@ export async function POST(request: Request) {
     const id = randomUUID();
     const passwordHash = await hashPassword(password);
     await sql`
-      insert into public.auth_users (id, email, email_normalized, password_hash)
-      values (${id}, ${normalizedEmail}, ${normalizedEmail}, ${passwordHash})
+      insert into public.auth_users (id, email, email_normalized, password_hash, age_confirmed_at, terms_accepted_at, privacy_acknowledged_at)
+      values (${id}, ${normalizedEmail}, ${normalizedEmail}, ${passwordHash}, now(), now(), now())
     `;
     await createSession(id);
     return NextResponse.json({ ok: true }, { status: 201, headers: { "Cache-Control": "no-store" } });

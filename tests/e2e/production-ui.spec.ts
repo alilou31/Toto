@@ -31,9 +31,10 @@ test.describe("Interface NIKAHYA en production", () => {
     await expect(email).toHaveAttribute("required", "");
     await expect(password).toHaveAttribute("required", "");
     await expect(password).toHaveAttribute("minlength", "12");
-    await expect(page.getByRole("checkbox")).toHaveCount(2);
+    await expect(page.getByRole("checkbox")).toHaveCount(3);
     await expect(page.getByRole("checkbox").nth(0)).toHaveAttribute("required", "");
     await expect(page.getByRole("checkbox").nth(1)).toHaveAttribute("required", "");
+    await expect(page.getByRole("checkbox").nth(2)).toHaveAttribute("required", "");
     // Intentionally do not submit: production data remains untouched.
   });
 

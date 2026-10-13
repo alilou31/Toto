@@ -5,6 +5,8 @@
 > Application : https://nikahya.rassoul-ali.workers.dev/  
 > Dépôt : https://github.com/alilou31/Toto  
 > Hébergement cible : Cloudflare Workers ; base de données : Neon.
+>
+> **Lecture des statuts :** ce fichier conserve un historique de contrôles datés. Les sections du 12 octobre sont des instantanés historiques et ne décrivent pas l'état courant du dépôt. Pour l'état le plus récent, utiliser les entrées datées les plus récentes et vérifier le SHA, la PR et les checks GitHub correspondants. Les migrations présentes dans le dépôt ne prouvent pas qu'elles sont appliquées dans Neon.
 
 ## Règles anti-doublons
 
@@ -40,7 +42,7 @@
 
 ## Inventaire actuel
 
-## Point de contrôle dépôt — 2026-10-12 (vérification Playwright production)
+## Instantané historique — 2026-10-12 (vérification Playwright production)
 
 - **HEAD de `main` :** `7b51f4bf27fb1adff424415c57cb345b7e60c3bf`.
 - **CI :** réussie, [run 38266697104](https://github.com/alilou31/Toto/actions/runs/38266697104).
@@ -73,7 +75,7 @@ Les chemins ci-dessous ont été repérés dans l'arborescence de `main`. **La p
 | Pages légales | `app/conditions/page.tsx`, `app/confidentialite/page.tsx` | `tests/e2e/public-pages.spec.ts` | CODE PRÉSENT ; contenu, conservation et obligations légales à revoir avant ouverture publique. |
 | Navigation et responsive | Pages et composants sous `app/` | `tests/e2e/home-navigation.spec.ts`, `tests/e2e/session-navigation.spec.ts`, `tests/e2e/production-ui.spec.ts`, `tests/e2e/ux-redesign.spec.ts` | CODE ET TESTS PRÉSENTS ; vérifier les tests existants avant d'en ajouter un nouveau. |
 | Contrats API / validation | Routes API sous `app/api/` | `tests/e2e/api-json-contract.spec.ts`, `tests/validation.test.cjs` | COUVERTURE PARTIELLE À CONFIRMER ; compléter les tests existants plutôt que dupliquer les assertions. |
-| Socle DB | `app/api/db-check/route.ts`, migrations `db/migrations/001` à `007` | Smoke tests de production référencés dans `PRODUCTION_TEST_LOG.md` | Code présent ; l'état réel des migrations dans Neon doit être confirmé indépendamment. |
+| Socle DB | `app/api/db-check/route.ts`, migrations `db/migrations/001` à `013` présentes dans l'historique du dépôt | Smoke tests de production référencés dans `PRODUCTION_TEST_LOG.md` | Code présent ; ne pas inférer l'état réel des migrations Neon à partir des seuls fichiers. Vérifier la séquence et l'état de la base avant exécution. |
 
 ## Tests E2E repérés
 

@@ -26,6 +26,13 @@ Application de rencontre sérieuse pour adultes (18+) — France et pays francop
    - `db/migrations/005_game_sessions.sql`
    - `db/migrations/006_shared_interests.sql`
    - `db/migrations/007_rencontre_sessions.sql` (si non déjà appliquée ; vérifier l'état avant exécution)
+   - `db/migrations/008_oauth_identities.sql`
+   - `db/migrations/009_profile_visits_and_presence.sql`
+   - `db/migrations/010_password_reset_tokens.sql`
+   - `db/migrations/011_gender_preferences_and_verification.sql`
+   - `db/migrations/012_consents_newsletter.sql`
+   - `db/migrations/013_automatic_identity_verification.sql`
+   Exécuter uniquement les migrations non encore appliquées, dans cet ordre, en vérifiant l'état Neon avant toute relance.
 6. Lancer `npm run dev`, puis ouvrir `http://localhost:3000`.
 7. Vérifier la connexion sur `http://localhost:3000/api/db-check`. La route renvoie uniquement un état et l'heure de la base, jamais la chaîne de connexion.
 
@@ -35,6 +42,8 @@ Si la migration 001 a déjà été exécutée, ne la relance pas en cas d'erreur
 
 - `DATABASE_URL` : secret serveur Neon. Ne jamais le préfixer par `NEXT_PUBLIC_` ni le committer.
 - `NEXT_PUBLIC_SITE_URL` : URL publique du site.
+- `RESEND_API_KEY` et `RESEND_FROM_EMAIL` : envoi des e-mails de confirmation newsletter.
+- `STRIPE_SECRET_KEY` et `STRIPE_IDENTITY_WEBHOOK_SECRET` : sessions et webhooks Stripe Identity, côté serveur uniquement.
 
 Pour le déploiement Cloudflare Workers, suivre la section « Déploiement Cloudflare » ci-dessous. `DATABASE_URL` doit rester un secret serveur Cloudflare et ne jamais être exposé au navigateur.
 
@@ -64,7 +73,9 @@ GitHub Actions exécute les tests unitaires, ESLint, le build Next.js et le buil
 
 Pour installer les navigateurs en local après `npm install` : `npx playwright install chromium`.
 
-## État vérifié — 2026-10-12
+## État historique vérifié — 2026-10-12
+
+> Cette photographie est historique et ne décrit pas nécessairement le commit courant. Pour le statut actuel, consulter les checks GitHub du commit et le registre de tests de production.
 
 Le suivi ci-dessous remplace les anciennes cases à cocher historiques de ce README. Pour éviter les doublons, consulter d'abord [FEATURES_INVENTORY.md](./FEATURES_INVENTORY.md) et [BACKLOG.md](./BACKLOG.md).
 
@@ -92,18 +103,20 @@ Le catalogue propose six formats de mini-jeux. Les parties individuelles peuvent
 
 Les routes disponibles sont :
 
-- `POST /api/auth/register` : créer un compte avec e-mail, mot de passe, confirmation 18+ et acceptation des conditions.
+- `POST /api/auth/register` : créer un compte avec e-mail, mot de passe, confirmation 18+, acceptation des conditions et accusé de lecture de la politique de confidentialité.
 - `POST /api/auth/login` : ouvrir une session.
 - `POST /api/auth/logout` : fermer la session.
 - `GET /api/auth/me` : vérifier la session courante.
 
 Les mots de passe sont stockés sous forme de hash scrypt ; le cookie de session est HttpOnly, SameSite=Lax et marqué Secure en production. La base ne stocke qu'un hash du jeton de session. Ces protections constituent une première base, pas une validation de sécurité complète.
 
-**Limites actuelles :** la vérification d'e-mail et la récupération de mot de passe par e-mail sont reportées à la phase 2. La limitation de tentatives est implémentée via Neon (migration `003_auth_rate_limits.sql` obligatoire) : 5 tentatives de connexion par e-mail sur 15 minutes, 30 par IP Cloudflare sur 15 minutes, 5 inscriptions par e-mail et 10 par IP sur une heure. Les clés sont stockées sous forme de hash. La page de profil, les autorisations métier complètes et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
+**Limites actuelles :** la vérification de l'adresse e-mail du compte et le parcours complet de récupération de mot de passe par e-mail ne doivent être considérés comme opérationnels qu'après configuration du fournisseur d'envoi et validation E2E de bout en bout. La limitation de tentatives est implémentée via Neon (migration `003_auth_rate_limits.sql` obligatoire) : 5 tentatives de connexion par e-mail sur 15 minutes, 30 par IP Cloudflare sur 15 minutes, 5 inscriptions par e-mail et 10 par IP sur une heure. Les clés sont stockées sous forme de hash. La page de profil, les autorisations métier complètes et les tests de sécurité restent à faire. Ne pas ouvrir l'inscription au public avant ces vérifications.
 
 ## Démonstration sans base de données
 
 Ouvrir `/demo` pour tester les profils fictifs, enregistrer un profil local, aimer/retirer un like et afficher des matchs simulés. Les données sont stockées dans le localStorage du navigateur uniquement ; ne pas saisir d'informations personnelles réelles. Aucun compte, message ou match réel n'est créé. Ouvrir `/validation` pour les contrôles de formulaire.
+
+La newsletter publique enregistre uniquement les inscriptions avec consentement explicite et demande une confirmation par e-mail (double opt-in). Configurer `RESEND_API_KEY` et un expéditeur valide dans Cloudflare avant d'activer les inscriptions. La migration 012 conserve les horodatages d'acceptation des conditions, de lecture de la politique de confidentialité et de confirmation 18+.
 
 ## Sécurité importante
 
@@ -115,12 +128,12 @@ Ouvrir `/demo` pour tester les profils fictifs, enregistrer un profil local, aim
 - Les signalements peuvent être envoyés depuis la découverte et sont enregistrés en base ; aucun tableau de modération administrateur n’est encore disponible. Les pages juridiques sont des brouillons et doivent être complétées puis vérifiées par un professionnel avant commercialisation.
 
 
-## Préférences de découverte et vérification de profil
+## Préférences de découverte, consentements, newsletter et vérification de profil
 
 Avant d'utiliser les nouveaux champs de genre et le workflow de badge, appliquer db/migrations/011_gender_preferences_and_verification.sql dans Neon après la migration 010. La découverte propose le genre opposé par défaut lorsque le genre du membre est renseigné comme homme ou femme, avec un filtre modifiable Femmes/Hommes/Tous.
 
 L'inscription et la réinitialisation exigent au moins 12 caractères, une minuscule, une majuscule, un chiffre et un caractère spécial.
 
-La demande de badge accepte une photo ou une courte vidéo (8 Mo maximum) et nécessite un consentement explicite. La décision est humaine : configurez VERIFICATION_REVIEWER_EMAILS sur Cloudflare avec les adresses autorisées. Le badge ne doit être activé qu'après contrôle des 18 ans déclarés et de la cohérence de la preuve avec la photo du profil. Les preuves privées sont supprimées au moment de la décision. Aucune reconnaissance faciale automatisée n'est activée.
+La vérification automatique est proposée via Stripe Identity : document officiel, contrôle selfie si disponible, puis webhook signé côté serveur. Le badge est accordé uniquement si le prestataire confirme le contrôle, que la personne est majeure et que la date de naissance vérifiée correspond à celle du profil. Configurer `STRIPE_SECRET_KEY` et `STRIPE_IDENTITY_WEBHOOK_SECRET` dans Cloudflare et enregistrer `/api/webhooks/stripe-identity` comme endpoint Stripe Identity. La voie manuelle reste disponible en secours et requiert `VERIFICATION_REVIEWER_EMAILS`. Les preuves manuelles sont supprimées à la décision ; les documents gérés par Stripe suivent la politique de conservation du prestataire et doivent être décrits dans la politique de confidentialité.
 
 Le sélecteur de langue supporte le français, l'anglais, l'espagnol et l'italien au niveau de l'infrastructure de langue. Les traductions intégrales de toutes les pages et de tous les messages d'erreur API restent à terminer avant de présenter le produit comme entièrement internationalisé.

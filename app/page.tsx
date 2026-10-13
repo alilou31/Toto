@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { normalizeLocale, localeMessages } from "@/lib/i18n";
 import Link from "next/link";
 import HomeHeader from "@/app/components/home-header";
+import { getCurrentUser } from "@/lib/auth";
+import NewsletterSignup from "@/app/components/newsletter-signup";
 import { ArrowRight, ArrowDown, Brain, Heart, LockKeyhole, ShieldCheck, Check, MessageCircleHeart } from "lucide-react";
 
 const values = [
@@ -39,6 +41,7 @@ export default async function Home() {
   const cookieStore = await cookies();
   const locale = normalizeLocale(cookieStore.get("nikahya_locale")?.value);
   const t = localeMessages[locale];
+  const currentUser = await getCurrentUser().catch(() => null);
   const structuredData = [
     { "@context": "https://schema.org", "@type": "Organization", name: "NIKAHYA", url: siteUrl, description: "NIKAHYA aide les adultes qui recherchent une relation sérieuse à faire connaissance grâce aux jeux, aux centres d’intérêt et aux conversations." },
     { "@context": "https://schema.org", "@type": "WebSite", name: "NIKAHYA", url: siteUrl, inLanguage: "fr-FR", description: "L’application de rencontre sérieuse pour faire connaissance en jouant." },
@@ -94,6 +97,7 @@ export default async function Home() {
         <div className="safety-copy"><div className="section-kicker"><span>04</span> / VOTRE TRANQUILLITÉ COMPTE</div><h2>Une rencontre sincère mérite <em>un cadre rassurant.</em></h2><p>La confiance se construit aussi grâce à des informations claires, au respect de la vie privée et à la possibilité de garder le contrôle de ses interactions.</p><ul><li><Check size={16} /> Des informations sur la confidentialité accessibles</li><li><Check size={16} /> Des règles d’utilisation présentées clairement</li><li><Check size={16} /> Des choix de visibilité à comprendre avant de se lancer</li></ul><Link href="/confidentialite" className="text-link">Lire notre politique de confidentialité <ArrowRight size={16} /></Link><p className="fine-print">Consultez les fonctionnalités et paramètres actuellement disponibles dans votre espace avant de partager des informations personnelles.</p></div>
       </section>
       <section className="faq section-pad landing-faq" id="faq"><div className="faq-heading"><div className="section-kicker"><span>05</span> / LES QUESTIONS QUE VOUS VOUS POSEZ</div><h2>Avant de se rencontrer,<br /><em>faisons connaissance.</em></h2><p>Tout commence par la confiance et la transparence.</p></div><div className="faq-list">{faqs.map((f, i) => <details className="faq-item" key={f.q} open={i === 0}><summary><span>{f.q}</span><span className="faq-plus">+</span></summary><p>{f.a}</p></details>)}</div></section>
+      {!currentUser && <NewsletterSignup />}
       <section className="final-cta landing-final-cta"><div className="cta-flower">✳</div><div className="section-kicker">VOTRE HISTOIRE PEUT COMMENCER ICI</div><h2>La bonne rencontre<br />commence parfois <em>par un jeu.</em></h2><p>Faites le premier pas. Le reste se découvre à deux.</p><Link href="/inscription" className="button button-light landing-final-button">Créer mon compte gratuitement <ArrowRight size={17} /></Link><span className="cta-signature">NIKAHYA — La rencontre qui change tout.</span></section>
       <footer className="footer landing-footer"><div className="footer-main"><Link href="/" className="brand brand-footer" aria-label="NIKAHYA, accueil"><span className="brand-mark"><Heart size={19} /></span><span className="brand-word">NIKAHYA<span className="brand-dot">.</span></span></Link><p>Faire connaissance en jouant.<br />Se rapprocher pour ce qui compte.</p><div className="footer-social">FAIT AVEC INTENTION <Heart size={13} /></div></div><div className="footer-links"><div><strong>Découvrir</strong><a href="#concept">Notre concept</a><a href="#jeux">Les jeux</a><a href="#methode">Comment ça marche</a><a href="#securite">Confidentialité</a></div><div><strong>Votre espace</strong><Link href="/inscription">Créer un profil</Link><Link href="/connexion">Connexion</Link><Link href="/demo">Découvrir la démo</Link></div><div><strong>Informations</strong><Link href="/confidentialite">Confidentialité</Link><Link href="/conditions">Conditions d’utilisation</Link><Link href="/mentions-legales#contact">Contact éditeur</Link></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} NIKAHYA. Tous droits réservés.</span><span>Réservé aux adultes de 18 ans et plus.</span><span>Conçu avec soin, en France.</span></div></footer>
     </main>
