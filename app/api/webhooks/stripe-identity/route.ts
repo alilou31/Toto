@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     } else {
       const status = event.type.endsWith(".canceled") ? "canceled" : "rejected";
       await sql`update public.profile_identity_verification_sessions set status = ${status}, updated_at = now() where provider_session_id = ${sessionId}`;
-      if (status === "canceled") await sql`update public.profiles set verification_status = 'unverified' where id = ${userId} and verification_status = 'pending'`;
+      if (status === "canceled" || status === "rejected") await sql`update public.profiles set verification_status = 'unverified' where id = ${userId} and verification_status = 'pending'`;
     }
     return NextResponse.json({ received: true }, { headers: { "Cache-Control": "no-store" } });
   } catch {
