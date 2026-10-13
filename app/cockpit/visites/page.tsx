@@ -8,7 +8,7 @@ export default function VisitesPage() {
       <PageHeading
         eyebrow="UN PREMIER SIGNE DE CURIOSITÉ"
         title={<>Les visites de votre <em>profil.</em></>}
-        description="Retrouvez les membres qui ont consulté votre profil récemment. La présence est indiquée séparément et n'affiche pas l'heure exacte de connexion."
+        description="Retrouvez les membres qui ont consulté votre profil récemment. La présence est indiquée séparément et n’affiche pas l'heure exacte de connexion."
       />
       <VisitsList />
       <div className="game-privacy-inline">
