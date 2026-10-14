@@ -134,13 +134,6 @@ export default function DiscoverPage() {
 
   return (
     <main className="discovery-page">
-      <style jsx global>{`
-        .discovery-feed{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));align-items:stretch;gap:20px}
-        .discovery-feed .discovery-card{min-height:460px;height:100%;display:flex;flex-direction:column;background-color:#e8eee6;background-position:center;background-size:cover;border-radius:16px;overflow:hidden}
-        .discovery-feed .discovery-card h2{margin-top:auto}
-        .discovery-feed .discovery-card-actions{margin-top:auto;padding-top:18px}
-        @media(max-width:640px){.discovery-feed{grid-template-columns:minmax(0,1fr);gap:15px}.discovery-feed .discovery-card{min-height:440px;border-radius:14px}}
-      `}</style>
       <header className="discovery-header">
         <Link href="/tableau-de-bord" className="discovery-back"><ArrowLeft size={16}/> Mon espace</Link>
         <Link href="/" className="brand" aria-label="NAKAHYA, accueil"><span className="brand-mark"><Heart size={18}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
