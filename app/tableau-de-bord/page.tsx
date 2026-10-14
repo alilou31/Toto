@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, CreditCard, Eye, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, UserRound } from "lucide-react";
+import { ArrowRight, CreditCard, Eye, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, TicketPercent, UserRound } from "lucide-react";
 
 type Profile = {
   public_name?: string | null;
@@ -93,6 +93,7 @@ export default function DashboardPage() {
               <Link href="/matchs" className="dashboard-card"><span className="dashboard-card-icon"><Heart size={22}/></span><span className="dashboard-card-title">Affinités</span><span className="dashboard-card-description">Retrouvez vos affinités et les connexions créées sur NAKAHYA.</span><span className="dashboard-card-link">Voir mes affinités <ArrowRight size={15}/></span></Link>
               <Link href="/rencontre" className="dashboard-card"><span className="dashboard-card-icon"><Sparkles size={22}/></span><span className="dashboard-card-title">Alchimie</span><span className="dashboard-card-description">Proposez un jeu ou un défi à un match existant, à votre rythme.</span><span className="dashboard-card-link">Découvrir Alchimie <ArrowRight size={15}/></span></Link>
               <Link href="/offres" className="dashboard-card dashboard-offers-card"><span className="dashboard-card-icon"><CreditCard size={22}/></span><span className="dashboard-card-title">Les offres NAKAHYA</span><span className="dashboard-card-description">Découvrez les formules prévues, leurs avantages et le tarif sans surprise.</span><span className="dashboard-card-link">Comparer les offres <ArrowRight size={15}/></span></Link>
+              <Link href="/bons-plans" className="dashboard-card dashboard-bons-plans-card"><span className="dashboard-card-icon"><TicketPercent size={22}/></span><span className="dashboard-card-title">Bons plans</span><span className="dashboard-card-description">Trouvez des idées de sorties et d’activités pour faire connaissance sans vous ruiner.</span><span className="dashboard-card-link">Voir les idées <ArrowRight size={15}/></span></Link>
             </div>
 
             <div className="dashboard-lower-grid">
