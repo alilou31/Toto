@@ -3,7 +3,7 @@ import { CircleUserRound, Eye, Gamepad2, Heart, House, Search, ShieldCheck, Spar
 
 const navigation = [
   { href: "/cockpit", label: "Mon espace", shortLabel: "Accueil", icon: House },
-  { href: "/decouvrir", label: "Découvrir", shortLabel: "Découvrir", icon: Search, primary: true },
+  { href: "/decouvrir/immersif", label: "Découvrir", shortLabel: "Profils", icon: Search, primary: true },
   { href: "/cockpit/jeux", label: "Jouer", shortLabel: "Jouer", icon: Gamepad2 },
   { href: "/matchs", label: "Affinités", shortLabel: "Affinités", icon: Sparkles },
   { href: "/profil", label: "Mon profil", shortLabel: "Profil", icon: CircleUserRound },
@@ -23,7 +23,7 @@ export function GameShell({ children, active = "/cockpit" }: { children: React.R
       <nav aria-label="Navigation principale">{navigation.map(({href,label,icon:Icon,primary})=><Link key={href} href={href} aria-current={isActiveRoute(active,href)?"page":undefined} className={`game-nav-link${primary ? " game-nav-link-primary" : ""}`}><Icon size={18}/><span>{label}</span></Link>)}</nav>
       <div className="game-sidebar-bottom"><div className="game-safety"><ShieldCheck size={18}/><span><strong>Un espace bienveillant</strong><small>Votre rythme, vos règles.</small></span></div><Link href="/" className="game-back-home">← Retour au site</Link></div>
     </aside>
-    <div className="game-main"><header className="game-topbar"><div className="game-breadcrumb">Votre espace <span>/</span> <strong>{navigation.find(n=>isActiveRoute(active,n.href))?.label ?? "Découvrir"}</strong></div><div className="game-top-actions"><Link href="/decouvrir" className="game-button game-button-primary"><Search size={16}/> Découvrir</Link><Link href="/profil" className="game-avatar" aria-label="Modifier mon profil"><CircleUserRound size={18}/></Link></div></header><main className="game-content">{children}</main><nav className="game-mobile-nav" aria-label="Navigation mobile">{navigation.map(({href,label,shortLabel,icon:Icon,primary})=><Link key={href} href={href} aria-current={isActiveRoute(active,href)?"page":undefined} aria-label={label} className={primary ? "game-mobile-nav-primary" : undefined}><Icon size={19}/><span>{shortLabel}</span></Link>)}</nav></div>
+    <div className="game-main"><header className="game-topbar"><div className="game-breadcrumb">Votre espace <span>/</span> <strong>{navigation.find(n=>isActiveRoute(active,n.href))?.label ?? "Découvrir"}</strong></div><div className="game-top-actions"><Link href="/decouvrir" className="game-button game-button-secondary"><Search size={16}/> Grille des profils</Link><Link href="/profil" className="game-avatar" aria-label="Modifier mon profil"><CircleUserRound size={18}/></Link></div></header><main className="game-content">{children}</main><nav className="game-mobile-nav" aria-label="Navigation mobile">{navigation.map(({href,label,shortLabel,icon:Icon,primary})=><Link key={href} href={href} aria-current={isActiveRoute(active,href)?"page":undefined} aria-label={label} className={primary ? "game-mobile-nav-primary" : undefined}><Icon size={primary ? 21 : 19}/><span>{shortLabel}</span></Link>)}</nav></div>
   </div>;
 }
 
