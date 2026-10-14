@@ -175,7 +175,7 @@ export default function DiscoverPage() {
                   const bShared = shared.some(value => value.toLowerCase() === b.toLowerCase());
                   return Number(bShared) - Number(aShared);
                 });
-                return <article className="discovery-profile" key={profile.id} style={profile.photo_url ? { backgroundImage: `linear-gradient(180deg, rgba(10,30,24,.02) 15%, rgba(10,30,24,.88) 100%), url("${profile.photo_url}")` } : undefined}>
+                return <article className="discovery-card discovery-profile" key={profile.id} style={profile.photo_url ? { backgroundImage: `linear-gradient(180deg, rgba(10,30,24,.02) 15%, rgba(10,30,24,.88) 100%), url("${profile.photo_url}")` } : undefined}>
                   <div className="discovery-card-top">
                     <span className="discovery-avatar-wrap"><span className="discovery-avatar" aria-hidden="true">{profile.public_name.trim().slice(0, 1).toLocaleUpperCase()}</span>{profile.is_online && <span className="profile-online-dot" aria-label="En ligne" title="En ligne"/>}</span>
                     <span className="discovery-intention">{intentionLabels[profile.relationship_intention] ?? "À discuter"}</span>

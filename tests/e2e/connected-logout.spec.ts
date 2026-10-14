@@ -16,7 +16,8 @@ test("un membre connecté peut se déconnecter depuis la navigation persistante"
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/tableau-de-bord");
   await expect(page.getByRole("heading", { name: "Bonjour, Camille." })).toBeVisible();
-  const logout = page.getByRole("button", { name: "Se déconnecter de NAKAHYA" });
+  await page.getByRole("button", { name: "Ouvrir le menu du compte" }).click();
+  const logout = page.getByRole("button", { name: "Se déconnecter" });
   await expect(logout).toBeVisible();
   await logout.click();
   await expect(page).toHaveURL("/");
