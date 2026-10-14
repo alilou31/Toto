@@ -52,7 +52,7 @@ test.describe("NAKAHYA — pages publiques", () => {
     await expect(identity).toBeVisible();
     await expect(identity.getByRole("heading", { name: /Moins de profils à parcourir.*Plus de personnes à découvrir/i })).toBeVisible();
     await expect(identity.getByText("La sincérité")).toBeVisible();
-    await expect(identity.getByText("La complicité")).toBeVisible();
+    await expect(identity.getByText("La complicité", { exact: true })).toBeVisible();
     await expect(identity.getByText("Le respect")).toBeVisible();
   });
 
