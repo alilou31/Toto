@@ -81,6 +81,27 @@ export default async function Home() {
         <div className="intro-grid"><h2>Moins de swipe.<br /><em>Plus de complicité.</em></h2><div className="intro-copy"><p>Un profil ne raconte jamais toute une personne. Chez NAKAHYA, les jeux deviennent un prétexte pour échanger, rire, réfléchir ensemble et découvrir ce qui vous rapproche.</p><p className="muted">Parce qu’une relation durable se construit sur plus qu’une photo : les intentions, les valeurs, les centres d’intérêt et les projets de vie comptent aussi.</p></div></div>
         <div className="value-grid">{values.map(({ icon: Icon, title, text }, i) => <article className="value-card landing-glass-value" key={title}><div className="value-top"><span className="value-icon"><Icon size={21} /></span><span className="card-number">0{i + 1}</span></div><h3>{title}</h3><p>{text}</p><span className="value-line" /></article>)}</div>
       </section>
+      <section className="brand-story section-pad landing-brand-story" id="identite" aria-labelledby="brand-story-title">
+        <div className="brand-story-orb brand-story-orb-one" aria-hidden="true" />
+        <div className="brand-story-orb brand-story-orb-two" aria-hidden="true" />
+        <div className="brand-story-copy">
+          <div className="section-kicker"><span>02</span> / L’ESPRIT NAKAHYA</div>
+          <p className="brand-story-overline">UNE MARQUE, UNE INTENTION</p>
+          <h2 id="brand-story-title">Moins de profils à parcourir.<br /><em>Plus de personnes à découvrir.</em></h2>
+          <p className="brand-story-lede">NAKAHYA remet l’humain au centre de la rencontre. Nous croyons qu’une belle histoire commence quand on prend le temps d’écouter, de jouer, de rire et de parler de ce qui compte vraiment.</p>
+          <p className="brand-story-signature">La rencontre qui change tout.</p>
+        </div>
+        <div className="brand-story-panel" aria-label="Les trois engagements de NAKAHYA">
+          <div className="brand-story-lockup">
+            <span className="brand-story-symbol"><Heart size={25} strokeWidth={1.8} /></span>
+            <span><strong>NAKAHYA<span>.</span></strong><small>LA COMPLICITÉ AVANT LE SWIPE</small></span>
+          </div>
+          <div className="brand-story-pillar"><span className="brand-story-pillar-number">01</span><div><strong>La sincérité</strong><p>Des intentions claires et l’envie de construire quelque chose de vrai.</p></div><Heart size={19} /></div>
+          <div className="brand-story-pillar"><span className="brand-story-pillar-number">02</span><div><strong>La complicité</strong><p>Des jeux et des conversations qui donnent envie de se découvrir.</p></div><Brain size={19} /></div>
+          <div className="brand-story-pillar"><span className="brand-story-pillar-number">03</span><div><strong>Le respect</strong><p>Le temps, les limites et la vie privée de chacun comptent.</p></div><ShieldCheck size={19} /></div>
+          <div className="brand-story-note"><span>✳</span> Une rencontre n’est pas un défilement. C’est le début d’une histoire.</div>
+        </div>
+      </section>
       <section className="games-showcase section-pad landing-games" id="jeux">
         <div className="section-kicker"><span>02</span> / LE JEU COMME PREMIER LIEN</div>
         <div className="games-showcase-heading"><h2>Jouez pour vous découvrir.<br /><em>Restez pour ce qui vous lie.</em></h2><p>Pas besoin d’être un champion. Juste d’être curieux, sincère et prêt à découvrir une autre personne.</p></div>
