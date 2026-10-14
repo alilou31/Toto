@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { Bell, Compass, Gamepad2, Heart, House, Sparkles, X } from "lucide-react";
+import { Bell, Compass, Gamepad2, Heart, House, LogOut, Sparkles, X } from "lucide-react";
 
 type NoticeCounts = { interests: number; games: number };
 const tips = [
@@ -22,10 +22,13 @@ function isConnectedArea(path: string) {
 
 export default function ConnectedAppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [authenticated, setAuthenticated] = useState(false);
   const [counts, setCounts] = useState<NoticeCounts>({ interests: 0, games: 0 });
   const [tip, setTip] = useState<string | null>(null);
   const [tipDismissed, setTipDismissed] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
 
   const loadCounts = useCallback(async () => {
     try {
@@ -98,6 +101,23 @@ export default function ConnectedAppChrome({ children }: { children: React.React
       document.removeEventListener("visibilitychange", heartbeat);
     };
   }, [authenticated]);
+  const handleLogout = useCallback(async () => {
+    if (loggingOut) return;
+    setLoggingOut(true);
+    setLogoutError("");
+    try {
+      const response = await fetch("/api/auth/logout", { method: "POST", cache: "no-store" });
+      if (!response.ok) throw new Error("Déconnexion impossible");
+      setAuthenticated(false);
+      setTip(null);
+      router.replace("/");
+      router.refresh();
+    } catch {
+      setLogoutError("Déconnexion impossible. Vérifiez votre connexion puis réessayez.");
+      setLoggingOut(false);
+    }
+  }, [loggingOut, router]);
+
   const connected = authenticated && isConnectedArea(pathname);
   const totalAlerts = counts.interests + counts.games;
   const items = [
@@ -125,7 +145,12 @@ export default function ConnectedAppChrome({ children }: { children: React.React
             <span>{label}</span>
           </Link>
         ))}
+        <button type="button" className="connected-logout-button" onClick={handleLogout} disabled={loggingOut} aria-label="Se déconnecter de NAKAHYA">
+          <span className="connected-nav-icon"><LogOut size={19} /></span>
+          <span>{loggingOut ? "Sortie…" : "Déconnexion"}</span>
+        </button>
       </nav>
+      {logoutError && <p className="connected-logout-error" role="alert">{logoutError}</p>}
     </>}
   </>;
 }

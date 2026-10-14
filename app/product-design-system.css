@@ -1,0 +1,58 @@
+/* NAKAHYA product-wide design system — plum, lilac, coral, glassmorphism and bento grids. */
+:root{--green:#6a3b62;--green-2:#925b8b;--ivory:#fbf7f1;--white:#fff;--gold:#f08e7b;--ink:#302333;--muted:#746a78;--line:#eadfea;--nakahya-plum:#48223f;--nakahya-plum-deep:#2d182b;--nakahya-lilac:#e9def5;--nakahya-coral:#f08e7b;--nakahya-glass:rgba(255,250,255,.76)}
+body{background:var(--ivory);color:var(--ink)}
+button,input,select,textarea{accent-color:var(--green)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline-color:var(--nakahya-coral)}
+.button-green,.button-dark,.auth-submit,.game-button-primary{background:linear-gradient(135deg,var(--nakahya-plum),var(--green-2))!important;border-color:transparent!important;border-radius:999px;box-shadow:0 8px 22px #48223f2b}
+.button-green:hover,.button-dark:hover,.auth-submit:hover,.game-button-primary:hover{background:linear-gradient(135deg,#5b2c53,#a36c9a)!important}
+.brand-mark,.game-brand-mark{background:linear-gradient(145deg,#6a3b62,#48223f)!important;box-shadow:0 5px 18px #48223f2e}
+h1 em,h2 em,.brand-dot{color:var(--green-2)!important}
+
+/* The connected area shares the landing-page art direction. */
+.dashboard-page{background:radial-gradient(ellipse at 5% 4%,#e9def5d1,transparent 34%),radial-gradient(ellipse at 95% 40%,#f08e7b20,transparent 32%),linear-gradient(145deg,#fbf7f1,#f8f2f8 58%,#f4eef8)!important}
+.dashboard-header,.notifications-header,.game-topbar{background:#fffa!important;border-color:#6a3b6221!important;backdrop-filter:blur(22px) saturate(155%);-webkit-backdrop-filter:blur(22px) saturate(155%)}
+.dashboard-welcome,.game-welcome-card{background:radial-gradient(circle at 82% 18%,#ffffff2e,transparent 30%),linear-gradient(120deg,#2d182b,#6a3b62 58%,#925b8b)!important;border:1px solid #ffffff59;border-radius:26px!important;box-shadow:0 22px 60px #48223f2e!important}
+.dashboard-welcome h1 em,.game-welcome-copy h2 em{color:#ffd0c3!important}
+.dashboard-welcome-icon{background:#ffffff1f!important;border-color:#ffffff59!important;color:#ffd0c3!important}
+.dashboard-cards{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-auto-rows:minmax(190px,auto);gap:16px!important}
+.dashboard-card{grid-column:span 2;position:relative;overflow:hidden;min-height:210px!important;padding:25px!important;border:1px solid #ffffffd9!important;border-radius:23px!important;background:linear-gradient(145deg,#ffffffdc,#fffaff9e)!important;box-shadow:0 14px 42px #48223f12,inset 0 1px #ffffff!important;backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%);transition:transform .2s,box-shadow .2s,border-color .2s}
+.dashboard-card:first-child,.dashboard-card:nth-child(5){grid-column:span 3}
+.dashboard-card:first-child{background:linear-gradient(135deg,#e9def5ed,#ffffffc2)!important}
+.dashboard-card:nth-child(5){background:linear-gradient(135deg,#f08e7b2b,#ffffffd1)!important}
+.dashboard-card:hover{transform:translateY(-4px);border-color:#925b8b61!important;box-shadow:0 20px 48px #48223f1f,inset 0 1px white!important}
+.dashboard-card-icon,.notifications-title-icon,.dashboard-onboarding-icon{background:linear-gradient(145deg,#eee3f3,#fde8e0)!important;border-radius:15px!important;color:var(--green)!important}
+.dashboard-card-link,.dashboard-header nav a[aria-current=page],.dashboard-header nav a:hover,.dashboard-text-link{color:var(--green-2)!important}
+.dashboard-info-card,.dashboard-onboarding,.dashboard-lower-grid>*,.game-panel,.game-stat-card,.game-feature-card,.game-catalog-card,.game-bottom-note,.profile-visits-panel,.notification-card,.notifications-empty,.notifications-state,.auth-card,.personalize-card,.discovery-card,.match-card,.message-panel,.profile-panel,.settings-card,.security-card{border:1px solid #ffffffdf!important;border-radius:20px!important;background:linear-gradient(145deg,#ffffffd6,#fffaffa3)!important;box-shadow:0 14px 40px #48223f12,inset 0 1px #fffffff0!important;backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%)}
+.dashboard-onboarding{background:linear-gradient(135deg,#e9def5dc,#ffffffc7)!important}
+.dashboard-info-card{padding:23px!important}.dashboard-info-row{border-color:#6a3b6221!important}
+
+/* Game catalogue: asymmetric bento grid on desktop, stacked cards on mobile. */
+.game-app{--game-purple:#6a3b62;--game-pink:#f08e7b;--game-mint:#c8a9d7;--game-line:#6a3b6221;--game-ink:#302333;--game-muted:#746a78;background:radial-gradient(ellipse at 90% 5%,#e9def5b8,transparent 33%),linear-gradient(145deg,#fbf7f1,#f8f2f8)!important}
+.game-sidebar{background:#fffa!important;border-color:#6a3b6221!important;backdrop-filter:blur(24px) saturate(155%);-webkit-backdrop-filter:blur(24px) saturate(155%)}
+.game-nav-link[aria-current=page],.game-nav-link:hover,.game-nav-link-primary{background:#eee3f3!important;color:var(--green)!important}
+.game-page-heading h1 em{background:linear-gradient(90deg,#6a3b62,#f08e7b)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important}
+.game-stats-grid{gap:16px!important}
+.game-stat-card,.game-panel,.game-feature-card,.game-catalog-card{border-radius:22px!important;border-color:#ffffffdf!important;background:linear-gradient(145deg,#ffffffdf,#fffaff9e)!important;box-shadow:0 14px 40px #48223f12,inset 0 1px white!important;backdrop-filter:blur(18px) saturate(145%)}
+.game-catalog-grid{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-auto-rows:minmax(230px,auto);gap:16px!important}
+.game-catalog-card{grid-column:span 2;display:flex;flex-direction:column;padding:24px!important;min-width:0}
+.game-catalog-card:first-child,.game-catalog-card:nth-child(4){grid-column:span 3}
+.game-catalog-card:first-child{background:linear-gradient(135deg,#e9def5eb,#ffffffba)!important}
+.game-catalog-card:nth-child(4){background:linear-gradient(135deg,#f08e7b2b,#ffffffd6)!important}
+.game-catalog-card h2{color:var(--ink)!important}.game-catalog-card p{color:var(--muted)!important}
+.game-feature-icon.purple,.game-feature-icon.pink,.game-feature-icon.mint,.game-feature-icon.amber,.game-stat-icon.purple,.game-stat-icon.pink,.game-stat-icon.mint,.game-stat-icon.amber,.game-panel-big-icon{background:linear-gradient(145deg,#eee3f3,#fde8e0)!important;color:var(--green)!important}
+.game-progress i,.game-progress i.purple,.game-progress i.pink,.game-progress i.mint{background:linear-gradient(90deg,#6a3b62,#f08e7b)!important}
+.game-filter-chip.active{background:var(--green)!important;border-color:var(--green)!important;color:white!important}
+.game-button-secondary,.game-button-light{border-color:#6a3b6230!important;color:var(--green)!important}
+
+/* Persistent, real logout action: available on every authenticated route. */
+.connected-bottom-nav{background:#fffa!important;border-color:#6a3b6229!important;box-shadow:0 16px 44px #48223f26!important}
+.connected-nav-item.is-active{color:var(--green-2)!important}
+.connected-nav-discover .connected-nav-icon{background:linear-gradient(135deg,#6a3b62,#925b8b)!important;box-shadow:0 8px 22px #48223f40!important}
+.connected-logout-button{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;min-height:54px;padding:0 2px;border:0;border-radius:12px;background:transparent;color:#746a78;font:600 10px var(--sans);cursor:pointer}
+.connected-logout-button:hover,.connected-logout-button:focus-visible{color:var(--green);background:#e9def585}
+.connected-logout-button:disabled{opacity:.62;cursor:wait}
+.connected-logout-button .connected-nav-icon{min-height:25px;display:grid;place-items:center}
+.connected-logout-error{position:fixed;z-index:100;left:14px;right:14px;bottom:calc(90px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;padding:12px 15px;border:1px solid #f0b3a8;border-radius:14px;background:#fff4f1;color:#8d3445;box-shadow:0 12px 34px #48223f24;font-size:12px;line-height:1.5}
+@media(max-width:1000px){.dashboard-cards,.game-catalog-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.dashboard-card,.game-catalog-card{grid-column:span 2}.dashboard-card:first-child,.dashboard-card:nth-child(5),.game-catalog-card:first-child,.game-catalog-card:nth-child(4){grid-column:span 2}}
+@media(max-width:699px){.dashboard-cards,.game-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:minmax(185px,auto);gap:11px!important}.dashboard-card,.game-catalog-card,.dashboard-card:first-child,.dashboard-card:nth-child(5),.game-catalog-card:first-child,.game-catalog-card:nth-child(4){grid-column:span 2;min-height:0!important;padding:20px!important}.dashboard-welcome{padding:26px 22px!important}.dashboard-header{background:#fffa!important}.connected-bottom-nav{gap:1px!important;padding-inline:6px!important}.connected-nav-item,.connected-logout-button{font-size:9px}.connected-logout-error{bottom:calc(84px + env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){.dashboard-card,.game-catalog-card,.game-feature-card{transition:none!important}}
