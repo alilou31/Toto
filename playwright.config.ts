@@ -11,12 +11,13 @@ export default defineConfig({
   reporter: process.env.CI ? "github" : "list",
   use: {
     baseURL,
-    // Product copy and existing E2E assertions default to French; locale-negotiation
-    // tests explicitly override this header to verify other supported languages.
-    extraHTTPHeaders: { "Accept-Language": "fr-FR,fr;q=0.9" },
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     ...devices["Desktop Chrome"],
+    // Device defaults to en-US; set browser locale as well as the HTTP header so
+    // navigator.language and Accept-Language agree for French-first E2E suites.
+    locale: "fr-FR",
+    extraHTTPHeaders: { "Accept-Language": "fr-FR,fr;q=0.9" },
   },
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
