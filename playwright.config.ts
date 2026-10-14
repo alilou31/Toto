@@ -14,10 +14,9 @@ export default defineConfig({
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     ...devices["Desktop Chrome"],
-    // Device defaults to en-US; set browser locale as well as the HTTP header so
-    // navigator.language and Accept-Language agree for French-first E2E suites.
+    // Default browser locale to French; individual locale-negotiation tests can
+    // override Accept-Language at page level without a global header masking it.
     locale: "fr-FR",
-    extraHTTPHeaders: { "Accept-Language": "fr-FR,fr;q=0.9" },
   },
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
