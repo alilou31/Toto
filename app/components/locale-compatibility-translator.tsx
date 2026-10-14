@@ -8,17 +8,21 @@ const translatableAttributes = ["aria-label", "aria-description", "placeholder",
 
 export default function LocaleCompatibilityTranslator() {
   useEffect(() => {
-    const originalText = new WeakMap<Text, string>();
-    const originalAttributes = new WeakMap<Element, Map<string, string>>();
+    const originalText = new WeakMap<Text, { source: string; translated: string }>();
+    const originalAttributes = new WeakMap<Element, Map<string, { source: string; translated: string }>>();
     let queued = false;
 
     const locale = () => normalizeLocale(document.documentElement.lang);
     const translateTextNode = (node: Text, currentLocale: SupportedLocale) => {
       const parent = node.parentElement;
       if (!parent || parent.closest("script, style, noscript, textarea, [data-no-translate]")) return;
-      if (!originalText.has(node)) originalText.set(node, node.data);
-      const source = originalText.get(node) ?? node.data;
-      const result = translateUiCopy(source, currentLocale);
+      let state = originalText.get(node);
+      // React may reuse a text node for a new French state message. Detect that
+      // change without mistaking our own translated output for new source copy.
+      if (!state || node.data !== state.translated) state = { source: node.data, translated: node.data };
+      const result = translateUiCopy(state.source, currentLocale);
+      state.translated = result;
+      originalText.set(node, state);
       if (node.data !== result) node.data = result;
     };
 
@@ -26,13 +30,16 @@ export default function LocaleCompatibilityTranslator() {
       if (!element.hasAttribute(attribute)) return;
       let values = originalAttributes.get(element);
       if (!values) {
-        values = new Map<string, string>();
+        values = new Map<string, { source: string; translated: string }>();
         originalAttributes.set(element, values);
       }
-      if (!values.has(attribute)) values.set(attribute, element.getAttribute(attribute) ?? "");
-      const source = values.get(attribute) ?? "";
-      const result = translateUiCopy(source, currentLocale);
-      if (element.getAttribute(attribute) !== result) element.setAttribute(attribute, result);
+      const current = element.getAttribute(attribute) ?? "";
+      let state = values.get(attribute);
+      if (!state || current !== state.translated) state = { source: current, translated: current };
+      const result = translateUiCopy(state.source, currentLocale);
+      state.translated = result;
+      values.set(attribute, state);
+      if (current !== result) element.setAttribute(attribute, result);
     };
 
     const apply = () => {

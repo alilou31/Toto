@@ -7,7 +7,8 @@ test.describe("Interface NAKAHYA en production", () => {
     expect(response?.status()).toBe(200);
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(page.locator("main h1")).toContainText("What if you met the right person by playing?");
-    await expect(page.getByRole("combobox", { name: "Langue" })).toHaveValue("en");
+    await expect(page.getByRole("combobox", { name: "Language" })).toHaveValue("en");
+    await expect(page.locator("header.site-header").getByRole("link", { name: "Log in" })).toBeVisible();
   });
 
   test("la langue choisie précédemment prime sur Accept-Language", async ({ page }) => {
