@@ -333,3 +333,16 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [ ] Ajouter Stripe (ou un prestataire de paiement compatible), gérer webhooks et statut d’abonnement côté serveur avant d’activer tout paiement.
 - [ ] Appliquer les avantages Premium côté API, ajouter les tests de renouvellement/annulation et vérifier les obligations légales de vente à distance avant lancement.
 - [ ] Confirmer CI, déploiement Cloudflare et tests de production avant de marquer ces changements comme validés.
+
+
+## Orientation produit — rencontre d'abord, sorties ensuite (2026-10-14)
+
+- [x] Clarifier la promesse publique : NAKAHYA est une application de rencontre sérieuse ; les jeux facilitent les premiers échanges.
+- [x] Préciser que les idées de sorties sont éditoriales/liens externes et que la réservation intégrée n'est pas encore disponible.
+- [ ] **P0 sécurité :** concevoir consentement, visibilité et expiration des intentions ; vérifier les autorisations et la cohérence du blocage/signalement.
+- [ ] **P1 validation :** mesurer clics sur les idées de sorties, premiers messages après match et usage des jeux avant de construire une marketplace.
+- [ ] **P1 MVP sorties :** intention facultative et temporaire (activité, créneau large, zone approximative), révocable et invisible par défaut.
+- [ ] **P1 découverte :** filtrer les profils qui ont explicitement rendu visible une intention, sans contourner âge, préférences, blocages ou modération.
+- [ ] **P2 réservation :** tester liens affiliés/redirects puis API de disponibilité/réservation ; concevoir annulation, erreurs, support et confirmations avant tout paiement.
+- [ ] **Bloquant commercial :** revue juridique et confidentialité (éditeur, affiliation, CGU, localisation, responsabilités des invitations/réservations).
+- Détails : [docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md](./docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md).
