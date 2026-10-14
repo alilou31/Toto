@@ -42,16 +42,22 @@ test.describe("Session et retour navigateur", () => {
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ profile: { public_name: "Mike", visibility: "visible", onboarding_completed: true, birth_date: "1990-01-01" } }) });
     });
     await page.goto("/");
-    await page.getByRole("link", { name: "Se connecter" }).first().click();
-    await expect(page).toHaveURL(/\/connexion$/);
 
-    // Wait for the login page's client effect to run before typing. Otherwise
-    // Playwright can fill controlled inputs before hydration and React can reset them.
-    await page.waitForResponse(response => {
+    // Register the waiter before navigation: the auth check can finish before
+    // an assertion on the destination URL completes.
+    const loginPageAuthCheck = page.waitForResponse(response => {
       if (!response.url().endsWith("/api/auth/me") || response.request().method() !== "GET") return false;
       const referer = response.request().headers()["referer"] ?? "";
-      return new URL(referer).pathname === "/connexion";
+      try {
+        return new URL(referer).pathname === "/connexion";
+      } catch {
+        return false;
+      }
     });
+
+    await page.getByRole("link", { name: "Se connecter" }).first().click();
+    await expect(page).toHaveURL(/\/connexion$/);
+    await loginPageAuthCheck;
 
     const emailInput = page.getByLabel("Adresse e-mail");
     const passwordInput = page.getByLabel("Mot de passe");

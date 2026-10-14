@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, CreditCard, Eye, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, TicketPercent, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, Bike, Coffee, Compass, CreditCard, Eye, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, TicketPercent, UserRound } from "lucide-react";
 
 type Profile = {
   public_name?: string | null;
@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const offersCarouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -93,8 +94,29 @@ export default function DashboardPage() {
               <Link href="/matchs" className="dashboard-card"><span className="dashboard-card-icon"><Heart size={22}/></span><span className="dashboard-card-title">Affinités</span><span className="dashboard-card-description">Retrouvez vos affinités et les connexions créées sur NAKAHYA.</span><span className="dashboard-card-link">Voir mes affinités <ArrowRight size={15}/></span></Link>
               <Link href="/rencontre" className="dashboard-card"><span className="dashboard-card-icon"><Sparkles size={22}/></span><span className="dashboard-card-title">Alchimie</span><span className="dashboard-card-description">Proposez un jeu ou un défi à un match existant, à votre rythme.</span><span className="dashboard-card-link">Découvrir Alchimie <ArrowRight size={15}/></span></Link>
               <Link href="/offres" className="dashboard-card dashboard-offers-card"><span className="dashboard-card-icon"><CreditCard size={22}/></span><span className="dashboard-card-title">Les offres NAKAHYA</span><span className="dashboard-card-description">Découvrez les formules prévues, leurs avantages et le tarif sans surprise.</span><span className="dashboard-card-link">Comparer les offres <ArrowRight size={15}/></span></Link>
-              <Link href="/bons-plans" className="dashboard-card dashboard-bons-plans-card"><span className="dashboard-card-icon"><TicketPercent size={22}/></span><span className="dashboard-card-title">Bons plans</span><span className="dashboard-card-description">Trouvez des idées de sorties et d’activités pour faire connaissance sans vous ruiner.</span><span className="dashboard-card-link">Voir les idées <ArrowRight size={15}/></span></Link>
             </div>
+
+            <section className="dashboard-offers-carousel" aria-labelledby="dashboard-offers-title">
+              <div className="dashboard-offers-heading">
+                <div>
+                  <p className="dashboard-offers-eyebrow"><TicketPercent size={15}/> POUR VOS PROCHAINES RENCONTRES</p>
+                  <h2 id="dashboard-offers-title">Les bons plans du moment</h2>
+                  <p>Des idées simples pour créer de vrais souvenirs à deux.</p>
+                </div>
+                <div className="dashboard-offers-actions">
+                  <button type="button" aria-label="Idée précédente" onClick={() => offersCarouselRef.current?.scrollBy({ left: -300, behavior: "smooth" })}><ArrowLeft size={18}/></button>
+                  <button type="button" aria-label="Idée suivante" onClick={() => offersCarouselRef.current?.scrollBy({ left: 300, behavior: "smooth" })}><ArrowRight size={18}/></button>
+                  <Link href="/bons-plans" className="dashboard-offers-all">Toutes les offres <ArrowRight size={15}/></Link>
+                </div>
+              </div>
+              <div className="dashboard-offers-track" ref={offersCarouselRef} aria-label="Idées de sorties à faire à deux">
+                <article className="dashboard-offer-slide offer-lilac"><span className="dashboard-offer-icon"><Coffee size={22}/></span><span className="dashboard-offer-tag">Simple & chaleureux</span><h3>Un café qui rapproche</h3><p>Un café calme ou un salon de thé pour discuter sans pression.</p><Link href="/bons-plans">Découvrir l’idée <ArrowRight size={14}/></Link></article>
+                <article className="dashboard-offer-slide offer-coral"><span className="dashboard-offer-icon"><Compass size={22}/></span><span className="dashboard-offer-tag">Culture</span><h3>Une sortie découverte</h3><p>Exposition, musée ou visite locale : la curiosité se partage.</p><Link href="/bons-plans">Découvrir l’idée <ArrowRight size={14}/></Link></article>
+                <article className="dashboard-offer-slide offer-cream"><span className="dashboard-offer-icon"><Bike size={22}/></span><span className="dashboard-offer-tag">Complicité</span><h3>Une activité à deux</h3><p>Jeu de piste, mini-golf ou activité pour rire ensemble.</p><Link href="/bons-plans">Découvrir l’idée <ArrowRight size={14}/></Link></article>
+                <article className="dashboard-offer-slide offer-mint"><span className="dashboard-offer-icon"><Sparkles size={22}/></span><span className="dashboard-offer-tag">Petit budget</span><h3>Une balade en plein air</h3><p>Parc, marché ou jardin : une rencontre à votre rythme.</p><Link href="/bons-plans">Découvrir l’idée <ArrowRight size={14}/></Link></article>
+              </div>
+              <p className="dashboard-offers-note">Suggestions d’activités, pas encore des promotions commerciales partenaires vérifiées.</p>
+            </section>
 
             <div className="dashboard-lower-grid">
               <section className="dashboard-info-card"><div className="dashboard-info-title"><ShieldCheck size={20}/><h3>État de votre profil</h3></div><div className="dashboard-info-row"><span>Présentation</span><strong>{profileComplete ? "Complétée" : "À compléter"}</strong></div><div className="dashboard-info-row"><span>Intention</span><strong>{intentionLabels[profile?.relationship_intention ?? ""] ?? "Non renseignée"}</strong></div><div className="dashboard-info-row"><span>Visibilité</span><strong>{visibilityLabel}</strong></div><Link href="/profil" className="dashboard-text-link">Gérer ma visibilité <ArrowRight size={15}/></Link></section>
