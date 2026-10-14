@@ -8,3 +8,18 @@ export const localeMessages = {
  it:{login:"Accedi",signup:"Crea un account",discover:"Scopri",play:"Gioca",dashboard:"Dashboard",verification:"Profilo verificato",hero:"E se incontrassi la persona giusta giocando?",heroCta:"Fai il primo passo",intro:"Un indovinello per rompere il ghiaccio. Un gioco per conoscersi. Una conversazione per capire se i vostri percorsi possono incontrarsi."}
 } satisfies Record<SupportedLocale,Record<string,string>>;
 export function normalizeLocale(value?:string|null):SupportedLocale { const short=(value??"fr").toLowerCase().split(/[-_]/)[0]; return supportedLocales.includes(short as SupportedLocale)?short as SupportedLocale:"fr"; }
+
+export function localeFromAcceptLanguage(value?: string | null): SupportedLocale {
+  if (!value) return "fr";
+  const preferred = value
+    .split(",")
+    .map((entry, index) => {
+      const [tag, ...parameters] = entry.trim().split(";");
+      const qualityParameter = parameters.find((parameter) => parameter.trim().startsWith("q="));
+      const quality = qualityParameter ? Number(qualityParameter.trim().slice(2)) : 1;
+      return { locale: tag?.toLowerCase().split(/[-_]/)[0] ?? "", quality, index };
+    })
+    .filter((entry) => entry.quality > 0 && supportedLocales.includes(entry.locale as SupportedLocale))
+    .sort((a, b) => b.quality - a.quality || a.index - b.index);
+  return (preferred[0]?.locale as SupportedLocale | undefined) ?? "fr";
+}

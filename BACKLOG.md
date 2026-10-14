@@ -12,6 +12,14 @@
 - **P2 — phase 2 / amélioration**
 - **REPORTÉ — nécessite un prestataire externe**
 
+## Détection automatique de langue — 2026-10-14
+
+- [x] Réutiliser le socle i18n existant (fr/en/es/it), sans ajouter de bibliothèque ni de sélecteur parallèle.
+- [x] Choisir la langue côté serveur depuis le cookie `nikahya_locale` s'il existe, sinon depuis `Accept-Language` ; français en repli.
+- [x] Ajouter des tests Playwright pour la détection initiale et la priorité du choix manuel mémorisé.
+- [ ] Traduire progressivement l'ensemble des pages, textes statiques, métadonnées SEO et messages API ; la détection ne signifie pas que tout le contenu est déjà traduit.
+- [ ] Évaluer plus tard la localisation par pays uniquement si un besoin produit distinct le justifie ; ne pas déduire la langue uniquement du pays ni demander l'accès GPS.
+
 ## Consolidation MVP sans nouveau prestataire — 2026-10-14
 
 Cette passe privilégie les contrôles reproductibles et les correctifs locaux, sans ajouter d'intégration payante ni dépendance à un nouveau fournisseur.

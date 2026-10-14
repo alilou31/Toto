@@ -104,7 +104,7 @@ export default function HomeHeader({ locale = "fr" }: { locale?: SupportedLocale
       <nav className="desktop-nav" aria-label="Navigation principale">
         <Link href="/#concept">Le concept</Link><Link href="/#identite">Notre marque</Link><Link href="/#methode">Comment ça marche</Link><Link href="/#securite">Sécurité</Link>
       </nav>
-      <div className="header-actions" aria-live="polite"><LocaleSwitcher />
+      <div className="header-actions" aria-live="polite"><LocaleSwitcher initialLocale={locale} />
         {session === "checking" ? <span className="login-link" role="status">Vérification…</span> : session === "signed-in" ? (
           <>
             <Link href="/tableau-de-bord" className="login-link" aria-label="Ouvrir le tableau de bord">{publicName ? `Bonjour, ${publicName}` : "Tableau de bord"}</Link>

@@ -1,6 +1,25 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Interface NAKAHYA en production", () => {
+  test("détecte la langue préférée du navigateur dès le rendu serveur", async ({ page }) => {
+    await page.setExtraHTTPHeaders({ "Accept-Language": "en-US,en;q=0.9,fr;q=0.8" });
+    const response = await page.goto("/");
+    expect(response?.status()).toBe(200);
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    await expect(page.locator("main h1")).toContainText("What if you met the right person by playing?");
+    await expect(page.getByRole("combobox", { name: "Langue" })).toHaveValue("en");
+  });
+
+  test("la langue choisie précédemment prime sur Accept-Language", async ({ page }) => {
+    await page.goto("/");
+    await page.context().addCookies([{ name: "nikahya_locale", value: "fr", url: new URL(page.url()).origin }]);
+    await page.setExtraHTTPHeaders({ "Accept-Language": "en-US,en;q=0.9" });
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("lang", "fr");
+    await expect(page.locator("main h1")).toContainText("Et si vous trouviez la bonne personne en jouant ?");
+    await expect(page.getByRole("combobox", { name: "Langue" })).toHaveValue("fr");
+  });
+
   test("la page d'accueil s'affiche et propose les actions principales", async ({ page }) => {
     const response = await page.goto("/");
     expect(response?.status(), "La page d'accueil doit répondre en HTTP 200").toBe(200);

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { normalizeLocale, localeMessages } from "@/lib/i18n";
+import { cookies, headers } from "next/headers";
+import { localeFromAcceptLanguage, normalizeLocale, localeMessages } from "@/lib/i18n";
 import Link from "next/link";
 import HomeHeader from "@/app/components/home-header";
 import { getCurrentUser } from "@/lib/auth";
@@ -40,7 +40,9 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const cookieStore = await cookies();
-  const locale = normalizeLocale(cookieStore.get("nikahya_locale")?.value);
+  const requestHeaders = await headers();
+  const savedLocale = cookieStore.get("nikahya_locale")?.value;
+  const locale = savedLocale ? normalizeLocale(savedLocale) : localeFromAcceptLanguage(requestHeaders.get("accept-language"));
   const t = localeMessages[locale];
   const currentUser = await getCurrentUser().catch(() => null);
   const structuredData = [
