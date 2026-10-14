@@ -17,6 +17,7 @@ type PublicProfile = {
   is_online?: boolean;
   last_seen_label?: string | null;
   is_verified?: boolean;
+  photo_url?: string | null;
   religion?: string | null;
   ethnicity?: string | null;
 };
@@ -147,7 +148,7 @@ export default function DiscoverPage() {
           <div>
             <div className="section-kicker">DES RENCONTRES QUI ONT DU SENS</div>
             <h1>La bonne rencontre<br/><em>commence par un détail.</em></h1>
-            <p>Parcourez les profils en un coup d’œil, puis ouvrez une fiche pour découvrir ce qui compte vraiment.</p>
+            <p>Une personne à la fois : sa photo, les informations essentielles, puis faites défiler pour découvrir la suivante.</p>
           </div>
           <div className="discovery-heading-actions">
             <Link href="/offres" className="discovery-premium-link"><Sparkles size={15}/> Voir les offres</Link>
@@ -161,7 +162,7 @@ export default function DiscoverPage() {
           : profiles.length === 0 ? <div className="discovery-empty"><span><UserRound size={25}/></span><h2>De nouvelles rencontres bientôt</h2><p>Il n’y a pas encore de profils visibles à vous présenter. Complétez le vôtre pour rejoindre la découverte.</p><Link href="/profil" className="button button-green">Compléter mon profil</Link></div>
           : <>
             <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><label>Filtrer par genre <select value={genderFilter} onChange={event=>setGenderFilter(event.target.value)}><option value="opposite">Genre opposé (par défaut)</option><option value="women">Femmes</option><option value="men">Hommes</option><option value="all">Tous les genres</option></select></label><span>Profils visibles · 18+</span></div>
-            <div className="discovery-grid">
+            <div className="discovery-feed">
               {profiles.map(profile => {
                 const mine = [...myInterests, ...myGames, ...myHobbies];
                 const theirs = [...(profile.interests ?? []), ...(profile.favorite_games ?? []), ...(profile.hobbies ?? [])];
@@ -174,7 +175,7 @@ export default function DiscoverPage() {
                   const bShared = shared.some(value => value.toLowerCase() === b.toLowerCase());
                   return Number(bShared) - Number(aShared);
                 });
-                return <article className="discovery-card" key={profile.id}>
+                return <article className="discovery-profile" key={profile.id} style={profile.photo_url ? { backgroundImage: `linear-gradient(180deg, rgba(10,30,24,.02) 15%, rgba(10,30,24,.88) 100%), url("${profile.photo_url}")` } : undefined}>
                   <div className="discovery-card-top">
                     <span className="discovery-avatar-wrap"><span className="discovery-avatar" aria-hidden="true">{profile.public_name.trim().slice(0, 1).toLocaleUpperCase()}</span>{profile.is_online && <span className="profile-online-dot" aria-label="En ligne" title="En ligne"/>}</span>
                     <span className="discovery-intention">{intentionLabels[profile.relationship_intention] ?? "À discuter"}</span>

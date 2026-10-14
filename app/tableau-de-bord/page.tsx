@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Bike, Coffee, Compass, CreditCard, Eye, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, TicketPercent, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, Bike, Coffee, Compass, CreditCard, Eye, Gamepad2, Heart, LayoutDashboard, LockKeyhole, Search, ShieldCheck, Sparkles, TicketPercent, UserRound, Trophy, CalendarDays } from "lucide-react";
 
 type Profile = {
   public_name?: string | null;
@@ -93,6 +93,8 @@ export default function DashboardPage() {
               <Link href="/cockpit/visites" className="dashboard-card"><span className="dashboard-card-icon"><Eye size={22}/></span><span className="dashboard-card-title">Visites de profil</span><span className="dashboard-card-description">Voyez les membres qui ont consulté votre profil visible.</span><span className="dashboard-card-link">Voir mes visites <ArrowRight size={15}/></span></Link>
               <Link href="/matchs" className="dashboard-card"><span className="dashboard-card-icon"><Heart size={22}/></span><span className="dashboard-card-title">Affinités</span><span className="dashboard-card-description">Retrouvez vos affinités et les connexions créées sur NAKAHYA.</span><span className="dashboard-card-link">Voir mes affinités <ArrowRight size={15}/></span></Link>
               <Link href="/rencontre" className="dashboard-card"><span className="dashboard-card-icon"><Sparkles size={22}/></span><span className="dashboard-card-title">Alchimie</span><span className="dashboard-card-description">Proposez un jeu ou un défi à un match existant, à votre rythme.</span><span className="dashboard-card-link">Découvrir Alchimie <ArrowRight size={15}/></span></Link>
+              <Link href="/disponibilites" className="dashboard-card"><span className="dashboard-card-icon"><CalendarDays size={22}/></span><span className="dashboard-card-title">Mes disponibilités</span><span className="dashboard-card-description">Proposez un resto, un jeu, un week-end ou un voyage.</span><span className="dashboard-card-link">Indiquer mes disponibilités <ArrowRight size={15}/></span></Link>
+              <Link href="/classement" className="dashboard-card"><span className="dashboard-card-icon"><Trophy size={22}/></span><span className="dashboard-card-title">Classements</span><span className="dashboard-card-description">Suivez les scores par ville, pays, week-end et voyage.</span><span className="dashboard-card-link">Voir les classements <ArrowRight size={15}/></span></Link>
               <Link href="/offres" className="dashboard-card dashboard-offers-card"><span className="dashboard-card-icon"><CreditCard size={22}/></span><span className="dashboard-card-title">Les offres NAKAHYA</span><span className="dashboard-card-description">Découvrez les formules prévues, leurs avantages et le tarif sans surprise.</span><span className="dashboard-card-link">Comparer les offres <ArrowRight size={15}/></span></Link>
             </div>
 

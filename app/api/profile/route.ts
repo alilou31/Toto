@@ -21,7 +21,8 @@ export async function GET() {
     if (!user) return NextResponse.json({ error: "Authentification requise." }, { status: 401, headers: { "Cache-Control": "no-store" } });
     const sql = getDb();
     const rows = await sql`select id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed, hobbies, favorite_games, interests, occupation, religion, ethnicity, show_sensitive_identity, gender, preferred_gender, verification_status from public.profiles where id = ${user.id} limit 1`;
-    return NextResponse.json({ profile: rows[0] ?? null }, { headers: { "Cache-Control": "no-store" } });
+    const photos = await sql`select storage_path, display_order from public.profile_photos where user_id = ${user.id} order by display_order asc`;
+    return NextResponse.json({ profile: rows[0] ? { ...rows[0], photos: photos.map((photo) => photo.storage_path) } : null }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     console.error("NIKAHYA profile read failed.");
     return NextResponse.json({ error: "Lecture du profil indisponible." }, { status: 500, headers: { "Cache-Control": "no-store" } });
@@ -55,6 +56,13 @@ export async function PUT(request: Request) {
   const religion = typeof data.religion === "string" ? data.religion.trim().slice(0, 100) : "";
   const ethnicity = typeof data.ethnicity === "string" ? data.ethnicity.trim().slice(0, 100) : "";
   const showSensitiveIdentity = data.showSensitiveIdentity === true;
+  const photos = Array.isArray(data.photos) ? data.photos : [];
+  const validPhotos = photos.length === 3 && photos.every((value) => {
+    if (typeof value !== "string" || value.length > 2048) return false;
+    try { return new URL(value).protocol === "https:"; } catch { return false; }
+  });
+  if (!validPhotos) return NextResponse.json({ error: "Ajoutez exactement 3 photos accessibles via une URL HTTPS." }, { status: 400 });
+  if (new Set(photos).size !== 3) return NextResponse.json({ error: "Choisissez 3 photos différentes." }, { status: 400 });
   if (name.length < 2 || name.length > 40) return NextResponse.json({ error: "Le nom public doit contenir entre 2 et 40 caractères." }, { status: 400 });
   if (city.length > 100 || bio.length > 1000) return NextResponse.json({ error: "La ville ou la présentation dépasse la longueur autorisée." }, { status: 400 });
   if (!isAdultDate(data.birthDate)) return NextResponse.json({ error: "Saisissez une date de naissance valide confirmant que vous avez au moins 18 ans." }, { status: 400 });
@@ -73,7 +81,11 @@ export async function PUT(request: Request) {
         occupation = excluded.occupation, religion = excluded.religion, ethnicity = excluded.ethnicity,
         show_sensitive_identity = excluded.show_sensitive_identity, gender = excluded.gender, preferred_gender = excluded.preferred_gender, onboarding_completed = true, updated_at = now()
       returning id, public_name, city, bio, relationship_intention, birth_date, visibility, onboarding_completed, hobbies, favorite_games, interests, occupation, religion, ethnicity, show_sensitive_identity, gender, preferred_gender, verification_status`;
-    return NextResponse.json({ profile: rows[0] }, { headers: { "Cache-Control": "no-store" } });
+    await sql`delete from public.profile_photos where user_id = ${user.id}`;
+    for (let index = 0; index < photos.length; index++) {
+      await sql`insert into public.profile_photos (user_id, storage_path, display_order, moderation_status) values (${user.id}, ${photos[index] as string}, ${index}, 'approved')`;
+    }
+    return NextResponse.json({ profile: { ...rows[0], photos } }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     console.error("NIKAHYA profile save failed.");
     return NextResponse.json({ error: "Enregistrement du profil indisponible. Vérifiez que les migrations de base sont appliquées." }, { status: 500 });

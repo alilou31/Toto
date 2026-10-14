@@ -22,6 +22,7 @@ type Profile = {
   gender?: string | null;
   preferred_gender?: string | null;
   verification_status?: string | null;
+  photos?: string[] | null;
 };
 
 const intentions = [
@@ -50,6 +51,7 @@ function getProfileProgress(profile: { publicName: string; birthDate: string; ci
 
 export default function ProfilePage() {
   const [publicName, setPublicName] = useState("");
+  const [photos, setPhotos] = useState<string[]>(["", "", ""]);
   const [city, setCity] = useState("");
   const [bio, setBio] = useState("");
   const [birthDate, setBirthDate] = useState("");
@@ -87,6 +89,7 @@ export default function ProfilePage() {
         if (!active) return;
         const next = {
           publicName: profile?.public_name ?? "",
+          photos: Array.from({ length: 3 }, (_, index) => profile?.photos?.[index] ?? ""),
           city: profile?.city ?? "",
           bio: profile?.bio ?? "",
           birthDate: profile?.birth_date ? String(profile.birth_date).slice(0, 10) : "",
@@ -103,6 +106,7 @@ export default function ProfilePage() {
           showSensitiveIdentity: profile?.show_sensitive_identity ?? false,
         };
         setPublicName(next.publicName);
+        setPhotos(next.photos);
         setCity(next.city);
         setBio(next.bio);
         setBirthDate(next.birthDate);
@@ -129,7 +133,7 @@ export default function ProfilePage() {
     return () => { active = false; };
   }, []);
 
-  const snapshot = useMemo(() => JSON.stringify({ publicName, city, bio, birthDate, gender, preferredGender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity }), [publicName, city, bio, birthDate, gender, preferredGender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity]);
+  const snapshot = useMemo(() => JSON.stringify({ publicName, photos, city, bio, birthDate, gender, preferredGender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity }), [publicName, city, bio, birthDate, gender, preferredGender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity]);
   const dirty = Boolean(savedSnapshot) && snapshot !== savedSnapshot;
   const progress = getProfileProgress({ publicName, birthDate, city, bio, intention });
   const selectedIntention = intentions.find(item => item.value === intention)?.label ?? "À discuter";
@@ -147,7 +151,7 @@ export default function ProfilePage() {
       const response = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicName, city, bio, birthDate, gender, preferredGender, relationshipIntention: intention, visibility, hobbies: hobbies.split(",").map(v => v.trim()).filter(Boolean), favoriteGames: favoriteGames.split(",").map(v => v.trim()).filter(Boolean), interests: interests.split(",").map(v => v.trim()).filter(Boolean), occupation, religion, ethnicity, showSensitiveIdentity }),
+        body: JSON.stringify({ publicName, photos, city, bio, birthDate, gender, preferredGender, relationshipIntention: intention, visibility, hobbies: hobbies.split(",").map(v => v.trim()).filter(Boolean), favoriteGames: favoriteGames.split(",").map(v => v.trim()).filter(Boolean), interests: interests.split(",").map(v => v.trim()).filter(Boolean), occupation, religion, ethnicity, showSensitiveIdentity }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Enregistrement impossible.");
@@ -185,6 +189,12 @@ export default function ProfilePage() {
             </section>
           ) : (
             <form className="personalize-form" onSubmit={submit}>
+              <section className="personalize-section personalize-photos-section">
+                <div className="personalize-section-heading"><span className="personalize-step"><Heart size={16}/></span><div><h2>Vos 3 photos obligatoires</h2><p>Ajoutez trois liens HTTPS vers vos photos. Elles représentent votre profil dans la découverte.</p></div></div>
+                <div className="personalize-photo-grid">{photos.map((photo, index) => <label className="personalize-field" key={index}><span>Photo {index + 1} <b>*</b></span><input type="url" inputMode="url" required value={photo} onChange={event => setPhotos(current => current.map((value, item) => item === index ? event.target.value : value))} placeholder="https://…/ma-photo.jpg" aria-label={"URL de la photo " + (index + 1)}/></label>)}</div>
+                <p className="personalize-hint">Les trois photos doivent être différentes et accessibles publiquement. Privilégiez des photos récentes où votre visage est clairement visible.</p>
+              </section>
+
               <section className="personalize-section">
                 <div className="personalize-section-heading"><span className="personalize-step">01</span><div><h2>Votre identité</h2><p>Les premières choses que l’on découvre de vous.</p></div></div>
                 <div className="personalize-fields">

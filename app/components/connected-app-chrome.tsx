@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { Bell, Compass, Gamepad2, Heart, House, LogOut, Sparkles, X } from "lucide-react";
+import { Bell, Compass, Gamepad2, Heart, House, LogOut, MoreVertical, Sparkles, X } from "lucide-react";
 
 type NoticeCounts = { interests: number; games: number };
 const tips = [
@@ -138,6 +138,15 @@ export default function ConnectedAppChrome({ children }: { children: React.React
           <button type="button" aria-label="Fermer le conseil" onClick={() => setTipDismissed(true)}><X size={15}/></button>
         </aside>
       )}
+      <details className="connected-account-menu">
+        <summary aria-label="Ouvrir le menu du compte" title="Menu du compte"><MoreVertical size={20}/></summary>
+        <div className="connected-account-popover">
+          <Link href="/profil">Mon profil</Link>
+          <Link href="/parametres/securite">Sécurité et confidentialité</Link>
+          <button type="button" onClick={handleLogout} disabled={loggingOut}><LogOut size={15}/>{loggingOut ? "Déconnexion…" : "Se déconnecter"}</button>
+          {logoutError && <p role="alert">{logoutError}</p>}
+        </div>
+      </details>
       <nav className="connected-bottom-nav" aria-label="Navigation de votre espace">
         {items.map(({ href, label, icon: Icon, active, primary, badge }) => (
           <Link key={href} href={href} aria-current={active ? "page" : undefined} aria-label={label} className={`connected-nav-item${active ? " is-active" : ""}${primary ? " connected-nav-discover" : ""}`}>
@@ -145,12 +154,9 @@ export default function ConnectedAppChrome({ children }: { children: React.React
             <span>{label}</span>
           </Link>
         ))}
-        <button type="button" className="connected-logout-button" onClick={handleLogout} disabled={loggingOut} aria-label="Se déconnecter de NAKAHYA">
-          <span className="connected-nav-icon"><LogOut size={19} /></span>
-          <span>{loggingOut ? "Sortie…" : "Déconnexion"}</span>
-        </button>
+
       </nav>
-      {logoutError && <p className="connected-logout-error" role="alert">{logoutError}</p>}
+
     </>}
   </>;
 }
