@@ -1,12 +1,14 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("Interface NAKAHYA en production", () => {
-  test.beforeEach(async ({ page }) => {
-    // The suite is French by default; the dedicated locale tests override this header.
-    await page.setExtraHTTPHeaders({ "Accept-Language": "fr-FR,fr;q=0.9" });
+// Give browser-language negotiation its own Playwright context. This prevents
+// the French defaults used by the rest of the UI suite from masking the header.
+test.describe("Négociation de langue", () => {
+  test.use({
+    locale: "en-US",
+    extraHTTPHeaders: { "Accept-Language": "en-US,en;q=0.9,fr;q=0.8" },
   });
+
   test("détecte la langue préférée du navigateur dès le rendu serveur", async ({ page }) => {
-    await page.setExtraHTTPHeaders({ "Accept-Language": "en-US,en;q=0.9,fr;q=0.8" });
     const response = await page.goto("/");
     expect(response?.status()).toBe(200);
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
@@ -14,7 +16,13 @@ test.describe("Interface NAKAHYA en production", () => {
     await expect(page.getByRole("combobox", { name: "Language" })).toHaveValue("en");
     await expect(page.locator("header.site-header").getByRole("link", { name: "Log in" })).toBeVisible();
   });
+});
 
+test.describe("Interface NAKAHYA en production", () => {
+  test.beforeEach(async ({ page }) => {
+    // The suite is French by default; the dedicated locale tests override this header.
+    await page.setExtraHTTPHeaders({ "Accept-Language": "fr-FR,fr;q=0.9" });
+  });
   test("la langue choisie précédemment prime sur Accept-Language", async ({ page }) => {
     await page.goto("/");
     await page.context().addCookies([{ name: "nikahya_locale", value: "fr", url: new URL(page.url()).origin }]);
