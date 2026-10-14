@@ -74,6 +74,33 @@ export default function ImmersiveDiscoveryPage() {
   }
 
   return <GameShell active="/decouvrir/immersif">
+    <style jsx global>{`
+      .immersive-layout{max-width:760px;margin:22px auto 0}
+      .immersive-profile{overflow:hidden;border:1px solid #e5e8e1;border-radius:22px;background:#fff;box-shadow:0 18px 55px rgba(20,50,35,.12)}
+      .immersive-photo{height:min(62vh,640px);min-height:380px;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#dfe9dd,#f3eee2);background-position:center 35%;background-size:cover;color:#075b4b}
+      .immersive-placeholder{display:grid;place-items:center;width:112px;height:112px;border-radius:50%;background:#ffffffa8}
+      .immersive-count{position:absolute;right:18px;top:18px;padding:8px 12px;border-radius:999px;background:#142c23a8;color:white;font-size:12px;font-weight:700;backdrop-filter:blur(10px)}
+      .immersive-photo-caption{position:absolute;left:clamp(20px,5vw,38px);right:22px;bottom:28px;color:#fff}
+      .immersive-intention{display:inline-flex;padding:7px 10px;border:1px solid #ffffff6b;border-radius:999px;background:#ffffff20;font-size:11px;font-weight:700;backdrop-filter:blur(10px)}
+      .immersive-photo-caption h2{margin:13px 0 7px;font-size:clamp(34px,6vw,48px);color:white;letter-spacing:-1px}
+      .immersive-photo-caption p{display:flex;align-items:center;gap:6px;margin:0;font-size:14px}
+      .immersive-summary{padding:22px clamp(18px,4vw,32px) 26px}
+      .immersive-summary>p{margin:0 0 12px;color:#4e5c53;font-size:15px;line-height:1.7}
+      .immersive-full-profile{display:inline-flex;gap:8px;align-items:center;color:#075b4b;font-size:13px;font-weight:700;padding:7px 0}
+      .immersive-actions{display:grid;grid-template-columns:1fr 1.25fr;gap:12px;margin-top:18px}
+      .immersive-actions button{display:flex;justify-content:center;align-items:center;gap:9px;min-height:54px;border-radius:999px;font:700 14px inherit;cursor:pointer;transition:transform .18s,box-shadow .18s}
+      .immersive-actions button:hover{transform:translateY(-2px);box-shadow:0 7px 18px #173c2a1a}
+      .immersive-actions button:disabled{opacity:.55;cursor:wait}
+      .immersive-pass{border:1px solid #dfe5dc;background:#fff;color:#46534a}
+      .immersive-like{border:1px solid #075b4b;background:#075b4b;color:#fff}
+      .immersive-hint{text-align:center;color:#788179;font-size:11px;margin:14px 0 30px}
+      .immersive-empty{max-width:600px;margin:35px auto;padding:38px 22px;text-align:center;background:#fff;border:1px solid #e5e8e1;border-radius:18px}
+      .immersive-empty>span{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#edf4ee;color:#075b4b}
+      .immersive-empty h2{margin:18px 0 10px;font-size:28px}
+      .immersive-empty p{color:#68716b;line-height:1.7}
+      .immersive-empty .game-button{margin:6px}
+      @media(max-width:640px){.immersive-layout{margin:12px -10px 0}.immersive-profile{border-radius:18px}.immersive-photo{height:54vh;min-height:350px;max-height:590px}.immersive-summary{padding:18px 16px 20px}.immersive-actions button{min-height:52px}.immersive-photo-caption h2{font-size:37px}}
+    `}</style>
     <PageHeading eyebrow="À VOTRE RYTHME" title={<>Une personne à la fois, <em>vraiment.</em></>} description="Prenez le temps de regarder, de lire et de choisir. Un passage ne transmet aucun intérêt." action={<Link href="/decouvrir" className="game-button game-button-secondary"><ArrowLeft size={16}/> Vue profils</Link>} />
     {notice && <p role="status" className="discovery-notice">{notice}</p>}
     {loading ? <p role="status" className="discovery-state">Chargement des profils…</p>
