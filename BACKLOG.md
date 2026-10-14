@@ -12,6 +12,16 @@
 - **P2 — phase 2 / amélioration**
 - **REPORTÉ — nécessite un prestataire externe**
 
+## Internationalisation complète — 2026-10-14
+
+- [x] Réutiliser les locales existantes fr/en/es/it et le sélecteur unique.
+- [x] Ajouter une couche partagée de traductions exactes pour des libellés fréquemment réutilisés, les erreurs communes et les attributs accessibles.
+- [x] Rendre les tests qui valident explicitement le français déterministes malgré la négociation de langue du navigateur.
+- [ ] Migrer chaque page et chaque composant vers des dictionnaires structurés plutôt que dépendre de la couche de compatibilité.
+- [ ] Compléter et relire toutes les chaînes uniques (découverte, profils, messagerie, jeux, notifications, sécurité, validation, réinitialisation de mot de passe, pages légales).
+- [ ] Localiser les métadonnées SEO, dates et formats par langue ; faire valider humainement les traductions juridiques avant publication.
+- [ ] Ajouter des tests de couverture qui détectent les chaînes françaises non traduites pour chaque locale et des tests Playwright pour chaque parcours principal.
+
 ## Détection automatique de langue — 2026-10-14
 
 - [x] Réutiliser le socle i18n existant (fr/en/es/it), sans ajouter de bibliothèque ni de sélecteur parallèle.

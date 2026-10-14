@@ -1,5 +1,10 @@
 import { expect, test } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  // Keep this French-language suite deterministic while locale negotiation is enabled.
+  await page.setExtraHTTPHeaders({ "Accept-Language": "fr-FR,fr;q=0.9" });
+});
+
 test.describe("Pages publiques NAKAHYA", () => {
   test("la page d'accueil affiche la marque et les accès principaux", async ({ page }) => {
     await page.goto("/");

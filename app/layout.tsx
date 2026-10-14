@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { localeFromAcceptLanguage, normalizeLocale } from "@/lib/i18n";
 import ConnectedAppChrome from "@/app/components/connected-app-chrome";
+import LocaleCompatibilityTranslator from "@/app/components/locale-compatibility-translator";
 import "./gamified.css";
 import "./profile-ui.css";
 import "./auth.css";
@@ -34,5 +35,5 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const requestHeaders = await headers();
   const savedLocale = cookieStore.get("nikahya_locale")?.value;
   const locale = savedLocale ? normalizeLocale(savedLocale) : localeFromAcceptLanguage(requestHeaders.get("accept-language"));
-  return <html lang={locale}><body><ConnectedAppChrome>{children}</ConnectedAppChrome></body></html>;
+  return <html lang={locale}><body><LocaleCompatibilityTranslator /><ConnectedAppChrome>{children}</ConnectedAppChrome></body></html>;
 }

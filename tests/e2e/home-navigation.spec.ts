@@ -1,5 +1,10 @@
 import { expect, test } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  // These assertions exercise the French copy; language detection is tested separately.
+  await page.setExtraHTTPHeaders({ "Accept-Language": "fr-FR,fr;q=0.9" });
+});
+
 test("homepage makes sign-in and account creation obvious", async ({ page }) => {
   await page.route("**/api/auth/me", async (route) => {
     await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: null }) });
