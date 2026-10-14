@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Bons plans mobile connecté", () => {
-  test("la rubrique est visible dans la navigation et ouvre sa page", async ({ page }) => {
+  test("le carrousel remplace le lien de menu et permet d’ouvrir toutes les offres", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.route("**/api/auth/me", async (route) => route.fulfill({
       status: 200,
@@ -25,9 +25,11 @@ test.describe("Bons plans mobile connecté", () => {
     await expect(page.getByRole("heading", { name: /Bonjour, Camille/i })).toBeVisible();
 
     const mobileNavigation = page.getByRole("navigation", { name: "Navigation de votre espace" });
-    const bonsPlansLink = mobileNavigation.getByRole("link", { name: "Bons plans" });
-    await expect(bonsPlansLink).toBeVisible();
-    await bonsPlansLink.click();
+    await expect(mobileNavigation.getByRole("link", { name: "Bons plans" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Les bons plans du moment" })).toBeVisible();
+    const allOffersLink = page.getByRole("link", { name: /Toutes les offres/i });
+    await expect(allOffersLink).toBeVisible();
+    await allOffersLink.click();
 
     await expect(page).toHaveURL(/\/bons-plans$/);
     await expect(page.getByRole("heading", { name: /Les bons plans pour se rapprocher/i })).toBeVisible();
