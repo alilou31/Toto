@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const mine = await sql`select city, country from public.member_availability where user_id = ${user.id} limit 1`;
     const myCity = String(mine[0]?.city ?? "");
     const myCountry = String(mine[0]?.country ?? "");
-    let rows;
+    let rows: { id: string; public_name: string; location: string | null; score: number; games: number }[] = [];
     if (scope === "city" && myCity) {
       rows = await sql`select p.id, p.public_name, a.city as location, coalesce(sum(gr.score), 0)::int as score, count(gr.id)::int as games
         from public.profiles p join public.member_availability a on a.user_id = p.id and lower(a.city) = lower(${myCity})
