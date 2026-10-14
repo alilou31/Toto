@@ -22,6 +22,16 @@ Cette passe privilégie les contrôles reproductibles et les correctifs locaux, 
 - **Toujours bloquant avant lancement public :** identité réelle de l'éditeur et revue des documents juridiques, procédure de modération opérationnelle, et validation de la suppression/anonymisation des données.
 - **Explicitement hors périmètre de cette passe :** configuration ou activation de Resend, Stripe/Stripe Identity, OAuth social et tout autre service externe. Les fonctionnalités qui en dépendent ne doivent pas être présentées comme opérationnelles.
 
+## Consolidation locale — 2026-10-14
+
+- [x] Réconcilier l'identité de marque de l'ancienne PR #56 avec le `main` courant : section dédiée, glassmorphism responsive et liens desktop/mobile, sans dépendance.
+- [x] Ajouter des assertions Playwright sur la présence des trois engagements et la navigation mobile vers la section.
+- [x] Conserver les contrôles de sécurité et smoke tests existants ; les résultats de la nouvelle exécution doivent être vérifiés sur le SHA du commit.
+- [ ] **Informations à fournir par l'éditeur, non automatisables sans données réelles :** identité légale, adresse/contact de signalement surveillé, durées de conservation et validation finale des documents.
+- [ ] **Prestataires externes différés :** livraison e-mail (Resend), paiement/abonnement (Stripe ou équivalent), OAuth social et vérification d'identité éventuelle. Ne pas activer ni présenter ces services comme opérationnels avant configuration et tests de bout en bout.
+- [ ] **Pré-lancement :** revue humaine de la modération, suppression/anonymisation réelle des données, confirmation des migrations Neon requises et des secrets Cloudflare attendus.
+- [ ] **Fonctions à ne pas annoncer comme livrées :** intentions de sortie entre membres, réservation intégrée, paiement et disponibilité fournisseur. Elles restent sur la roadmap et exigent consentement, contrôles de sécurité et éventuellement un prestataire.
+
 ## État initial connu
 
 ## État de suivi vérifié — 2026-10-12

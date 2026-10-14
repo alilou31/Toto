@@ -182,3 +182,13 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Plan stratégique :** [docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md](./docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md). Il s'agit d'une roadmap, pas d'une preuve de fonctionnalité livrée.
 - **Prérequis sorties :** consentement explicite et révocable, visibilité contrôlée, expiration, blocage/signalement cohérents, localisation approximative et garde-fous spécifiques aux voyages.
 - **Réservation :** commencer par des liens externes/affiliés transparents, puis évaluer les API. Ne jamais afficher une réservation comme confirmée sans retour réel du fournisseur.
+
+
+## Consolidation identité de marque — 2026-10-14
+
+- **CODE PRÉSENT :** section « L’esprit NAKAHYA » intégrée à la landing page, avec promesse, sincérité/complicité/respect et panneau glassmorphism responsive.
+- **NAVIGATION :** accès vers `/#identite` dans la navigation desktop et le menu mobile.
+- **TESTS AJOUTÉS :** Playwright vérifie la section et les trois engagements ; un test mobile vérifie l'ancre et la fermeture du menu. Résultats CI à contrôler sur le nouveau SHA avant de déclarer le changement validé.
+- **PR #56 :** son intention utile est reprise sur `main` ; sa branche ancienne ne doit pas être fusionnée en bloc.
+- **RESTE HORS CODE LOCAL :** données réelles de l'éditeur et revue juridique ; configuration/test des prestataires e-mail, paiement, OAuth et éventuelle vérification ; exécution contrôlée des scénarios de production qui écrivent en base.
+- **SORTIES ET PAIEMENTS :** la réservation intégrée, la confirmation fournisseur, les intentions de sortie entre membres et les paiements restent non implémentés et ne doivent pas être annoncés comme actifs.

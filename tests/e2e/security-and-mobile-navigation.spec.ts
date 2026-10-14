@@ -93,4 +93,12 @@ test.describe("Navigation mobile de l’accueil", () => {
     await expect(page).toHaveURL(/\/connexion$/);
     await expect(navigation).toBeHidden();
   });
+  test("le lien de marque mène à la section dédiée et ferme le menu", async ({ page }) => {
+    await page.getByRole("button", { name: "Ouvrir le menu" }).click();
+    const navigation = page.getByRole("navigation", { name: "Menu mobile" });
+    await navigation.getByRole("link", { name: /L’esprit NAKAHYA/i }).click();
+    await expect(page).toHaveURL(/#identite$/);
+    await expect(navigation).toBeHidden();
+  });
+
 });

@@ -183,3 +183,34 @@
 @media(prefers-reduced-motion:reduce){
  .landing-page *,.landing-page *:before,.landing-page *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+
+/* Dedicated brand story: identity, promise and values. */
+.landing-page .landing-brand-story{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.8fr);align-items:center;gap:clamp(36px,7vw,100px);overflow:hidden;background:radial-gradient(ellipse at 92% 8%,#e9def5a8,transparent 36%),linear-gradient(135deg,#2d182b 0%,#48223f 58%,#613e63 100%);color:#fff}
+.landing-page .landing-brand-story .section-kicker{color:#e5d2e7}
+.landing-page .landing-brand-story .section-kicker span{color:#ffd0c3}
+.landing-page .brand-story-copy,.landing-page .brand-story-panel{position:relative;z-index:1}
+.landing-page .brand-story-overline{margin:27px 0 12px;color:#ffd0c3;font-size:10px;font-weight:800;letter-spacing:2.1px}
+.landing-page .landing-brand-story h2{max-width:690px;margin:0;color:#fff;font-size:clamp(34px,4vw,55px);line-height:1.13;letter-spacing:-1.5px}
+.landing-page .landing-brand-story h2 em{color:#e9c9ec!important;font-style:normal}
+.landing-page .brand-story-lede{max-width:540px;margin:24px 0 0;color:#f5eaf5;line-height:1.9;font-size:15px}
+.landing-page .brand-story-signature{display:inline-flex;margin:26px 0 0;padding:11px 15px;border:1px solid #ffffff45;border-radius:999px;background:#ffffff12;color:#fff;font-family:var(--serif);font-size:16px}
+.landing-page .brand-story-panel{padding:clamp(22px,3vw,34px);border:1px solid #ffffff42;border-radius:27px;background:linear-gradient(145deg,#ffffff20,#ffffff0b);box-shadow:0 25px 75px #170c1d40,inset 0 1px #ffffff35;backdrop-filter:blur(22px) saturate(145%);-webkit-backdrop-filter:blur(22px) saturate(145%)}
+.landing-page .brand-story-lockup{display:flex;align-items:center;gap:13px;padding-bottom:23px;border-bottom:1px solid #ffffff30}
+.landing-page .brand-story-symbol{display:grid;place-items:center;width:51px;height:51px;border:1px solid #ffffff45;border-radius:17px;background:linear-gradient(145deg,#925b8b,#48223f);color:#ffe0d7;box-shadow:0 9px 24px #160c1c35}
+.landing-page .brand-story-lockup strong,.landing-page .brand-story-lockup small{display:block}
+.landing-page .brand-story-lockup strong{color:#fff;font-size:22px;letter-spacing:2px}
+.landing-page .brand-story-lockup strong span{color:#ffd0c3}
+.landing-page .brand-story-lockup small{margin-top:5px;color:#ead9ec;font-size:8px;font-weight:800;letter-spacing:1.3px}
+.landing-page .brand-story-pillar{display:grid;grid-template-columns:29px 1fr 20px;align-items:start;gap:12px;padding:20px 0;border-bottom:1px solid #ffffff24;color:#f6eaf7}
+.landing-page .brand-story-pillar-number{padding-top:2px;color:#ffd0c3;font-size:10px;font-weight:800;letter-spacing:1px}
+.landing-page .brand-story-pillar strong{display:block;color:#fff;font-size:15px}
+.landing-page .brand-story-pillar p{margin:6px 0 0;color:#e1d2e3;font-size:12px;line-height:1.75}
+.landing-page .brand-story-pillar>svg{color:#f2b8ae}
+.landing-page .brand-story-note{display:flex;align-items:flex-start;gap:10px;padding-top:21px;color:#f3e6f3;font-size:11px;line-height:1.7}
+.landing-page .brand-story-note span{color:#ffd0c3;font-size:18px;line-height:1}
+.landing-page .brand-story-orb{position:absolute;z-index:0;pointer-events:none;border:1px solid #e9def526;border-radius:50%}
+.landing-page .brand-story-orb-one{width:510px;height:510px;top:-270px;right:18%}
+.landing-page .brand-story-orb-two{width:690px;height:690px;bottom:-500px;left:-260px;border-color:#f08e7b25}
+@media(max-width:850px){.landing-page .landing-brand-story{grid-template-columns:1fr;gap:35px}.landing-page .brand-story-lede{font-size:14px}.landing-page .brand-story-panel{max-width:620px;width:100%;justify-self:center}}
+@media(max-width:520px){.landing-page .landing-brand-story h2{font-size:35px;letter-spacing:-1px}.landing-page .brand-story-panel{padding:21px;border-radius:22px}.landing-page .brand-story-pillar{gap:8px}.landing-page .brand-story-lockup strong{font-size:19px}}

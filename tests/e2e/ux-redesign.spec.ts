@@ -46,6 +46,16 @@ test.describe("NAKAHYA — pages publiques", () => {
     await expect(form.locator("button[type=submit]")).toBeVisible();
     expect(await form.evaluate((node: HTMLFormElement) => node.checkValidity())).toBe(false);
   });
+  test("la landing présente la promesse et les trois engagements de marque", async ({ page }) => {
+    await page.goto("/");
+    const identity = page.locator("#identite");
+    await expect(identity).toBeVisible();
+    await expect(identity.getByRole("heading", { name: /Moins de profils à parcourir.*Plus de personnes à découvrir/i })).toBeVisible();
+    await expect(identity.getByText("La sincérité")).toBeVisible();
+    await expect(identity.getByText("La complicité")).toBeVisible();
+    await expect(identity.getByText("Le respect")).toBeVisible();
+  });
+
 });
 
 test.describe("NAKAHYA — cockpit et navigation", () => {
