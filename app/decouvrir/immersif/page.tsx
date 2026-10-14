@@ -88,7 +88,7 @@ export default function ImmersiveDiscoveryPage() {
       .immersive-summary>p{margin:0 0 12px;color:#4e5c53;font-size:15px;line-height:1.7}
       .immersive-full-profile{display:inline-flex;gap:8px;align-items:center;color:#075b4b;font-size:13px;font-weight:700;padding:7px 0}
       .immersive-actions{display:grid;grid-template-columns:1fr 1.25fr;gap:12px;margin-top:18px}
-      .immersive-actions button{display:flex;justify-content:center;align-items:center;gap:9px;min-height:54px;border-radius:999px;font:700 14px inherit;cursor:pointer;transition:transform .18s,box-shadow .18s}
+      .immersive-actions button{display:flex;justify-content:center;align-items:center;gap:9px;min-height:54px;border-radius:999px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:transform .18s,box-shadow .18s}
       .immersive-actions button:hover{transform:translateY(-2px);box-shadow:0 7px 18px #173c2a1a}
       .immersive-actions button:disabled{opacity:.55;cursor:wait}
       .immersive-pass{border:1px solid #dfe5dc;background:#fff;color:#46534a}
