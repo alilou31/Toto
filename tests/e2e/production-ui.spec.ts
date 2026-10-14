@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Interface NAKAHYA en production", () => {
+  test.beforeEach(async ({ page }) => {
+    // The suite is French by default; the dedicated locale tests override this header.
+    await page.setExtraHTTPHeaders({ "Accept-Language": "fr-FR,fr;q=0.9" });
+  });
   test("détecte la langue préférée du navigateur dès le rendu serveur", async ({ page }) => {
     await page.setExtraHTTPHeaders({ "Accept-Language": "en-US,en;q=0.9,fr;q=0.8" });
     const response = await page.goto("/");

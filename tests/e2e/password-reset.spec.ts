@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Récupération du mot de passe", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setExtraHTTPHeaders({ "Accept-Language": "fr-FR,fr;q=0.9" });
+  });
   test("la page propose une demande de lien sécurisée", async ({ page }) => {
     await page.goto("/reinitialiser-mot-de-passe");
     await expect(page.getByRole("heading", { name: /Retrouvons le chemin/i })).toBeVisible();
