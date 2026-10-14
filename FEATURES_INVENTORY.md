@@ -172,3 +172,13 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - Limite importante : la vérification humaine doit comparer la preuve à une photo de profil effectivement disponible et examiner la date de naissance déclarée. La gestion actuelle des photos de profil doit être vérifiée/complétée avant de promettre une comparaison automatisée. Une revue juridique et une politique de conservation restent nécessaires.
 - Internationalisation : infrastructure de langue fr/en/es/it, choix de langue et attribut html lang. La traduction intégrale de chaque page et des messages API n'est pas achevée dans ce lot ; les textes statiques existants ne doivent pas être annoncés comme tous traduits.
 - Déploiement : appliquer db/migrations/011_gender_preferences_and_verification.sql dans Neon avant d'activer les nouveaux écrans/API. Ajouter VERIFICATION_REVIEWER_EMAILS sur Cloudflare avec une liste d'adresses de réviseurs autorisés. Ne jamais ajouter de secrets dans Git.
+
+
+## Positionnement produit et sorties — 2026-10-14
+
+- **Positionnement :** NAKAHYA est d'abord une application de rencontre sérieuse pour adultes. Les jeux servent à briser la glace et à soutenir la conversation.
+- **Code présent :** page éditoriale /bons-plans et carrousel d'idées de sorties sur le tableau de bord. Ce contenu n'est pas une garantie de partenariat, de prix, de disponibilité ou de réservation.
+- **Non implémenté / ne pas promettre :** intention de sortie visible par les membres, recherche par activité/créneau, réservation intégrée, paiement ou confirmation fournisseur.
+- **Plan stratégique :** [docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md](./docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md). Il s'agit d'une roadmap, pas d'une preuve de fonctionnalité livrée.
+- **Prérequis sorties :** consentement explicite et révocable, visibilité contrôlée, expiration, blocage/signalement cohérents, localisation approximative et garde-fous spécifiques aux voyages.
+- **Réservation :** commencer par des liens externes/affiliés transparents, puis évaluer les API. Ne jamais afficher une réservation comme confirmée sans retour réel du fournisseur.
