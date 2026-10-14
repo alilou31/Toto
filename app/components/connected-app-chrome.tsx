@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { Bell, Compass, Gamepad2, Heart, House, LogOut, Sparkles, TicketPercent, X } from "lucide-react";
+import { Bell, Compass, Gamepad2, Heart, House, LogOut, Sparkles, X } from "lucide-react";
 
 type NoticeCounts = { interests: number; games: number };
 const tips = [
@@ -125,7 +125,6 @@ export default function ConnectedAppChrome({ children }: { children: React.React
     { href: "/matchs", label: "Affinités", icon: Heart, active: pathname === "/matchs" },
     { href: "/decouvrir", label: "Découvrir", icon: Compass, active: pathname === "/decouvrir", primary: true },
     { href: "/cockpit/jeux", label: "Jouer", icon: Gamepad2, active: pathname.startsWith("/cockpit/jeux") || pathname === "/rencontre" },
-    { href: "/bons-plans", label: "Bons plans", icon: TicketPercent, active: pathname === "/bons-plans" || pathname.startsWith("/bons-plans/") },
     { href: "/notifications", label: "Alertes", icon: Bell, active: pathname === "/notifications", badge: totalAlerts },
   ];
 
