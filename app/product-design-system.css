@@ -56,3 +56,41 @@ h1 em,h2 em,.brand-dot{color:var(--green-2)!important}
 @media(max-width:1000px){.dashboard-cards,.game-catalog-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.dashboard-card,.game-catalog-card{grid-column:span 2}.dashboard-card:first-child,.dashboard-card:nth-child(5),.game-catalog-card:first-child,.game-catalog-card:nth-child(4){grid-column:span 2}}
 @media(max-width:699px){.dashboard-cards,.game-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:minmax(185px,auto);gap:11px!important}.dashboard-card,.game-catalog-card,.dashboard-card:first-child,.dashboard-card:nth-child(5),.game-catalog-card:first-child,.game-catalog-card:nth-child(4){grid-column:span 2;min-height:0!important;padding:20px!important}.dashboard-welcome{padding:26px 22px!important}.dashboard-header{background:#fffa!important}.connected-bottom-nav{gap:1px!important;padding-inline:6px!important}.connected-nav-item,.connected-logout-button{font-size:9px}.connected-logout-error{bottom:calc(84px + env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){.dashboard-card,.game-catalog-card,.game-feature-card{transition:none!important}}
+
+
+/* Bons plans: a real, discoverable destination in the connected experience. */
+.bons-plans-page{min-height:100vh;padding:0 0 120px;background:radial-gradient(ellipse at 8% 5%,#e9def5d9,transparent 34%),radial-gradient(ellipse at 92% 38%,#f08e7b24,transparent 32%),linear-gradient(145deg,#fbf7f1,#f8f2f8 58%,#f4eef8);color:#302333}
+.bons-plans-header{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 clamp(20px,5vw,72px);border-bottom:1px solid #6a3b621c;background:#fffa;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.bons-plans-back{color:#6a3b62;text-decoration:none;font-size:14px;font-weight:650}
+.bons-plans-brand{display:flex;align-items:center;gap:8px;color:#48223f;font-size:13px;font-weight:850;letter-spacing:.13em}
+.bons-plans-hero,.bons-plans-section,.bons-plans-bottom,.bons-plans-disclaimer{width:min(1100px,calc(100% - 40px));margin-inline:auto}
+.bons-plans-hero{margin-top:38px;padding:clamp(26px,5vw,58px);border:1px solid #ffffffd9;border-radius:30px;background:radial-gradient(circle at 90% 12%,#ffffff30,transparent 28%),linear-gradient(125deg,#2d182b,#6a3b62 62%,#925b8b);color:white;box-shadow:0 24px 64px #48223f2b}
+.bons-plans-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.14em}
+.bons-plans-hero h1{max-width:740px;margin:18px 0 12px;font-size:clamp(34px,5.5vw,62px);line-height:1.04;letter-spacing:-.045em}
+.bons-plans-hero h1 em{color:#ffd0c3;font-style:normal}
+.bons-plans-hero>p{max-width:630px;margin:0;color:#f7edf7;font-size:clamp(15px,2vw,18px);line-height:1.7}
+.bons-plans-hero-note{display:flex;align-items:center;gap:10px;width:fit-content;max-width:100%;margin-top:25px;padding:12px 15px;border:1px solid #ffffff47;border-radius:15px;background:#ffffff17;color:#fff;font-size:13px}
+.bons-plans-section{margin-top:38px}
+.bons-plans-section-heading{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:18px}
+.bons-plans-section-heading h2,.bons-plans-bottom h2{margin:8px 0 0;color:#302333;font-size:clamp(23px,3vw,32px);letter-spacing:-.035em}
+.bons-plans-section-heading .bons-plans-eyebrow,.bons-plans-bottom .bons-plans-eyebrow{color:#82557d}
+.bons-plans-count{color:#746a78;font-size:12px}
+.bons-plans-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.bons-plans-card{display:flex;flex-direction:column;min-height:230px;padding:24px;border:1px solid #ffffffdf;border-radius:24px;background:linear-gradient(145deg,#ffffffdf,#fffaffa3);box-shadow:0 14px 40px #48223f12,inset 0 1px #fff;backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%);transition:transform .2s,box-shadow .2s}
+.bons-plans-card:hover{transform:translateY(-3px);box-shadow:0 20px 46px #48223f1d,inset 0 1px #fff}
+.bons-plans-card.tone-lilac{background:linear-gradient(135deg,#e9def5e8,#ffffffc9)}
+.bons-plans-card.tone-coral{background:linear-gradient(135deg,#f08e7b25,#ffffffd6)}
+.bons-plans-card.tone-cream{background:linear-gradient(135deg,#fff4e4,#ffffffd1)}
+.bons-plans-card.tone-mint{background:linear-gradient(135deg,#e5f0e8,#ffffffd1)}
+.bons-plans-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.bons-plans-card-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#eee3f3,#fde8e0);color:#6a3b62}
+.bons-plans-category{padding:6px 10px;border:1px solid #6a3b6220;border-radius:999px;color:#6a3b62;font-size:11px;font-weight:750}
+.bons-plans-card h3{margin:20px 0 8px;color:#302333;font-size:20px;letter-spacing:-.025em}
+.bons-plans-card p{margin:0;color:#746a78;font-size:14px;line-height:1.65}
+.bons-plans-card-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:20px;color:#6a3b62;font-size:12px;font-weight:700}
+.bons-plans-bottom{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:22px;padding:26px;border:1px solid #ffffffdf;border-radius:24px;background:linear-gradient(145deg,#ffffffdc,#fffaffa8);box-shadow:0 14px 40px #48223f12}
+.bons-plans-bottom p{margin:8px 0 0;color:#746a78;font-size:14px;line-height:1.6}
+.bons-plans-cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;padding:13px 18px;border-radius:999px;background:linear-gradient(135deg,#48223f,#925b8b);color:#fff;text-decoration:none;font-size:13px;font-weight:750;box-shadow:0 8px 22px #48223f2b}
+.bons-plans-disclaimer{margin-top:18px;color:#746a78;font-size:11px;line-height:1.6}
+.connected-bottom-nav .connected-nav-item{flex:1;min-width:0}
+@media(max-width:699px){.bons-plans-header{height:62px;padding-inline:18px}.bons-plans-hero,.bons-plans-section,.bons-plans-bottom,.bons-plans-disclaimer{width:calc(100% - 28px)}.bons-plans-hero{margin-top:18px;padding:26px 21px;border-radius:24px}.bons-plans-hero h1{font-size:clamp(32px,9vw,43px)}.bons-plans-hero-note{align-items:flex-start;font-size:12px;line-height:1.5}.bons-plans-section{margin-top:28px}.bons-plans-section-heading{align-items:flex-start;flex-direction:column;gap:7px}.bons-plans-grid{grid-template-columns:minmax(0,1fr);gap:12px}.bons-plans-card{min-height:0;padding:21px}.bons-plans-card h3{margin-top:15px}.bons-plans-card-footer{padding-top:16px}.bons-plans-bottom{align-items:stretch;flex-direction:column;padding:22px;margin-top:16px}.bons-plans-cta{width:100%;box-sizing:border-box}.bons-plans-disclaimer{margin-top:14px}.connected-bottom-nav{gap:0!important;padding-inline:3px!important}.connected-nav-item,.connected-logout-button{font-size:8px!important;letter-spacing:-.02em}.connected-nav-icon{min-height:24px!important}.connected-nav-item>span:last-child,.connected-logout-button>span:last-child{white-space:nowrap}}
