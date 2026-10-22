@@ -374,3 +374,15 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [ ] **P2 réservation :** tester liens affiliés/redirects puis API de disponibilité/réservation ; concevoir annulation, erreurs, support et confirmations avant tout paiement.
 - [ ] **Bloquant commercial :** revue juridique et confidentialité (éditeur, affiliation, CGU, localisation, responsabilités des invitations/réservations).
 - Détails : [docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md](./docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md).
+
+
+ 
+## Design system Neo Midnight — 2026-10-22
+
+- [x] Ajouter la palette sombre centralisée (nuit, lime, menthe, corail), sans violet.
+- [x] Harmoniser les principaux composants de landing, inscription, espace connecté, profils, découverte, conversations et jeux sans modifier la logique métier.
+- [x] Documenter les tokens et règles de contribution dans `docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md`.
+- [x] Ajouter une régression Playwright dédiée au thème et au responsive mobile.
+- [ ] Vérifier CI complète, build Worker et tests E2E de la branche `feat/neo-midnight-design-system`.
+- [ ] Comparer le rendu réel de chaque route et corriger les éventuels styles spécifiques qui échappent aux sélecteurs partagés.
+- [ ] Ne pas fusionner ni annoncer la production comme mise à jour tant que les contrôles de la PR et le déploiement n'ont pas été vérifiés.

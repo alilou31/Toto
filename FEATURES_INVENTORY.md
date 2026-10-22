@@ -192,3 +192,16 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **PR #56 :** son intention utile est reprise sur `main` ; sa branche ancienne ne doit pas être fusionnée en bloc.
 - **RESTE HORS CODE LOCAL :** données réelles de l'éditeur et revue juridique ; configuration/test des prestataires e-mail, paiement, OAuth et éventuelle vérification ; exécution contrôlée des scénarios de production qui écrivent en base.
 - **SORTIES ET PAIEMENTS :** la réservation intégrée, la confirmation fournisseur, les intentions de sortie entre membres et les paiements restent non implémentés et ne doivent pas être annoncés comme actifs.
+
+
+ 
+## Identité visuelle Neo Midnight — branche candidate
+
+- [x] Centraliser les tokens sombres, lime, menthe et corail dans `app/product-design-system.css`.
+- [x] Remplacer la couche visuelle plum/lilas par des surfaces nuit et accents neutres ; violet exclu de la palette de marque.
+- [x] Appliquer les règles partagées à landing, auth, dashboard, découverte, profils, discussions et jeux via les composants existants.
+- [x] Documenter couleurs, typographie, composants, accessibilité et performances dans `docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md`.
+- [x] Ajouter un test Playwright dédié : `tests/e2e/neo-midnight-design-system.spec.ts`.
+- [ ] Confirmer CI, lint, tests unitaires, Playwright et build Cloudflare sur la branche candidate.
+- [ ] Vérifier le rendu réel des routes connectées en environnement de test ; ne pas conclure sur la production avant déploiement.
+- **Branche :** `feat/neo-midnight-design-system`. **Statut :** en attente de validation CI ; aucune modification du backend ou de la base n'est prévue.

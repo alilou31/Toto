@@ -46,3 +46,14 @@ Sans ces variables, un test ignoré ne doit jamais être rapporté comme une val
 - Séparer tests unitaires, tests Playwright CI, smoke HTTP/DB, Playwright de production et parcours métier à deux utilisateurs.
 - Pour chaque résultat, noter le SHA testé, le lien du workflow, les tests passés/échoués/ignorés et les limites de couverture.
 - Ne jamais déduire l'état des migrations Neon de leur simple présence dans `db/migrations/`.
+
+
+## Régression visuelle Neo Midnight
+
+Le test `tests/e2e/neo-midnight-design-system.spec.ts` contrôle les tokens de marque, le mode sombre, la présence des actions de landing et l'absence de débordement horizontal sur mobile. Exécution ciblée :
+
+```bash
+npx playwright test tests/e2e/neo-midnight-design-system.spec.ts
+```
+
+La spécification du thème et ses limites sont documentées dans [DESIGN_SYSTEM_NEO_MIDNIGHT.md](../docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md).
