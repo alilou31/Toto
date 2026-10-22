@@ -137,3 +137,9 @@ L'inscription et la réinitialisation exigent au moins 12 caractères, une minus
 La vérification automatique est proposée via Stripe Identity : document officiel, contrôle selfie si disponible, puis webhook signé côté serveur. Le badge est accordé uniquement si le prestataire confirme le contrôle, que la personne est majeure et que la date de naissance vérifiée correspond à celle du profil. Configurer `STRIPE_SECRET_KEY` et `STRIPE_IDENTITY_WEBHOOK_SECRET` dans Cloudflare et enregistrer `/api/webhooks/stripe-identity` comme endpoint Stripe Identity. La voie manuelle reste disponible en secours et requiert `VERIFICATION_REVIEWER_EMAILS`. Les preuves manuelles sont supprimées à la décision ; les documents gérés par Stripe suivent la politique de conservation du prestataire et doivent être décrits dans la politique de confidentialité.
 
 Le sélecteur de langue supporte le français, l'anglais, l'espagnol et l'italien au niveau de l'infrastructure de langue. Les traductions intégrales de toutes les pages et de tous les messages d'erreur API restent à terminer avant de présenter le produit comme entièrement internationalisé.
+
+
+ 
+## Design system
+
+La direction visuelle candidate est documentée dans [docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md](./docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md). Les tokens sont centralisés dans `app/product-design-system.css`. Le thème ne doit pas modifier le backend, les routes ou les contrats API. Le test visuel ciblé est `npx playwright test tests/e2e/neo-midnight-design-system.spec.ts`. Tant que la branche de refonte n'est pas fusionnée et déployée, ce thème ne doit pas être considéré comme actif en production.
