@@ -136,3 +136,53 @@ input,textarea,select{background-color:var(--background-elevated);color:var(--te
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+
+/* Visibility audit: readable labels, navigation and cards across desktop/mobile.
+   Keep the Neo Midnight palette and do not alter product behaviour. */
+:root { --radius-pill:999px; }
+.hero-note,.hero-bottom,.eyebrow,.section-kicker,.section-kicker span,
+.mobile-nav-label,.dashboard-overline,.dashboard-section-heading>span,
+.dashboard-card-description,.dashboard-info-row,.dashboard-info-row strong,
+.dashboard-info-row span,.dashboard-account,.dashboard-card-link,
+.dashboard-text-link,.floating-card small,.floating-card strong,
+.value-card p,.step p,.faq-item summary,.safety-copy .fine-print,
+.footer-bottom,.auth-legal,.password-hint,.check-row,
+.bons-plans-disclaimer,.bons-plans-count {
+  font-size:max(12px,1em);
+  line-height:1.5;
+}
+.hero-note,.hero-bottom,.dashboard-account,.dashboard-info-row span,
+.dashboard-card-description,.dashboard-section-heading>span,
+.floating-card small,.auth-legal,.password-hint,.safety-copy .fine-print {
+  color:var(--text-secondary)!important;
+}
+.dashboard-card-link,.dashboard-text-link,.text-link,
+.landing-login-line a,.bons-plans-back {
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+button,select,input,textarea,.button,.mobile-nav-section>a,
+.mobile-nav-section>button {
+  min-height:44px;
+}
+select,option,input,textarea {
+  color:var(--text-primary);
+  background-color:var(--background-elevated);
+}
+@media(max-width:760px){
+  .dashboard-cards,.game-catalog-grid{
+    grid-template-columns:1fr!important;
+    grid-auto-rows:auto!important;
+  }
+  .dashboard-card,.dashboard-card:first-child,.dashboard-card:nth-child(5),
+  .game-catalog-card,.game-catalog-card:first-child,.game-catalog-card:nth-child(4){
+    grid-column:1/-1!important;
+    min-height:0!important;
+    padding:20px!important;
+  }
+  .dashboard-card-description,.dashboard-info-row,.dashboard-info-row strong,
+  .dashboard-info-row span,.dashboard-card-link,.dashboard-text-link,
+  .mobile-nav-section>a,.mobile-nav-section>button {font-size:14px!important;}
+  .hero-bottom{font-size:12px!important;letter-spacing:.3px!important;}
+}
