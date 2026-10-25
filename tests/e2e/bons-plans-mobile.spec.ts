@@ -33,7 +33,7 @@ test.describe("Bons plans mobile connecté", () => {
 
     await expect(page).toHaveURL(/\/bons-plans$/);
     await expect(page.getByRole("heading", { name: /Les bons plans pour se rapprocher/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Un café qui laisse place à la conversation/i })).toBeVisible();
-    await expect(page.getByText(/pas des offres commerciales partenaires vérifiées/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Un café pour faire connaissance/i })).toBeVisible();
+    await expect(page.getByText(/aucun partenariat, tarif, disponibilité ou réservation n’est garanti/i)).toBeVisible();
   });
 });
