@@ -205,3 +205,8 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - [ ] Confirmer CI, lint, tests unitaires, Playwright et build Cloudflare sur la branche candidate.
 - [ ] Vérifier le rendu réel des routes connectées en environnement de test ; ne pas conclure sur la production avant déploiement.
 - **Branche :** `feat/neo-midnight-design-system`. **Statut :** en attente de validation CI ; aucune modification du backend ou de la base n'est prévue.
+## Bons plans — évolution proposée le 2026-10-25
+
+- CODE PROPOSÉ EN PR : filtres de catégorie et budget sur la page existante `/bons-plans`, sans réservation ni liens affiliés fictifs.
+- TEST PROPOSÉ : `tests/e2e/bons-plans-filters.spec.ts` ; conserver le test mobile existant.
+- À VÉRIFIER : CI, tests Playwright, déploiement et smoke production. Détails : `docs/BONS_PLANS_AFFILIATION_MVP.md`.
