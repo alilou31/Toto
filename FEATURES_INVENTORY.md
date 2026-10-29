@@ -210,3 +210,9 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - CODE PROPOSÉ EN PR : filtres de catégorie et budget sur la page existante `/bons-plans`, sans réservation ni liens affiliés fictifs.
 - TEST PROPOSÉ : `tests/e2e/bons-plans-filters.spec.ts` ; conserver le test mobile existant.
 - À VÉRIFIER : CI, tests Playwright, déploiement et smoke production. Détails : `docs/BONS_PLANS_AFFILIATION_MVP.md`.
+
+## Consolidation technique sans prestataire — branche du 2026-10-27 (non validée en production)
+
+- **À valider sur la PR :** API de modération protégée par allowlist d'e-mails serveur, tests de refus anonymes complémentaires, sitemap/robots pour les routes privées ; voir [notes de livraison](./docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md).
+- **Encore à traiter :** audit complet i18n, revue mobile connectée, autorisations croisées, suppression/anonymisation E2E, interface admin et audit durable, validation humaine/juridique du lancement. Aucun prestataire externe activé.
+- **Ne pas confondre :** code ajouté, CI réussie, déploiement et preuve de fonctionnement réel.
