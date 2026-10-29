@@ -386,3 +386,6 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [ ] Vérifier CI complète, build Worker et tests E2E de la branche `feat/neo-midnight-design-system`.
 - [ ] Comparer le rendu réel de chaque route et corriger les éventuels styles spécifiques qui échappent aux sélecteurs partagés.
 - [ ] Ne pas fusionner ni annoncer la production comme mise à jour tant que les contrôles de la PR et le déploiement n'ont pas été vérifiés.
+## Lot technique sans service externe — 2026-10-27
+
+Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md). La branche candidate ajoute une API de file de signalements protégée par allowlist, des garde-fous Playwright et une actualisation sitemap/robots. **Ce travail est partiel** : ne pas cocher les objectifs P0/P1 historiques non audités ; l'internationalisation exhaustive, le parcours complet de suppression, la modération opérationnelle et la validation légale restent ouverts.
