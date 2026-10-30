@@ -389,3 +389,10 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 ## Lot technique sans service externe — 2026-10-27
 
 Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md). La branche candidate ajoute une API de file de signalements protégée par allowlist, des garde-fous Playwright et une actualisation sitemap/robots. **Ce travail est partiel** : ne pas cocher les objectifs P0/P1 historiques non audités ; l'internationalisation exhaustive, le parcours complet de suppression, la modération opérationnelle et la validation légale restent ouverts.
+
+## Refonte visuelle fondée sur la recherche — 2026-10-30
+
+- [x] Ajouter une couche de tokens Émeraude/Champagne/Ivoire, harmoniser les surfaces et protéger les noms de profils Découvrir.
+- [x] Ajouter une vérification Playwright publique du thème et de la navigation clavier/mobile.
+- [ ] Valider en CI, comparer visuellement les routes authentifiées et mesurer WCAG AA sur les rendus réels avant fusion.
+- [ ] Rationaliser les styles historiques après revue visuelle, sans créer de composants parallèles.
