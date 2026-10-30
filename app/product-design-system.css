@@ -1,45 +1,44 @@
-/* NIKAHYA Design System — Neo Midnight
-   Single visual source of truth. No violet palette; no backend or route changes. */
+/* NAKAHYA shared component styles — research-led tokens. Brand tokens are defined in research-brand-system.css. */
 :root {
-  color-scheme: dark;
-  --brand-primary:#D7FF72; --brand-secondary:#65E6D0; --brand-warm:#FF9B86;
-  --background:#0B0F17; --background-elevated:#111827; --surface:#151D2B;
-  --surface-card:#1C2636; --surface-hover:#263246; --border-subtle:#344156;
-  --border-strong:#4A5870; --text-primary:#F5F7FA; --text-secondary:#B8C2D2;
-  --text-muted:#A0ACC0; --success:#65E6D0; --warning:#FFD479; --danger:#FF7C87;
-  --focus-ring:#D7FF72;
-  --green:#D7FF72; --green-2:#65E6D0; --ivory:#0B0F17; --white:#F5F7FA;
-  --gold:#FF9B86; --ink:#F5F7FA; --muted:#B8C2D2; --line:#344156;
+  color-scheme: light;
+  --brand-primary:var(--nk-brand-900); --brand-secondary:#286956; --brand-warm:var(--nk-accent-500);
+  --background:var(--nk-bg); --background-elevated:var(--nk-surface); --surface:var(--nk-surface-muted);
+  --surface-card:var(--nk-surface); --surface-hover:var(--nk-surface-muted); --border-subtle:var(--nk-border);
+  --border-strong:#9eaca2; --text-primary:var(--nk-text); --text-secondary:#485a50;
+  --text-muted:var(--nk-text-muted); --success:#286956; --warning:var(--nk-accent-500); --danger:var(--nk-danger);
+  --focus-ring:var(--nk-brand-900);
+  --green:var(--nk-brand-900); --green-2:#286956; --ivory:var(--nk-bg); --white:var(--nk-text);
+  --gold:var(--nk-accent-500); --ink:var(--nk-text); --muted:#485a50; --line:var(--nk-border);
   --serif:'Manrope','Geist',Arial,sans-serif; --sans:'Manrope','Geist',Arial,sans-serif;
-  --nakahya-plum:#D7FF72; --nakahya-plum-deep:#111827; --nakahya-lilac:#1C2636;
-  --nakahya-coral:#FF9B86; --nakahya-glass:rgba(21,29,43,.88);
+  --nakahya-plum:var(--nk-brand-900); --nakahya-plum-deep:var(--nk-surface); --nakahya-lilac:var(--nk-surface);
+  --nakahya-coral:var(--nk-accent-500); --nakahya-glass:rgba(21,29,43,.88);
   --radius-sm:8px; --radius-md:12px; --radius-lg:18px; --radius-xl:24px;
   --shadow-card:0 8px 28px rgb(0 0 0 / 18%); --shadow-overlay:0 18px 56px rgb(0 0 0 / 32%);
   --motion-fast:140ms; --motion-normal:200ms; --motion-slow:280ms;
   --ease-standard:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box}
-html{color-scheme:dark;scroll-padding-top:90px;background:var(--background)}
+html{color-scheme:light;scroll-padding-top:90px;background:var(--background)}
 body{background:var(--background);color:var(--text-primary);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 a{color:inherit}
 button,input,select,textarea{accent-color:var(--brand-primary)}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--focus-ring)!important;outline-offset:3px}
-::selection{background:var(--brand-primary);color:#111827}
+::selection{background:var(--brand-primary);color:var(--nk-surface)}
 h1,h2,h3,h4{color:var(--text-primary)}
 h1 em,h2 em,.brand-dot{color:var(--brand-primary)!important}
 p{color:var(--text-secondary)}
 /* Remove legacy light/plum visual treatments while retaining component structure. */
 .site-header,.dashboard-header,.notifications-header,.game-topbar,.game-sidebar{
-  color:var(--text-primary)!important;background:rgba(17,24,39,.94)!important;
+  color:var(--text-primary)!important;background:rgb(247 243 234 / 96%)!important;
   border-color:var(--border-subtle)!important;backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px)
 }
 .brand-word,.brand,.desktop-nav a,.login-link,.mobile-menu{color:var(--text-primary)}
-.brand-mark,.game-brand-mark{background:var(--brand-primary)!important;color:#111827!important;box-shadow:none!important}
+.brand-mark,.game-brand-mark{background:var(--brand-primary)!important;color:var(--nk-surface)!important;box-shadow:none!important}
 .brand-dot{color:var(--brand-primary)!important}
 .desktop-nav a:hover,.login-link:hover,.dashboard-header nav a:hover,.dashboard-header nav a[aria-current=page]{color:var(--brand-primary)!important}
 .button,.button-green,.button-dark,.auth-submit,.game-button-primary,.landing-primary-cta{
-  background:var(--brand-primary)!important;color:#111827!important;border:1px solid transparent!important;
+  background:var(--brand-primary)!important;color:var(--nk-surface)!important;border:1px solid transparent!important;
   border-radius:var(--radius-pill)!important;box-shadow:none!important;transition:transform var(--motion-fast) var(--ease-standard),filter var(--motion-fast) var(--ease-standard)
 }
 .button:hover,.button-green:hover,.button-dark:hover,.auth-submit:hover,.game-button-primary:hover,.landing-primary-cta:hover{filter:brightness(.96);transform:translateY(-1px)}
@@ -64,7 +63,7 @@ p{color:var(--text-secondary)}
 .floating-card{background:rgba(21,29,43,.92)!important;border-color:var(--border-strong)!important;color:var(--text-primary)!important;box-shadow:var(--shadow-card)!important;backdrop-filter:blur(12px)}
 .floating-card small,.photo-caption small{color:var(--text-secondary)!important}
 .intro,.faq,.footer,.safety,.dashboard-onboarding{background:var(--surface)!important;color:var(--text-primary)!important}
-.method,.final-cta,.dashboard-welcome,.game-welcome-card{background:linear-gradient(115deg,#111827,#1C2636)!important;border:1px solid var(--border-subtle)!important;color:var(--text-primary)!important;box-shadow:none!important}
+.method,.final-cta,.dashboard-welcome,.game-welcome-card{background:linear-gradient(115deg,var(--nk-surface),var(--nk-surface))!important;border:1px solid var(--border-subtle)!important;color:var(--text-primary)!important;box-shadow:none!important}
 .method h2,.method h3,.final-cta h2,.dashboard-welcome h1,.dashboard-welcome p,.dashboard-welcome h1 em{color:var(--text-primary)!important}
 .value-card,.step,.faq-item,.dashboard-card,.dashboard-info-card,.dashboard-lower-grid>*,.game-panel,.game-stat-card,.game-feature-card,.game-catalog-card,.game-bottom-note,.profile-visits-panel,.notification-card,.notifications-empty,.notifications-state,.auth-card,.personalize-card,.discovery-card,.match-card,.message-panel,.profile-panel,.settings-card,.security-card,.dashboard-onboarding{
   background:var(--surface-card)!important;color:var(--text-primary)!important;border:1px solid var(--border-subtle)!important;
@@ -76,7 +75,7 @@ p{color:var(--text-secondary)}
 .dashboard-overline,.dashboard-section-heading>span,.dashboard-card-description,.dashboard-card-link,.dashboard-card-title{color:var(--text-secondary)}
 .dashboard-card:hover,.game-catalog-card:hover{transform:translateY(-2px);border-color:var(--border-strong)!important;box-shadow:var(--shadow-card)!important}
 .dashboard-card-icon,.notifications-title-icon,.dashboard-onboarding-icon,.game-feature-icon,.game-stat-icon,.game-panel-big-icon,.value-icon,.float-icon,.float-check,.note-icon{
-  background:#263246!important;color:var(--brand-secondary)!important;border-color:var(--border-strong)!important
+  background:var(--nk-surface-muted)!important;color:var(--brand-secondary)!important;border-color:var(--border-strong)!important
 }
 .dashboard-card-link,.dashboard-text-link,.text-link,.auth-switch a,.check-row a,.footer-links a:hover{color:var(--brand-primary)!important}
 .dashboard-info-row,.faq-item,.footer-bottom,.faq-list{border-color:var(--border-subtle)!important}
@@ -96,8 +95,8 @@ p{color:var(--text-secondary)}
 .auth-notice{background:var(--surface-hover)!important;border-color:var(--brand-warm)!important;color:var(--text-primary)!important}
 .check-row input{accent-color:var(--brand-primary)!important}
 .landing-page{background:var(--background)!important}
-.landing-page .site-header{background:rgba(17,24,39,.94)!important;border-bottom-color:var(--border-subtle)!important}
-.landing-page .brand-mark{background:var(--brand-primary)!important;color:#111827!important}
+.landing-page .site-header{background:rgb(247 243 234 / 96%)!important;border-bottom-color:var(--border-subtle)!important}
+.landing-page .brand-mark{background:var(--brand-primary)!important;color:var(--nk-surface)!important}
 .landing-page .landing-hero h1,.landing-page .landing-hero h1 em{color:var(--text-primary)!important}
 .landing-page .landing-hero h1 em{color:var(--brand-primary)!important}
 .landing-page .landing-hero .hero-lede strong,.landing-page .landing-login-line a{color:var(--brand-secondary)!important}
@@ -106,7 +105,7 @@ p{color:var(--text-secondary)}
 .landing-page .hero-orbit,.hero-orbit{border-color:var(--border-strong)!important;opacity:.22}
 .safety-visual,.safety-orb{background:transparent!important}
 .safety-ring,.ring-b{border-color:var(--border-strong)!important}
-.shield-core{background:var(--brand-primary)!important;color:#111827!important;box-shadow:none!important}
+.shield-core{background:var(--brand-primary)!important;color:var(--nk-surface)!important;box-shadow:none!important}
 .safety-stamp{background:var(--surface-card)!important;border-color:var(--border-subtle)!important;color:var(--brand-secondary)!important}
 .safety-copy li,.safety-copy>p,.intro-copy p,.intro-copy .muted,.value-card p,.step p,.faq-item>p,.faq-heading>p,.safety-copy .fine-print{color:var(--text-secondary)!important}
 .safety-copy li svg{color:var(--brand-secondary)!important}

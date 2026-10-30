@@ -216,3 +216,10 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **À valider sur la PR :** API de modération protégée par allowlist d'e-mails serveur, tests de refus anonymes complémentaires, sitemap/robots pour les routes privées ; voir [notes de livraison](./docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md).
 - **Encore à traiter :** audit complet i18n, revue mobile connectée, autorisations croisées, suppression/anonymisation E2E, interface admin et audit durable, validation humaine/juridique du lancement. Aucun prestataire externe activé.
 - **Ne pas confondre :** code ajouté, CI réussie, déploiement et preuve de fonctionnement réel.
+
+## Refonte visuelle fondée sur la recherche — 2026-10-30
+
+- [x] Ajouter une couche de tokens Émeraude/Champagne/Ivoire, harmoniser les surfaces et protéger les noms de profils Découvrir.
+- [x] Ajouter une vérification Playwright publique du thème et de la navigation clavier/mobile.
+- [ ] Valider en CI, comparer visuellement les routes authentifiées et mesurer WCAG AA sur les rendus réels avant fusion.
+- [ ] Rationaliser les styles historiques après revue visuelle, sans créer de composants parallèles.
