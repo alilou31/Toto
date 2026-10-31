@@ -14,6 +14,8 @@ const premiumFeatures = [
   "Voir les personnes qui vous ont envoyé un intérêt",
   "Historique et statistiques de jeux enrichis",
   "Plus de possibilités pour personnaliser vos découvertes",
+  "Sorties & invitations : restaurant, cinéma, promenade, voyage",
+  "Proposer une sortie et gérer les invitations reçues",
 ];
 
 export default function OffersPage() {
