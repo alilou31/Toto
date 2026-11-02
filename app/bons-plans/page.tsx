@@ -1,18 +1,19 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { PublicAffiliateOffer } from "@/lib/affiliate-offers";
 import Link from "next/link";
 import { ArrowRight, Bike, Coffee, Compass, Heart, Leaf, MapPin, Sparkles, TicketPercent, Utensils, Hotel, SlidersHorizontal } from "lucide-react";
 
 type Budget = "all" | "free" | "small" | "medium";
 type Category = "all" | "restaurant" | "activity" | "getaway";
 const ideas = [
-  { icon: Coffee, category: "restaurant" as const, title: "Un café pour faire connaissance", description: "Un café calme ou un salon de thé pour échanger à votre rythme.", tag: "Petit budget", budget: "small" as const, tone: "lilac" },
-  { icon: Utensils, category: "restaurant" as const, title: "Un dîner à deux", description: "Une adresse conviviale pour prolonger une belle conversation.", tag: "Restaurant", budget: "medium" as const, tone: "coral" },
-  { icon: Compass, category: "activity" as const, title: "Découvrir un lieu ensemble", description: "Une exposition, un musée ou une visite pour partager une découverte.", tag: "Culture", budget: "small" as const, tone: "cream" },
-  { icon: Bike, category: "activity" as const, title: "Bouger et rire à deux", description: "Vélo, mini-golf ou jeu de piste : choisissez selon vos envies.", tag: "Complicité", budget: "medium" as const, tone: "mint" },
-  { icon: Leaf, category: "activity" as const, title: "Une promenade à votre rythme", description: "Parc, jardin ou balade : une rencontre simple, sans pression.", tag: "Gratuit", budget: "free" as const, tone: "mint" },
-  { icon: Hotel, category: "getaway" as const, title: "Imaginer une escapade", description: "Quand la relation est bien établie, explorez des idées de week-end ensemble.", tag: "À organiser ensemble", budget: "medium" as const, tone: "lilac" },
+  { id: "cafe", icon: Coffee, category: "restaurant" as const, title: "Un café pour faire connaissance", description: "Un café calme ou un salon de thé pour échanger à votre rythme.", tag: "Petit budget", budget: "small" as const, tone: "lilac" },
+  { id: "dinner", icon: Utensils, category: "restaurant" as const, title: "Un dîner à deux", description: "Une adresse conviviale pour prolonger une belle conversation.", tag: "Restaurant", budget: "medium" as const, tone: "coral" },
+  { id: "culture", icon: Compass, category: "activity" as const, title: "Découvrir un lieu ensemble", description: "Une exposition, un musée ou une visite pour partager une découverte.", tag: "Culture", budget: "small" as const, tone: "cream" },
+  { id: "activity", icon: Bike, category: "activity" as const, title: "Bouger et rire à deux", description: "Vélo, mini-golf ou jeu de piste : choisissez selon vos envies.", tag: "Complicité", budget: "medium" as const, tone: "mint" },
+  { id: "walk", icon: Leaf, category: "activity" as const, title: "Une promenade à votre rythme", description: "Parc, jardin ou balade : une rencontre simple, sans pression.", tag: "Gratuit", budget: "free" as const, tone: "mint" },
+  { id: "getaway", icon: Hotel, category: "getaway" as const, title: "Imaginer une escapade", description: "Quand la relation est bien établie, explorez des idées de week-end ensemble.", tag: "À organiser ensemble", budget: "medium" as const, tone: "lilac" },
 ];
 const categoryLabels: Record<Category, string> = { all: "Toutes les idées", restaurant: "Restaurants", activity: "Activités", getaway: "Week-ends" };
 const budgetLabels: Record<Budget, string> = { all: "Tous les budgets", free: "Gratuit", small: "Petit budget", medium: "Budget à prévoir" };
@@ -20,6 +21,15 @@ const budgetLabels: Record<Budget, string> = { all: "Tous les budgets", free: "G
 export default function BonsPlansPage() {
   const [category, setCategory] = useState<Category>("all");
   const [budget, setBudget] = useState<Budget>("all");
+  const [affiliateOffers, setAffiliateOffers] = useState<PublicAffiliateOffer[]>([]);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/affiliate-offers", { signal: controller.signal, credentials: "omit" })
+      .then((response) => response.ok ? response.json() : { offers: [] })
+      .then((data) => { if (!controller.signal.aborted && Array.isArray(data.offers)) setAffiliateOffers(data.offers); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
   const filtered = useMemo(() => ideas.filter((idea) =>
     (category === "all" || idea.category === category) &&
     (budget === "all" || idea.budget === budget)
@@ -35,7 +45,7 @@ export default function BonsPlansPage() {
         <span className="bons-plans-eyebrow"><TicketPercent size={15} /> VOTRE CARNET D’IDÉES</span>
         <h1>Les bons plans pour <em>se rapprocher.</em></h1>
         <p>Restaurants, activités et escapades : trouvez une idée qui vous ressemble, à votre rythme.</p>
-        <div className="bons-plans-hero-note"><Sparkles size={17} /><span>Les réservations ne sont pas encore proposées sur NAKAHYA.</span></div>
+        <div className="bons-plans-hero-note"><Sparkles size={17} /><span>Les réservations sont effectuées sur les sites partenaires lorsqu’une offre vérifiée est disponible.</span></div>
       </section>
       <section className="bons-plans-section" aria-label="Découvrir les idées de sorties">
         <div className="bons-plans-section-heading"><div><span className="bons-plans-eyebrow">INSPIRATION</span><h2>À vous de choisir l’ambiance</h2></div><span className="bons-plans-count">{filtered.length} idée{filtered.length > 1 ? "s" : ""}</span></div>
@@ -53,11 +63,18 @@ export default function BonsPlansPage() {
         </div>
         {filtered.length === 0 ? <p role="status">Aucune idée pour ces filtres. Essayez un autre budget ou une autre catégorie.</p> : (
           <div className="bons-plans-grid">
-            {filtered.map(({ icon: Icon, category: kind, title, description, tag, tone }) => (
+            {filtered.map(({ id, icon: Icon, category: kind, title, description, tag, tone }) => (
               <article className={`bons-plans-card tone-${tone}`} key={title}>
                 <div className="bons-plans-card-top"><span className="bons-plans-card-icon"><Icon size={22} /></span><span className="bons-plans-category">{categoryLabels[kind]}</span></div>
                 <h3>{title}</h3><p>{description}</p>
                 <div className="bons-plans-card-footer"><span>{tag}</span><MapPin size={15} aria-hidden="true" /></div>
+                {affiliateOffers.filter((offer) => offer.ideaId === id).map((offer) => (
+                  <div className="bons-plans-affiliate" key={offer.ideaId}>
+                    <span className="bons-plans-affiliate-disclosure">Lien affilié · {offer.partner}</span>
+                    <a href={offer.url} target="_blank" rel="sponsored noopener noreferrer" referrerPolicy="no-referrer" className="bons-plans-affiliate-link">{offer.label} <ArrowRight size={15} aria-hidden="true" /></a>
+                    <small>Réservation et paiement éventuels sur le site du partenaire.</small>
+                  </div>
+                ))}
               </article>
             ))}
           </div>
@@ -67,7 +84,7 @@ export default function BonsPlansPage() {
         <div><span className="bons-plans-eyebrow">À DEUX, C’EST MIEUX</span><h2>Vous avez déjà une affinité ?</h2><p>Proposez une idée simple et laissez la conversation décider de la suite.</p></div>
         <Link href="/matchs" className="bons-plans-cta">Retrouver mes affinités <ArrowRight size={17} /></Link>
       </section>
-      <p className="bons-plans-disclaimer">Ces suggestions sont éditoriales : aucun partenariat, tarif, disponibilité ou réservation n’est garanti. Les futurs liens affiliés seront identifiés clairement avant publication. Ne partagez pas de données personnelles avec un prestataire sans nécessité.</p>
+      <p className="bons-plans-disclaimer">Ces suggestions sont éditoriales : aucun tarif, disponibilité ou réservation n’est garanti. Les liens commerciaux éventuels sont identifiés « Lien affilié » et peuvent générer une commission pour NAKAHYA. Ne partagez pas de données personnelles avec un prestataire sans nécessité.</p>
     </main>
   );
 }
