@@ -13,6 +13,7 @@ import "./product-design-system.css";
 import "./research-brand-system.css";
 import "./outings.css";
 import "./bons-plans.css";
+import "./dashboard-offers-carousel.css";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
 const siteTitle = "NAKAHYA — Rencontres sérieuses, faites connaissance en jouant";
