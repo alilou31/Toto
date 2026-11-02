@@ -11,7 +11,8 @@ test.describe("Bons plans : découverte et filtres", () => {
     await expect(page.getByRole("status")).toContainText("Aucune idée");
     await page.getByRole("combobox", { name: "Type de sortie" }).selectOption("activity");
     await expect(page.getByRole("heading", { name: "Une promenade à votre rythme" })).toBeVisible();
-    await expect(page.getByText(/aucun partenariat, tarif, disponibilité ou réservation n’est garanti/i)).toBeVisible();
+    await expect(page.getByText(/aucun tarif, disponibilité ou réservation n’est garanti/i)).toBeVisible();
+    await expect(page.locator("a[rel*=sponsored]")).toHaveCount(0);
   });
   test("mise en page mobile sans débordement et avec cartes stylisées", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
@@ -23,6 +24,17 @@ test.describe("Bons plans : découverte et filtres", () => {
     await expect(page.locator(".bons-plans-card").first()).toHaveCSS("background-color", "rgb(255, 255, 255)");
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     expect(overflow).toBe(false);
+  });
+
+  test("les offres partenaires validées affichent un lien commercial identifiable", async ({ page }) => {
+    await page.route("**/api/affiliate-offers", async route => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ offers: [{ ideaId: "cafe", partner: "Partenaire test", url: "https://example.com/activity", label: "Voir l’offre" }] }) }));
+    await page.goto("/bons-plans");
+    const link = page.getByRole("link", { name: /Voir l’offre/i });
+    await expect(link).toBeVisible();
+    await expect(page.getByText("Lien affilié · Partenaire test")).toBeVisible();
+    await expect(link).toHaveAttribute("rel", /sponsored/);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("referrerpolicy", "no-referrer");
   });
 
 });
