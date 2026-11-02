@@ -13,4 +13,16 @@ test.describe("Bons plans : découverte et filtres", () => {
     await expect(page.getByRole("heading", { name: "Une promenade à votre rythme" })).toBeVisible();
     await expect(page.getByText(/aucun partenariat, tarif, disponibilité ou réservation n’est garanti/i)).toBeVisible();
   });
+  test("mise en page mobile sans débordement et avec cartes stylisées", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/bons-plans");
+    const container = page.locator(".bons-plans-page");
+    await expect(container).toBeVisible();
+    await expect(container).toHaveCSS("padding-left", "18px");
+    await expect(page.locator(".bons-plans-card").first()).toHaveCSS("border-radius", "20px");
+    await expect(page.locator(".bons-plans-card").first()).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    expect(overflow).toBe(false);
+  });
+
 });

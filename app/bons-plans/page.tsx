@@ -39,14 +39,14 @@ export default function BonsPlansPage() {
       </section>
       <section className="bons-plans-section" aria-label="Découvrir les idées de sorties">
         <div className="bons-plans-section-heading"><div><span className="bons-plans-eyebrow">INSPIRATION</span><h2>À vous de choisir l’ambiance</h2></div><span className="bons-plans-count">{filtered.length} idée{filtered.length > 1 ? "s" : ""}</span></div>
-        <div style={{display:"flex", flexWrap:"wrap", gap:12, marginBottom:24, alignItems:"end"}}>
-          <label style={{display:"grid", gap:6}}><span><SlidersHorizontal size={14} aria-hidden="true" /> Type de sortie</span>
-            <select aria-label="Type de sortie" value={category} onChange={(event) => setCategory(event.target.value as Category)} style={{padding:"10px 12px", borderRadius:10, color:"inherit", background:"var(--background, #151b21)", border:"1px solid currentColor"}}>
+        <div className="bons-plans-filters">
+          <label className="bons-plans-filter"><span className="bons-plans-filter-label"><SlidersHorizontal size={14} aria-hidden="true" /> Type de sortie</span>
+            <select aria-label="Type de sortie" value={category} onChange={(event) => setCategory(event.target.value as Category)}>
               {Object.entries(categoryLabels).map(([value,label]) => <option key={value} value={value}>{label}</option>)}
             </select>
           </label>
-          <label style={{display:"grid", gap:6}}><span>Budget indicatif</span>
-            <select aria-label="Budget indicatif" value={budget} onChange={(event) => setBudget(event.target.value as Budget)} style={{padding:"10px 12px", borderRadius:10, color:"inherit", background:"var(--background, #151b21)", border:"1px solid currentColor"}}>
+          <label className="bons-plans-filter"><span>Budget indicatif</span>
+            <select aria-label="Budget indicatif" value={budget} onChange={(event) => setBudget(event.target.value as Budget)}>
               {Object.entries(budgetLabels).map(([value,label]) => <option key={value} value={value}>{label}</option>)}
             </select>
           </label>
