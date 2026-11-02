@@ -15,6 +15,8 @@ export function approvedAffiliateOffers(env: Record<string,string|undefined> = p
     if (x.approved !== true || typeof x.ideaId !== "string" || !affiliateIdeaIds.includes(x.ideaId as AffiliateIdeaId) || seen.has(x.ideaId)) continue;
     if (typeof x.partner !== "string" || !x.partner.trim() || x.partner.length > 80 || typeof x.url !== "string" || typeof x.label !== "string" || !x.label.trim() || x.label.length > 80) continue;
     if (typeof x.expiresAt !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(x.expiresAt) || x.expiresAt < new Date().toISOString().slice(0,10)) continue;
+    const expiration = new Date(`${x.expiresAt}T00:00:00.000Z`);
+    if (!Number.isFinite(expiration.getTime()) || expiration.toISOString().slice(0,10) !== x.expiresAt) continue;
     try {
       const url = new URL(x.url);
       if (url.protocol !== "https:" || url.username || url.password || url.port || url.hostname === "localhost" || !url.hostname.includes(".") || /(?:^|\.)(?:localhost|local|internal|test)$/.test(url.hostname) || /^(?:\d+\.){3}\d+$/.test(url.hostname) || x.url.length > 2048) continue;

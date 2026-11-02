@@ -29,12 +29,17 @@ test.describe("Bons plans mobile connecté", () => {
     await expect(page.getByRole("heading", { name: "Les bons plans du moment" })).toBeVisible();
     const allOffersLink = page.getByRole("link", { name: /Toutes les offres/i });
     await expect(allOffersLink).toBeVisible();
+    const offersResponse = page.waitForResponse(response => response.url().endsWith("/api/affiliate-offers"));
     await allOffersLink.click();
 
     await expect(page).toHaveURL(/\/bons-plans$/);
     await expect(page.getByRole("heading", { name: /Les bons plans pour se rapprocher/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /Un café pour faire connaissance/i })).toBeVisible();
-    await expect(page.getByText(/aucun partenariat, tarif, disponibilité ou réservation n’est garanti/i)).toBeVisible();
+    await expect(page.getByText(/aucun tarif, disponibilité ou réservation n’est garanti/i)).toBeVisible();
+    const response = await offersResponse;
+    expect(response.status()).toBe(200);
+    expect(await response.json()).toEqual({ offers: [] });
+    await expect(page.locator("a[rel~=sponsored]")).toHaveCount(0);
   });
   test("le carrousel du tableau de bord conserve ses cartes sur mobile", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });

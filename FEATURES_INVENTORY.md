@@ -207,6 +207,13 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Branche :** `feat/neo-midnight-design-system`. **Statut :** en attente de validation CI ; aucune modification du backend ou de la base n'est prévue.
 ## Bons plans — évolution proposée le 2026-10-25
 
+### Préparation Awin — PR #76, 2026-11-02
+
+- Réutilise les six cartes, filtres et carrousel existants ; aucune réservation intégrée.
+- API serveur `/api/affiliate-offers`, désactivée par défaut, validation humaine, expiration et allowlist exacte des domaines. Aucun partenaire réel configuré.
+- Liens commerciaux identifiés, sans données de profil ni suivi ajouté. Connexion MCP Awin et attribution des commissions non validées.
+- Le code ne prouve ni sa mise en production ni l'activation commerciale ; consulter les preuves CI/déploiement de la PR.
+
 - CODE PROPOSÉ EN PR : filtres de catégorie et budget sur la page existante `/bons-plans`, sans réservation ni liens affiliés fictifs.
 - TEST PROPOSÉ : `tests/e2e/bons-plans-filters.spec.ts` ; conserver le test mobile existant.
 - À VÉRIFIER : CI, tests Playwright, déploiement et smoke production. Détails : `docs/BONS_PLANS_AFFILIATION_MVP.md`.

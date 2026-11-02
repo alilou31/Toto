@@ -372,6 +372,9 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [ ] **P1 MVP sorties :** intention facultative et temporaire (activité, créneau large, zone approximative), révocable et invisible par défaut.
 - [ ] **P1 découverte :** filtrer les profils qui ont explicitement rendu visible une intention, sans contourner âge, préférences, blocages ou modération.
 - [ ] **P2 réservation :** tester liens affiliés/redirects puis API de disponibilité/réservation ; concevoir annulation, erreurs, support et confirmations avant tout paiement.
+- Préparation technique des liens : PR #76 sur les cartes existantes, désactivée par défaut ; ne pas recréer de module Bons plans.
+- [ ] Connecter le MCP officiel Awin avec le compte éditeur, vérifier les outils exposés et programmes réellement acceptés ; voir `docs/BONS_PLANS_AFFILIATION_MVP.md`.
+- [ ] Avant activation : accords Awin/annonceurs, contrôle des URL et redirections, revue juridique, validation humaine et preuve d'attribution. Aucune offre commerciale fictive.
 - [ ] **Bloquant commercial :** revue juridique et confidentialité (éditeur, affiliation, CGU, localisation, responsabilités des invitations/réservations).
 - Détails : [docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md](./docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md).
 
