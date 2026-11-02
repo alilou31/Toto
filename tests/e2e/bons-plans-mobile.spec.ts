@@ -36,4 +36,21 @@ test.describe("Bons plans mobile connecté", () => {
     await expect(page.getByRole("heading", { name: /Un café pour faire connaissance/i })).toBeVisible();
     await expect(page.getByText(/aucun partenariat, tarif, disponibilité ou réservation n’est garanti/i)).toBeVisible();
   });
+  test("le carrousel du tableau de bord conserve ses cartes sur mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.route("**/api/auth/me", async route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({user:{email:"camille@example.test"}})}));
+    await page.route("**/api/profile", async route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({profile:{public_name:"Camille",birth_date:"1995-05-10",onboarding_completed:true,visibility:"visible"}})}));
+    await page.route("**/api/interests", async route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({interests:[]})}));
+    await page.route("**/api/rencontre/sessions", async route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({sessions:[]})}));
+    await page.route("**/api/presence", async route => route.fulfill({status:200,contentType:"application/json",body:"{}"}));
+    await page.goto("/tableau-de-bord");
+    const carousel=page.locator(".dashboard-offers-carousel");
+    await expect(carousel).toBeVisible();
+    await expect(page.locator(".dashboard-offer-slide").first()).toHaveCSS("border-radius","18px");
+    await expect(page.locator(".dashboard-offers-track")).toHaveCSS("display","flex");
+    await expect(page.locator(".dashboard-offers-track")).toHaveCSS("overflow-x","auto");
+    await expect(page.getByRole("button",{name:"Idée suivante"})).toBeVisible();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth)).toBe(false);
+  });
+
 });
