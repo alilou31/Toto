@@ -28,3 +28,15 @@ const www = (await Promise.allSettled([resolve4("www.nakahya.com"), resolve6("ww
   .flatMap(result => result.status === "fulfilled" ? result.value : []);
 console.log(JSON.stringify({ wwwAddresses: www, wwwConfigured: www.length > 0 }));
 if (!www.length) console.log("::warning::www.nakahya.com has no A/AAAA record. Add it as a Custom Domain to Worker nikahya; no DNS record has been changed by this check.");
+
+// Once www is provisioned, validate the actual HTTPS redirect rather than merely DNS.
+if (www.length) {
+  const requested = "https://www.nakahya.com/demo?domain-check=1";
+  const expected = "https://nakahya.com/demo?domain-check=1";
+  const response = await fetch(requested, { redirect: "manual", signal: AbortSignal.timeout(15000) });
+  const location = response.headers.get("location");
+  if (![301, 302, 307, 308].includes(response.status) || !location || new URL(location, requested).toString() !== expected) {
+    throw new Error(`www redirect invalid: HTTP ${response.status}, Location ${location ?? "missing"}`);
+  }
+  console.log(`www HTTPS redirect: HTTP ${response.status} -> ${expected}`);
+}

@@ -2,7 +2,7 @@
 
 > **Objectif : éviter les doublons de développement.** Avant de créer une fonctionnalité, une page, une API ou un test, consulter ce document et rechercher dans le dépôt. Mettre cet inventaire à jour lorsqu'une fonctionnalité est ajoutée, modifiée, fusionnée ou retirée.
 >
-> Application : https://nikahya.rassoul-ali.workers.dev/  
+> Application : https://nakahya.com/ (domaine historique : https://nikahya.rassoul-ali.workers.dev/)  
 > Dépôt : https://github.com/alilou31/Toto  
 > Hébergement cible : Cloudflare Workers ; base de données : Neon.
 >
@@ -249,3 +249,9 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - [ ] Valider en CI, comparer visuellement les routes authentifiées et mesurer WCAG AA sur les rendus réels avant fusion.
 - [ ] Rationaliser les styles historiques après revue visuelle, sans créer de composants parallèles.
 
+
+## Vérification de production et robustesse CI — 2026-11-03
+
+- **Production validée sur le SHA `898d891f` :** CI [41648482270](https://github.com/alilou31/Toto/actions/runs/41648482270), déploiement [41648482233](https://github.com/alilou31/Toto/actions/runs/41648482233), smoke [41649765029](https://github.com/alilou31/Toto/actions/runs/41649765029) avec 71 tests Playwright passés. Ne pas confondre tests anonymes/fixtures et parcours authentifié réel.
+- **Toujours externe :** `www.nakahya.com` sans DNS lors du dernier smoke ; configurer le Custom Domain dans Cloudflare, confirmer les URI Google/Meta et les webhooks Stripe auprès des fournisseurs, vérifier Search Console. Ces actions ne sont pas prouvées par la CI.
+- **Renforcement proposé :** cache de téléchargement npm, nouvelles tentatives pour erreurs réseau et tests dédiés du script ; le SHA de ce changement doit être validé séparément par CI et smoke avant de le déclarer livré en production.
