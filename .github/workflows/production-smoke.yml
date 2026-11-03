@@ -27,11 +27,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      PRODUCTION_URL: https://nikahya.rassoul-ali.workers.dev
+      PRODUCTION_URL: https://nakahya.com
     steps:
       - name: Check production homepage
         run: |
           curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /dev/null --write-out 'Homepage HTTP %{http_code} in %{time_total}s\n' "$PRODUCTION_URL/"
+      - name: Checkout for read-only DNS/TLS checks
+        uses: actions/checkout@v4
+      - name: Set up Node.js for DNS/TLS checks
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check DNS and certificate
+        run: node scripts/check-domain.mjs
       - name: Check demo page
         run: |
           curl --fail --silent --show-error --location --retry 3 --retry-all-errors --max-time 20 --output /dev/null --write-out 'Demo HTTP %{http_code} in %{time_total}s\n' "$PRODUCTION_URL/demo"
@@ -68,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      PLAYWRIGHT_BASE_URL: https://nikahya.rassoul-ali.workers.dev
+      PLAYWRIGHT_BASE_URL: https://nakahya.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -77,11 +85,12 @@ jobs:
         with:
           node-version: 22
       - name: Install dependencies
-        run: npm install --no-audit --no-fund --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
+        timeout-minutes: 8
+        run: npm install --no-audit --no-fund --fetch-timeout=30000 --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Run read-only production UI and API security tests
-        run: npx playwright test tests/e2e/production-ui.spec.ts tests/e2e/api-json-contract.spec.ts tests/e2e/auth-api.spec.ts tests/e2e/password-reset.spec.ts tests/e2e/account-deletion-api.spec.ts tests/e2e/immersive-discovery.spec.ts
+        run: npx playwright test --config=playwright.production.config.ts tests/e2e/production-ui.spec.ts tests/e2e/api-json-contract.spec.ts tests/e2e/auth-api.spec.ts tests/e2e/password-reset.spec.ts tests/e2e/account-deletion-api.spec.ts tests/e2e/immersive-discovery.spec.ts tests/e2e/site-domain.spec.ts tests/e2e/session-navigation.spec.ts tests/e2e/connected-logout.spec.ts tests/production/domain.spec.ts
       - name: Upload Playwright report on failure
         if: failure()
         uses: actions/upload-artifact@v4

@@ -53,6 +53,20 @@ Sans ces variables, un test ignoré ne doit jamais être rapporté comme une val
 
 ## Règles de compte rendu
 
+Migration de domaine : `site-origin.test.cjs` couvre l'origine officielle malgré une ancienne variable, le développement local, les redirections et les routes privées. `site-domain.spec.ts` vérifie les métadonnées/JSON-LD et le sitemap/robots dans la suite CI. Exécution locale : huit fichiers unitaires réussis ; installation des dépendances et contrôles lint/TypeScript/build/Playwright locaux indisponibles à cause du proxy, à vérifier sur le SHA de la PR en CI.
+
+Le smoke sur `https://nakahya.com` réutilise les suites d'interface existantes (navigation, session simulée, déconnexion, découverte immersive, Bons plans) et `tests/production/domain.spec.ts` via `playwright.production.config.ts`. Le contrôle de domaine vérifie réellement HTTPS, HTTP→HTTPS, anciens liens sans boucle, API historiques, cookie effacé lors d'une déconnexion anonyme, refus d'origine OAuth étrangère et callback canonique si le fournisseur est configuré. Les autres parcours d'authentification utilisent des fixtures interceptées : aucune connexion réelle, e-mail ou écriture métier n'est effectuée. Les cookies OAuth éventuellement créés par la vérification du point d'entrée sont éphémères et ne sont pas utilisés pour se connecter chez un fournisseur.
+
+`scripts/check-domain.mjs` émet les preuves DNS/certificat et un diagnostic distinct pour www ; un NXDOMAIN www n'est ni ignoré dans un test ni rapporté comme succès. Il requiert une configuration Cloudflare externe, décrite dans le README. Les preuves CI/déploiement du SHA final et le rapport de livraison doivent distinguer ce point de la disponibilité de l'apex.
+
+La suite Bons plans de CI conserve ses contrôles de configuration désactivée par défaut ; elle n'est pas ajoutée telle quelle au smoke, car des variables commerciales approuvées peuvent être différentes en production. Le smoke vérifie l'accès HTTP et les métadonnées de `/bons-plans` avec `site-domain.spec.ts`. Aucun test CI n'est retiré ou ignoré pour cette distinction d'environnement.
+
+Robustesse CI : installations npm limitées à huit minutes et requêtes réseau à trente secondes, avec les retries existants. Un job doté du seul droit Actions nécessaire annule les validations PR obsolètes de la même branche et du même dépôt, après vérification que son SHA est encore courant. Il ne s'exécute pas sur main et ne sélectionne jamais les déploiements de production (événement `push`). Les journaux des anciennes exécutions restent disponibles pour diagnostic.
+
+Le sélecteur de validations est testé dans `pr-validation.test.cjs` : forks, main, runs plus récents ou simultanés, runs terminés et événements push sont exclus. Le job est réservé aux PR du même dépôt et revérifie HEAD avant chaque annulation. Diagnostic réseau observé sur la PR de migration : `EIDLETIMEOUT` pendant le téléchargement npm de `@aws-sdk/credential-provider-env`, dépendance transitive existante d'OpenNext ; aucun changement forcé de version n'est appliqué pour masquer cette panne réseau.
+
+Lors de la relance de migration `2353af2e`, le build Worker et le préflight DNS/TLS ont réussi : certificat reconnu pour `nakahya.com` et `*.nakahya.com`, accueil HTTP 200, www sans DNS. Playwright a compté 168 réussis, 2 ignorés préexistants et une assertion de canonical racine à normaliser (`https://nakahya.com` et `https://nakahya.com/` désignent la même URL). L'assertion compare maintenant les URL normalisées avec protocole/hôte/chemin exacts. La suite unitaire locale finale couvre neuf fichiers ; les checks du SHA final font foi avant fusion et le smoke réel après déploiement reste obligatoire.
+
 - Séparer tests unitaires, tests Playwright CI, smoke HTTP/DB, Playwright de production et parcours métier à deux utilisateurs.
 - Pour chaque résultat, noter le SHA testé, le lien du workflow, les tests passés/échoués/ignorés et les limites de couverture.
 - Ne jamais déduire l'état des migrations Neon de leur simple présence dans `db/migrations/`.

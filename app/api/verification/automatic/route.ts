@@ -1,3 +1,4 @@
+import { getSiteUrl } from "@/lib/site-origin";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
     const active = await sql`select id from public.profile_identity_verification_sessions where user_id = ${user.id} and status in ('requires_input','processing') and created_at > now() - interval '30 minutes' limit 1`;
     if (active.length) return NextResponse.json({ error: "Une vérification automatique est déjà en cours. Reprenez-la depuis votre parcours de vérification." }, { status: 409 });
 
-    const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
+    const baseUrl = getSiteUrl();
     const form = new URLSearchParams();
     form.set("type", "document");
     form.set("options[document][require_matching_selfie]", "true");
@@ -66,3 +67,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Impossible de démarrer la vérification. Réessayez plus tard." }, { status: 503, headers: { "Cache-Control": "no-store" } });
   }
 }
+

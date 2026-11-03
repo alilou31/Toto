@@ -1,5 +1,6 @@
+import { getSiteUrl } from "@/lib/site-origin";
 import type { MetadataRoute } from "next";
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
+const siteUrl = getSiteUrl();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Only index public editorial content; accounts, member profiles and legal drafts stay out.
@@ -9,3 +10,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: siteUrl + "/bons-plans", changeFrequency: "weekly", priority: 0.6 },
   ];
 }
+

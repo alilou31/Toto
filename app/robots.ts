@@ -1,18 +1,15 @@
 import type { MetadataRoute } from "next";
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
+import { getSiteUrl, PRIVATE_PATHS } from "@/lib/site-origin";
+const siteUrl = getSiteUrl();
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [{
       userAgent: "*",
       allow: "/",
-      disallow: [
-        "/api/", "/tableau-de-bord", "/cockpit", "/profil", "/membre",
-        "/matchs", "/messages", "/notifications", "/connexion", "/inscription",
-        "/verification", "/parametres", "/rencontre", "/disponibilites",
-        "/classement", "/decouvrir",
-      ],
+      disallow: PRIVATE_PATHS.map(path => path === "/api" ? "/api/" : path),
     }],
     sitemap: siteUrl + "/sitemap.xml",
     host: siteUrl,
   };
 }
+

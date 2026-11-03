@@ -41,7 +41,7 @@ Si la migration 001 a déjà été exécutée, ne la relance pas en cas d'erreur
 ## Variables d'environnement
 
 - `DATABASE_URL` : secret serveur Neon. Ne jamais le préfixer par `NEXT_PUBLIC_` ni le committer.
-- `NEXT_PUBLIC_SITE_URL` : URL publique du site.
+- `NEXT_PUBLIC_SITE_URL` : `https://nakahya.com` en production, URL locale en développement. Le build et Wrangler déclarent l'origine officielle ; les liens de production ne dépendent plus d'une ancienne variable GitHub.
 - `RESEND_API_KEY` et `RESEND_FROM_EMAIL` : envoi des e-mails de confirmation newsletter.
 - `STRIPE_SECRET_KEY` et `STRIPE_IDENTITY_WEBHOOK_SECRET` : sessions et webhooks Stripe Identity, côté serveur uniquement.
 
@@ -52,7 +52,7 @@ Pour le déploiement Cloudflare Workers, suivre la section « Déploiement Cloud
 Le projet utilise OpenNext pour exécuter Next.js App Router sur Cloudflare Workers, tout en conservant Neon PostgreSQL.
 
 1. Créer un bucket R2 nommé `nikahya-next-cache` dans le compte Cloudflare (il sert au cache incrémental/ISR). Le workflow crée/déploie le Worker nommé `nikahya`.
-2. Dans GitHub, ajouter les secrets du dépôt ou de l'environnement `production` : `CLOUDFLARE_API_TOKEN` (droits Workers Scripts et R2 requis), `CLOUDFLARE_ACCOUNT_ID` et `DATABASE_URL` (chaîne Neon pooled avec `sslmode=require`). Ajouter la variable d'environnement `NEXT_PUBLIC_SITE_URL` avec l'URL publique prévue.
+2. Dans GitHub, ajouter les secrets du dépôt ou de l'environnement `production` : `CLOUDFLARE_API_TOKEN` (droits Workers Scripts et R2 requis), `CLOUDFLARE_ACCOUNT_ID` et `DATABASE_URL` (chaîne Neon pooled avec `sslmode=require`). Le workflow et `wrangler.jsonc` déclarent désormais `NEXT_PUBLIC_SITE_URL=https://nakahya.com` ; ne pas remettre l'ancien domaine dans les variables de déploiement.
 3. Vérifier que le compte Cloudflare autorise le binding Images utilisé par Wrangler. Si le compte n'utilise pas Cloudflare Images, retirer le binding `images` de `wrangler.jsonc` et configurer la stratégie d'images avant déploiement.
 4. Après configuration des secrets et variables, une fusion/poussée sur `main` déclenche le build puis le déploiement Cloudflare. Le workflow peut aussi être lancé manuellement avec `workflow_dispatch`. Il configure le secret `DATABASE_URL` sur le Worker.
 5. Vérifier les routes `/`, `/api/db-check`, `/api/auth/me`, l'inscription/connexion et les journaux du Worker avant de faire pointer le domaine de production vers Cloudflare.
@@ -60,6 +60,19 @@ Le projet utilise OpenNext pour exécuter Next.js App Router sur Cloudflare Work
 En local, copier `.dev.vars.example` vers `.dev.vars`, remplacer les valeurs de démonstration et lancer `npm run preview:worker`. Ne jamais committer `.dev.vars` ni de vrais secrets.
 
 Le workflow déploie automatiquement les commits poussés sur `main` après réussite du build Cloudflare. Les pull requests ne déploient pas en production. Le workflow ne modifie pas le DNS : la configuration du domaine personnalisé reste une opération Cloudflare distincte.
+
+### Domaine officiel — migration du 2026-11-03
+
+- `https://nakahya.com` est l'origine de production pour canonical, Open Graph, données structurées, sitemap, robots, e-mails de récupération/confirmation et retour Stripe Identity. Les liens internes relatifs et les layouts existants sont réutilisés ; aucun manifest PWA n'existait et aucun n'est ajouté.
+- Le build fixe cette origine, Wrangler la déclare aussi à l'exécution. `keep_vars=true` préserve les autres variables distantes ; aucune activation d'affiliation ou de prestataire, aucun secret versionné. Le binding de domaine configuré par le propriétaire n'est pas remplacé.
+- Le middleware redirige les navigations GET/HEAD HTML de Workers et de www vers le domaine officiel (308, chemin et requête conservés), et HTTP vers HTTPS sur les hôtes connus. Les API de l'ancien hôte restent accessibles sans redirection entre hôtes pour préserver méthodes, webhooks et cookies. Les anciennes API et les routes privées reçoivent `X-Robots-Tag: noindex, nofollow` ; cela ne remplace jamais leur authentification.
+- Les cookies de session et OAuth restent HttpOnly, Secure en production et SameSite=Lax, sans Domain partagé. Une reconnexion sur le nouveau domaine est nécessaire ; aucun jeton de session ne circule dans une URL. Les transactions OAuth commencées sur l'ancien domaine peuvent devoir être recommencées.
+- Audit réel avant modification : le domaine principal résout vers Cloudflare et sert NAKAHYA en HTTPS ; son sitemap/robots annonçaient encore Workers. `www.nakahya.com` renvoyait NXDOMAIN. Les adresses Cloudflare peuvent changer : ne pas recopier les IP observées dans des enregistrements manuels.
+- Contrôles : `scripts/check-domain.mjs` vérifie DNS, certificat TLS et accueil HTTPS depuis GitHub Actions avant déploiement, sans modification DNS ; www est diagnostiqué séparément et n'est pas annoncé fonctionnel s'il reste absent. Le smoke utilise désormais `nakahya.com` et vérifie aussi les redirections et le SEO.
+
+**Opération Cloudflare externe si www reste NXDOMAIN :** Workers & Pages → `nikahya` → Settings → Domains & Routes → Add → Custom Domain → `www.nakahya.com`. Vérifier d'abord l'absence d'enregistrement ou de binding conflictuel, puis laisser Cloudflare créer son DNS et son certificat. Le middleware appliquera ensuite www → apex. Ne pas désactiver `workers.dev`, qui sert la redirection des anciens liens et conserve les API historiques. Si HTTP n'atteint pas le Worker, activer également SSL/TLS → Edge Certificates → Always Use HTTPS et vérifier l'absence de règle de redirection inverse.
+
+Voir [AUTHENTIFICATION_SOCIALE.md](./AUTHENTIFICATION_SOCIALE.md) pour les opérations Google/Meta. Dans la console Stripe Identity, mettre à jour l'endpoint utilisé vers `https://nakahya.com/api/webhooks/stripe-identity`, conserver les signatures et secrets existants, puis vérifier avec des événements de test dédiés. Aucun endpoint de billing n'est ajouté. Les anciens endpoints API restent servis pour la transition ; aucun webhook réel ni e-mail à un compte réel n'est déclenché par le smoke.
 
 ## Tests automatisés
 
