@@ -1,3 +1,4 @@
+import { getSiteUrl } from "@/lib/site-origin";
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { localeFromAcceptLanguage, normalizeLocale, localeMessages } from "@/lib/i18n";
@@ -30,7 +31,7 @@ const faqs = [
   { q: "Mes informations personnelles sont-elles publiques ?", a: "Votre adresse e-mail et votre date de naissance complète ne sont pas destinées à être affichées sur votre profil. La page de confidentialité publiée est encore en cours de finalisation et doit préciser les données traitées, les durées de conservation et vos droits." },
   { q: "Puis-je bloquer ou signaler un profil ?", a: "Oui. Depuis la page Découvrir, vous pouvez bloquer un profil ou envoyer un signalement en choisissant une catégorie et en ajoutant, si besoin, des détails. Si une interaction vous met mal à l’aise, interrompez-la et utilisez ces outils." },
 ];
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "NAKAHYA — Rencontres sérieuses : faites connaissance en jouant",
@@ -127,3 +128,4 @@ export default async function Home() {
     </main>
   );
 }
+

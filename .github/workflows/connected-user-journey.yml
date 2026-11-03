@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      PLAYWRIGHT_BASE_URL: https://nikahya.rassoul-ali.workers.dev
+      PLAYWRIGHT_BASE_URL: https://nakahya.com
       E2E_USER_A_EMAIL: ${{ secrets.E2E_USER_A_EMAIL || vars.E2E_USER_A_EMAIL }}
       E2E_USER_A_PASSWORD: ${{ secrets.E2E_USER_A_PASSWORD }}
       E2E_USER_B_EMAIL: ${{ secrets.E2E_USER_B_EMAIL || vars.E2E_USER_B_EMAIL }}
@@ -75,3 +75,4 @@ jobs:
             test-results/
           if-no-files-found: ignore
           retention-days: 7
+

@@ -195,6 +195,13 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 
 
  
+## Domaine officiel — migration du 2026-11-03
+
+- Source unique `lib/site-origin.ts` : production sur `https://nakahya.com`, développement local préservé. Metadata, JSON-LD, sitemap/robots, e-mails et retour Identity réutilisent cette source.
+- Redirections HTML/HTTPS et noindex hors canonique via middleware ; anciennes API, contrôles d'accès, cookies host-only et liens internes conservés. Aucun changement de matching, découverte immersive, Premium ou approbation des affiliés.
+- Workflows ciblant le nouveau domaine, préflight DNS/TLS en lecture seule et tests de production non destructifs. DNS de www absent lors de l'audit ; opération externe précise dans le README. Ne pas confondre une redirection implémentée avec un nom DNS réellement disponible.
+- Aucun manifest PWA ni nouvelle vérification e-mail de compte inventé ; newsletter et réinitialisation existantes réutilisées. Les consoles OAuth et éventuels webhooks externes restent à contrôler par leurs propriétaires.
+
 ## Découverte immersive — finalisation de la PR #60, 2026-11-03
 
 - Audit sur main `95b80e66` : route immersive absente malgré sa mention anticipée dans le design system ; fil de cartes existant et deux navigations distinctes. La branche ancienne contenait la page et deux tests partiels, repris sans recréer d'API.

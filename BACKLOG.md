@@ -368,6 +368,8 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 
 ## Orientation produit — rencontre d'abord, sorties ensuite (2026-10-14)
 
+- Migration de domaine 2026-11-03 : origine officielle, SEO, liens serveur et smoke vers `nakahya.com`. Conserver le diagnostic www séparé, configurer son Custom Domain si nécessaire, mettre à jour les allowlists OAuth et vérifier les webhooks externes avec accès fournisseurs. Aucun changement de matching ni activation Awin dans ce lot ; procédure détaillée dans README et AUTHENTIFICATION_SOCIALE.
+
 - [x] Clarifier la promesse publique : NAKAHYA est une application de rencontre sérieuse ; les jeux facilitent les premiers échanges.
 - [x] Préciser que les idées de sorties sont éditoriales/liens externes et que la réservation intégrée n'est pas encore disponible.
 - [ ] **P0 sécurité :** concevoir consentement, visibilité et expiration des intentions ; vérifier les autorisations et la cohérence du blocage/signalement.

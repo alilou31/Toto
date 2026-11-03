@@ -1,3 +1,4 @@
+import { getSiteUrl } from "@/lib/site-origin";
 import { NextResponse } from "next/server";
 import { createHash, randomBytes } from "node:crypto";
 import { getDb } from "@/lib/db";
@@ -54,7 +55,7 @@ export async function POST(request: Request) {
         unsubscribed_at = null
     `;
 
-    const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
+    const baseUrl = getSiteUrl();
     const confirmationUrl = `${baseUrl}/api/newsletter/confirm?token=${encodeURIComponent(token)}`;
     const from = process.env.RESEND_FROM_EMAIL || "NAKAHYA <onboarding@resend.dev>";
     const sent = await fetch("https://api.resend.com/emails", {
@@ -76,3 +77,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "L’inscription à la newsletter a échoué. Réessayez plus tard." }, { status: 500, headers: { "Cache-Control": "no-store" } });
   }
 }
+

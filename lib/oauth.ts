@@ -1,4 +1,5 @@
 import "server-only";
+import { getSiteUrl } from "@/lib/site-origin";
 
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 
@@ -19,9 +20,10 @@ export function getSiteOrigin(): string | null {
   if (!configured) return null;
   try {
     const url = new URL(configured);
+    if (url.username || url.password) return null;
     if (url.protocol !== "https:" && process.env.NODE_ENV === "production") return null;
     if (url.protocol !== "https:" && url.hostname !== "localhost" && url.hostname !== "127.0.0.1") return null;
-    return url.origin;
+    return getSiteUrl();
   } catch { return null; }
 }
 export function createRandomToken(): string { return randomBytes(32).toString("base64url"); }
@@ -50,3 +52,4 @@ export function getFacebookGraphVersion(): string {
   const configured = process.env.FACEBOOK_GRAPH_API_VERSION;
   return configured && /^v\d+\.\d+$/.test(configured) ? configured : "v26.0";
 }
+

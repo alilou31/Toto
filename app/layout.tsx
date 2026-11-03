@@ -1,3 +1,4 @@
+import { getSiteUrl } from "@/lib/site-origin";
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { localeFromAcceptLanguage, normalizeLocale } from "@/lib/i18n";
@@ -15,7 +16,7 @@ import "./outings.css";
 import "./bons-plans.css";
 import "./dashboard-offers-carousel.css";
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://nikahya.rassoul-ali.workers.dev").replace(/\/$/, "");
+const siteUrl = getSiteUrl();
 const siteTitle = "NAKAHYA — Rencontres sérieuses, faites connaissance en jouant";
 const siteDescription = "Envie d’une relation sérieuse ? Découvrez NAKAHYA : une nouvelle façon de faire connaissance grâce aux jeux, aux affinités, aux valeurs et aux projets de vie.";
 
@@ -41,3 +42,4 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const locale = savedLocale ? normalizeLocale(savedLocale) : localeFromAcceptLanguage(requestHeaders.get("accept-language"));
   return <html lang={locale}><body><LocaleCompatibilityTranslator /><ConnectedAppChrome>{children}</ConnectedAppChrome></body></html>;
 }
+

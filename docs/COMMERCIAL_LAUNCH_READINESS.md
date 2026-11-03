@@ -1,7 +1,7 @@
 # Préparation au lancement commercial — NAKAHYA
 
 Dernière mise à jour : 2026-10-13  
-Production cible : https://nikahya.rassoul-ali.workers.dev/  
+Production cible : https://nakahya.com/
 Hébergement : Cloudflare Workers · Base : Neon · Dépôt : https://github.com/alilou31/Toto
 
 Ce document est une liste de contrôle de lancement, pas une certification de conformité ou de sécurité. Une case ne peut être cochée qu'avec une preuve récente. Les anciennes réussites CI ou E2E ne valident pas automatiquement les commits suivants.
@@ -70,3 +70,4 @@ Les pages légales présentes dans le dépôt indiquent explicitement qu'elles s
 ## Prochaine porte de sortie
 
 Le lancement public ne doit être autorisé que lorsque tous les points P0 sont validés avec des preuves et que les pages légales ne signalent plus qu'elles sont des brouillons. Les validations juridiques, l'identité de l'éditeur, la configuration réelle des prestataires et la décision tarifaire requièrent des informations du responsable du service.
+

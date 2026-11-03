@@ -53,6 +53,14 @@ Sans ces variables, un test ignoré ne doit jamais être rapporté comme une val
 
 ## Règles de compte rendu
 
+Migration de domaine : `site-origin.test.cjs` couvre l'origine officielle malgré une ancienne variable, le développement local, les redirections et les routes privées. `site-domain.spec.ts` vérifie les métadonnées/JSON-LD et le sitemap/robots dans la suite CI. Exécution locale : huit fichiers unitaires réussis ; installation des dépendances et contrôles lint/TypeScript/build/Playwright locaux indisponibles à cause du proxy, à vérifier sur le SHA de la PR en CI.
+
+Le smoke sur `https://nakahya.com` réutilise les suites d'interface existantes (navigation, session simulée, déconnexion, découverte immersive, Bons plans) et `tests/production/domain.spec.ts` via `playwright.production.config.ts`. Le contrôle de domaine vérifie réellement HTTPS, HTTP→HTTPS, anciens liens sans boucle, API historiques, cookie effacé lors d'une déconnexion anonyme, refus d'origine OAuth étrangère et callback canonique si le fournisseur est configuré. Les autres parcours d'authentification utilisent des fixtures interceptées : aucune connexion réelle, e-mail ou écriture métier n'est effectuée. Les cookies OAuth éventuellement créés par la vérification du point d'entrée sont éphémères et ne sont pas utilisés pour se connecter chez un fournisseur.
+
+`scripts/check-domain.mjs` émet les preuves DNS/certificat et un diagnostic distinct pour www ; un NXDOMAIN www n'est ni ignoré dans un test ni rapporté comme succès. Il requiert une configuration Cloudflare externe, décrite dans le README. Les preuves CI/déploiement du SHA final et le rapport de livraison doivent distinguer ce point de la disponibilité de l'apex.
+
+La suite Bons plans de CI conserve ses contrôles de configuration désactivée par défaut ; elle n'est pas ajoutée telle quelle au smoke, car des variables commerciales approuvées peuvent être différentes en production. Le smoke vérifie l'accès HTTP et les métadonnées de `/bons-plans` avec `site-domain.spec.ts`. Aucun test CI n'est retiré ou ignoré pour cette distinction d'environnement.
+
 - Séparer tests unitaires, tests Playwright CI, smoke HTTP/DB, Playwright de production et parcours métier à deux utilisateurs.
 - Pour chaque résultat, noter le SHA testé, le lien du workflow, les tests passés/échoués/ignorés et les limites de couverture.
 - Ne jamais déduire l'état des migrations Neon de leur simple présence dans `db/migrations/`.
