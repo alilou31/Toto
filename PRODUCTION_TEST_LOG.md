@@ -222,3 +222,13 @@
 - **Parcours à deux utilisateurs :** **NON EXÉCUTÉ dans ce run**. Il requiert quatre secrets de comptes de test dédiés et `ENABLE_TWO_USER_E2E=true`; le scénario crée des données métier et doit être lancé uniquement avec des comptes de test autorisés.
 - **Limites restantes :** le résultat du smoke ne confirme pas indépendamment l'état des migrations `005_game_sessions.sql` et `007_rencontre_sessions.sql` dans Neon.
 - **Anomalies / suite :** aucun échec dans ce run. Conserver le parcours à deux comptes comme contrôle distinct et vérifier le rapport associé lors d'une exécution autorisée.
+
+### PROD-2026-11-03-01 — Migration de domaine, déploiement et production
+
+- **Date de contrôle :** 2026-11-03, 14:09 UTC.
+- **Commit réellement testé :** `898d891f10e558b76317f64457fa56e4889bd7f2`.
+- **Environnement :** `https://nakahya.com` via Cloudflare Workers ; base Neon.
+- **Résultat :** **PASSÉ** pour la CI [41648482270](https://github.com/alilou31/Toto/actions/runs/41648482270), le déploiement [41648482233](https://github.com/alilou31/Toto/actions/runs/41648482233) après relance et le smoke [41649765029](https://github.com/alilou31/Toto/actions/runs/41649765029) après relance (**71 tests Playwright passés, 0 échec**). Le smoke confirme accueil HTTPS HTTP 200, certificat valide (à la date du contrôle), DNS apex, connectivité Neon et refus des appels anonymes protégés.
+- **Incident transitoire :** installation npm `EIDLETIMEOUT` du paquet `@aws-sdk/credential-provider-env` dans le déploiement puis dans le job Playwright du smoke ; les reprises ciblées ont réussi. Ce résultat n'établit pas une disparition définitive des timeouts npm.
+- **Limites non validées :** `www.nakahya.com` n'avait pas d'A/AAAA lors du contrôle ; liaison Custom Domain Cloudflare à effectuer, puis vérifier TLS et redirection. Les allowlists/callbacks Google et Meta, les webhooks Stripe Identity, Search Console et un véritable parcours authentifié à deux comptes n'ont pas été validés ; accès fournisseurs et/ou comptes de test dédiés nécessaires. Aucun compte réel ni donnée métier n'a été modifié par le smoke.
+- **Prochaine action :** fiabiliser l'installation npm dans les workflows ; consulter les nouveaux checks du SHA de correction. Les contrôles externes restent distincts jusqu'à preuve effective.

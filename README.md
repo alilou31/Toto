@@ -72,6 +72,8 @@ Le workflow déploie automatiquement les commits poussés sur `main` après réu
 
 **Opération Cloudflare externe si www reste NXDOMAIN :** Workers & Pages → `nikahya` → Settings → Domains & Routes → Add → Custom Domain → `www.nakahya.com`. Vérifier d'abord l'absence d'enregistrement ou de binding conflictuel, puis laisser Cloudflare créer son DNS et son certificat. Le middleware appliquera ensuite www → apex. Ne pas désactiver `workers.dev`, qui sert la redirection des anciens liens et conserve les API historiques. Si HTTP n'atteint pas le Worker, activer également SSL/TLS → Edge Certificates → Always Use HTTPS et vérifier l'absence de règle de redirection inverse.
 
+**Google Search Console (accès propriétaire nécessaire) :** vérifier la propriété de domaine `nakahya.com` via l'enregistrement DNS demandé par Google, soumettre `https://nakahya.com/sitemap.xml`, puis contrôler l'indexation/canonical. Ne pas publier de jeton de vérification ni prétendre que la propriété est validée sans preuve.
+
 Voir [AUTHENTIFICATION_SOCIALE.md](./AUTHENTIFICATION_SOCIALE.md) pour les opérations Google/Meta. Dans la console Stripe Identity, mettre à jour l'endpoint utilisé vers `https://nakahya.com/api/webhooks/stripe-identity`, conserver les signatures et secrets existants, puis vérifier avec des événements de test dédiés. Aucun endpoint de billing n'est ajouté. Les anciens endpoints API restent servis pour la transition ; aucun webhook réel ni e-mail à un compte réel n'est déclenché par le smoke.
 
 ## Tests automatisés
@@ -156,3 +158,9 @@ Le sélecteur de langue supporte le français, l'anglais, l'espagnol et l'italie
 ## Design system
 
 La direction visuelle candidate est documentée dans [docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md](./docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md). Les tokens sont centralisés dans `app/product-design-system.css`. Le thème ne doit pas modifier le backend, les routes ou les contrats API. Le test visuel ciblé est `npx playwright test tests/e2e/neo-midnight-design-system.spec.ts`. Tant que la branche de refonte n'est pas fusionnée et déployée, ce thème ne doit pas être considéré comme actif en production.
+
+### Fiabilité des installations GitHub Actions — 2026-11-03
+
+Les jobs de CI, build/déploiement, smoke Playwright et parcours connecté réutilisent le cache `~/.npm` (clé dérivée de `package.json`) et le script `scripts/ci-install.sh`. Le script réessaie uniquement les erreurs réseau npm temporaires, dont `EIDLETIMEOUT`, et échoue immédiatement pour les erreurs de dépendances réelles. Tests de comportement : `tests/ci-install.test.cjs` (succès, timeout récupéré, erreur définitive).
+
+**Limite de reproductibilité :** le dépôt ne comporte pas de `package-lock.json` versionné ; les jobs utilisent donc toujours `npm install` et non `npm ci`. Le cache ne remplace pas un lockfile. La création et l'examen d'un lockfile reproductible sont une amélioration ultérieure distincte, à valider sans modifier silencieusement les versions des dépendances.

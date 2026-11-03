@@ -84,9 +84,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Cache npm package downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-node22-v1-${{ hashFiles('package.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-node22-v1-
       - name: Install dependencies
-        timeout-minutes: 8
-        run: npm install --no-audit --no-fund --fetch-timeout=30000 --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
+        timeout-minutes: 12
+        run: bash scripts/ci-install.sh
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Run read-only production UI and API security tests
