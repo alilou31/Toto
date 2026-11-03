@@ -99,3 +99,9 @@ La suite `tests/e2e/email-verification.spec.ts` couvre : page non indexable `/co
 Le smoke de production ajoute cette suite **sans envoi d'e-mail ni mutation de base** : seuls des jetons invalides atteignent réellement l'API ; les succès sont interceptés côté Playwright. La livraison Resend, la migration Neon 017 et la confirmation réelle d'un compte nécessitent une validation séparée, après activation manuelle décrite dans le README.
 
 Ne pas confondre un email marqué « Verified » dans Resend, un expéditeur configuré dans Cloudflare et un message réellement livré dans une boîte test.
+
+## Correctif de routage production — 2026-11-03
+
+Les smokes [#164](https://github.com/alilou31/Toto/actions/runs/41683004942) et [#165](https://github.com/alilou31/Toto/actions/runs/41684532376) ont trouvé des 404 sur `/confirmer-email` et `/api/auth/confirm-email`, malgré leur présence dans le build OpenNext. Wrangler déclare désormais `nakahya.com` comme Custom Domain du Worker `nikahya` et le workflow de déploiement vérifie les réponses HTTP 200 (page) et 400 (jeton invalide). Le smoke lance Playwright avec un worker, sans supprimer de tests. Le test de session attend sa requête simulée avant d'évaluer la redirection avec une marge adaptée aux chargements de production.
+
+La correction n'est prouvée qu'après CI/Worker build sur le nouveau SHA, puis déploiement et smoke `main` réussis. Ce parcours reste non destructif et ne démontre pas une livraison réelle via Resend.

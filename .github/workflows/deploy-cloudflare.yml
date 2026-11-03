@@ -103,3 +103,23 @@ jobs:
             echo "::warning::RESEND_API_KEY is not configured in GitHub Actions; password recovery will remain unavailable until the secret is added."
           fi
 
+
+      # Fail the release if the official domain does not run this Worker.
+      # Only an invalid token is posted; no account, email or database write.
+      - name: Verify official domain serves newly deployed routes
+        env:
+          PRODUCTION_URL: https://nakahya.com
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5 6 7 8; do
+            page_status="$(curl --silent --show-error --max-time 20 --output /dev/null --write-out '%{http_code}' "$PRODUCTION_URL/confirmer-email" || true)"
+            api_status="$(curl --silent --show-error --max-time 20 --output /dev/null --write-out '%{http_code}' --request POST --header 'Content-Type: application/json' --data '{"token":"invalide"}' "$PRODUCTION_URL/api/auth/confirm-email" || true)"
+            echo "Domain check $attempt: confirmation page=$page_status (200 expected), invalid-token API=$api_status (400 expected)"
+            if [ "$page_status" = "200" ] && [ "$api_status" = "400" ]; then
+              echo "Official domain serves new routes; no user data written."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::nakahya.com is not serving the current Worker routes; inspect Cloudflare Workers & Pages > nikahya > Settings > Domains & Routes."
+          exit 1
