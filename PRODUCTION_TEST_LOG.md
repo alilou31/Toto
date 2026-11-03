@@ -232,3 +232,14 @@
 - **Incident transitoire :** installation npm `EIDLETIMEOUT` du paquet `@aws-sdk/credential-provider-env` dans le déploiement puis dans le job Playwright du smoke ; les reprises ciblées ont réussi. Ce résultat n'établit pas une disparition définitive des timeouts npm.
 - **Limites non validées :** `www.nakahya.com` n'avait pas d'A/AAAA lors du contrôle ; liaison Custom Domain Cloudflare à effectuer, puis vérifier TLS et redirection. Les allowlists/callbacks Google et Meta, les webhooks Stripe Identity, Search Console et un véritable parcours authentifié à deux comptes n'ont pas été validés ; accès fournisseurs et/ou comptes de test dédiés nécessaires. Aucun compte réel ni donnée métier n'a été modifié par le smoke.
 - **Prochaine action :** fiabiliser l'installation npm dans les workflows ; consulter les nouveaux checks du SHA de correction. Les contrôles externes restent distincts jusqu'à preuve effective.
+
+### PROD-2026-11-03-03 — Déblocage Bot Fight Mode ; régressions ciblées
+
+- **Date/heure :** 2026-11-03, vers 16:33 UTC (17:33 heure française).
+- **Commit réellement testé :** `a028e6aded8b71189a062217fbac0ad9429ef362`, avant ce correctif.
+- **Preuve :** [smoke production 41668666591](https://github.com/alilou31/Toto/actions/runs/41668666591), tentative 4.
+- **Résultat :** **PARTIEL** — job HTTP/DNS/TLS/Neon réussi, ce qui confirme que le challenge Cloudflare empêchant l’accès initial a disparu à cet instant. Playwright : **69 réussis, 1 instable, 1 échoué** ; le workflow global est **ÉCHEC**.
+- **Échec persistant :** `tests/production/domain.spec.ts` attend HTTP 308 depuis `https://nikahya.rassoul-ali.workers.dev/bons-plans`, reçoit HTTP 404 sur les trois tentatives. `workers_dev: true` est déjà dans `wrangler.jsonc` ; revérifier le binding réel de l’ancien Worker URL après prochain déploiement, ne pas masquer l’assertion.
+- **Instabilité :** `tests/e2e/session-navigation.spec.ts` (session simulée sur `/connexion`), parfois restée sur la page de connexion ; vérifier après suppression de la course entre redirection et refresh du routeur.
+- **Restrictions :** les tests de session interceptent l’API ; aucun parcours authentifié réel, aucun compte nouveau et aucune écriture métier validée par ce smoke.
+- **Prochaine action :** valider le SHA de la PR en CI/Worker build ; après fusion, vérifier le smoke complet, les redirections de l’ancien domaine et l’absence de faux positifs Cloudflare.

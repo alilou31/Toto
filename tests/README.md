@@ -81,3 +81,13 @@ npx playwright test tests/e2e/neo-midnight-design-system.spec.ts
 ```
 
 La spécification du thème et ses limites sont documentées dans [DESIGN_SYSTEM_NEO_MIDNIGHT.md](../docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md).
+
+## Régression du 3 novembre 2026 — ancien domaine et session simulée
+
+Le smoke GitHub [41668666591](https://github.com/alilou31/Toto/actions/runs/41668666591), tentative 4, a validé l’accueil/Neon après l’arrêt du challenge Bot Fight Mode, mais les tests Playwright ont signalé **un échec persistant** sur l’ancien domaine `nikahya.rassoul-ali.workers.dev` (HTTP 404 au lieu de 308) et **un test instable** de redirection depuis `/connexion`. Ne pas confondre ces deux résultats ; le smoke global n’était pas vert.
+
+Le redirect d’une session simulée réutilise désormais une navigation documentaire unique après validation de `/api/auth/me`, sans concurrence entre `router.replace` et `router.refresh`. La suite `session-navigation.spec.ts` vérifie toujours le tableau de bord et le nom du membre, uniquement avec des réponses API interceptées.
+
+L’ancien domaine est toujours une **obligation de compatibilité** et son test HTTP 308 n’est pas désactivé. Le fichier `wrangler.jsonc` a déjà `workers_dev: true`, mais l’état réel du binding doit être confirmé **après le déploiement**. Un HTTP 404 indique de vérifier dans Cloudflare Workers & Pages → `nikahya` → Settings → Domains & Routes la publication de l’URL de production `nikahya.rassoul-ali.workers.dev` ; une réponse 404 ne prouve pas un problème dans le middleware. La conservation des anciennes API est également testée (401 attendu sur `/api/discover` sans session).
+
+Ces contrôles n’écrivent pas de comptes dans Neon. Consigner la CI sur le SHA de PR et le smoke post-fusion avant de déclarer la production entièrement verte.

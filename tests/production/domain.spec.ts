@@ -19,7 +19,7 @@ test("HTTP rejoint HTTPS en conservant le chemin et la requête", async ({ reque
 
 test("anciens liens HTML redirigés sans boucle et anciennes API conservées", async ({ request }) => {
   const response = await request.get(legacy + "/bons-plans?migration_check=1", { maxRedirects: 0 });
-  expect(response.status()).toBe(308);
+  expect(response.status(), "L’ancien domaine workers.dev doit toujours être attaché au Worker nikahya dans Cloudflare (workers_dev=true). HTTP 404 est un problème de routage externe, pas une redirection réussie.").toBe(308);
   expect(response.headers().location).toBe(official + "/bons-plans?migration_check=1");
   expect((await request.get(legacy + "/bons-plans", { maxRedirects: 5 })).url()).toBe(official + "/bons-plans");
   const api = await request.get(legacy + "/api/discover", { maxRedirects: 0 });

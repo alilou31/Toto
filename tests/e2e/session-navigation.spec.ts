@@ -14,14 +14,17 @@ test.describe("Session et retour navigateur", () => {
   });
 
   test("une session active redirige la page connexion vers le tableau de bord", async ({ page }) => {
+    let sessionChecks = 0;
     await page.route("**/api/auth/me", async route => {
+      sessionChecks += 1;
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: { id: "user-1", email: "mike@example.fr" } }) });
     });
     await page.route("**/api/profile", async route => {
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ profile: { public_name: "Mike", visibility: "visible", onboarding_completed: true, birth_date: "1990-01-01" } }) });
     });
     await page.goto("/connexion");
-    await expect(page).toHaveURL(/tableau-de-bord$/);
+    await expect(page).toHaveURL(/\/tableau-de-bord$/, { timeout: 10_000 });
+    expect(sessionChecks, "La redirection doit reposer sur une vérification de session réelle (interceptée)").toBeGreaterThan(0);
     await expect(page.getByRole("heading", { name: "Bonjour, Mike." })).toBeVisible();
   });
 
