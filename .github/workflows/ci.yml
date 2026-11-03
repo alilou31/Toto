@@ -18,6 +18,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  cancel-superseded:
+    name: Cancel superseded PR validations
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Cancel only obsolete runs of this repository branch
+        env:
+          GH_WORKFLOW_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+          GH_BRANCH: ${{ github.head_ref }}
+          GH_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          node --input-type=module <<'JS'
+          const { GH_WORKFLOW_TOKEN: token, GH_REPOSITORY: repo, GH_BRANCH: branch, GH_HEAD_SHA: sha } = process.env;
+          const headers = { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" };
+          const base = `https://api.github.com/repos/${repo}`;
+          const head = await fetch(`${base}/git/ref/heads/${encodeURIComponent(branch)}`, { headers });
+          if (!head.ok) throw new Error(`Branch lookup: HTTP ${head.status}`);
+          if ((await head.json()).object.sha !== sha) { console.log("Superseded cleanup: no action"); process.exit(0); }
+          const url = new URL(`${base}/actions/runs`);
+          url.search = new URLSearchParams({ branch, event: "pull_request", per_page: "100" });
+          const response = await fetch(url, { headers });
+          if (!response.ok) throw new Error(`Run lookup: HTTP ${response.status}`);
+          for (const run of (await response.json()).workflow_runs) {
+            if (run.head_sha === sha || run.head_repository?.full_name !== repo || !["queued", "in_progress"].includes(run.status)) continue;
+            if (!["NIKAHYA CI", "Deploy NIKAHYA to Cloudflare Workers"].includes(run.name)) continue;
+            const cancelled = await fetch(`${base}/actions/runs/${run.id}/cancel`, { method: "POST", headers });
+            if (![202, 409].includes(cancelled.status)) throw new Error(`Cancel ${run.id}: HTTP ${cancelled.status}`);
+            console.log(`Obsolete PR validation ${run.id}: HTTP ${cancelled.status}`);
+          }
+          JS
+
   quality:
     name: Unit tests, lint and build
     runs-on: ubuntu-latest
@@ -29,7 +65,8 @@ jobs:
         with:
           node-version: 22
       - name: Install dependencies
-        run: npm install --no-audit --no-fund --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
+        timeout-minutes: 8
+        run: npm install --no-audit --no-fund --fetch-timeout=30000 --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
       - name: Unit tests
         run: npm test
       - name: Lint
@@ -50,7 +87,8 @@ jobs:
         with:
           node-version: 22
       - name: Install dependencies
-        run: npm install --no-audit --no-fund --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
+        timeout-minutes: 8
+        run: npm install --no-audit --no-fund --fetch-timeout=30000 --fetch-retries=3 --fetch-retry-factor=2 --fetch-retry-mintimeout=5000 --fetch-retry-maxtimeout=30000
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Run Playwright tests

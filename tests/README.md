@@ -61,6 +61,8 @@ Le smoke sur `https://nakahya.com` réutilise les suites d'interface existantes 
 
 La suite Bons plans de CI conserve ses contrôles de configuration désactivée par défaut ; elle n'est pas ajoutée telle quelle au smoke, car des variables commerciales approuvées peuvent être différentes en production. Le smoke vérifie l'accès HTTP et les métadonnées de `/bons-plans` avec `site-domain.spec.ts`. Aucun test CI n'est retiré ou ignoré pour cette distinction d'environnement.
 
+Robustesse CI : installations npm limitées à huit minutes et requêtes réseau à trente secondes, avec les retries existants. Un job doté du seul droit Actions nécessaire annule les validations PR obsolètes de la même branche et du même dépôt, après vérification que son SHA est encore courant. Il ne s'exécute pas sur main et ne sélectionne jamais les déploiements de production (événement `push`). Les journaux des anciennes exécutions restent disponibles pour diagnostic.
+
 - Séparer tests unitaires, tests Playwright CI, smoke HTTP/DB, Playwright de production et parcours métier à deux utilisateurs.
 - Pour chaque résultat, noter le SHA testé, le lien du workflow, les tests passés/échoués/ignorés et les limites de couverture.
 - Ne jamais déduire l'état des migrations Neon de leur simple présence dans `db/migrations/`.

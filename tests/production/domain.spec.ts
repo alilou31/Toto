@@ -6,6 +6,7 @@ const legacy = "https://nikahya.rassoul-ali.workers.dev";
 test("HTTPS officiel disponible avec vérification TLS active", async ({ request }) => {
   const response = await request.get(official + "/", { maxRedirects: 0 });
   expect(response.status()).toBe(200);
+  expect(response.headers()["x-robots-tag"] || "").not.toContain("noindex");
   expect(await response.text()).toContain("NAKAHYA");
 });
 
