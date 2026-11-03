@@ -60,6 +60,13 @@ test.describe("Pages publiques NAKAHYA", () => {
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", /\/demo$/);
   });
 
+  test("le sitemap public exclut les espaces privés et inclut Bons plans", async ({ request }) => {
+    const sitemap = await (await request.get("/sitemap.xml")).text();
+    expect(sitemap).toContain("/bons-plans");
+    expect(sitemap).not.toContain("/messages/");
+    expect(sitemap).not.toContain("/cockpit/");
+  });
+
   test("la démo et la page de validation sont accessibles", async ({ page }) => {
     await page.goto("/demo");
     await expect(page.locator("body")).not.toContainText("404");

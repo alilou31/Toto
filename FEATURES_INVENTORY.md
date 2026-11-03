@@ -192,3 +192,53 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **PR #56 :** son intention utile est reprise sur `main` ; sa branche ancienne ne doit pas être fusionnée en bloc.
 - **RESTE HORS CODE LOCAL :** données réelles de l'éditeur et revue juridique ; configuration/test des prestataires e-mail, paiement, OAuth et éventuelle vérification ; exécution contrôlée des scénarios de production qui écrivent en base.
 - **SORTIES ET PAIEMENTS :** la réservation intégrée, la confirmation fournisseur, les intentions de sortie entre membres et les paiements restent non implémentés et ne doivent pas être annoncés comme actifs.
+
+
+ 
+## Identité visuelle Neo Midnight — branche candidate
+
+### Découverte immersive — finalisation de la PR #60, 2026-11-03
+
+- Audit sur main `95b80e66` : route immersive absente malgré sa mention anticipée dans le design system ; fil de cartes existant et deux navigations distinctes. La branche ancienne contenait la page et deux tests partiels, repris sans recréer d'API.
+- `/decouvrir/immersif` : photo grand format, résumé, accès à la fiche, Passer local et Liker via l'API d'intérêts existante, états de panne/chargement/liste vide et fin de parcours. Le retour transporte uniquement une position validée dans l'URL.
+- Navigation centrale connectée et secours GameShell vers l'immersion ; `/decouvrir` reste la grille responsive avec intérêts communs, filtres, blocage et signalement conservés.
+- Aucun changement de matching, d'authentification, d'affiliation ou de schéma. Les évolutions #76/#77 sont conservées depuis main.
+- Tests : suite PR existante `immersive-discovery.spec.ts` étendue desktop/mobile, helpers de navigation couverts par `discovery-navigation.test.cjs`, régressions existantes conservées. Résultats distants et statut de fusion : [PR #60](https://github.com/alilou31/Toto/pull/60), checks sur son SHA courant ; ne pas confondre simulation des API et persistance Neon réelle.
+
+- [x] Centraliser les tokens sombres, lime, menthe et corail dans `app/product-design-system.css`.
+- [x] Remplacer la couche visuelle plum/lilas par des surfaces nuit et accents neutres ; violet exclu de la palette de marque.
+- [x] Appliquer les règles partagées à landing, auth, dashboard, découverte, profils, discussions et jeux via les composants existants.
+- [x] Documenter couleurs, typographie, composants, accessibilité et performances dans `docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md`.
+- [x] Ajouter un test Playwright dédié : `tests/e2e/neo-midnight-design-system.spec.ts`.
+- [ ] Confirmer CI, lint, tests unitaires, Playwright et build Cloudflare sur la branche candidate.
+- [ ] Vérifier le rendu réel des routes connectées en environnement de test ; ne pas conclure sur la production avant déploiement.
+- **Branche :** `feat/neo-midnight-design-system`. **Statut :** en attente de validation CI ; aucune modification du backend ou de la base n'est prévue.
+## Bons plans — code existant et évolution du 2026-11-03
+
+### Préparation Awin — PR #76, 2026-11-02
+
+- Réutilise les six cartes, filtres et carrousel existants ; aucune réservation intégrée.
+- API serveur `/api/affiliate-offers`, désactivée par défaut, validation humaine, expiration et allowlist exacte des domaines. Aucun partenaire réel configuré.
+- Liens commerciaux identifiés, sans données de profil ni suivi ajouté. Connexion MCP Awin et attribution des commissions non validées.
+- Le code ne prouve ni sa mise en production ni l'activation commerciale ; consulter les preuves CI/déploiement de la PR.
+
+- **Existant sur main audité `31c3462` :** six cartes, filtres catégorie/budget, état vide et tests mobile/affiliation. CI [41523701029](https://github.com/alilou31/Toto/actions/runs/41523701029) réussie sur cette base.
+- **Évolution sur branche, à vérifier en CI :** contexte volontaire Premier rendez-vous/Partager une activité, explication éditoriale et réinitialisation des choix ; aucune lecture de profil ni modification du matching.
+- **Mesure préparée, désactivée :** compteur journalier par idée, validation serveur d'une offre encore approuvée, migration 016 non appliquée par ce travail. Aucune réservation, vente ou commission déduite d'un clic.
+- **SEO :** layout dédié `/bons-plans` avec titre, description, canonical et Open Graph ; sitemap existant réutilisé.
+- **Tests étendus :** suite existante `tests/e2e/bons-plans-filters.spec.ts`, tests unitaires `date-ideas.test.cjs` et `affiliate-clicks.test.cjs` ; test mobile conservé.
+- **Restant :** attribution Awin, contrats annonceurs, activation manuelle, validation Neon et production du nouveau SHA. Détails : `docs/BONS_PLANS_AFFILIATION_MVP.md`.
+
+## Consolidation technique sans prestataire — branche du 2026-10-27 (non validée en production)
+
+- **À valider sur la PR :** API de modération protégée par allowlist d'e-mails serveur, tests de refus anonymes complémentaires, sitemap/robots pour les routes privées ; voir [notes de livraison](./docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md).
+- **Encore à traiter :** audit complet i18n, revue mobile connectée, autorisations croisées, suppression/anonymisation E2E, interface admin et audit durable, validation humaine/juridique du lancement. Aucun prestataire externe activé.
+- **Ne pas confondre :** code ajouté, CI réussie, déploiement et preuve de fonctionnement réel.
+
+## Refonte visuelle fondée sur la recherche — 2026-10-30
+
+- [x] Ajouter une couche de tokens Émeraude/Champagne/Ivoire, harmoniser les surfaces et protéger les noms de profils Découvrir.
+- [x] Ajouter une vérification Playwright publique du thème et de la navigation clavier/mobile.
+- [ ] Valider en CI, comparer visuellement les routes authentifiées et mesurer WCAG AA sur les rendus réels avant fusion.
+- [ ] Rationaliser les styles historiques après revue visuelle, sans créer de composants parallèles.
+

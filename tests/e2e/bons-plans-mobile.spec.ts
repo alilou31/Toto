@@ -29,11 +29,33 @@ test.describe("Bons plans mobile connecté", () => {
     await expect(page.getByRole("heading", { name: "Les bons plans du moment" })).toBeVisible();
     const allOffersLink = page.getByRole("link", { name: /Toutes les offres/i });
     await expect(allOffersLink).toBeVisible();
+    const offersResponse = page.waitForResponse(response => response.url().endsWith("/api/affiliate-offers"));
     await allOffersLink.click();
 
     await expect(page).toHaveURL(/\/bons-plans$/);
     await expect(page.getByRole("heading", { name: /Les bons plans pour se rapprocher/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Un café qui laisse place à la conversation/i })).toBeVisible();
-    await expect(page.getByText(/pas des offres commerciales partenaires vérifiées/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Un café pour faire connaissance/i })).toBeVisible();
+    await expect(page.getByText(/aucun tarif, disponibilité ou réservation n’est garanti/i)).toBeVisible();
+    const response = await offersResponse;
+    expect(response.status()).toBe(200);
+    expect(await response.json()).toEqual({ offers: [] });
+    await expect(page.locator("a[rel~=sponsored]")).toHaveCount(0);
   });
+  test("le carrousel du tableau de bord conserve ses cartes sur mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.route("**/api/auth/me", async route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({user:{email:"camille@example.test"}})}));
+    await page.route("**/api/profile", async route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({profile:{public_name:"Camille",birth_date:"1995-05-10",onboarding_completed:true,visibility:"visible"}})}));
+    await page.route("**/api/interests", async route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({interests:[]})}));
+    await page.route("**/api/rencontre/sessions", async route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({sessions:[]})}));
+    await page.route("**/api/presence", async route => route.fulfill({status:200,contentType:"application/json",body:"{}"}));
+    await page.goto("/tableau-de-bord");
+    const carousel=page.locator(".dashboard-offers-carousel");
+    await expect(carousel).toBeVisible();
+    await expect(page.locator(".dashboard-offer-slide").first()).toHaveCSS("border-radius","18px");
+    await expect(page.locator(".dashboard-offers-track")).toHaveCSS("display","flex");
+    await expect(page.locator(".dashboard-offers-track")).toHaveCSS("overflow-x","auto");
+    await expect(page.getByRole("button",{name:"Idée suivante"})).toBeVisible();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth)).toBe(false);
+  });
+
 });

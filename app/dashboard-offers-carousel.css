@@ -1,0 +1,21 @@
+/* Connected dashboard — Bons plans carousel, isolated responsive styling */
+.dashboard-offers-carousel{max-width:100%;min-width:0;margin:32px 0 40px;padding:clamp(20px,4vw,34px);border:1px solid #e4e8df;border-radius:24px;background:#fff;overflow:hidden;color:#173f35}
+.dashboard-offers-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:24px}
+.dashboard-offers-heading>div:first-child{min-width:0}
+.dashboard-offers-eyebrow{display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.3px;font-weight:700;color:#537362;margin:0 0 12px}
+.dashboard-offers-heading h2{font-family:var(--serif,Georgia,serif);font-size:clamp(28px,4vw,42px);line-height:1.17;letter-spacing:-.7px;margin:0 0 10px;color:#173f35}
+.dashboard-offers-heading p:not(.dashboard-offers-eyebrow){font-size:14px;line-height:1.6;color:#63746a;margin:0}
+.dashboard-offers-actions{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.dashboard-offers-actions button{display:grid;place-items:center;width:42px;height:42px;min-height:42px;padding:0;border:1px solid #d8e2d8;border-radius:50%;background:#f7f9f5;color:#173f35;cursor:pointer}
+.dashboard-offers-actions button:hover{background:#e7f0e8}
+.dashboard-offers-all{display:inline-flex;align-items:center;gap:7px;margin-left:6px;font-size:12px;font-weight:700;color:#173f35;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.dashboard-offers-track{display:flex;gap:16px;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 14px;scrollbar-width:thin}
+.dashboard-offer-slide{flex:0 0 clamp(225px,36%,310px);min-width:0;min-height:260px;display:flex;flex-direction:column;align-items:flex-start;gap:11px;padding:23px;border:1px solid #e1e9e1;border-radius:18px;background:#f7f8f4;scroll-snap-align:start}
+.dashboard-offer-slide.offer-lilac{background:#f5f2f8}.dashboard-offer-slide.offer-coral{background:#faf2ee}.dashboard-offer-slide.offer-cream{background:#faf7ed}.dashboard-offer-slide.offer-mint{background:#eef5ee}
+.dashboard-offer-icon{width:45px;height:45px;border-radius:14px;display:grid;place-items:center;background:#ffffffc9;color:#173f35}
+.dashboard-offer-tag{font-size:11px;letter-spacing:.3px;font-weight:700;color:#52715f}
+.dashboard-offer-slide h3{font-size:19px;line-height:1.3;margin:0;color:#173f35}
+.dashboard-offer-slide p{font-size:13px;line-height:1.6;color:#5d6e63;margin:0;flex:1}
+.dashboard-offer-slide>a{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#173f35;text-decoration:underline;text-underline-offset:3px}
+.dashboard-offers-note{margin:10px 0 0;font-size:11px;line-height:1.5;color:#738174}
+@media(max-width:760px){.dashboard-offers-carousel{margin:24px 0 32px;padding:20px 16px;border-radius:18px}.dashboard-offers-heading{display:block}.dashboard-offers-heading h2{font-size:clamp(27px,7vw,35px)}.dashboard-offers-actions{margin-top:16px;flex-wrap:wrap}.dashboard-offers-all{margin-left:auto}.dashboard-offer-slide{flex-basis:min(82vw,290px);min-height:265px;padding:20px}.dashboard-offers-track{gap:12px}}

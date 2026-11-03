@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { discoveryReturnHref } from "@/lib/discovery-navigation";
 import { ArrowLeft, Ban, Gamepad2, Heart, MapPin, ShieldCheck, UserRound, Sparkles } from "lucide-react";
 
 type PlayedGame = { game_id: string; games_played: number };
@@ -46,6 +47,9 @@ export default function MemberProfilePage() {
   const [error, setError] = useState("");
   const [blocking, setBlocking] = useState(false);
   const [notice, setNotice] = useState("");
+  const [returnHref, setReturnHref] = useState("/decouvrir");
+
+  useEffect(() => { setReturnHref(discoveryReturnHref(window.location.search)); }, [profileId]);
 
   useEffect(() => {
     let active = true;
@@ -90,12 +94,12 @@ export default function MemberProfilePage() {
 
   return (
     <main className="auth-page">
-      <Link href="/decouvrir" className="auth-back"><ArrowLeft size={16}/> Retour aux profils</Link>
+      <Link href={returnHref} className="auth-back"><ArrowLeft size={16}/> Retour aux profils</Link>
       <section className="auth-card auth-card-wide member-detail-card">
         <Link href="/tableau-de-bord" className="brand auth-brand"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
         <div className="section-kicker auth-kicker">UNE RENCONTRE QUI A DU SENS</div>
         {loading ? <p role="status">Chargement de la fiche…</p> : error ? (
-          <div role="alert" className="auth-notice"><p>{error}</p><Link href="/decouvrir" className="button button-green">Revenir à la découverte</Link></div>
+          <div role="alert" className="auth-notice"><p>{error}</p><Link href={returnHref} className="button button-green">Revenir à la découverte</Link></div>
         ) : profile ? (
           <>
             <div className="member-detail-hero">
@@ -133,7 +137,7 @@ export default function MemberProfilePage() {
             <p className="password-hint member-detail-privacy"><ShieldCheck size={15}/> Les coordonnées privées et la date de naissance ne sont pas affichées. Les profils bloqués ne sont pas accessibles dans la découverte.</p>
             {notice && <p className="auth-notice" role="status">{notice}</p>}
             <div className="member-detail-actions">
-              <Link href="/decouvrir" className="button button-quiet"><ArrowLeft size={16}/> Continuer la découverte</Link>
+              <Link href={returnHref} className="button button-quiet"><ArrowLeft size={16}/> Continuer la découverte</Link>
               <Link href="/matchs" className="button button-green">Mes affinités <Heart size={16}/></Link>
               <button type="button" className="button button-quiet member-block-button" onClick={() => void blockMember()} disabled={blocking}><Ban size={15}/>{blocking ? "Blocage…" : "Bloquer ce profil"}</button>
             </div>
@@ -143,3 +147,4 @@ export default function MemberProfilePage() {
     </main>
   );
 }
+

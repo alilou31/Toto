@@ -7,6 +7,9 @@ test.describe("Protection des API privées sans session", () => {
     { path: "/api/matches", label: "affinités et conversations" },
     { path: "/api/interests", label: "intérêts reçus" },
     { path: "/api/games/results", label: "historique des jeux" },
+    { path: "/api/availability", label: "disponibilités personnelles" },
+    { path: "/api/blocks", label: "blocages personnels" },
+    { path: "/api/profile-visits", label: "visites privées" },
     { path: "/api/rencontre/sessions", label: "sessions Alchimie" },
   ];
 
@@ -18,6 +21,12 @@ test.describe("Protection des API privées sans session", () => {
       expect(await response.json()).toMatchObject({ error: expect.any(String) });
     });
   }
+
+  test("refuse la modification anonyme des disponibilités sans cache", async ({ request }) => {
+    const response = await request.put("/api/availability", { data: { availableFor: "game" } });
+    expect(response.status()).toBe(401);
+    expect(response.headers()["cache-control"] ?? "").toContain("no-store");
+  });
 
   test("refuse la création anonyme d’un intérêt", async ({ request }) => {
     const response = await request.post("/api/interests", {

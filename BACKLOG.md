@@ -354,6 +354,9 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 
 ### Découverte compacte et offres Premium — 2026-10-13
 
+- Finalisation PR #60 (2026-11-03) : conserver la grille `/decouvrir`, reprendre la page immersive existante de la branche, corriger la destination des deux navigations et tester Passer/Liker/fiche/retour/erreurs. Le suivi CI, fusion et production se trouve sur [PR #60](https://github.com/alilou31/Toto/pull/60). Aucun moteur de matching, catalogue d'affiliation ou API d'intérêt concurrent ajouté.
+- Limites conservées : pas d'historique durable des profils passés ; les simulations Playwright ne prouvent pas une écriture Neon ni un match réel entre deux membres.
+
 - [x] Grille de découverte compacte et responsive sur la branche `feat/discovery-dashboard-membership`.
 - [x] Fiche membre avec activités de jeu enregistrées, sans afficher scores ou réponses privées.
 - [x] Accès aux offres depuis le tableau de bord.
@@ -369,8 +372,35 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [x] Préciser que les idées de sorties sont éditoriales/liens externes et que la réservation intégrée n'est pas encore disponible.
 - [ ] **P0 sécurité :** concevoir consentement, visibilité et expiration des intentions ; vérifier les autorisations et la cohérence du blocage/signalement.
 - [ ] **P1 validation :** mesurer clics sur les idées de sorties, premiers messages après match et usage des jeux avant de construire une marketplace.
+- Préparation 2026-11-03 : recommandations éditoriales selon choix explicite et compteur de clics agrégé optionnel sur les cartes existantes ; ni activation, ni mesure des premiers messages/jeux, ni attribution commerciale dans ce lot. Appliquer migration 016 et valider le stockage avant activation manuelle.
 - [ ] **P1 MVP sorties :** intention facultative et temporaire (activité, créneau large, zone approximative), révocable et invisible par défaut.
 - [ ] **P1 découverte :** filtrer les profils qui ont explicitement rendu visible une intention, sans contourner âge, préférences, blocages ou modération.
 - [ ] **P2 réservation :** tester liens affiliés/redirects puis API de disponibilité/réservation ; concevoir annulation, erreurs, support et confirmations avant tout paiement.
+- Préparation technique des liens : PR #76 sur les cartes existantes, désactivée par défaut ; ne pas recréer de module Bons plans.
+- [ ] Connecter le MCP officiel Awin avec le compte éditeur, vérifier les outils exposés et programmes réellement acceptés ; voir `docs/BONS_PLANS_AFFILIATION_MVP.md`.
+- [ ] Avant activation : accords Awin/annonceurs, contrôle des URL et redirections, revue juridique, validation humaine et preuve d'attribution. Aucune offre commerciale fictive.
 - [ ] **Bloquant commercial :** revue juridique et confidentialité (éditeur, affiliation, CGU, localisation, responsabilités des invitations/réservations).
 - Détails : [docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md](./docs/PRODUCT_STRATEGY_DATING_AND_OUTINGS.md).
+
+
+ 
+## Design system Neo Midnight — 2026-10-22
+
+- [x] Ajouter la palette sombre centralisée (nuit, lime, menthe, corail), sans violet.
+- [x] Harmoniser les principaux composants de landing, inscription, espace connecté, profils, découverte, conversations et jeux sans modifier la logique métier.
+- [x] Documenter les tokens et règles de contribution dans `docs/DESIGN_SYSTEM_NEO_MIDNIGHT.md`.
+- [x] Ajouter une régression Playwright dédiée au thème et au responsive mobile.
+- [ ] Vérifier CI complète, build Worker et tests E2E de la branche `feat/neo-midnight-design-system`.
+- [ ] Comparer le rendu réel de chaque route et corriger les éventuels styles spécifiques qui échappent aux sélecteurs partagés.
+- [ ] Ne pas fusionner ni annoncer la production comme mise à jour tant que les contrôles de la PR et le déploiement n'ont pas été vérifiés.
+## Lot technique sans service externe — 2026-10-27
+
+Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md). La branche candidate ajoute une API de file de signalements protégée par allowlist, des garde-fous Playwright et une actualisation sitemap/robots. **Ce travail est partiel** : ne pas cocher les objectifs P0/P1 historiques non audités ; l'internationalisation exhaustive, le parcours complet de suppression, la modération opérationnelle et la validation légale restent ouverts.
+
+## Refonte visuelle fondée sur la recherche — 2026-10-30
+
+- [x] Ajouter une couche de tokens Émeraude/Champagne/Ivoire, harmoniser les surfaces et protéger les noms de profils Découvrir.
+- [x] Ajouter une vérification Playwright publique du thème et de la navigation clavier/mobile.
+- [ ] Valider en CI, comparer visuellement les routes authentifiées et mesurer WCAG AA sur les rendus réels avant fusion.
+- [ ] Rationaliser les styles historiques après revue visuelle, sans créer de composants parallèles.
+
