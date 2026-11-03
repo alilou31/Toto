@@ -8,8 +8,8 @@
 
 ## Suite avant monétisation
 1. Obtenir les accords partenaires et URLs affiliées autorisées.
-2. Ajouter une configuration serveur ou éditoriale des offres (source, expiration, URL, conditions).
-3. Identifier chaque lien commercial, ajouter `rel="sponsored noopener noreferrer"`, et suivre uniquement les clics sortants agrégés avec information appropriée.
+2. Réutiliser la configuration serveur des offres maintenant présente (approbation, expiration, URL et allowlist), sans ajouter de second catalogue.
+3. Conserver les mentions commerciales et `rel="sponsored noopener noreferrer"` existants ; activer éventuellement la mesure agrégée préparée ci-dessous, après validation opérationnelle.
 4. Vérifier CGU, confidentialité, identité de l'éditeur et règles de protection des utilisateurs.
 5. Ajouter tests de liens et redirections sans exposer d'identifiants de profils.
 
@@ -52,3 +52,32 @@ Connexion : serveur `https://mcp.awin.com`, OAuth sur Awin, sans jeton dans le d
 Après connexion, lire les schémas réellement exposés, choisir le compte éditeur, consulter les programmes et leurs conditions, puis demander les statistiques sur une période courte. Garder ces opérations dans l'outillage de gestion : aucun accès MCP depuis le navigateur public. Aucune publication automatique dans `AFFILIATION_OFFERS_JSON` ; chaque URL doit passer la revue humaine, l'expiration et l'allowlist existantes. Ne transmettre aucune donnée de membre dans les références de clic.
 
 Restent externes : compte Awin autorisé, consentement OAuth, adhésion annonceurs, contrôle des destinations, revue juridique et preuve d'attribution réelle. La consultation MCP ne vaut pas validation commerciale ni validation de production.
+
+## Évolution ciblée — 2026-11-03
+
+### Recommandations éditoriales et SEO
+
+Les six cartes, filtres et carrousel sont réutilisés. Le choix volontaire « Premier rendez-vous » propose café/promenade ; « Partager une activité » propose culture/activité/promenade. Les filtres de budget et catégorie s'appliquent ensuite, avec état vide et remise à zéro. Aucune préférence de profil n'est déduite, aucun algorithme de matching n'est modifié et aucun choix n'est persisté. Les métadonnées propres à `/bons-plans` utilisent un canonical stable et le sitemap existant.
+
+### Compteur de clics préparé, désactivé par défaut
+
+- `BON_PLANS_METRICS_ENABLED` absent, `false` ou différent de `true` : pas d'annonce de mesure dans l'API, aucun appel du navigateur et POST `/api/affiliate-clicks` refusé avec 404.
+- Si activé manuellement : mention visible avant utilisation ; clic direct vers l'URL approuvée inchangé, envoi asynchrone `{ "ideaId": "cafe" }`, sans cookie de session (`credentials: omit`). Une panne de mesure ne bloque pas le lien.
+- L'endpoint exige la même origine, JSON, 512 octets maximum, un unique champ `ideaId` et une offre actuellement approuvée par le validateur existant. Les données de membre et URL fournies par le client sont refusées.
+- Migration additive `016_affiliate_click_metrics.sql` : une ligne par jour UTC/idée avec compteur ; aucune IP, identité, URL, événement individuel ou cookie dans la table. Aucun endpoint public de lecture des statistiques.
+- Conservation prévue : 90 jours calendaires UTC incluant aujourd'hui. Nettoyage opportuniste des anciennes lignes à chaque écriture. En cas d'arrêt de la collecte, prévoir une tâche opérationnelle de purge : `delete from public.affiliate_click_metrics where day < (now() at time zone 'UTC')::date - 89;`.
+- Ce sont des clics reçus, pas des visiteurs uniques : rechargements, clics répétés et automatisation peuvent gonfler le compteur. Ne pas utiliser pour facturer, attribuer une commission ou prouver une conversion. Aucun identifiant supplémentaire n'est introduit pour dédupliquer ; renforcer le contrôle d'abus avant un usage commercial.
+- Attribution réelle des ventes/commissions Awin, taux de conversion commercial, confirmations fournisseur et tableau de reporting restent à développer.
+
+### Activation et contrôle
+
+Ce travail n'applique aucune migration et ne modifie aucune variable Cloudflare. Avant activation : appliquer uniquement la migration 016 non encore appliquée dans l'environnement de test, vérifier les compteurs et la purge, informer les utilisateurs, puis définir manuellement `BON_PLANS_METRICS_ENABLED=true`. L'affiliation conserve ses propres conditions d'activation et d'approbation ; cette variable n'active aucun lien. Pour arrêter les mesures, retirer la variable ou la mettre à `false` et purger les anciennes lignes selon la politique retenue.
+
+Les tests unitaires s'exécutent sans Neon. Playwright utilise des offres et destinations interceptées, teste l'absence d'émission par défaut et un payload minimal lorsque la mesure est simulée active. Ils ne prouvent ni l'application de la migration ni une attribution Awin.
+
+### Preuves et limites de validation
+
+Base auditée `31c34623c64a32ed6a8cb5b9b22c117753dd3a39` : CI [41523701029](https://github.com/alilou31/Toto/actions/runs/41523701029), déploiement [41523700757](https://github.com/alilou31/Toto/actions/runs/41523700757), smoke [41524215188](https://github.com/alilou31/Toto/actions/runs/41524215188) réussis. Ces preuves ne couvrent pas le nouveau code.
+
+Tests unitaires locaux de l'évolution exécutés sous Node 24.19.0 : six fichiers passent. Installation npm, lint, builds et Playwright locaux indisponibles à cause du proxy réseau et des dépendances absentes ; les contrôles distants du SHA de la PR doivent être vérifiés avant livraison. Aucun test métier ni migration exécuté contre Neon de production.
+

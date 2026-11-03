@@ -19,7 +19,9 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-La configuration Playwright démarre l'application locale si `PLAYWRIGHT_BASE_URL` n'est pas défini. La CI exécute aussi les contrôles de qualité et le build Cloudflare ; un succès de CI n'est pas à lui seul une preuve de parcours métier en production.
+La configuration Playwright démarre l'application locale si `PLAYWRIGHT_BASE_URL` n'est pas défini. La CI exécute aussi les contrôles de qualité ; le build Cloudflare est vérifié par le workflow distinct `deploy-cloudflare.yml` (sans déploiement sur PR). Un succès de CI n'est pas à lui seul une preuve de parcours métier en production.
+
+La suite existante `bons-plans-filters.spec.ts` couvre aussi le contexte volontaire de rendez-vous, la réinitialisation, l'indisponibilité des offres, les métadonnées et l'émission minimale du clic uniquement lorsque le serveur annonce la mesure active. Les offres et destinations commerciales de ces tests sont des fixtures interceptées. Le refus par défaut de `/api/affiliate-clicks` est testé sans base de données. Les tests unitaires `affiliate-clicks.test.cjs` vérifient origine, taille, format et validité de l'offre ; ils ne prouvent pas l'écriture réelle dans Neon.
 
 ## Playwright de production en lecture seule
 

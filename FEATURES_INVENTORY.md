@@ -205,7 +205,7 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - [ ] Confirmer CI, lint, tests unitaires, Playwright et build Cloudflare sur la branche candidate.
 - [ ] Vérifier le rendu réel des routes connectées en environnement de test ; ne pas conclure sur la production avant déploiement.
 - **Branche :** `feat/neo-midnight-design-system`. **Statut :** en attente de validation CI ; aucune modification du backend ou de la base n'est prévue.
-## Bons plans — évolution proposée le 2026-10-25
+## Bons plans — code existant et évolution du 2026-11-03
 
 ### Préparation Awin — PR #76, 2026-11-02
 
@@ -214,9 +214,12 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - Liens commerciaux identifiés, sans données de profil ni suivi ajouté. Connexion MCP Awin et attribution des commissions non validées.
 - Le code ne prouve ni sa mise en production ni l'activation commerciale ; consulter les preuves CI/déploiement de la PR.
 
-- CODE PROPOSÉ EN PR : filtres de catégorie et budget sur la page existante `/bons-plans`, sans réservation ni liens affiliés fictifs.
-- TEST PROPOSÉ : `tests/e2e/bons-plans-filters.spec.ts` ; conserver le test mobile existant.
-- À VÉRIFIER : CI, tests Playwright, déploiement et smoke production. Détails : `docs/BONS_PLANS_AFFILIATION_MVP.md`.
+- **Existant sur main audité `31c3462` :** six cartes, filtres catégorie/budget, état vide et tests mobile/affiliation. CI [41523701029](https://github.com/alilou31/Toto/actions/runs/41523701029) réussie sur cette base.
+- **Évolution sur branche, à vérifier en CI :** contexte volontaire Premier rendez-vous/Partager une activité, explication éditoriale et réinitialisation des choix ; aucune lecture de profil ni modification du matching.
+- **Mesure préparée, désactivée :** compteur journalier par idée, validation serveur d'une offre encore approuvée, migration 016 non appliquée par ce travail. Aucune réservation, vente ou commission déduite d'un clic.
+- **SEO :** layout dédié `/bons-plans` avec titre, description, canonical et Open Graph ; sitemap existant réutilisé.
+- **Tests étendus :** suite existante `tests/e2e/bons-plans-filters.spec.ts`, tests unitaires `date-ideas.test.cjs` et `affiliate-clicks.test.cjs` ; test mobile conservé.
+- **Restant :** attribution Awin, contrats annonceurs, activation manuelle, validation Neon et production du nouveau SHA. Détails : `docs/BONS_PLANS_AFFILIATION_MVP.md`.
 
 ## Consolidation technique sans prestataire — branche du 2026-10-27 (non validée en production)
 
@@ -230,3 +233,4 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - [x] Ajouter une vérification Playwright publique du thème et de la navigation clavier/mobile.
 - [ ] Valider en CI, comparer visuellement les routes authentifiées et mesurer WCAG AA sur les rendus réels avant fusion.
 - [ ] Rationaliser les styles historiques après revue visuelle, sans créer de composants parallèles.
+

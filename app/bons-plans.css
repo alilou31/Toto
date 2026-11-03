@@ -40,3 +40,7 @@
 .bons-plans-affiliate-disclosure{font-size:12px;font-weight:700;color:#385f4e}
 .bons-plans-affiliate-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 14px;border-radius:12px;background:#194f3b;color:#fff!important;text-decoration:none;font-weight:700;font-size:13px}
 .bons-plans-affiliate small{font-size:11px;line-height:1.5;color:#5c7065}
+
+.bons-plans-recommendation { margin: 16px 0; color: #52695b; line-height: 1.6; }
+.bons-plans-reset { margin: 0 0 18px; padding: 10px 14px; border: 1px solid currentColor; border-radius: 12px; color: inherit; background: transparent; cursor: pointer; }
+.bons-plans-reset:focus-visible { outline: 3px solid #173f35; outline-offset: 3px; }

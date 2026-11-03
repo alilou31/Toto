@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { PublicAffiliateOffer } from "@/lib/affiliate-offers";
+import { recommendedIdeaIds } from "@/lib/date-ideas";
 import Link from "next/link";
 import { ArrowRight, Bike, Coffee, Compass, Heart, Leaf, MapPin, Sparkles, TicketPercent, Utensils, Hotel, SlidersHorizontal } from "lucide-react";
 
@@ -21,19 +22,36 @@ const budgetLabels: Record<Budget, string> = { all: "Tous les budgets", free: "G
 export default function BonsPlansPage() {
   const [category, setCategory] = useState<Category>("all");
   const [budget, setBudget] = useState<Budget>("all");
+  const [context, setContext] = useState("all");
+  const [clickMeasurementEnabled, setClickMeasurementEnabled] = useState(false);
   const [affiliateOffers, setAffiliateOffers] = useState<PublicAffiliateOffer[]>([]);
   useEffect(() => {
     const controller = new AbortController();
     fetch("/api/affiliate-offers", { signal: controller.signal, credentials: "omit" })
       .then((response) => response.ok ? response.json() : { offers: [] })
-      .then((data) => { if (!controller.signal.aborted && Array.isArray(data.offers)) setAffiliateOffers(data.offers); })
+      .then((data) => {
+        if (!controller.signal.aborted && Array.isArray(data.offers)) {
+          setAffiliateOffers(data.offers);
+          setClickMeasurementEnabled(data.clickMeasurementEnabled === true);
+        }
+      })
       .catch(() => {});
     return () => controller.abort();
   }, []);
   const filtered = useMemo(() => ideas.filter((idea) =>
+    recommendedIdeaIds(context).includes(idea.id) &&
     (category === "all" || idea.category === category) &&
     (budget === "all" || idea.budget === budget)
-  ), [category, budget]);
+  ), [category, budget, context]);
+
+  function measureClick(ideaId: string) {
+    if (!clickMeasurementEnabled) return;
+    void fetch("/api/affiliate-clicks", {
+      method: "POST", credentials: "omit", keepalive: true,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ideaId }),
+    }).catch(() => {});
+  }
 
   return (
     <main className="bons-plans-page">
@@ -50,6 +68,13 @@ export default function BonsPlansPage() {
       <section className="bons-plans-section" aria-label="Découvrir les idées de sorties">
         <div className="bons-plans-section-heading"><div><span className="bons-plans-eyebrow">INSPIRATION</span><h2>À vous de choisir l’ambiance</h2></div><span className="bons-plans-count">{filtered.length} idée{filtered.length > 1 ? "s" : ""}</span></div>
         <div className="bons-plans-filters">
+          <label className="bons-plans-filter"><span>Votre rendez-vous</span>
+            <select aria-label="Votre rendez-vous" value={context} onChange={event => setContext(event.target.value)}>
+              <option value="all">Toutes les envies</option>
+              <option value="first">Premier rendez-vous</option>
+              <option value="shared">Partager une activité</option>
+            </select>
+          </label>
           <label className="bons-plans-filter"><span className="bons-plans-filter-label"><SlidersHorizontal size={14} aria-hidden="true" /> Type de sortie</span>
             <select aria-label="Type de sortie" value={category} onChange={(event) => setCategory(event.target.value as Category)}>
               {Object.entries(categoryLabels).map(([value,label]) => <option key={value} value={value}>{label}</option>)}
@@ -61,6 +86,12 @@ export default function BonsPlansPage() {
             </select>
           </label>
         </div>
+        {context !== "all" && <p className="bons-plans-recommendation">
+          {context === "first" ? "Des idées simples pour une première rencontre, à votre rythme." : "Une activité commune pour partager une découverte et lancer la conversation."}
+          {" "}Sélection éditoriale selon votre choix, sans analyse de votre profil.
+        </p>}
+        {(context !== "all" || category !== "all" || budget !== "all") && <button type="button" className="bons-plans-reset" onClick={() => { setContext("all"); setCategory("all"); setBudget("all"); }}>Réinitialiser les choix</button>}
+        {clickMeasurementEnabled && affiliateOffers.length > 0 && <p className="bons-plans-disclaimer">Les clics sur les liens affiliés sont comptés par jour et par idée, sans cookie ni identifiant de membre. Ce compteur ne mesure pas les réservations ou les ventes.</p>}
         {filtered.length === 0 ? <p role="status">Aucune idée pour ces filtres. Essayez un autre budget ou une autre catégorie.</p> : (
           <div className="bons-plans-grid">
             {filtered.map(({ id, icon: Icon, category: kind, title, description, tag, tone }) => (
@@ -71,7 +102,7 @@ export default function BonsPlansPage() {
                 {affiliateOffers.filter((offer) => offer.ideaId === id).map((offer) => (
                   <div className="bons-plans-affiliate" key={offer.ideaId}>
                     <span className="bons-plans-affiliate-disclosure">Lien affilié · {offer.partner}</span>
-                    <a href={offer.url} target="_blank" rel="sponsored noopener noreferrer" referrerPolicy="no-referrer" className="bons-plans-affiliate-link">{offer.label} <ArrowRight size={15} aria-hidden="true" /></a>
+                    <a href={offer.url} onClick={() => measureClick(offer.ideaId)} target="_blank" rel="sponsored noopener noreferrer" referrerPolicy="no-referrer" className="bons-plans-affiliate-link">{offer.label} <ArrowRight size={15} aria-hidden="true" /></a>
                     <small>Réservation et paiement éventuels sur le site du partenaire.</small>
                   </div>
                 ))}
@@ -88,3 +119,4 @@ export default function BonsPlansPage() {
     </main>
   );
 }
+

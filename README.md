@@ -69,7 +69,7 @@ Le workflow déploie automatiquement les commits poussés sur `main` après réu
 - La configuration Playwright démarre automatiquement Next.js sur `http://127.0.0.1:3000`, sauf si `PLAYWRIGHT_BASE_URL` est défini.
 - Les tests navigateur couvrent la page d'accueil, la navigation, les champs obligatoires des formulaires et l'accessibilité des pages de démo/validation. Ils ne créent pas de compte réel et ne remplacent pas les tests d'intégration avec Neon.
 
-GitHub Actions exécute les tests unitaires, ESLint, le build Next.js et le build OpenNext/Cloudflare dans le job `quality`, puis lance les tests Chromium dans le job `playwright` à chaque push sur `main` et à chaque pull request vers `main`. En cas d'échec Playwright, les rapports sont conservés comme artefacts pendant 7 jours.
+GitHub Actions exécute les tests unitaires, ESLint et le build Next.js dans le job `quality`, et les tests Chromium dans le job `playwright`, à chaque push sur `main` et à chaque pull request vers `main`. Le workflow distinct `deploy-cloudflare.yml` vérifie le build OpenNext/Cloudflare sur les PR sans les déployer. En cas d'échec Playwright, les rapports sont conservés comme artefacts pendant 7 jours.
 
 Pour installer les navigateurs en local après `npm install` : `npx playwright install chromium`.
 
