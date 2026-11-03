@@ -243,3 +243,11 @@
 - **Instabilité :** `tests/e2e/session-navigation.spec.ts` (session simulée sur `/connexion`), parfois restée sur la page de connexion ; vérifier après suppression de la course entre redirection et refresh du routeur.
 - **Restrictions :** les tests de session interceptent l’API ; aucun parcours authentifié réel, aucun compte nouveau et aucune écriture métier validée par ce smoke.
 - **Prochaine action :** valider le SHA de la PR en CI/Worker build ; après fusion, vérifier le smoke complet, les redirections de l’ancien domaine et l’absence de faux positifs Cloudflare.
+
+### PROD-2026-11-03-04 — Préparation email / migration de confirmation
+
+- **Référence initiale :** `main` `cd8bdaff6243accca4bf3ce174a6168ce76dad6b` (PR #80). [CI main 41677622856](https://github.com/alilou31/Toto/actions/runs/41677622856) et [smoke 41678137602](https://github.com/alilou31/Toto/actions/runs/41678137602) réussis : 169 Playwright CI réussis (2 ignorés), 71 Playwright production réussis (0 échec).
+- **Preuve de configuration manquante :** [déploiement 41677622724](https://github.com/alilou31/Toto/actions/runs/41677622724) affiche un warning `RESEND_API_KEY is not configured in GitHub Actions`. La configuration éventuelle du secret dans Cloudflare n'est **pas visible** depuis GitHub.
+- **Ajout proposé :** réutilisation Resend, création de comptes uniquement après validation de l’adresse par lien sécurisé, migration 017 et flag `EMAIL_VERIFICATION_ENABLED`. L’activation effective de ces derniers n’est **pas prouvée** par le dépôt.
+- **Résultat de livraison d'emails :** **NON TESTÉ** ; aucun email envoyé à un vrai compte ni inscription persistée lors de cette livraison de code.
+- **Garde-fous :** flag désactivé par défaut ; appliquer la migration 017, vérifier le DNS d'envoi et les secrets, puis valider l'E2E avec une boîte test autorisée avant activation publique. Ajouter les preuves de PR CI, déploiement et smoke sous une nouvelle entrée une fois exécutés.

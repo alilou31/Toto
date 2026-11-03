@@ -262,3 +262,11 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Session simulée :** la page `/connexion` évite désormais la concurrence entre redirection et refresh ; elle conserve le comportement historique (ne pas laisser voir la connexion lorsque la session est active et utiliser le paramètre `next` local). Validation sur l’environnement déployé à confirmer par Playwright.
 - **Domaine historique :** `wrangler.jsonc` contient déjà `workers_dev: true`. L’observation HTTP 404 sur `nikahya.rassoul-ali.workers.dev` n’est pas masquée dans les assertions ; la liaison de l’URL de production Cloudflare doit être vérifiée si le redéploiement ne la restaure pas.
 - **Référence :** smoke GitHub [41668666591](https://github.com/alilou31/Toto/actions/runs/41668666591) (tentative 4), contrôle HTTP/Neon réussi, Playwright 69 passés, 1 instable (session), 1 échoué (domaine historique).
+
+## Emails / inscription vérifiée — 2026-11-03
+
+- **Déjà présent avant ce lot :** `POST /api/auth/register` (compte + session immédiate), `POST /api/auth/password-reset`, `POST /api/auth/password-reset/confirm`, newsletter double opt-in, cookies sécurisés, limitation des tentatives, tests de validation.
+- **Ajout ciblé :** transport Resend centralisé, table SQL 017 de préinscriptions temporaires, confirmation de compte par jeton haché et à usage unique avant création de compte, interface `/confirmer-email`, tests Playwright dédiés et documentation de mise en service.
+- **Compatibilité :** drapeau serveur `EMAIL_VERIFICATION_ENABLED` **désactivé par défaut**, aucune réinitialisation, suppression ou modification de compte existant. OAuth conserve sa propre méthode et ne dépend pas de la migration.
+- **À valider en production avant activation :** domaine Resend, clé API secret Cloudflare, migration 017 réellement appliquée dans Neon, envoi/ réception sur compte de test autorisé. Le déploiement GitHub [41677622724](https://github.com/alilou31/Toto/actions/runs/41677622724) a signalé `RESEND_API_KEY` absent dans les secrets GitHub Actions ; cela ne permet pas de déterminer si le secret existe dans Cloudflare.
+- **Contrôles CI :** une API simulée dans le navigateur ne prouve pas l'expédition réelle ; les tests de prod sont volontairement non-mutants.

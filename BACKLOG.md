@@ -406,3 +406,12 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [ ] Valider en CI, comparer visuellement les routes authentifiées et mesurer WCAG AA sur les rendus réels avant fusion.
 - [ ] Rationaliser les styles historiques après revue visuelle, sans créer de composants parallèles.
 
+
+## Email transactionnel et inscription — 2026-11-03
+
+- [x] Réutiliser Resend déjà présent (newsletter + récupération), sans deuxième prestataire.
+- [x] Préparer une confirmation d'email à l'inscription par jeton temporaire, SHA-256, et sans session avant validation (activation manuelle requise).
+- [x] Prévoir une migration SQL non destructive et des tests Playwright avec mocks, sans messages vers des membres réels.
+- [ ] **Externe** : prouver la vérification DNS d'envoi chez Resend, la présence du secret serveur dans Cloudflare et/ou GitHub, puis exécuter la migration 017 dans Neon.
+- [ ] **Externe** : activer `EMAIL_VERIFICATION_ENABLED=true` seulement après les prérequis ci-dessus, tester la réception/confirmation sur une boîte autorisée.
+- [ ] Vérifier les checks CI de la PR, le déploiement et le smoke, et ajouter les preuves de livraison dans le registre.

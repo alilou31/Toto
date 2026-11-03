@@ -3,7 +3,7 @@
   "name": "nikahya",
   "workers_dev": true,
   "keep_vars": true,
-  "vars": { "NEXT_PUBLIC_SITE_URL": "https://nakahya.com" },
+  "vars": { "NEXT_PUBLIC_SITE_URL": "https://nakahya.com", "RESEND_FROM_EMAIL": "NAKAHYA <notifications@nakahya.com>" },
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-10-10",
   "compatibility_flags": [
