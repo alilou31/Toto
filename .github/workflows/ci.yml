@@ -36,6 +36,8 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
+      - name: TypeScript
+        run: npx tsc --noEmit
 
   playwright:
     name: Playwright browser tests
@@ -63,3 +65,4 @@ jobs:
             test-results/
           if-no-files-found: ignore
           retention-days: 7
+

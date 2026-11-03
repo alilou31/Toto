@@ -354,6 +354,9 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 
 ### Découverte compacte et offres Premium — 2026-10-13
 
+- Finalisation PR #60 (2026-11-03) : conserver la grille `/decouvrir`, reprendre la page immersive existante de la branche, corriger la destination des deux navigations et tester Passer/Liker/fiche/retour/erreurs. Le suivi CI, fusion et production se trouve sur [PR #60](https://github.com/alilou31/Toto/pull/60). Aucun moteur de matching, catalogue d'affiliation ou API d'intérêt concurrent ajouté.
+- Limites conservées : pas d'historique durable des profils passés ; les simulations Playwright ne prouvent pas une écriture Neon ni un match réel entre deux membres.
+
 - [x] Grille de découverte compacte et responsive sur la branche `feat/discovery-dashboard-membership`.
 - [x] Fiche membre avec activités de jeu enregistrées, sans afficher scores ou réponses privées.
 - [x] Accès aux offres depuis le tableau de bord.

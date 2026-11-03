@@ -148,9 +148,10 @@ export default function DiscoverPage() {
           <div>
             <div className="section-kicker">DES RENCONTRES QUI ONT DU SENS</div>
             <h1>La bonne rencontre<br/><em>commence par un détail.</em></h1>
-            <p>Une personne à la fois : sa photo, les informations essentielles, puis faites défiler pour découvrir la suivante.</p>
+            <p>Parcourez la grille de profils et ouvrez une fiche pour faire connaissance à votre rythme.</p>
           </div>
           <div className="discovery-heading-actions">
+            <Link href="/decouvrir/immersif" className="discovery-premium-link">Découverte immersive</Link>
             <Link href="/offres" className="discovery-premium-link"><Sparkles size={15}/> Voir les offres</Link>
             <button className="button button-quiet" type="button" onClick={() => void loadProfiles()} disabled={loading}><RefreshCw size={15}/> Actualiser</button>
           </div>
@@ -162,7 +163,7 @@ export default function DiscoverPage() {
           : profiles.length === 0 ? <div className="discovery-empty"><span><UserRound size={25}/></span><h2>De nouvelles rencontres bientôt</h2><p>Il n’y a pas encore de profils visibles à vous présenter. Complétez le vôtre pour rejoindre la découverte.</p><Link href="/profil" className="button button-green">Compléter mon profil</Link></div>
           : <>
             <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><label>Filtrer par genre <select value={genderFilter} onChange={event=>setGenderFilter(event.target.value)}><option value="opposite">Genre opposé (par défaut)</option><option value="women">Femmes</option><option value="men">Hommes</option><option value="all">Tous les genres</option></select></label><span>Profils visibles · 18+</span></div>
-            <div className="discovery-feed">
+            <div className="discovery-feed discovery-grid">
               {profiles.map(profile => {
                 const mine = [...myInterests, ...myGames, ...myHobbies];
                 const theirs = [...(profile.interests ?? []), ...(profile.favorite_games ?? []), ...(profile.hobbies ?? [])];
@@ -223,3 +224,4 @@ export default function DiscoverPage() {
     </main>
   );
 }
+

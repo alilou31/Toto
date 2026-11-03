@@ -129,3 +129,7 @@ input::placeholder,textarea::placeholder{color:var(--nk-text-muted)!important}
 .discovery-feed .discovery-card .discovery-tags,.discovery-feed .discovery-card .discovery-card-actions{position:relative;z-index:1}
 .discovery-feed .discovery-card .discovery-secondary-actions{position:relative;z-index:1}
 @media(max-width:600px){.game-topbar{padding-inline:16px!important}.game-page-heading{flex-wrap:wrap}.landing-page .landing-hero h1{font-size:clamp(36px,9vw,48px)!important}.discovery-feed .discovery-card.discovery-profile{min-height:330px!important}}
+
+/* Preserve the classic grid beside the separate immersive route. */
+@media(max-width:1000px){.discovery-feed.discovery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.discovery-feed.discovery-grid{grid-template-columns:1fr}}
