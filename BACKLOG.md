@@ -369,6 +369,7 @@ Ce bloc remplace les statuts antérieurs de ce backlog lorsqu'ils se contredisen
 - [x] Préciser que les idées de sorties sont éditoriales/liens externes et que la réservation intégrée n'est pas encore disponible.
 - [ ] **P0 sécurité :** concevoir consentement, visibilité et expiration des intentions ; vérifier les autorisations et la cohérence du blocage/signalement.
 - [ ] **P1 validation :** mesurer clics sur les idées de sorties, premiers messages après match et usage des jeux avant de construire une marketplace.
+- Préparation 2026-11-03 : recommandations éditoriales selon choix explicite et compteur de clics agrégé optionnel sur les cartes existantes ; ni activation, ni mesure des premiers messages/jeux, ni attribution commerciale dans ce lot. Appliquer migration 016 et valider le stockage avant activation manuelle.
 - [ ] **P1 MVP sorties :** intention facultative et temporaire (activité, créneau large, zone approximative), révocable et invisible par défaut.
 - [ ] **P1 découverte :** filtrer les profils qui ont explicitement rendu visible une intention, sans contourner âge, préférences, blocages ou modération.
 - [ ] **P2 réservation :** tester liens affiliés/redirects puis API de disponibilité/réservation ; concevoir annulation, erreurs, support et confirmations avant tout paiement.
@@ -399,3 +400,4 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [x] Ajouter une vérification Playwright publique du thème et de la navigation clavier/mobile.
 - [ ] Valider en CI, comparer visuellement les routes authentifiées et mesurer WCAG AA sur les rendus réels avant fusion.
 - [ ] Rationaliser les styles historiques après revue visuelle, sans créer de composants parallèles.
+
