@@ -91,3 +91,11 @@ Le redirect d’une session simulée réutilise désormais une navigation docume
 L’ancien domaine est toujours une **obligation de compatibilité** et son test HTTP 308 n’est pas désactivé. Le fichier `wrangler.jsonc` a déjà `workers_dev: true`, mais l’état réel du binding doit être confirmé **après le déploiement**. Un HTTP 404 indique de vérifier dans Cloudflare Workers & Pages → `nikahya` → Settings → Domains & Routes la publication de l’URL de production `nikahya.rassoul-ali.workers.dev` ; une réponse 404 ne prouve pas un problème dans le middleware. La conservation des anciennes API est également testée (401 attendu sur `/api/discover` sans session).
 
 Ces contrôles n’écrivent pas de comptes dans Neon. Consigner la CI sur le SHA de PR et le smoke post-fusion avant de déclarer la production entièrement verte.
+
+## Confirmation d'adresse à l'inscription (Resend) — 2026-11-03
+
+La suite `tests/e2e/email-verification.spec.ts` couvre : page non indexable `/confirmer-email`, jeton absent ou mal formé, validation cryptographique du format de jeton, confirmation déclenchée uniquement après clic utilisateur, absence de création de compte dans les fixtures, et réponse HTTP 202 du formulaire d'inscription après simulation de `/api/auth/register`.
+
+Le smoke de production ajoute cette suite **sans envoi d'e-mail ni mutation de base** : seuls des jetons invalides atteignent réellement l'API ; les succès sont interceptés côté Playwright. La livraison Resend, la migration Neon 017 et la confirmation réelle d'un compte nécessitent une validation séparée, après activation manuelle décrite dans le README.
+
+Ne pas confondre un email marqué « Verified » dans Resend, un expéditeur configuré dans Cloudflare et un message réellement livré dans une boîte test.

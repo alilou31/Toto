@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
+import { createVerificationEmail, createVerificationToken, hashVerificationToken } from "@/lib/email-verification";
+import { isResendConfigured, sendResendEmail } from "@/lib/resend";
+import { getSiteUrl } from "@/lib/site-origin";
 import { getDb } from "@/lib/db";
 import { createSession, hashPassword } from "@/lib/auth";
 import { consumeAuthRateLimit, getTrustedClientIp } from "@/lib/auth-rate-limit";
@@ -48,8 +51,49 @@ export async function POST(request: Request) {
       );
     }
     const sql = getDb();
+    const verificationEnabled = process.env.EMAIL_VERIFICATION_ENABLED === "true";
+    // Never create an unconfirmed account when delivery cannot be attempted.
+    if (verificationEnabled && !isResendConfigured()) {
+      return NextResponse.json({ error: "La confirmation par e-mail est momentanément indisponible." }, { status: 503, headers: { "Cache-Control": "no-store" } });
+    }
+
     const id = randomUUID();
     const passwordHash = await hashPassword(password);
+    if (verificationEnabled) {
+      // An existing account receives the same response as a pending registration.
+      const existing = await sql`select id from public.auth_users where email_normalized = ${normalizedEmail} limit 1`;
+      const message = "Si cette adresse peut être utilisée, un e-mail de confirmation sera envoyé. Consultez aussi vos courriers indésirables.";
+      if (existing.length) {
+        return NextResponse.json({ verificationRequired: true, message }, { status: 202, headers: { "Cache-Control": "no-store" } });
+      }
+      const token = createVerificationToken();
+      const tokenHash = hashVerificationToken(token);
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+      // No member session exists before verification. An expired signup can be renewed.
+      await sql`delete from public.pending_email_registrations where expires_at < now()`;
+      await sql`
+        insert into public.pending_email_registrations
+          (email, email_normalized, password_hash, token_hash, expires_at, age_confirmed_at, terms_accepted_at, privacy_acknowledged_at)
+        values (${normalizedEmail}, ${normalizedEmail}, ${passwordHash}, ${tokenHash}, ${expiresAt}, now(), now(), now())
+        on conflict (email_normalized) do update set
+          password_hash = excluded.password_hash,
+          token_hash = excluded.token_hash,
+          expires_at = excluded.expires_at,
+          age_confirmed_at = excluded.age_confirmed_at,
+          terms_accepted_at = excluded.terms_accepted_at,
+          privacy_acknowledged_at = excluded.privacy_acknowledged_at,
+          updated_at = now()
+      `;
+      const emailMessage = createVerificationEmail(token, getSiteUrl());
+      const sent = await sendResendEmail({ to: normalizedEmail, ...emailMessage });
+      if (!sent.ok) {
+        // Do not leave unusable pending registrations after a failed Resend call.
+        await sql`delete from public.pending_email_registrations where token_hash = ${tokenHash}`.catch(() => []);
+        console.error("NAKAHYA registration confirmation delivery failed.", sent.status ?? "network");
+        return NextResponse.json({ error: "L’e-mail de confirmation n’a pas pu être envoyé. Réessayez plus tard." }, { status: 503, headers: { "Cache-Control": "no-store" } });
+      }
+      return NextResponse.json({ verificationRequired: true, message }, { status: 202, headers: { "Cache-Control": "no-store" } });
+    }
     await sql`
       insert into public.auth_users (id, email, email_normalized, password_hash, age_confirmed_at, terms_accepted_at, privacy_acknowledged_at)
       values (${id}, ${normalizedEmail}, ${normalizedEmail}, ${passwordHash}, now(), now(), now())
