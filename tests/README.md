@@ -39,6 +39,8 @@ Le résultat historique du 12 octobre 2026 est **18 tests réussis, 0 échec, 0 
 
 Diagnostic de la première CI de finalisation [41635962435](https://github.com/alilou31/Toto/actions/runs/41635962435), SHA `bc82b106` : unité/lint/build/TypeScript réussis ; Worker [41635962159](https://github.com/alilou31/Toto/actions/runs/41635962159) réussi. Playwright : 161 réussis, 2 ignorés préexistants, 3 échecs de sélecteur (les alertes globales incluaient aussi `__next-route-announcer__`). Les assertions ciblent maintenant l'alerte métier précise ; aucun test supprimé ou ignoré. Vérifier le nouveau SHA de la PR pour la réussite de la suite corrigée.
 
+Validation corrigée du SHA `d9caed8e7532210f9a5b2cca4b1238a3616b6d63` : [CI 41636544418](https://github.com/alilou31/Toto/actions/runs/41636544418) réussie (unitaires, ESLint, build Next.js, TypeScript explicite, Playwright **164 réussis / 2 ignorés / 0 échec**) ; [build Worker 41636544469](https://github.com/alilou31/Toto/actions/runs/41636544469) réussi, déploiement PR ignoré. Les deux scénarios ignorés préexistants concernent les invitations Premium live et le parcours à deux comptes non configurés ; ils ne sont pas comptés comme validés. Les changements documentaires ultérieurs restent soumis aux checks du SHA final ; le déploiement et le smoke de main doivent être vérifiés séparément après fusion.
+
 Ces contrôles n'écrivent pas de données métier. Ils ne valident pas le parcours connecté complet ni la persistance des profils, matchs, défis et messages.
 
 ## Parcours réel à deux utilisateurs

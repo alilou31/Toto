@@ -169,4 +169,3 @@ export default function ImmersiveDiscoveryPage() {
       </section>}
   </GameShell>;
 }
-
