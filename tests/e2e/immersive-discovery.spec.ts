@@ -86,7 +86,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       });
       await page.goto("/decouvrir/immersif");
       await page.getByRole("button", { name: "Liker Amina" }).click();
-      await expect(page.getByRole("alert")).toContainText("Intérêt indisponible.");
+      await expect(page.locator(".discovery-notice[role=alert]")).toContainText("Intérêt indisponible.");
       await expect(page.getByRole("heading", { name: "Amina", exact: true })).toBeVisible();
       await page.getByRole("button", { name: "Liker Amina" }).click();
       await expect(page.getByRole("heading", { name: "Sarah", exact: true })).toBeVisible();
@@ -137,7 +137,7 @@ test("chargement, erreur serveur et réessai sans faux écran vide", async ({ pa
   await page.goto("/decouvrir/immersif");
   await expect(page.locator(".discovery-state[role=status]")).toContainText("Chargement des profils");
   release();
-  await expect(page.getByRole("alert")).toContainText("Impossible de charger les profils.");
+  await expect(page.locator(".discovery-state[role=alert]")).toContainText("Impossible de charger les profils.");
   await page.getByRole("button", { name: "Réessayer" }).click();
   await expect(page.getByRole("heading", { name: "De nouvelles rencontres bientôt" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Revoir les profils" })).toHaveCount(0);

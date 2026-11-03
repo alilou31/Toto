@@ -195,15 +195,15 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 
 
  
-## Identité visuelle Neo Midnight — branche candidate
-
-### Découverte immersive — finalisation de la PR #60, 2026-11-03
+## Découverte immersive — finalisation de la PR #60, 2026-11-03
 
 - Audit sur main `95b80e66` : route immersive absente malgré sa mention anticipée dans le design system ; fil de cartes existant et deux navigations distinctes. La branche ancienne contenait la page et deux tests partiels, repris sans recréer d'API.
 - `/decouvrir/immersif` : photo grand format, résumé, accès à la fiche, Passer local et Liker via l'API d'intérêts existante, états de panne/chargement/liste vide et fin de parcours. Le retour transporte uniquement une position validée dans l'URL.
 - Navigation centrale connectée et secours GameShell vers l'immersion ; `/decouvrir` reste la grille responsive avec intérêts communs, filtres, blocage et signalement conservés.
 - Aucun changement de matching, d'authentification, d'affiliation ou de schéma. Les évolutions #76/#77 sont conservées depuis main.
 - Tests : suite PR existante `immersive-discovery.spec.ts` étendue desktop/mobile, helpers de navigation couverts par `discovery-navigation.test.cjs`, régressions existantes conservées. Résultats distants et statut de fusion : [PR #60](https://github.com/alilou31/Toto/pull/60), checks sur son SHA courant ; ne pas confondre simulation des API et persistance Neon réelle.
+
+## Identité visuelle Neo Midnight — branche candidate
 
 - [x] Centraliser les tokens sombres, lime, menthe et corail dans `app/product-design-system.css`.
 - [x] Remplacer la couche visuelle plum/lilas par des surfaces nuit et accents neutres ; violet exclu de la palette de marque.
