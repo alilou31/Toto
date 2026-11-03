@@ -63,6 +63,10 @@ La suite Bons plans de CI conserve ses contrôles de configuration désactivée 
 
 Robustesse CI : installations npm limitées à huit minutes et requêtes réseau à trente secondes, avec les retries existants. Un job doté du seul droit Actions nécessaire annule les validations PR obsolètes de la même branche et du même dépôt, après vérification que son SHA est encore courant. Il ne s'exécute pas sur main et ne sélectionne jamais les déploiements de production (événement `push`). Les journaux des anciennes exécutions restent disponibles pour diagnostic.
 
+Le sélecteur de validations est testé dans `pr-validation.test.cjs` : forks, main, runs plus récents ou simultanés, runs terminés et événements push sont exclus. Le job est réservé aux PR du même dépôt et revérifie HEAD avant chaque annulation. Diagnostic réseau observé sur la PR de migration : `EIDLETIMEOUT` pendant le téléchargement npm de `@aws-sdk/credential-provider-env`, dépendance transitive existante d'OpenNext ; aucun changement forcé de version n'est appliqué pour masquer cette panne réseau.
+
+Lors de la relance de migration `2353af2e`, le build Worker et le préflight DNS/TLS ont réussi : certificat reconnu pour `nakahya.com` et `*.nakahya.com`, accueil HTTP 200, www sans DNS. Playwright a compté 168 réussis, 2 ignorés préexistants et une assertion de canonical racine à normaliser (`https://nakahya.com` et `https://nakahya.com/` désignent la même URL). L'assertion compare maintenant les URL normalisées avec protocole/hôte/chemin exacts. La suite unitaire locale finale couvre neuf fichiers ; les checks du SHA final font foi avant fusion et le smoke réel après déploiement reste obligatoire.
+
 - Séparer tests unitaires, tests Playwright CI, smoke HTTP/DB, Playwright de production et parcours métier à deux utilisateurs.
 - Pour chaque résultat, noter le SHA testé, le lien du workflow, les tests passés/échoués/ignorés et les limites de couverture.
 - Ne jamais déduire l'état des migrations Neon de leur simple présence dans `db/migrations/`.

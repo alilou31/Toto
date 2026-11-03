@@ -7,8 +7,12 @@ for (const path of ["/", "/demo", "/bons-plans"]) {
   test(`canonical et partage social cohérents : ${path}`, async ({ page }) => {
     const response = await page.goto(path);
     expect(response?.status()).toBe(200);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", new URL(path, origin).toString());
-    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", new URL(path, origin).toString());
+    const canonical = page.locator('link[rel="canonical"]');
+    const social = page.locator('meta[property="og:url"]');
+    await expect(canonical).toHaveAttribute("href", /.+/);
+    await expect(social).toHaveAttribute("content", /.+/);
+    expect(new URL(await canonical.getAttribute("href") || "about:blank").href).toBe(new URL(path, origin).href);
+    expect(new URL(await social.getAttribute("content") || "about:blank").href).toBe(new URL(path, origin).href);
     await expect(page.locator('meta[name="twitter:card"]')).toHaveCount(1);
   });
 }

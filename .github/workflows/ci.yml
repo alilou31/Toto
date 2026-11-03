@@ -20,34 +20,42 @@ concurrency:
 jobs:
   cancel-superseded:
     name: Cancel superseded PR validations
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       actions: write
       contents: read
     steps:
+      - name: Checkout cancellation policy
+        uses: actions/checkout@v4
       - name: Cancel only obsolete runs of this repository branch
         env:
           GH_WORKFLOW_TOKEN: ${{ github.token }}
           GH_REPOSITORY: ${{ github.repository }}
           GH_BRANCH: ${{ github.head_ref }}
           GH_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GH_RUN_ID: ${{ github.run_id }}
         run: |
           node --input-type=module <<'JS'
-          const { GH_WORKFLOW_TOKEN: token, GH_REPOSITORY: repo, GH_BRANCH: branch, GH_HEAD_SHA: sha } = process.env;
+          import policy from "./scripts/pr-validation.cjs";
+          const { GH_WORKFLOW_TOKEN: token, GH_REPOSITORY: repo, GH_BRANCH: branch, GH_HEAD_SHA: sha, GH_RUN_ID: runId } = process.env;
           const headers = { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" };
           const base = `https://api.github.com/repos/${repo}`;
           const head = await fetch(`${base}/git/ref/heads/${encodeURIComponent(branch)}`, { headers });
           if (!head.ok) throw new Error(`Branch lookup: HTTP ${head.status}`);
           if ((await head.json()).object.sha !== sha) { console.log("Superseded cleanup: no action"); process.exit(0); }
+          const self = await fetch(`${base}/actions/runs/${runId}`, { headers });
+          if (!self.ok) throw new Error(`Current run lookup: HTTP ${self.status}`);
+          const createdAt = (await self.json()).created_at;
           const url = new URL(`${base}/actions/runs`);
           url.search = new URLSearchParams({ branch, event: "pull_request", per_page: "100" });
           const response = await fetch(url, { headers });
           if (!response.ok) throw new Error(`Run lookup: HTTP ${response.status}`);
-          for (const run of (await response.json()).workflow_runs) {
-            if (run.head_sha === sha || run.head_repository?.full_name !== repo || !["queued", "in_progress"].includes(run.status)) continue;
-            if (!["NIKAHYA CI", "Deploy NIKAHYA to Cloudflare Workers"].includes(run.name)) continue;
+          for (const run of policy.obsoleteValidationRuns((await response.json()).workflow_runs, { repo, branch, sha, createdAt })) {
+            const latest = await fetch(`${base}/git/ref/heads/${encodeURIComponent(branch)}`, { headers });
+            if (!latest.ok) throw new Error(`Branch recheck: HTTP ${latest.status}`);
+            if ((await latest.json()).object.sha !== sha) { console.log("Branch advanced: no further cancellation"); break; }
             const cancelled = await fetch(`${base}/actions/runs/${run.id}/cancel`, { method: "POST", headers });
             if (![202, 409].includes(cancelled.status)) throw new Error(`Cancel ${run.id}: HTTP ${cancelled.status}`);
             console.log(`Obsolete PR validation ${run.id}: HTTP ${cancelled.status}`);
