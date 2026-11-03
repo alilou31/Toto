@@ -270,3 +270,9 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Compatibilité :** drapeau serveur `EMAIL_VERIFICATION_ENABLED` **désactivé par défaut**, aucune réinitialisation, suppression ou modification de compte existant. OAuth conserve sa propre méthode et ne dépend pas de la migration.
 - **À valider en production avant activation :** domaine Resend, clé API secret Cloudflare, migration 017 réellement appliquée dans Neon, envoi/ réception sur compte de test autorisé. Le déploiement GitHub [41677622724](https://github.com/alilou31/Toto/actions/runs/41677622724) a signalé `RESEND_API_KEY` absent dans les secrets GitHub Actions ; cela ne permet pas de déterminer si le secret existe dans Cloudflare.
 - **Contrôles CI :** une API simulée dans le navigateur ne prouve pas l'expédition réelle ; les tests de prod sont volontairement non-mutants.
+
+## Audit post-fusion #81 — 2026-11-03 (correction candidate)
+
+- **Routes déjà présentes dans le build** : `/confirmer-email`, `POST /api/auth/confirm-email`. Les smokes #164/#165 renvoient néanmoins 404 sur le domaine officiel : il ne s'agit pas de fonctionnalités absentes à recréer.
+- **Correction du déploiement** : route Custom Domain versionnée dans Wrangler et contrôle HTTP post-publication ; test de session et smoke existants fiabilisés sans doublon.
+- **À VÉRIFIER** : configuration Cloudflare réellement appliquée, nouveau smoke, validation externe Resend et migration Neon 017. L'activation reste OFF.

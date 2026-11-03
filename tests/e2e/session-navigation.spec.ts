@@ -22,8 +22,12 @@ test.describe("Session et retour navigateur", () => {
     await page.route("**/api/profile", async route => {
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ profile: { public_name: "Mike", visibility: "visible", onboarding_completed: true, birth_date: "1990-01-01" } }) });
     });
+    // Observe the real authentication check before awaiting the full document
+    // redirect. Cloudflare hydration can be slower than local CI.
+    const authCheck = page.waitForResponse(response => response.url().endsWith("/api/auth/me") && response.request().method() === "GET", { timeout: 20_000 });
     await page.goto("/connexion");
-    await expect(page).toHaveURL(/\/tableau-de-bord$/, { timeout: 10_000 });
+    await authCheck;
+    await expect(page).toHaveURL(/\/tableau-de-bord$/, { timeout: 20_000 });
     expect(sessionChecks, "La redirection doit reposer sur une vérification de session réelle (interceptée)").toBeGreaterThan(0);
     await expect(page.getByRole("heading", { name: "Bonjour, Mike." })).toBeVisible();
   });

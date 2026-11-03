@@ -415,3 +415,10 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [ ] **Externe** : prouver la vérification DNS d'envoi chez Resend, la présence du secret serveur dans Cloudflare et/ou GitHub, puis exécuter la migration 017 dans Neon.
 - [ ] **Externe** : activer `EMAIL_VERIFICATION_ENABLED=true` seulement après les prérequis ci-dessus, tester la réception/confirmation sur une boîte autorisée.
 - [ ] Vérifier les checks CI de la PR, le déploiement et le smoke, et ajouter les preuves de livraison dans le registre.
+
+## P0 — Clôture des smokes après PR #81 (2026-11-03)
+
+- [x] Diagnostiquer les 404 des routes de confirmation sur le domaine officiel, malgré leur présence dans le build ; isoler le test de navigation instable.
+- [x] Préparer un correctif unique : domaine déclaré dans Wrangler, gate HTTP post-déploiement, exécution séquentielle de Playwright et vérification de session observée.
+- [ ] Fusionner uniquement si CI + build Worker verts ; vérifier ensuite le rattachement du domaine et les smokes de `main`. Ne pas masquer les 404 si Cloudflare refuse la liaison.
+- [ ] Activer Resend et migration 017 séparément après confirmation des prérequis et test autorisé.

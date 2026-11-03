@@ -28,6 +28,15 @@
 
 ## Historique des exécutions
 
+### PROD-2026-11-03-05 — Audit du domaine après #81, avant correction
+
+- **SHA** : `d92cde633041d3343cf2bd3ca884482d4fc337c1` ; CI main #404 et [déploiement #313](https://github.com/alilou31/Toto/actions/runs/41682497018) réussis.
+- **Smokes KO** : [#164](https://github.com/alilou31/Toto/actions/runs/41683004942) = 72 passés / 4 échoués ; [#165](https://github.com/alilou31/Toto/actions/runs/41684532376) = 71 passés / 4 échoués / 1 instable. Accueil, DNS/TLS, démo et Neon ont réussi.
+- **Échecs** : `GET /confirmer-email` → 404 au lieu de 200 ; `POST /api/auth/confirm-email` avec jeton invalide → 404 au lieu de 400 ; deux tests UI de confirmation en échec ; redirection de session simulée intermittente.
+- **Diagnostic** : les deux nouvelles routes sont dans le build Next.js, mais `wrangler.jsonc` ne déclarait pas explicitement le domaine officiel ; le déploiement annonçait uniquement workers.dev. Le binding réel Cloudflare reste à confirmer : l'explication par un Worker différent est une hypothèse, pas une preuve.
+- **Correctif proposé** : rattachement `nakahya.com` à `nikahya` dans Wrangler, gate 200/400 après déploiement, smoke séquentiel, attente de la réponse auth avant vérification de la navigation. Statut post-correction : **NON EXÉCUTÉ** à cette étape. Aucun test ne crée de compte ni n'envoie de courriel.
+
+
 ## PROD-2026-10-13-02 — Audit navigateur production en lecture seule
 
 - **Résultat : PARTIELLEMENT PASSÉ — audit de navigation publique, contrôle mobile non concluant.**

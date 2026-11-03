@@ -2,6 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nikahya",
   "workers_dev": true,
+  "routes": [{ "pattern": "nakahya.com", "custom_domain": true }],
   "keep_vars": true,
   "vars": { "NEXT_PUBLIC_SITE_URL": "https://nakahya.com", "RESEND_FROM_EMAIL": "NAKAHYA <notifications@nakahya.com>" },
   "main": ".open-next/worker.js",

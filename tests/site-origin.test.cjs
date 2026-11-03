@@ -41,3 +41,12 @@ test('private routes retain noindex without hiding public editorial content', ()
   assert.equal(privatePath('/bons-plans'), false);
   assert.equal(privatePath('/demo'), false);
 });
+
+test('Wrangler binds the official domain to the same Worker', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const config = JSON.parse(fs.readFileSync(path.join(__dirname, '../wrangler.jsonc'), 'utf8'));
+  assert.equal(config.name, 'nikahya');
+  assert.equal(config.workers_dev, true);
+  assert.ok(config.routes.some(route => route.pattern === 'nakahya.com' && route.custom_domain === true));
+});
