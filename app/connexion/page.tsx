@@ -1,12 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Heart, ArrowLeft, Mail, LockKeyhole, Sparkles, Brain, Puzzle, ShieldCheck } from "lucide-react";
 import SocialAuthButtons from "@/components/auth/social-auth-buttons";
 
 export default function ConnexionPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -15,15 +13,19 @@ export default function ConnexionPage() {
   // Keep an authenticated member out of the sign-in page, including after browser Back/BFCache.
   useEffect(() => {
     let active = true;
+    let navigating = false;
     const redirectIfAuthenticated = async () => {
+      if (!active || navigating) return;
       try {
         const response = await fetch("/api/auth/me", { cache: "no-store" });
         const data = await response.json();
-        if (active && response.ok && data.user) {
+        if (active && !navigating && response.ok && data.user) {
+          navigating = true;
           const requested = new URLSearchParams(window.location.search).get("next");
           const destination = requested && requested.startsWith("/") && !requested.startsWith("//") ? requested : "/tableau-de-bord";
-          router.replace(destination);
-          router.refresh();
+          // Full navigation prevents the App Router refresh from racing this redirect.
+          // It also verifies the session afresh on the destination route.
+          window.location.replace(destination);
         }
       } catch {
         // Keep the form available if session verification is temporarily unavailable.
@@ -35,7 +37,7 @@ export default function ConnexionPage() {
       active = false;
       window.removeEventListener("pageshow", redirectIfAuthenticated);
     };
-  }, [router]);
+  }, []);
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

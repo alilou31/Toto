@@ -255,3 +255,10 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Production validée sur le SHA `898d891f` :** CI [41648482270](https://github.com/alilou31/Toto/actions/runs/41648482270), déploiement [41648482233](https://github.com/alilou31/Toto/actions/runs/41648482233), smoke [41649765029](https://github.com/alilou31/Toto/actions/runs/41649765029) avec 71 tests Playwright passés. Ne pas confondre tests anonymes/fixtures et parcours authentifié réel.
 - **Toujours externe :** `www.nakahya.com` sans DNS lors du dernier smoke ; configurer le Custom Domain dans Cloudflare, confirmer les URI Google/Meta et les webhooks Stripe auprès des fournisseurs, vérifier Search Console. Ces actions ne sont pas prouvées par la CI.
 - **Renforcement proposé :** cache de téléchargement npm, nouvelles tentatives pour erreurs réseau et tests dédiés du script ; le SHA de ce changement doit être validé séparément par CI et smoke avant de le déclarer livré en production.
+
+## Audit ciblé sessions / domaine historique — 2026-11-03
+
+- **Audit anti-doublons :** `tests/e2e/session-navigation.spec.ts`, `tests/production/domain.spec.ts` et le middleware existaient déjà, aucun scénario de substitution ajouté.
+- **Session simulée :** la page `/connexion` évite désormais la concurrence entre redirection et refresh ; elle conserve le comportement historique (ne pas laisser voir la connexion lorsque la session est active et utiliser le paramètre `next` local). Validation sur l’environnement déployé à confirmer par Playwright.
+- **Domaine historique :** `wrangler.jsonc` contient déjà `workers_dev: true`. L’observation HTTP 404 sur `nikahya.rassoul-ali.workers.dev` n’est pas masquée dans les assertions ; la liaison de l’URL de production Cloudflare doit être vérifiée si le redéploiement ne la restaure pas.
+- **Référence :** smoke GitHub [41668666591](https://github.com/alilou31/Toto/actions/runs/41668666591) (tentative 4), contrôle HTTP/Neon réussi, Playwright 69 passés, 1 instable (session), 1 échoué (domaine historique).
