@@ -83,7 +83,7 @@ export default async function AdviceArticle({ params }: { params: Promise<{ slug
         <p style={{ lineHeight: 1.8, color: "#e0ebe4" }}>Sur NAKAHYA, la rencontre sérieuse reste au centre. Les jeux servent à lancer des conversations et à découvrir les affinités à votre rythme.</p>
         <Link href="/inscription" className="button button-light">Créer mon profil <ArrowRight size={16}/></Link>
       </aside>
-      <p style={{ marginTop: 35, fontSize: 12, lineHeight: 1.8, color: "var(--muted)" }}>Ces conseils sont des repères généraux et ne remplacent pas votre jugement. Respectez toujours vos limites et celles de l'autre personne.</p>
+      <p style={{ marginTop: 35, fontSize: 12, lineHeight: 1.8, color: "var(--muted)" }}>Ces conseils sont des repères généraux et ne remplacent pas votre jugement. Respectez toujours vos limites et celles de l&apos;autre personne.</p>
     </article>
   </main>;
 }
