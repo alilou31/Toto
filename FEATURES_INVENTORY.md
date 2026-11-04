@@ -42,6 +42,14 @@
 
 ## Inventaire actuel
 
+### Application mobile iOS — 2026-11-04 (PR #83, branche `feature/mobile-app`)
+
+- **Fondation existante :** Capacitor 7, `com.nakahya.app`, chargement HTTPS `https://nakahya.com`; le backend Next.js/Cloudflare/Neon reste commun. Le projet natif iOS est généré dans le workflow et n'est pas versionné.
+- **Historique des builds :** Android debug réussi sur le SHA `6dafd90df6a2428cc32ea6a299341180c7a8d06a`; iOS simulator workflow terminé `cancelled` (job `126690221657`), sans preuve d'une erreur Xcode. Ne pas confondre annulation et échec de compilation.
+- **Correctif candidat :** workflow `.github/workflows/mobile-ios.yml` déplacé de `macos-26-intel` vers `macos-26`, cache npm et `scripts/ci-install.sh` réutilisés, inspection Xcode/workspace et destination générique iOS Simulator ajoutées. Résultat du nouveau run à vérifier.
+- **Limites :** le build simulateur est non signé et ne peut pas être installé sur un iPhone physique ni distribué via TestFlight. Signature Apple, tests sur appareil réel et revue des critères App Store restent à faire. Une WebView distante seule n'est pas une garantie d'acceptation Apple.
+
+
 ## Instantané historique — 2026-10-12 (vérification Playwright production)
 
 - **HEAD de `main` :** `7b51f4bf27fb1adff424415c57cb345b7e60c3bf`.
