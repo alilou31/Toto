@@ -6,6 +6,7 @@ on:
     paths:
       - "capacitor.config.ts"
       - "package.json"
+      - "scripts/ci-install.sh"
       - ".github/workflows/mobile-ios.yml"
 
 permissions:
@@ -18,25 +19,40 @@ concurrency:
 jobs:
   ios-simulator:
     name: Build iOS simulator app (unsigned)
-    runs-on: macos-26-intel
-    timeout-minutes: 35
+    runs-on: macos-26
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Cache npm package downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-node22-mobile-${{ hashFiles('package.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-node22-mobile-
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        timeout-minutes: 12
+        run: bash scripts/ci-install.sh
       - name: Generate iOS native project
         run: npx cap add ios
       - name: Sync Capacitor
         run: npx cap sync ios
-      - name: Build for iOS simulator
+      - name: Inspect Apple build tools and generated project
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphonesimulator --show-sdk-version
+          test -d ios/App/App.xcworkspace
+          xcodebuild -list -workspace ios/App/App.xcworkspace
+      - name: Build for generic iOS simulator
+        timeout-minutes: 20
         run: |
           xcodebuild \
             -workspace ios/App/App.xcworkspace \
             -scheme App \
-            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
             -configuration Debug \
             -derivedDataPath build/ios \
             CODE_SIGNING_ALLOWED=NO \
