@@ -35,6 +35,9 @@ test.describe("Messagerie — médias et emojis", () => {
     await expect(page.getByAltText("photo.png")).toBeVisible();
     await expect(page.getByRole("button", { name: "Ajouter une vidéo" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Ajouter un fichier audio" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Enregistrer un message vocal" })).toBeVisible();\n    await expect(page.getByLabel("Lectures vidéo/audio :")).toHaveValue("1");\n    await page.getByLabel("Lectures vidéo/audio :").selectOption("2");\n    await expect(page.getByLabel("Lectures vidéo/audio :")).toHaveValue("2");
+    await expect(page.getByRole("button", { name: "Enregistrer un message vocal" })).toBeVisible();
+    await expect(page.getByLabel("Lectures vidéo/audio :")).toHaveValue("1");
+    await page.getByLabel("Lectures vidéo/audio :").selectOption("2");
+    await expect(page.getByLabel("Lectures vidéo/audio :")).toHaveValue("2");
   });
 });
