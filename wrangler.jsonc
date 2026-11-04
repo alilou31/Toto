@@ -31,11 +31,5 @@
   ],
   "images": {
     "binding": "IMAGES"
-  },
-  "r2_buckets": [
-    {
-      "binding": "CHAT_MEDIA_BUCKET",
-      "bucket_name": "nakahya-chat-media"
-    }
-  ]
+  }
 }
