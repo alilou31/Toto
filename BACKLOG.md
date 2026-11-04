@@ -435,3 +435,13 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [ ] Vérifier CI, build Worker et tests Playwright sur le SHA final de la PR.
 - [ ] Tester réellement deux comptes de test autorisés : envoi/réception/lecture d'une photo, d'une vidéo et d'un audio ; vérifier aussi un membre non autorisé et un match bloqué.
 - [ ] Définir la modération, la rétention et la suppression des médias avant lancement public.
+
+
+## Messagerie — contrôle du stockage des médias (PR #86, 2026-11-04)
+
+- [x] Photos conservées, plafonnées à 10 Mo.
+- [x] Vidéos (25 Mo) et audios (10 Mo) limités à 1 ou 2 consultations, puis suppression R2.
+- [x] Expiration à 7 jours pour les médias éphémères non consultés.
+- [x] Quotas applicatifs : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux.
+- [ ] Ajouter une réservation de quota atomique pour les uploads concurrents et un mécanisme automatique d'alerte à 6 Go.
+- [ ] Configurer la règle R2 `ephemeral/` à 7 jours, appliquer les migrations 018/019 et valider avec deux comptes réels de test.
