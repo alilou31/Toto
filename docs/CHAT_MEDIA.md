@@ -1,41 +1,39 @@
 # Messagerie — médias privés et éphémères
 
-## Fonctionnalités
+## Fonctionnalités présentes dans le code
 
 - Messages texte et emojis Unicode.
 - Photos JPEG, PNG, WebP et GIF : 10 Mo maximum, conservées tant que le message existe.
 - Vidéos MP4, WebM et QuickTime : 25 Mo maximum.
 - Audios WebM, Ogg, MP3, MP4 et WAV : 10 Mo maximum.
 - Enregistrement vocal via MediaRecorder lorsque le navigateur le permet.
-- Pour chaque vidéo/audio, l'expéditeur choisit 1 ou 2 consultations par le destinataire. Après la dernière consultation, l'objet R2 est supprimé et sa clé est retirée du message.
-- Les vidéos/audios non consultés expirent après 7 jours ; la suppression est déclenchée lors d'une tentative d'accès expirée. Configurer également une règle de cycle de vie R2 sur le préfixe `ephemeral/` (7 jours) comme filet de sécurité.
-- Les photos restent dans le préfixe `photos/`.
+- Pour chaque vidéo/audio, l'expéditeur choisit 1 ou 2 consultations par le destinataire. Après la dernière consultation, l'objet est supprimé et sa clé est retirée du message.
+- Les vidéos/audios non consultés expirent après 7 jours.
+- Quotas applicatifs prévus : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux.
 
-## Configuration Cloudflare R2
+## État de déploiement — 2026-11-04
 
-Le bucket `nakahya-chat-media` doit être privé. Aucun accès public ni URL durable n'est exposé. Le binding `CHAT_MEDIA_BUCKET` est déclaré dans `wrangler.jsonc`.
+Le déploiement Cloudflare doit pouvoir s'effectuer sans R2. Le binding `CHAT_MEDIA_BUCKET` est donc volontairement absent de `wrangler.jsonc` tant que le bucket n'est pas provisionné.
 
-1. Créer le bucket : `npx wrangler r2 bucket create nakahya-chat-media`.
-2. Appliquer dans l'ordre `db/migrations/018_chat_media_attachments.sql`, `db/migrations/019_chat_media_ephemeral_lifecycle.sql`, puis `db/migrations/020_chat_media_quota_reservations.sql` dans Neon.
-3. Configurer une règle de cycle de vie R2 qui supprime les objets du préfixe `ephemeral/` après 7 jours. Ne pas appliquer cette règle au préfixe `photos/`.
-4. Vérifier le binding sur l'environnement Cloudflare cible. Ne pas utiliser le bucket de production pour les tests.
+**Conséquence temporaire :** les messages texte et emojis restent indépendants du stockage média. Les routes d'envoi et de lecture des pièces jointes répondent HTTP 503 avec un message explicite tant que le binding n'est pas disponible. Les fonctions photo/vidéo/audio sont présentes dans le code mais ne sont pas activées en production.
 
-## Quotas applicatifs
+## Réactivation ultérieure de R2
 
-- 100 Mo de médias actifs par expéditeur.
-- 250 Mo de médias actifs par conversation.
-- 8 Go de médias actifs au total : seuil d'alerte recommandé à 6 Go, refus des nouveaux dépôts à 8 Go.
-- Limites par fichier : photo 10 Mo, vidéo 25 Mo, audio 10 Mo.
+Quand le stockage média sera prêt :
 
-Les quotas sont réservés atomiquement en base avant l'upload : une ligne de verrou globale sérialise les réservations concurrentes et empêche de dépasser les plafonds par expéditeur, conversation et instance. Chaque réservation expire au bout de 15 minutes pour libérer la capacité après un arrêt brutal. Le tableau de bord Cloudflare reste la source de vérité pour la consommation R2 facturable. Un rapprochement périodique R2/Neon et une alerte à 6 Go restent à mettre en place.
+1. Créer le bucket privé : `npx wrangler r2 bucket create nakahya-chat-media`.
+2. Ajouter le binding `CHAT_MEDIA_BUCKET` vers `nakahya-chat-media` dans `wrangler.jsonc`.
+3. Appliquer dans l'ordre `db/migrations/018_chat_media_attachments.sql`, `db/migrations/019_chat_media_ephemeral_lifecycle.sql`, puis `db/migrations/020_chat_media_quota_reservations.sql` dans Neon (vérifier l'état réel avant toute réexécution).
+4. Configurer une règle de cycle de vie R2 qui supprime les objets du préfixe `ephemeral/` après 7 jours. Ne pas appliquer cette règle au préfixe `photos/`.
+5. Vérifier le binding sur l'environnement Cloudflare cible, puis tester avec deux comptes dédiés et vérifier la suppression physique. Ne pas utiliser le bucket de production pour les tests.
 
-## Sécurité et limites
+## Sécurité, quotas et limites
 
 - Chaque upload et chaque lecture revérifie l'authentification, l'appartenance au match et l'absence de blocage.
-- Le compteur de vues est incrémenté atomiquement en base pour les destinataires ; deux requêtes concurrentes ne peuvent pas dépasser le nombre autorisé.
+- Le compteur de vues est incrémenté atomiquement en base pour les destinataires.
 - L'expéditeur peut prévisualiser son propre média sans consommer la lecture du destinataire.
-- Les médias ne sont jamais servis directement depuis R2 ; les réponses sont privées et `no-store`.
-- MIME et signature binaire sont contrôlés. Les extensions ne sont pas considérées comme une preuve de type.
+- Les médias ne sont jamais servis depuis une URL publique ; les réponses sont privées et `no-store`.
+- MIME et signature binaire sont contrôlés.
 - Une suppression après lecture empêche les consultations ultérieures depuis l'application, mais ne peut pas empêcher une capture d'écran, une copie externe ou un enregistrement avec un autre appareil.
-- Le nettoyage des objets orphelins, la modération des contenus et la politique de suppression de compte restent à valider avant lancement public.
-- L'application des migrations et l'existence du bucket ne sont pas réalisées par le code de cette PR.
+- Le rapprochement périodique R2/Neon, l'alerte à 6 Go, la modération et la politique de suppression de compte restent à valider avant activation publique.
+- La présence des migrations dans le dépôt ne prouve pas leur application effective dans Neon.
