@@ -101,28 +101,27 @@ export async function POST(request: Request, context: RouteContext) {
 
     const viewLimit = kind === "image" ? null : Number(form.get("viewLimit") || 1);
     if (kind !== "image" && viewLimit !== 1 && viewLimit !== 2) return NextResponse.json({ error: "Choisissez une ou deux consultations." }, { status: 400 });
-    const usage = await sql`
-      select
-        coalesce(sum(attachment_size), 0)::bigint as global_bytes,
-        coalesce(sum(attachment_size) filter (where sender_id = ${user.id}), 0)::bigint as user_bytes,
-        coalesce(sum(attachment_size) filter (where conversation_id = ${conversationId}), 0)::bigint as conversation_bytes
-      from public.messages where attachment_key is not null
-    `;
-    if (Number(usage[0]?.global_bytes || 0) + file.size > GLOBAL_LIMIT
-      || Number(usage[0]?.user_bytes || 0) + file.size > USER_LIMIT
-      || Number(usage[0]?.conversation_bytes || 0) + file.size > CONVERSATION_LIMIT) {
-      return NextResponse.json({ error: "Quota de médias atteint." }, { status: 507, headers: { "Cache-Control": "no-store" } });
-    }
     const bytes = await file.arrayBuffer();
     if (!hasValidSignature(mime, new Uint8Array(bytes))) return NextResponse.json({ error: "Le contenu du fichier ne correspond pas au format annoncé." }, { status: 415 });
+
+    // The database function serializes reservations so concurrent uploads cannot oversubscribe quotas.
+    const reservationId = crypto.randomUUID();
+    const reservation = await sql`
+      select public.reserve_chat_media_quota(
+        ${reservationId}::uuid, ${user.id}::uuid, ${conversationId}::uuid, ${file.size}::bigint
+      ) as reserved
+    `;
+    if (!reservation[0]?.reserved) {
+      return NextResponse.json({ error: "Quota de médias atteint." }, { status: 507, headers: { "Cache-Control": "no-store" } });
+    }
+
     const extension = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8) || "bin";
     const key = `${kind === "image" ? "photos" : "ephemeral"}/${conversationId}/${crypto.randomUUID()}.${extension}`;
-    await bucket.put(key, bytes, {
-      httpMetadata: { contentType: mime },
-      customMetadata: { conversationId, senderId: user.id },
-    });
-
     try {
+      await bucket.put(key, bytes, {
+        httpMetadata: { contentType: mime },
+        customMetadata: { conversationId, senderId: user.id },
+      });
       const label = kind === "image" ? "Photo envoyée" : kind === "video" ? "Vidéo envoyée" : "Message vocal";
       const rows = await sql`
         insert into public.messages
@@ -132,9 +131,11 @@ export async function POST(request: Request, context: RouteContext) {
         returning id, sender_id, body, created_at, read_at, message_type, attachment_mime_type, attachment_size, attachment_name, attachment_max_views, attachment_view_count, attachment_expires_at
       `;
       await sql`update public.conversations set last_message_at = now() where id = ${conversationId}`;
+      await sql`delete from public.chat_media_quota_reservations where id = ${reservationId}::uuid`;
       return NextResponse.json({ message: rows[0] }, { status: 201, headers: { "Cache-Control": "no-store" } });
     } catch (error) {
       await bucket.delete(key).catch(() => undefined);
+      await sql`delete from public.chat_media_quota_reservations where id = ${reservationId}::uuid`.catch(() => undefined);
       throw error;
     }
   } catch {
