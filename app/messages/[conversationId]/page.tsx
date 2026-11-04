@@ -18,7 +18,7 @@ export default function MessagesPage() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const [emojiOpen, setEmojiOpen] = useState(false);
-  const [recording, setRecording] = useState(false);
+  const [recording, setRecording] = useState(false);\n  const [viewLimit, setViewLimit] = useState("1");
   const photoInput = useRef<HTMLInputElement>(null);
   const videoInput = useRef<HTMLInputElement>(null);
   const audioInput = useRef<HTMLInputElement>(null);
@@ -61,7 +61,7 @@ export default function MessagesPage() {
     setSending(true); setError("");
     try {
       const form = new FormData();
-      form.append("file", file);
+      form.append("file", file);\n      if (file.type.startsWith("video/") || file.type.startsWith("audio/")) form.append("viewLimit", viewLimit);
       const response = await fetch("/api/conversations/" + encodeURIComponent(conversationId) + "/attachments", { method: "POST", body: form });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Envoi impossible.");
@@ -139,7 +139,7 @@ export default function MessagesPage() {
         <input ref={photoInput} type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onChange={e=>{const file=e.target.files?.[0];if(file)void sendFile(file);e.currentTarget.value="";}}/>
         <input ref={videoInput} type="file" accept="video/mp4,video/webm,video/quicktime" hidden onChange={e=>{const file=e.target.files?.[0];if(file)void sendFile(file);e.currentTarget.value="";}}/>
         <input ref={audioInput} type="file" accept="audio/webm,audio/ogg,audio/mpeg,audio/mp4,audio/wav" hidden onChange={e=>{const file=e.target.files?.[0];if(file)void sendFile(file);e.currentTarget.value="";}}/>
-        <p className="password-hint">Photos : 20 Mo max · Vidéos : 40 Mo max · Audio : 15 Mo max. Les médias restent privés aux deux membres du match.</p>
+        <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}><label htmlFor="mediaViews">Lectures vidéo/audio :</label><select id="mediaViews" className="form-control" value={viewLimit} onChange={e=>setViewLimit(e.target.value)} style={{width:"auto"}}><option value="1">1 consultation</option><option value="2">2 consultations</option></select></div>\n        <p className="password-hint">Photos : 10 Mo max · Vidéos : 25 Mo max · Audio : 10 Mo max. Vidéos et audios : 1 ou 2 consultations, puis suppression (expiration après 7 jours).</p>
       </form>
     </section>
   </main>;
