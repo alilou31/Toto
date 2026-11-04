@@ -16,7 +16,7 @@
 Le bucket `nakahya-chat-media` doit être privé. Aucun accès public ni URL durable n'est exposé. Le binding `CHAT_MEDIA_BUCKET` est déclaré dans `wrangler.jsonc`.
 
 1. Créer le bucket : `npx wrangler r2 bucket create nakahya-chat-media`.
-2. Appliquer `db/migrations/018_chat_media_attachments.sql`, puis `db/migrations/019_chat_media_ephemeral_lifecycle.sql`, dans Neon.
+2. Appliquer dans l'ordre `db/migrations/018_chat_media_attachments.sql`, `db/migrations/019_chat_media_ephemeral_lifecycle.sql`, puis `db/migrations/020_chat_media_quota_reservations.sql` dans Neon.
 3. Configurer une règle de cycle de vie R2 qui supprime les objets du préfixe `ephemeral/` après 7 jours. Ne pas appliquer cette règle au préfixe `photos/`.
 4. Vérifier le binding sur l'environnement Cloudflare cible. Ne pas utiliser le bucket de production pour les tests.
 
@@ -27,7 +27,7 @@ Le bucket `nakahya-chat-media` doit être privé. Aucun accès public ni URL dur
 - 8 Go de médias actifs au total : seuil d'alerte recommandé à 6 Go, refus des nouveaux dépôts à 8 Go.
 - Limites par fichier : photo 10 Mo, vidéo 25 Mo, audio 10 Mo.
 
-Les quotas sont contrôlés côté serveur à partir des pièces jointes encore présentes en base. Le contrôle agrégé actuel n'est pas un verrou transactionnel : avant ouverture publique, ajouter une réservation atomique de capacité pour résister aux uploads simultanés et un job de rapprochement qui compare les objets R2 et les clés Neon. Le tableau de bord Cloudflare reste la source de vérité pour la consommation réelle facturable.
+Les quotas sont réservés atomiquement en base avant l'upload : une ligne de verrou globale sérialise les réservations concurrentes et empêche de dépasser les plafonds par expéditeur, conversation et instance. Chaque réservation expire au bout de 15 minutes pour libérer la capacité après un arrêt brutal. Le tableau de bord Cloudflare reste la source de vérité pour la consommation R2 facturable. Un rapprochement périodique R2/Neon et une alerte à 6 Go restent à mettre en place.
 
 ## Sécurité et limites
 
