@@ -40,7 +40,16 @@
 - Les pages `/mentions-legales`, `/confidentialite` et `/conditions` sont accessibles, explicitement marquées comme documents de travail et exclues de l’indexation tant que l’identité réelle et le contenu définitif ne sont pas renseignés.
 - La récupération de mot de passe n’est pas implémentée : fournisseur d’e-mail et paramètres de livraison non configurés. À ne pas marquer comme terminée avant un test de bout en bout du message, du jeton et de l’invalidation.
 
-## Messagerie enrichie — état du candidat PR #86 (2026-11-04)\n\n- **CODE PRÉSENT sur branche candidate** : photos (10 Mo), vidéos (25 Mo), audios (10 Mo), emojis, messages vocaux et stockage R2 privé. Ce n'est pas encore une validation de production.\n- **Rétention** : vidéos/audios consultables 1 ou 2 fois par le destinataire puis suppression applicative ; expiration à 7 jours. Une règle R2 `ephemeral/` à 7 jours reste à configurer.\n- **Quotas** : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux ; migration 020 ajoute des réservations atomiques avec expiration après 15 minutes.\n- **Migrations 018/019/020** : fichiers candidats uniquement ; vérifier leur exécution réelle dans Neon avant activation.\n- **Tests** : CI/Playwright verts sur le SHA contrôlé, mais tests UI avec API simulée uniquement ; parcours réel à deux comptes et suppression physique R2 encore à valider.\n- **À FAIRE avant lancement public** : bucket privé et binding opérationnels, règle R2, rapprochement périodique objets/base, alerte à 6 Go, tests réels à deux comptes, politique de modération et suppression de compte.\n\n## Inventaire actuel
+## Messagerie enrichie — état du candidat PR #86 (2026-11-04)
+
+- **CODE PRÉSENT sur branche candidate** : photos (10 Mo), vidéos (25 Mo), audios (10 Mo), emojis, messages vocaux et stockage R2 privé. Ce n'est pas encore une validation de production.
+- **Rétention** : vidéos/audios consultables 1 ou 2 fois par le destinataire puis suppression applicative ; expiration à 7 jours. Une règle R2 `ephemeral/` à 7 jours reste à configurer.
+- **Quotas** : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux ; migration 020 ajoute des réservations atomiques avec expiration après 15 minutes.
+- **Migrations 018/019/020** : fichiers candidats uniquement ; vérifier leur exécution réelle dans Neon avant activation.
+- **Tests** : CI/Playwright verts sur le SHA contrôlé, mais tests UI avec API simulée uniquement ; parcours réel à deux comptes et suppression physique R2 encore à valider.
+- **À FAIRE avant lancement public** : bucket privé et binding opérationnels, règle R2, rapprochement périodique objets/base, alerte à 6 Go, tests réels à deux comptes, politique de modération et suppression de compte.
+
+## Inventaire actuel
 
 ## Instantané historique — 2026-10-12 (vérification Playwright production)
 
