@@ -6,6 +6,9 @@ Préparer Android et iOS depuis le dépôt existant, sans agence ni prestataire.
 
 ## État de cette première phase
 
+**Contrôle iOS du 2026-11-04 :** le workflow précédent a été annulé (job GitHub Actions `126690221657`, sans logs exploitables). Android debug était vert sur le même SHA. Cela ne prouve pas un défaut de compilation Xcode : le build iOS n'a pas abouti à une conclusion exploitable. Le pipeline iOS a été ajusté sur `macos-26` (runner Apple Silicon officiellement disponible), utilise le script npm avec reprise des erreurs réseau déjà présent dans le dépôt, met en cache npm, vérifie Xcode et le workspace généré, puis compile pour la destination générique iOS Simulator. Attendre le nouveau run PR avant de qualifier le build de réussi.
+
+
 - Capacitor 7 ajouté au projet.
 - Identifiant mobile : `com.nakahya.app`.
 - Nom affiché : `NAKAHYA`.
