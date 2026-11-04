@@ -13,19 +13,23 @@ type PrivateBucket = {
   delete(key: string): Promise<void>;
 };
 
-const GLOBAL_LIMIT = 8 * 1024 * 1024 * 1024;\nconst USER_LIMIT = 100 * 1024 * 1024;\nconst CONVERSATION_LIMIT = 250 * 1024 * 1024;\n\nconst MAX_SIZE: Record<string, number> = {
+const GLOBAL_LIMIT = 8 * 1024 * 1024 * 1024;
+const USER_LIMIT = 100 * 1024 * 1024;
+const CONVERSATION_LIMIT = 250 * 1024 * 1024;
+
+const MAX_SIZE: Record<string, number> = {
   "image/jpeg": 10 * 1024 * 1024,
-  "image/png": 20 * 1024 * 1024,
-  "image/webp": 20 * 1024 * 1024,
+  "image/png": 10 * 1024 * 1024,
+  "image/webp": 10 * 1024 * 1024,
   "image/gif": 10 * 1024 * 1024,
   "video/mp4": 25 * 1024 * 1024,
-  "video/webm": 40 * 1024 * 1024,
-  "video/quicktime": 40 * 1024 * 1024,
+  "video/webm": 25 * 1024 * 1024,
+  "video/quicktime": 25 * 1024 * 1024,
   "audio/webm": 10 * 1024 * 1024,
-  "audio/ogg": 15 * 1024 * 1024,
-  "audio/mpeg": 15 * 1024 * 1024,
-  "audio/mp4": 15 * 1024 * 1024,
-  "audio/wav": 15 * 1024 * 1024,
+  "audio/ogg": 10 * 1024 * 1024,
+  "audio/mpeg": 10 * 1024 * 1024,
+  "audio/mp4": 10 * 1024 * 1024,
+  "audio/wav": 10 * 1024 * 1024,
 };
 
 async function getBucket() {
@@ -86,6 +90,7 @@ export async function POST(request: Request, context: RouteContext) {
     const bucket = await getBucket();
     if (!bucket) return NextResponse.json({ error: "Le stockage privé des médias n'est pas encore configuré." }, { status: 503, headers: { "Cache-Control": "no-store" } });
 
+    const sql = getDb();
     const form = await request.formData();
     const file = form.get("file");
     if (!(file instanceof File)) return NextResponse.json({ error: "Sélectionnez un fichier à envoyer." }, { status: 400 });
@@ -108,7 +113,8 @@ export async function POST(request: Request, context: RouteContext) {
       || Number(usage[0]?.conversation_bytes || 0) + file.size > CONVERSATION_LIMIT) {
       return NextResponse.json({ error: "Quota de médias atteint." }, { status: 507, headers: { "Cache-Control": "no-store" } });
     }
-    const bytes = await file.arrayBuffer();\n    if (!hasValidSignature(mime, new Uint8Array(bytes))) return NextResponse.json({ error: "Le contenu du fichier ne correspond pas au format annoncé." }, { status: 415 });
+    const bytes = await file.arrayBuffer();
+    if (!hasValidSignature(mime, new Uint8Array(bytes))) return NextResponse.json({ error: "Le contenu du fichier ne correspond pas au format annoncé." }, { status: 415 });
     const extension = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8) || "bin";
     const key = `${kind === "image" ? "photos" : "ephemeral"}/${conversationId}/${crypto.randomUUID()}.${extension}`;
     await bucket.put(key, bytes, {
@@ -117,14 +123,13 @@ export async function POST(request: Request, context: RouteContext) {
     });
 
     try {
-      const sql = getDb();
       const label = kind === "image" ? "Photo envoyée" : kind === "video" ? "Vidéo envoyée" : "Message vocal";
       const rows = await sql`
         insert into public.messages
-          (conversation_id, sender_id, body, message_type, attachment_key, attachment_mime_type, attachment_size, attachment_name)
+          (conversation_id, sender_id, body, message_type, attachment_key, attachment_mime_type, attachment_size, attachment_name, attachment_max_views, attachment_expires_at)
         values
-          (${conversationId}, ${user.id}, ${label}, ${kind}, ${key}, ${mime}, ${file.size}, ${file.name.slice(0, 180)})
-        returning id, sender_id, body, created_at, read_at, message_type, attachment_mime_type, attachment_size, attachment_name
+          (${conversationId}, ${user.id}, ${label}, ${kind}, ${key}, ${mime}, ${file.size}, ${file.name.slice(0, 180)}, ${viewLimit}, ${kind === "image" ? null : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()})
+        returning id, sender_id, body, created_at, read_at, message_type, attachment_mime_type, attachment_size, attachment_name, attachment_max_views, attachment_view_count, attachment_expires_at
       `;
       await sql`update public.conversations set last_message_at = now() where id = ${conversationId}`;
       return NextResponse.json({ message: rows[0] }, { status: 201, headers: { "Cache-Control": "no-store" } });
@@ -151,17 +156,46 @@ export async function GET(_request: Request, context: RouteContext) {
     if (!messageId || !/^[0-9a-f-]{36}$/i.test(messageId)) return NextResponse.json({ error: "Média introuvable." }, { status: 404 });
     const sql = getDb();
     const rows = await sql`
-      select attachment_key, attachment_mime_type
+      select attachment_key, attachment_mime_type, attachment_size, attachment_expires_at, attachment_view_count, attachment_max_views, sender_id, message_type
       from public.messages
       where id = ${messageId} and conversation_id = ${conversationId} and message_type <> 'text'
       limit 1
     `;
-    if (!rows.length) return NextResponse.json({ error: "Média introuvable." }, { status: 404 });
+    if (!rows.length || !rows[0].attachment_key) return NextResponse.json({ error: "Média indisponible ou déjà consulté." }, { status: 410 });
+    let media = rows[0];
+    const isSender = media.sender_id === user.id;
+    if (media.message_type !== "image" && media.attachment_expires_at && new Date(media.attachment_expires_at).getTime() <= Date.now()) {
+      const expiredBucket = await getBucket();
+      await expiredBucket?.delete(media.attachment_key).catch(() => undefined);
+      await sql`update public.messages set attachment_key = null, attachment_deleted_at = now() where id = ${messageId} and attachment_key = ${media.attachment_key}`;
+      return NextResponse.json({ error: "Ce média a expiré." }, { status: 410 });
+    }
+    if (!isSender && media.message_type !== "image") {
+      const consumed = await sql`
+        update public.messages set attachment_view_count = attachment_view_count + 1
+        where id = ${messageId} and conversation_id = ${conversationId}
+          and attachment_key is not null and attachment_view_count < attachment_max_views
+          and (attachment_expires_at is null or attachment_expires_at > now())
+        returning attachment_key, attachment_view_count, attachment_max_views
+      `;
+      if (!consumed.length) return NextResponse.json({ error: "Nombre de consultations atteint." }, { status: 410, headers: { "Cache-Control": "no-store" } });
+      media = { ...media, ...consumed[0] };
+    }
     const bucket = await getBucket();
     if (!bucket) return NextResponse.json({ error: "Stockage indisponible." }, { status: 503 });
     const object = await bucket.get(media.attachment_key);
     if (!object) return NextResponse.json({ error: "Média introuvable." }, { status: 404 });
-    const shouldDelete = !isSender && media.message_type !== "image" && Number(media.attachment_view_count) >= Number(media.attachment_max_views);\n    if (shouldDelete) {\n      await bucket.delete(media.attachment_key);\n      await sql`update public.messages set attachment_key = null, attachment_deleted_at = now() where id = ${messageId} and attachment_key = ${media.attachment_key}`;\n    }\n    return new Response(object.body, {
+    const shouldDelete = !isSender && media.message_type !== "image" && Number(media.attachment_view_count) >= Number(media.attachment_max_views);
+    if (shouldDelete) {
+      await bucket.delete(media.attachment_key);
+      await sql`update public.messages set attachment_key = null, attachment_deleted_at = now() where id = ${messageId} and attachment_key = ${media.attachment_key}`;
+    }
+    const shouldDelete = !isSender && media.message_type !== "image" && Number(media.attachment_view_count) >= Number(media.attachment_max_views);
+    if (shouldDelete) {
+      await bucket.delete(media.attachment_key);
+      await sql`update public.messages set attachment_key = null, attachment_deleted_at = now() where id = ${messageId} and attachment_key = ${media.attachment_key}`;
+    }
+    return new Response(object.body, {
       headers: {
         "Content-Type": rows[0].attachment_mime_type || object.httpMetadata?.contentType || "application/octet-stream",
         "Content-Length": String(object.size),
