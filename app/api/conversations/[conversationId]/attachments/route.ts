@@ -190,11 +190,6 @@ export async function GET(_request: Request, context: RouteContext) {
       await bucket.delete(media.attachment_key);
       await sql`update public.messages set attachment_key = null, attachment_deleted_at = now() where id = ${messageId} and attachment_key = ${media.attachment_key}`;
     }
-    const shouldDelete = !isSender && media.message_type !== "image" && Number(media.attachment_view_count) >= Number(media.attachment_max_views);
-    if (shouldDelete) {
-      await bucket.delete(media.attachment_key);
-      await sql`update public.messages set attachment_key = null, attachment_deleted_at = now() where id = ${messageId} and attachment_key = ${media.attachment_key}`;
-    }
     return new Response(object.body, {
       headers: {
         "Content-Type": rows[0].attachment_mime_type || object.httpMetadata?.contentType || "application/octet-stream",
