@@ -443,5 +443,5 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [x] Vidéos (25 Mo) et audios (10 Mo) limités à 1 ou 2 consultations, puis suppression R2.
 - [x] Expiration à 7 jours pour les médias éphémères non consultés.
 - [x] Quotas applicatifs : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux.
-- [ ] Ajouter une réservation de quota atomique pour les uploads concurrents et un mécanisme automatique d'alerte à 6 Go.
+- [x] Ajouter une réservation atomique des quotas pour les uploads concurrents (migration 020). L'alerte automatique à 6 Go reste à mettre en place.
 - [ ] Configurer la règle R2 `ephemeral/` à 7 jours, appliquer les migrations 018/019 et valider avec deux comptes réels de test.
