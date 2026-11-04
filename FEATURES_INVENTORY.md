@@ -40,6 +40,15 @@
 - Les pages `/mentions-legales`, `/confidentialite` et `/conditions` sont accessibles, explicitement marquées comme documents de travail et exclues de l’indexation tant que l’identité réelle et le contenu définitif ne sont pas renseignés.
 - La récupération de mot de passe n’est pas implémentée : fournisseur d’e-mail et paramètres de livraison non configurés. À ne pas marquer comme terminée avant un test de bout en bout du message, du jeton et de l’invalidation.
 
+## Messagerie enrichie — état du candidat PR #86 (2026-11-04)
+
+- **CODE PRÉSENT sur branche candidate** : photos (10 Mo), vidéos (25 Mo), audios (10 Mo), emojis, messages vocaux et stockage R2 privé. Ce n'est pas encore une validation de production.
+- **Rétention** : vidéos/audios consultables 1 ou 2 fois par le destinataire puis suppression applicative ; expiration à 7 jours. Une règle R2 `ephemeral/` à 7 jours reste à configurer.
+- **Quotas** : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux ; migration 020 ajoute des réservations atomiques avec expiration après 15 minutes.
+- **Migrations 018/019/020** : fichiers candidats uniquement ; vérifier leur exécution réelle dans Neon avant activation.
+- **Tests** : CI/Playwright verts sur le SHA contrôlé, mais tests UI avec API simulée uniquement ; parcours réel à deux comptes et suppression physique R2 encore à valider.
+- **À FAIRE avant lancement public** : bucket privé et binding opérationnels, règle R2, rapprochement périodique objets/base, alerte à 6 Go, tests réels à deux comptes, politique de modération et suppression de compte.
+
 ## Inventaire actuel
 
 ## Instantané historique — 2026-10-12 (vérification Playwright production)
@@ -276,3 +285,25 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Routes déjà présentes dans le build** : `/confirmer-email`, `POST /api/auth/confirm-email`. Les smokes #164/#165 renvoient néanmoins 404 sur le domaine officiel : il ne s'agit pas de fonctionnalités absentes à recréer.
 - **Correction du déploiement** : route Custom Domain versionnée dans Wrangler et contrôle HTTP post-publication ; test de session et smoke existants fiabilisés sans doublon.
 - **À VÉRIFIER** : configuration Cloudflare réellement appliquée, nouveau smoke, validation externe Resend et migration Neon 017. L'activation reste OFF.
+
+## Messagerie enrichie — 2026-11-04 (branche `feat/chat-media-messaging`)
+
+- **Réutilisation :** extension de `app/messages/[conversationId]/page.tsx` et de l'API de messages existante ; aucun deuxième système de conversation.
+- **Ajouts :** envoi/rendu photo, vidéo, fichier audio, enregistrement vocal via MediaRecorder et sélecteur d'emojis.
+- **Stockage :** Cloudflare R2 privé via le binding `CHAT_MEDIA_BUCKET`, bucket attendu `nakahya-chat-media`. Les téléchargements passent par une API authentifiée et autorisée, jamais par une URL publique.
+- **Schéma :** migration candidate `db/migrations/018_chat_media_attachments.sql`. Elle doit être appliquée dans Neon avant activation.
+- **Limites :** images 20 Mo (GIF 10 Mo), vidéo 40 Mo, audio 15 Mo ; MIME et signature binaire vérifiés. La prise en charge MediaRecorder dépend du navigateur.
+- **Tests ajoutés :** `tests/e2e/chat-media.spec.ts` (emoji, envoi texte, sélection photo et présence des actions audio/vidéo). Les tests avec routes interceptées ne valident pas la persistance réelle ni le stockage R2.
+- **Statut :** code candidat sur PR à créer ; bucket R2 et migration Neon non configurés/non appliqués par cette modification. Pas de validation production revendiquée.
+
+
+### Messagerie — médias éphémères et quotas (PR #86, 2026-11-04)
+
+- [x] Ajouter le choix de 1 ou 2 consultations pour les vidéos et audios.
+- [x] Décompter atomiquement les consultations du destinataire et supprimer l'objet R2 après la dernière.
+- [x] Expirer les vidéos/audios non consultés après 7 jours (suppression à l'accès expiré + règle de cycle de vie R2 à configurer).
+- [x] Réduire les tailles : photo 10 Mo, vidéo 25 Mo, audio 10 Mo.
+- [x] Ajouter des plafonds applicatifs : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux.
+- [ ] Rendre la réservation des quotas atomique face aux uploads simultanés ; automatiser le rapprochement R2/Neon et l'alerte à 6 Go.
+- [ ] Appliquer migrations 018 et 019, configurer la règle de cycle de vie R2, tester les parcours réels à deux comptes et vérifier la suppression physique.
+- **Limite connue :** le contrôle quota est actuellement un calcul agrégé non transactionnel ; ne pas ouvrir publiquement avant sa réservation atomique.

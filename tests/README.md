@@ -105,3 +105,9 @@ Ne pas confondre un email marqué « Verified » dans Resend, un expéditeur con
 Les smokes [#164](https://github.com/alilou31/Toto/actions/runs/41683004942) et [#165](https://github.com/alilou31/Toto/actions/runs/41684532376) ont trouvé des 404 sur `/confirmer-email` et `/api/auth/confirm-email`, malgré leur présence dans le build OpenNext. Wrangler déclare désormais `nakahya.com` comme Custom Domain du Worker `nikahya` et le workflow de déploiement vérifie les réponses HTTP 200 (page) et 400 (jeton invalide). Le smoke lance Playwright avec un worker, sans supprimer de tests. Le test de session attend sa requête simulée avant d'évaluer la redirection avec une marge adaptée aux chargements de production.
 
 La correction n'est prouvée qu'après CI/Worker build sur le nouveau SHA, puis déploiement et smoke `main` réussis. Ce parcours reste non destructif et ne démontre pas une livraison réelle via Resend.
+
+## Messagerie enrichie — PR candidate du 4 novembre 2026
+
+Le test `tests/e2e/chat-media.spec.ts` couvre avec APIs interceptées l'insertion d'un emoji, l'envoi d'un message texte, la sélection d'une photo et la présence des actions vidéo/audio/enregistrement vocal. Il ne valide pas la persistance Neon ni l'accès réel au bucket R2.
+
+Pour tester réellement les médias après configuration, appliquer la migration 018, créer le bucket R2 privé et exécuter le parcours à deux comptes de test autorisés décrit dans `docs/testing-two-users.md`. Vérifier la lecture des médias depuis les deux comptes du match, puis le refus depuis un compte tiers et après blocage. Ne pas utiliser de vrais fichiers privés ni des comptes de membres réels.

@@ -422,3 +422,26 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [x] Préparer un correctif unique : domaine déclaré dans Wrangler, gate HTTP post-déploiement, exécution séquentielle de Playwright et vérification de session observée.
 - [ ] Fusionner uniquement si CI + build Worker verts ; vérifier ensuite le rattachement du domaine et les smokes de `main`. Ne pas masquer les 404 si Cloudflare refuse la liaison.
 - [ ] Activer Resend et migration 017 séparément après confirmation des prérequis et test autorisé.
+
+## Messagerie enrichie — 2026-11-04
+
+- [x] Étendre la messagerie existante avec envoi et affichage des photos, vidéos et fichiers audio.
+- [x] Ajouter l'enregistrement de messages vocaux via MediaRecorder lorsque le navigateur le permet.
+- [x] Ajouter un sélecteur d'emojis sans dépendance externe.
+- [x] Protéger l'envoi et le téléchargement des médias par les contrôles existants d'appartenance au match et de blocage.
+- [x] Ajouter la migration candidate 018 et les tests Playwright d'interface avec APIs simulées.
+- [ ] Créer le bucket privé Cloudflare R2 `nakahya-chat-media` et vérifier le binding `CHAT_MEDIA_BUCKET`.
+- [ ] Appliquer `db/migrations/018_chat_media_attachments.sql` dans Neon avant activation.
+- [ ] Vérifier CI, build Worker et tests Playwright sur le SHA final de la PR.
+- [ ] Tester réellement deux comptes de test autorisés : envoi/réception/lecture d'une photo, d'une vidéo et d'un audio ; vérifier aussi un membre non autorisé et un match bloqué.
+- [ ] Définir la modération, la rétention et la suppression des médias avant lancement public.
+
+
+## Messagerie — contrôle du stockage des médias (PR #86, 2026-11-04)
+
+- [x] Photos conservées, plafonnées à 10 Mo.
+- [x] Vidéos (25 Mo) et audios (10 Mo) limités à 1 ou 2 consultations, puis suppression R2.
+- [x] Expiration à 7 jours pour les médias éphémères non consultés.
+- [x] Quotas applicatifs : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux.
+- [x] Ajouter une réservation atomique des quotas pour les uploads concurrents (migration 020). L'alerte automatique à 6 Go reste à mettre en place.
+- [ ] Configurer la règle R2 `ephemeral/` à 7 jours, appliquer les migrations 018/019 et valider avec deux comptes réels de test.
