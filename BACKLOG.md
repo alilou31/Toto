@@ -7,6 +7,18 @@
 
 ## Priorités
 
+## Mobile iOS — 2026-11-04
+
+- [x] Auditer PR #83, le workflow iOS, le statut Android et les docs mobiles existants.
+- [x] Distinguer l'annulation du job iOS précédent d'un échec de compilation Xcode.
+- [x] Stabiliser le runner iOS sur `macos-26`, réutiliser `scripts/ci-install.sh` et le cache npm.
+- [x] Ajouter diagnostic Xcode/workspace et destination générique simulateur.
+- [ ] Vérifier la nouvelle CI PR #83 et récupérer l'artefact simulateur si build vert.
+- [ ] Faire tester l'app sur simulateur et appareil réel ; aucun test physique possible depuis GitHub Actions.
+- [ ] Ajouter des capacités natives réellement utiles avant toute demande App Store (pas seulement une WebView distante).
+- [ ] Préparer signature Apple, provisioning et TestFlight uniquement après accord et disponibilité du compte Apple Developer.
+
+
 - **P0 — indispensable au MVP**
 - **P1 — important après le parcours principal**
 - **P2 — phase 2 / amélioration**
