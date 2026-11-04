@@ -32,7 +32,7 @@ export async function GET(_request: Request, context: RouteContext) {
     if (!(await authorizedConversation(conversationId, user.id))) return NextResponse.json({ error: "Conversation introuvable." }, { status: 404 });
     const sql = getDb();
     const messages = await sql`
-      select id, sender_id, body, created_at, read_at, message_type, attachment_mime_type, attachment_size, attachment_name
+      select id, sender_id, body, created_at, read_at, message_type, attachment_mime_type, attachment_size, attachment_name, attachment_max_views, attachment_view_count, attachment_expires_at, (attachment_key is not null) as attachment_available
       from public.messages where conversation_id = ${conversationId}
       order by created_at asc limit 200
     `;
