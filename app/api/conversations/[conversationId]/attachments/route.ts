@@ -13,15 +13,15 @@ type PrivateBucket = {
   delete(key: string): Promise<void>;
 };
 
-const MAX_SIZE: Record<string, number> = {
-  "image/jpeg": 20 * 1024 * 1024,
+const GLOBAL_LIMIT = 8 * 1024 * 1024 * 1024;\nconst USER_LIMIT = 100 * 1024 * 1024;\nconst CONVERSATION_LIMIT = 250 * 1024 * 1024;\n\nconst MAX_SIZE: Record<string, number> = {
+  "image/jpeg": 10 * 1024 * 1024,
   "image/png": 20 * 1024 * 1024,
   "image/webp": 20 * 1024 * 1024,
   "image/gif": 10 * 1024 * 1024,
-  "video/mp4": 40 * 1024 * 1024,
+  "video/mp4": 25 * 1024 * 1024,
   "video/webm": 40 * 1024 * 1024,
   "video/quicktime": 40 * 1024 * 1024,
-  "audio/webm": 15 * 1024 * 1024,
+  "audio/webm": 10 * 1024 * 1024,
   "audio/ogg": 15 * 1024 * 1024,
   "audio/mpeg": 15 * 1024 * 1024,
   "audio/mp4": 15 * 1024 * 1024,
@@ -94,9 +94,23 @@ export async function POST(request: Request, context: RouteContext) {
     if (!kind) return NextResponse.json({ error: "Format non accepté. Utilisez une image, une vidéo ou un fichier audio compatible." }, { status: 415 });
     if (file.size < 1 || file.size > MAX_SIZE[mime]) return NextResponse.json({ error: "Fichier trop volumineux pour ce format." }, { status: 413 });
 
+    const viewLimit = kind === "image" ? null : Number(form.get("viewLimit") || 1);
+    if (kind !== "image" && viewLimit !== 1 && viewLimit !== 2) return NextResponse.json({ error: "Choisissez une ou deux consultations." }, { status: 400 });
+    const usage = await sql`
+      select
+        coalesce(sum(attachment_size), 0)::bigint as global_bytes,
+        coalesce(sum(attachment_size) filter (where sender_id = ${user.id}), 0)::bigint as user_bytes,
+        coalesce(sum(attachment_size) filter (where conversation_id = ${conversationId}), 0)::bigint as conversation_bytes
+      from public.messages where attachment_key is not null
+    `;
+    if (Number(usage[0]?.global_bytes || 0) + file.size > GLOBAL_LIMIT
+      || Number(usage[0]?.user_bytes || 0) + file.size > USER_LIMIT
+      || Number(usage[0]?.conversation_bytes || 0) + file.size > CONVERSATION_LIMIT) {
+      return NextResponse.json({ error: "Quota de médias atteint." }, { status: 507, headers: { "Cache-Control": "no-store" } });
+    }
     const bytes = await file.arrayBuffer();\n    if (!hasValidSignature(mime, new Uint8Array(bytes))) return NextResponse.json({ error: "Le contenu du fichier ne correspond pas au format annoncé." }, { status: 415 });
     const extension = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8) || "bin";
-    const key = `${conversationId}/${crypto.randomUUID()}.${extension}`;
+    const key = `${kind === "image" ? "photos" : "ephemeral"}/${conversationId}/${crypto.randomUUID()}.${extension}`;
     await bucket.put(key, bytes, {
       httpMetadata: { contentType: mime },
       customMetadata: { conversationId, senderId: user.id },
@@ -145,9 +159,9 @@ export async function GET(_request: Request, context: RouteContext) {
     if (!rows.length) return NextResponse.json({ error: "Média introuvable." }, { status: 404 });
     const bucket = await getBucket();
     if (!bucket) return NextResponse.json({ error: "Stockage indisponible." }, { status: 503 });
-    const object = await bucket.get(rows[0].attachment_key);
+    const object = await bucket.get(media.attachment_key);
     if (!object) return NextResponse.json({ error: "Média introuvable." }, { status: 404 });
-    return new Response(object.body, {
+    const shouldDelete = !isSender && media.message_type !== "image" && Number(media.attachment_view_count) >= Number(media.attachment_max_views);\n    if (shouldDelete) {\n      await bucket.delete(media.attachment_key);\n      await sql`update public.messages set attachment_key = null, attachment_deleted_at = now() where id = ${messageId} and attachment_key = ${media.attachment_key}`;\n    }\n    return new Response(object.body, {
       headers: {
         "Content-Type": rows[0].attachment_mime_type || object.httpMetadata?.contentType || "application/octet-stream",
         "Content-Length": String(object.size),
