@@ -6,7 +6,7 @@ import Link from "next/link";
 import HomeHeader from "@/app/components/home-header";
 import { getCurrentUser } from "@/lib/auth";
 import NewsletterSignup from "@/app/components/newsletter-signup";
-import { ArrowRight, ArrowDown, Heart, LockKeyhole, ShieldCheck, Check } from "lucide-react";
+import { ArrowRight, ArrowDown, Brain, Heart, LockKeyhole, MessageCircleHeart, ShieldCheck, Check } from "lucide-react";
 
 const faqs = [
   { q: "À qui s’adresse NAKAHYA ?", a: "Aux adultes de 18 ans et plus qui souhaitent une relation sérieuse et préfèrent découvrir une personne au-delà d’une photo." },
