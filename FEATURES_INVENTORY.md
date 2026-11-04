@@ -307,3 +307,11 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - [ ] Rendre la réservation des quotas atomique face aux uploads simultanés ; automatiser le rapprochement R2/Neon et l'alerte à 6 Go.
 - [ ] Appliquer migrations 018 et 019, configurer la règle de cycle de vie R2, tester les parcours réels à deux comptes et vérifier la suppression physique.
 - **Limite connue :** le contrôle quota est actuellement un calcul agrégé non transactionnel ; ne pas ouvrir publiquement avant sa réservation atomique.
+
+
+## Déploiement sans R2 — correctif candidat du 2026-11-04
+
+- Le déploiement #41916783300 a échoué parce que Wrangler exigeait le bucket `nakahya-chat-media` déclaré dans `wrangler.jsonc`, inexistant dans le compte Cloudflare (code 10085).
+- Correctif candidat `fix/deploy-without-r2` : suppression du binding R2 obligatoire de la configuration Worker ; les routes média conservent leur contrôle de binding absent et renvoient HTTP 503. Les messages texte/emoji ne dépendent pas de R2.
+- Les fonctions photo/vidéo/audio restent désactivées en production jusqu'au provisionnement du bucket et à la réintroduction explicite du binding.
+- Ne déclarer ce correctif livré qu'après CI verte, publication Cloudflare et smoke HTTP réussi sur `https://nakahya.com`.
