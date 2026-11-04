@@ -7,6 +7,20 @@
 
 ## Priorités
 
+## Acquisition organique sans budget — 2026-11-04
+
+- [x] Auditer le SEO technique, les pages publiques, les tests et les documents avant d'ajouter du code.
+- [x] Réutiliser canonical, Open Graph, JSON-LD landing, robots, sitemap et tests de domaine existants.
+- [x] Ajouter un hub éditorial et trois articles de conseils en français, avec métadonnées et données structurées.
+- [x] Ajouter les pages au sitemap et des liens de navigation depuis l'accueil.
+- [x] Préparer un beacon Cloudflare Web Analytics optionnel via variable runtime, sans token versionné.
+- [x] Documenter la stratégie gratuite et les opérations manuelles dans `docs/ACQUISITION_ORGANIQUE.md`.
+- [ ] Vérifier CI (tests, lint, build, TypeScript, Playwright) sur le SHA de la PR.
+- [ ] Configurer et valider Search Console par le propriétaire via DNS, puis soumettre le sitemap.
+- [ ] Si souhaité, configurer le token Web Analytics dans Cloudflare et mettre à jour la politique de confidentialité avant activation.
+- [ ] Publier régulièrement des contenus et vidéos ; le code seul ne génère pas de trafic.
+
+
 - **P0 — indispensable au MVP**
 - **P1 — important après le parcours principal**
 - **P2 — phase 2 / amélioration**
