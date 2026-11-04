@@ -42,6 +42,16 @@
 
 ## Inventaire actuel
 
+### Acquisition organique — 2026-11-04 (branche candidate `feat/organic-acquisition-seo`)
+
+- **SEO technique déjà présent sur main :** origine canonique `lib/site-origin.ts`, métadonnées globales, Open Graph/Twitter, JSON-LD de la landing, `app/robots.ts`, `app/sitemap.ts`, exclusion des routes privées et tests `tests/e2e/site-domain.spec.ts`. Ne pas recréer ces mécanismes.
+- **Nouveau contenu candidat :** hub `/conseils` et trois articles `/conseils/rencontre-serieuse-ou-commencer`, `/conseils/questions-pour-faire-connaissance`, `/conseils/valeurs-compatibilite-couple`; métadonnées dédiées, JSON-LD Article, navigation et sitemap étendus.
+- **Mesure facultative candidate :** `app/components/cloudflare-web-analytics.tsx`, beacon chargé seulement si `CLOUDFLARE_WEB_ANALYTICS_TOKEN` runtime est présent et valide. Aucun token n'est stocké dans Git. Mesure de trafic seulement, pas de conversion d'inscription.
+- **Documentation candidate :** `docs/ACQUISITION_ORGANIQUE.md` (Search Console, configuration manuelle Cloudflare, plan social 4 semaines et indicateurs).
+- **Tests :** extension du test existant `tests/e2e/site-domain.spec.ts`; aucun deuxième test générique de sitemap/canonical créé. Résultats CI à renseigner après exécution du SHA de la PR.
+- **Opérations non automatisables :** validation DNS Search Console, activation du beacon dans Cloudflare et mise à jour/revue juridique de la politique de confidentialité nécessitent le propriétaire. Rien n'est activé en production par cette PR.
+
+
 ## Instantané historique — 2026-10-12 (vérification Playwright production)
 
 - **HEAD de `main` :** `7b51f4bf27fb1adff424415c57cb345b7e60c3bf`.
