@@ -422,3 +422,16 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [x] Préparer un correctif unique : domaine déclaré dans Wrangler, gate HTTP post-déploiement, exécution séquentielle de Playwright et vérification de session observée.
 - [ ] Fusionner uniquement si CI + build Worker verts ; vérifier ensuite le rattachement du domaine et les smokes de `main`. Ne pas masquer les 404 si Cloudflare refuse la liaison.
 - [ ] Activer Resend et migration 017 séparément après confirmation des prérequis et test autorisé.
+
+## Messagerie enrichie — 2026-11-04
+
+- [x] Étendre la messagerie existante avec envoi et affichage des photos, vidéos et fichiers audio.
+- [x] Ajouter l'enregistrement de messages vocaux via MediaRecorder lorsque le navigateur le permet.
+- [x] Ajouter un sélecteur d'emojis sans dépendance externe.
+- [x] Protéger l'envoi et le téléchargement des médias par les contrôles existants d'appartenance au match et de blocage.
+- [x] Ajouter la migration candidate 018 et les tests Playwright d'interface avec APIs simulées.
+- [ ] Créer le bucket privé Cloudflare R2 `nakahya-chat-media` et vérifier le binding `CHAT_MEDIA_BUCKET`.
+- [ ] Appliquer `db/migrations/018_chat_media_attachments.sql` dans Neon avant activation.
+- [ ] Vérifier CI, build Worker et tests Playwright sur le SHA final de la PR.
+- [ ] Tester réellement deux comptes de test autorisés : envoi/réception/lecture d'une photo, d'une vidéo et d'un audio ; vérifier aussi un membre non autorisé et un match bloqué.
+- [ ] Définir la modération, la rétention et la suppression des médias avant lancement public.
