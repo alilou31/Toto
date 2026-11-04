@@ -116,7 +116,8 @@ test.describe("Autorisation des API privées — sans session", () => {
       "/api/blocks",
       "/api/games/sessions",
       "/api/profile-visits",
-      "/api/conversations/00000000-0000-0000-0000-000000000000/messages",\n      "/api/conversations/00000000-0000-0000-0000-000000000000/attachments?messageId=00000000-0000-0000-0000-000000000000",
+      "/api/conversations/00000000-0000-0000-0000-000000000000/messages",
+      "/api/conversations/00000000-0000-0000-0000-000000000000/attachments?messageId=00000000-0000-0000-0000-000000000000",
     ];
 
     for (const path of paths) {
