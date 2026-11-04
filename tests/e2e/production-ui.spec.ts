@@ -38,6 +38,10 @@ test.describe("Interface NAKAHYA en production", () => {
     expect(response?.status(), "La page d'accueil doit répondre en HTTP 200").toBe(200);
     await expect(page).toHaveTitle(/NAKAHYA/i);
     await expect(page.locator("main h1").first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Derrière chaque profil/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Trois étapes/i })).toBeVisible();
+    await expect(page.getByText("App Store", { exact: true })).toBeVisible();
+    await expect(page.getByText("Google Play", { exact: true })).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     await expect(page.locator('a[href="/connexion"]').first()).toBeVisible();
   });

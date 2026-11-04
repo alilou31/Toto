@@ -315,3 +315,12 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - Correctif candidat `fix/deploy-without-r2` : suppression du binding R2 obligatoire de la configuration Worker ; les routes média conservent leur contrôle de binding absent et renvoient HTTP 503. Les messages texte/emoji ne dépendent pas de R2.
 - Les fonctions photo/vidéo/audio restent désactivées en production jusqu'au provisionnement du bucket et à la réintroduction explicite du binding.
 - Ne déclarer ce correctif livré qu'après CI verte, publication Cloudflare et smoke HTTP réussi sur `https://nakahya.com`.
+
+
+## Landing page simplifiée et humanisée — candidat 2026-11-04
+
+- Recentrage de la page d'accueil sur une promesse unique : rencontre sérieuse, découverte humaine, jeux comme facilitateur.
+- Suppression des sections éditoriales redondantes (présentation de marque répétée, catalogue de jeux détaillé et méthode répétée) au profit d'un récit humain, d'un parcours en trois étapes et d'une section confiance concise.
+- Conservation des métadonnées SEO, données structurées FAQ, connexion, inscription, newsletter anonyme et liens légaux.
+- Ajout d'un emplacement mobile App Store / Google Play marqué « à venir » : aucune fiche officielle ni URL de téléchargement n'a été confirmée dans le dépôt. Ne pas afficher « disponible » avant validation des deux liens et publication effective.
+- Validation attendue : lint, tests, build, Playwright responsive (390/768/1024/1440), contrôle visuel et vérification de l'absence de lien de boutique fictif.
