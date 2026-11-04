@@ -53,6 +53,20 @@ async function authorizedConversation(conversationId: string, userId: string) {
   return rows.length > 0;
 }
 
+function hasValidSignature(mime: string, bytes: Uint8Array): boolean {
+  const starts = (...values: number[]) => values.every((value, index) => bytes[index] === value);
+  if (mime === "image/jpeg") return starts(0xff, 0xd8, 0xff);
+  if (mime === "image/png") return starts(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a);
+  if (mime === "image/gif") return ["GIF87a", "GIF89a"].some(value => new TextDecoder().decode(bytes.slice(0, 6)) === value);
+  if (mime === "image/webp") return new TextDecoder().decode(bytes.slice(0, 4)) === "RIFF" && new TextDecoder().decode(bytes.slice(8, 12)) === "WEBP";
+  if (mime === "video/mp4" || mime === "video/quicktime" || mime === "audio/mp4") return new TextDecoder().decode(bytes.slice(4, 8)) === "ftyp";
+  if (mime === "video/webm" || mime === "audio/webm") return starts(0x1a, 0x45, 0xdf, 0xa3);
+  if (mime === "audio/ogg") return new TextDecoder().decode(bytes.slice(0, 4)) === "OggS";
+  if (mime === "audio/wav") return new TextDecoder().decode(bytes.slice(0, 4)) === "RIFF" && new TextDecoder().decode(bytes.slice(8, 12)) === "WAVE";
+  if (mime === "audio/mpeg") return new TextDecoder().decode(bytes.slice(0, 3)) === "ID3" || (bytes[0] === 0xff && (bytes[1] & 0xe0) === 0xe0);
+  return false;
+}
+
 function mediaKind(mime: string): "image" | "video" | "audio" | null {
   if (mime.startsWith("image/") && mime in MAX_SIZE) return "image";
   if (mime.startsWith("video/") && mime in MAX_SIZE) return "video";
@@ -80,7 +94,7 @@ export async function POST(request: Request, context: RouteContext) {
     if (!kind) return NextResponse.json({ error: "Format non accepté. Utilisez une image, une vidéo ou un fichier audio compatible." }, { status: 415 });
     if (file.size < 1 || file.size > MAX_SIZE[mime]) return NextResponse.json({ error: "Fichier trop volumineux pour ce format." }, { status: 413 });
 
-    const bytes = await file.arrayBuffer();
+    const bytes = await file.arrayBuffer();\n    if (!hasValidSignature(mime, new Uint8Array(bytes))) return NextResponse.json({ error: "Le contenu du fichier ne correspond pas au format annoncé." }, { status: 415 });
     const extension = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8) || "bin";
     const key = `${conversationId}/${crypto.randomUUID()}.${extension}`;
     await bucket.put(key, bytes, {
