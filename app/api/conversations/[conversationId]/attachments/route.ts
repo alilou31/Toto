@@ -89,7 +89,7 @@ export async function POST(request: Request, context: RouteContext) {
     const form = await request.formData();
     const file = form.get("file");
     if (!(file instanceof File)) return NextResponse.json({ error: "Sélectionnez un fichier à envoyer." }, { status: 400 });
-    const mime = file.type.toLowerCase();
+    const mime = file.type.toLowerCase().split(";")[0].trim();
     const kind = mediaKind(mime);
     if (!kind) return NextResponse.json({ error: "Format non accepté. Utilisez une image, une vidéo ou un fichier audio compatible." }, { status: 415 });
     if (file.size < 1 || file.size > MAX_SIZE[mime]) return NextResponse.json({ error: "Fichier trop volumineux pour ce format." }, { status: 413 });
