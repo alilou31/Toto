@@ -276,3 +276,13 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Routes déjà présentes dans le build** : `/confirmer-email`, `POST /api/auth/confirm-email`. Les smokes #164/#165 renvoient néanmoins 404 sur le domaine officiel : il ne s'agit pas de fonctionnalités absentes à recréer.
 - **Correction du déploiement** : route Custom Domain versionnée dans Wrangler et contrôle HTTP post-publication ; test de session et smoke existants fiabilisés sans doublon.
 - **À VÉRIFIER** : configuration Cloudflare réellement appliquée, nouveau smoke, validation externe Resend et migration Neon 017. L'activation reste OFF.
+
+## Messagerie enrichie — 2026-11-04 (branche `feat/chat-media-messaging`)
+
+- **Réutilisation :** extension de `app/messages/[conversationId]/page.tsx` et de l'API de messages existante ; aucun deuxième système de conversation.
+- **Ajouts :** envoi/rendu photo, vidéo, fichier audio, enregistrement vocal via MediaRecorder et sélecteur d'emojis.
+- **Stockage :** Cloudflare R2 privé via le binding `CHAT_MEDIA_BUCKET`, bucket attendu `nakahya-chat-media`. Les téléchargements passent par une API authentifiée et autorisée, jamais par une URL publique.
+- **Schéma :** migration candidate `db/migrations/018_chat_media_attachments.sql`. Elle doit être appliquée dans Neon avant activation.
+- **Limites :** images 20 Mo (GIF 10 Mo), vidéo 40 Mo, audio 15 Mo ; MIME et signature binaire vérifiés. La prise en charge MediaRecorder dépend du navigateur.
+- **Tests ajoutés :** `tests/e2e/chat-media.spec.ts` (emoji, envoi texte, sélection photo et présence des actions audio/vidéo). Les tests avec routes interceptées ne valident pas la persistance réelle ni le stockage R2.
+- **Statut :** code candidat sur PR à créer ; bucket R2 et migration Neon non configurés/non appliqués par cette modification. Pas de validation production revendiquée.
