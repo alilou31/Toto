@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Gamepad2, Heart, ImagePlus, Mic, Send, Smile, Video, X } from "lucide-react";
 
-type Message = { id: string; sender_id: string; body: string; created_at: string; read_at: string | null; message_type?: "text" | "image" | "video" | "audio"; attachment_mime_type?: string | null; attachment_name?: string | null };
+type Message = { id: string; sender_id: string; body: string; created_at: string; read_at: string | null; message_type?: "text" | "image" | "video" | "audio"; attachment_mime_type?: string | null; attachment_name?: string | null; attachment_available?: boolean };
 const emojis = ["😀","😃","😊","😍","🥰","😘","😉","😂","🤣","😅","🤗","🤔","🥹","❤️","🧡","💛","💚","💙","💕","💞","🌹","✨","🙏","👍","👏","🎉","☕","🌸","🥳"];
 
 export default function MessagesPage() {
@@ -114,7 +114,7 @@ export default function MessagesPage() {
           const own = message.sender_id === currentUserId;
           const src = mediaUrl(message.id);
           return <div key={message.id} style={{alignSelf:own ? "flex-end" : "flex-start",maxWidth:"min(85%, 420px)",padding:12,borderRadius:14,background:"var(--surface-card, #1c2636)",border:"1px solid var(--border-subtle, #344156)",color:"var(--text-primary, #f5f7fa)"}}>
-            {message.message_type === "image" ? <img src={src} alt={message.attachment_name || "Photo envoyée"} loading="lazy" style={{display:"block",maxWidth:"100%",maxHeight:360,borderRadius:9,objectFit:"contain"}}/> :
+            {message.message_type && message.message_type !== "text" && message.attachment_available === false ? <p role="status">Média expiré ou déjà consulté.</p> : message.message_type === "image" ? <img src={src} alt={message.attachment_name || "Photo envoyée"} loading="lazy" style={{display:"block",maxWidth:"100%",maxHeight:360,borderRadius:9,objectFit:"contain"}}/> :
              message.message_type === "video" ? <video src={src} controls playsInline preload="metadata" style={{display:"block",width:"100%",maxHeight:360,borderRadius:9}}/> :
              message.message_type === "audio" ? <audio src={src} controls preload="metadata" style={{display:"block",maxWidth:"100%"}}/> :
              <p style={{marginBottom:6,whiteSpace:"pre-wrap",overflowWrap:"anywhere"}}>{message.body}</p>}
