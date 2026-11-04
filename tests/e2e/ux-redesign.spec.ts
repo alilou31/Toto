@@ -48,12 +48,11 @@ test.describe("NAKAHYA — pages publiques", () => {
   });
   test("la landing présente la promesse et les trois engagements de marque", async ({ page }) => {
     await page.goto("/");
-    const identity = page.locator("#identite");
-    await expect(identity).toBeVisible();
-    await expect(identity.getByRole("heading", { name: /Moins de profils à parcourir.*Plus de personnes à découvrir/i })).toBeVisible();
-    await expect(identity.getByText("La sincérité")).toBeVisible();
-    await expect(identity.getByText("La complicité", { exact: true })).toBeVisible();
-    await expect(identity.getByText("Le respect")).toBeVisible();
+    const humanSection = page.locator("#concept");
+    await expect(humanSection).toBeVisible();
+    await expect(humanSection.getByRole("heading", { name: /Derrière chaque profil.*une vraie personne/i })).toBeVisible();
+    await expect(humanSection.getByText(/On ne cherche pas le profil parfait/i)).toBeVisible();
+    await expect(page.locator("#comment-ca-marche .landing-how-grid article")).toHaveCount(3);
   });
 
 });
