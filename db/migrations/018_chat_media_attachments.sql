@@ -20,7 +20,7 @@ alter table public.messages
   check (
     (message_type = 'text' and attachment_key is null and attachment_mime_type is null and attachment_size is null)
     or
-    (message_type <> 'text' and attachment_key is not null and attachment_mime_type is not null and attachment_size > 0)
+    (message_type <> 'text' and attachment_key is not null and attachment_mime_type is not null and attachment_size is not null and attachment_size > 0)
   );
 
 create index if not exists messages_attachment_key_idx
