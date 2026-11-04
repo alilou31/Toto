@@ -18,7 +18,7 @@ concurrency:
 jobs:
   ios-simulator:
     name: Build iOS simulator app (unsigned)
-    runs-on: macos-15
+    runs-on: macos-26-intel
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
