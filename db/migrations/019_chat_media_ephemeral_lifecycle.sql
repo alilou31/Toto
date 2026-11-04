@@ -5,6 +5,12 @@ alter table public.messages
   add column if not exists attachment_expires_at timestamptz,
   add column if not exists attachment_deleted_at timestamptz;
 
+update public.messages
+set attachment_max_views = 1,
+    attachment_view_count = 0,
+    attachment_expires_at = coalesce(attachment_expires_at, created_at + interval '7 days')
+where message_type in ('video', 'audio') and attachment_key is not null;
+
 alter table public.messages
   drop constraint if exists messages_attachment_consistency_check;
 alter table public.messages
