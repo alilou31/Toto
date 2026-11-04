@@ -286,3 +286,15 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Limites :** images 20 Mo (GIF 10 Mo), vidéo 40 Mo, audio 15 Mo ; MIME et signature binaire vérifiés. La prise en charge MediaRecorder dépend du navigateur.
 - **Tests ajoutés :** `tests/e2e/chat-media.spec.ts` (emoji, envoi texte, sélection photo et présence des actions audio/vidéo). Les tests avec routes interceptées ne valident pas la persistance réelle ni le stockage R2.
 - **Statut :** code candidat sur PR à créer ; bucket R2 et migration Neon non configurés/non appliqués par cette modification. Pas de validation production revendiquée.
+
+
+### Messagerie — médias éphémères et quotas (PR #86, 2026-11-04)
+
+- [x] Ajouter le choix de 1 ou 2 consultations pour les vidéos et audios.
+- [x] Décompter atomiquement les consultations du destinataire et supprimer l'objet R2 après la dernière.
+- [x] Expirer les vidéos/audios non consultés après 7 jours (suppression à l'accès expiré + règle de cycle de vie R2 à configurer).
+- [x] Réduire les tailles : photo 10 Mo, vidéo 25 Mo, audio 10 Mo.
+- [x] Ajouter des plafonds applicatifs : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux.
+- [ ] Rendre la réservation des quotas atomique face aux uploads simultanés ; automatiser le rapprochement R2/Neon et l'alerte à 6 Go.
+- [ ] Appliquer migrations 018 et 019, configurer la règle de cycle de vie R2, tester les parcours réels à deux comptes et vérifier la suppression physique.
+- **Limite connue :** le contrôle quota est actuellement un calcul agrégé non transactionnel ; ne pas ouvrir publiquement avant sa réservation atomique.
