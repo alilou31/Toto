@@ -130,8 +130,9 @@ export async function POST(request: Request, context: RouteContext) {
           (${conversationId}, ${user.id}, ${label}, ${kind}, ${key}, ${mime}, ${file.size}, ${file.name.slice(0, 180)}, ${viewLimit}, ${kind === "image" ? null : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()})
         returning id, sender_id, body, created_at, read_at, message_type, attachment_mime_type, attachment_size, attachment_name, attachment_max_views, attachment_view_count, attachment_expires_at
       `;
-      await sql`update public.conversations set last_message_at = now() where id = ${conversationId}`;
-      await sql`delete from public.chat_media_quota_reservations where id = ${reservationId}::uuid`;
+      // Once the message exists, failures in ancillary bookkeeping must not roll back the object.
+      await sql`delete from public.chat_media_quota_reservations where id = ${reservationId}::uuid`.catch(() => undefined);
+      await sql`update public.conversations set last_message_at = now() where id = ${conversationId}`.catch(() => undefined);
       return NextResponse.json({ message: rows[0] }, { status: 201, headers: { "Cache-Control": "no-store" } });
     } catch (error) {
       await bucket.delete(key).catch(() => undefined);
