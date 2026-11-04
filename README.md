@@ -76,6 +76,10 @@ Le workflow déploie automatiquement les commits poussés sur `main` après réu
 
 Voir [AUTHENTIFICATION_SOCIALE.md](./AUTHENTIFICATION_SOCIALE.md) pour les opérations Google/Meta. Dans la console Stripe Identity, mettre à jour l'endpoint utilisé vers `https://nakahya.com/api/webhooks/stripe-identity`, conserver les signatures et secrets existants, puis vérifier avec des événements de test dédiés. Aucun endpoint de billing n'est ajouté. Les anciens endpoints API restent servis pour la transition ; aucun webhook réel ni e-mail à un compte réel n'est déclenché par le smoke.
 
+## Acquisition organique et mesure du trafic
+
+Voir [`docs/ACQUISITION_ORGANIQUE.md`](./docs/ACQUISITION_ORGANIQUE.md) pour le plan gratuit, les pages éditoriales `/conseils`, la procédure Search Console et la configuration facultative de Cloudflare Web Analytics. Le beacon est désactivé par défaut ; il nécessite la variable runtime `CLOUDFLARE_WEB_ANALYTICS_TOKEN` dans le Worker et une revue de la politique de confidentialité. Il mesure le trafic, pas les conversions d'inscription.
+
 ## Tests automatisés
 
 - Tests unitaires : `npm test` (Node.js test runner, sans base de données).
