@@ -31,8 +31,8 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       await central.click();
       await expect(page).toHaveURL("/decouvrir");
       await expect(page.locator(".discovery-card")).toHaveCount(2);
-      await expect(page.getByRole("heading", { name: "Amina", exact: true })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Sarah", exact: true })).toBeVisible();
+      await expect(page.locator(".discovery-card h2").filter({ hasText: "Amina" })).toBeVisible();
+      await expect(page.locator(".discovery-card h2").filter({ hasText: "Sarah" })).toBeVisible();
       await expect(page.locator(".discovery-card").filter({ hasText: "Amina" }).locator(".discovery-age")).toHaveText("31 ans");
       await expect(page.locator(".discovery-card").filter({ hasText: "Sarah" }).locator(".discovery-age")).toHaveText("36 ans");
       await expect(central).toHaveAttribute("aria-current", "page");
