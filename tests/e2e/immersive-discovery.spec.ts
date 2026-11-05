@@ -1,8 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const profiles = [
-  { id: "amina", public_name: "Amina", city: "Lyon", bio: "J’aime les énigmes.", relationship_intention: "serious", photo_url: "https://photos.example/amina.jpg" },
-  { id: "sarah", public_name: "Sarah", city: "Bordeaux", bio: "Une relation sincère.", relationship_intention: "marriage" },
+  { id: "amina", public_name: "Amina", city: "Lyon", birth_date: "1995-01-01", bio: "J’aime les énigmes.", relationship_intention: "serious", photo_url: "https://photos.example/amina.jpg" },
+  { id: "sarah", public_name: "Sarah", city: "Bordeaux", birth_date: "1990-01-01", bio: "Une relation sincère.", relationship_intention: "marriage" },
 ];
 
 // All member data and writes are intercepted, also against production.
@@ -32,6 +32,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       await expect(central).toHaveAttribute("href", "/decouvrir/immersif");
       await central.click();
       await expect(page.getByRole("heading", { name: "Amina", exact: true })).toBeVisible();
+      await expect(page.locator(".immersive-profile")).toContainText("31 ans");
       await expect(central).toHaveAttribute("aria-current", "page");
       await expect(page.getByRole("button", { name: "Passer ce profil" })).toHaveCSS("color", "rgb(185, 28, 28)");
       await expect(page.getByRole("button", { name: "Liker Amina" })).toHaveCSS("background-color", "rgb(21, 128, 61)");
