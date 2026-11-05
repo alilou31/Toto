@@ -49,6 +49,13 @@
 - **Tests** : CI/Playwright verts sur le SHA contrôlé, mais tests UI avec API simulée uniquement ; parcours réel à deux comptes et suppression physique R2 encore à valider.
 - **À FAIRE avant lancement public** : bucket privé et binding opérationnels, règle R2, rapprochement périodique objets/base, alerte à 6 Go, tests réels à deux comptes, politique de modération et suppression de compte.
 
+## Sécurité profil — correctif candidat du 2026-11-05
+
+- La fiche d'un autre membre (`GET /api/profiles/[profileId]`) doit appliquer côté serveur la même règle de genre opposé que `/api/discover`, même lors d'une consultation directe.
+- Le profil personnel reste consultable par son propriétaire ; un membre sans genre valide reçoit `409 GENDER_REQUIRED` avant toute lecture d'un autre profil.
+- Le parcours E2E existant à deux comptes vérifie les genres opposés, la consultation croisée des fiches et l'absence de date de naissance dans la réponse publique. Il dépend des secrets E2E et ne doit pas être déclenché en production sans autorisation.
+- Statut : **CANDIDAT SUR BRANCHE**, non validé par CI et non déployé.
+
 ## Inventaire actuel
 
 ## Instantané historique — 2026-10-12 (vérification Playwright production)
