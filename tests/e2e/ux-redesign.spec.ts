@@ -104,6 +104,10 @@ test.describe("NAKAHYA — cockpit et navigation", () => {
 
 test.describe("NAKAHYA — responsive mobile", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  test.beforeEach(async ({ page }) => {
+    // This suite validates mobile navigation, not the separate consent interaction.
+    await page.addInitScript(() => window.localStorage.setItem("nakahya-analytics-consent", "denied"));
+  });
 
   test("la landing page n'a pas de débordement horizontal", async ({ page }) => {
     await page.goto("/");

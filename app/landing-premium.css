@@ -287,4 +287,4 @@
 .nakahya-consent-primary{background:#dcefe3;color:#173f35;border:1px solid #dcefe3}
 .nakahya-consent-secondary{background:transparent;color:#fff;border:1px solid #ffffff70}
 .nakahya-consent-manage{position:fixed;z-index:9998;bottom:12px;right:12px;background:#173f35;color:white;border:1px solid #ffffff55;box-shadow:0 4px 18px #0002}
-@media(max-width:700px){.landing-manual-install{grid-template-columns:1fr;margin:28px 16px;padding:23px}.landing-install-instructions{grid-template-columns:1fr}.nakahya-consent-banner{left:10px;right:10px;bottom:10px;display:block;padding:17px}.nakahya-consent-actions{margin-top:13px;justify-content:stretch}.nakahya-consent-actions button{flex:1}.nakahya-consent-manage{bottom:8px;right:8px}}
+@media(max-width:700px){.landing-manual-install{grid-template-columns:1fr;margin:28px 16px;padding:23px}.landing-install-instructions{grid-template-columns:1fr}.nakahya-consent-banner{left:10px;right:10px;bottom:calc(88px + env(safe-area-inset-bottom));display:block;padding:17px}.nakahya-consent-actions{margin-top:13px;justify-content:stretch}.nakahya-consent-actions button{flex:1}.nakahya-consent-manage{bottom:8px;right:8px}}
