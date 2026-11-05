@@ -18,3 +18,14 @@ test("profile API refuses unauthenticated updates", async ({ request }) => {
   });
   expect(response.status()).toBe(401);
 });
+
+
+test("le profil propose uniquement Homme ou Femme et impose un choix", async ({ page }) => {
+  await page.route("**/api/profile", route => route.fulfill({ json: { profile: null } }));
+  await page.goto("/profil");
+  const gender = page.locator("label").filter({ hasText: "Votre genre" }).locator("select");
+  await expect(gender).toBeVisible();
+  await expect(gender).toHaveValue("");
+  await expect(gender.locator("option")).toHaveText(["Sélectionnez votre genre", "Homme", "Femme"]);
+  await expect(gender).toHaveAttribute("required", "");
+});
