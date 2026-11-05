@@ -24,7 +24,7 @@ export default function ConseilsPage() {
     <section className="section-pad" style={{ background: "var(--ivory)", minHeight: "50vh" }}>
       <div className="section-kicker"><span>NAKAHYA</span> / LE JOURNAL DE LA RENCONTRE</div>
       <h1 style={{ maxWidth: 850 }}>Faire connaissance avec <em>intention.</em></h1>
-      <p style={{ maxWidth: 680, lineHeight: 1.9, color: "var(--muted)", fontSize: 16 }}>Des repères simples et sans jugement pour aborder une rencontre, mieux se connaître et parler de ce qui compte vraiment. La rencontre reste au centre ; les jeux ne sont qu&apos;une façon d'ouvrir la conversation.</p>
+      <p style={{ maxWidth: 680, lineHeight: 1.9, color: "var(--muted)", fontSize: 16 }}>Des repères simples et sans jugement pour aborder une rencontre, mieux se connaître et parler de ce qui compte vraiment. La rencontre reste au centre ; les jeux ne sont qu&apos;une façon d&apos;ouvrir la conversation.</p>
       <div className="value-grid" style={{ marginTop: 48 }}>
         {articles.map((article) => <article className="value-card" key={article.slug} style={{ background: "#fff", minHeight: 250 }}>
           <div className="value-top"><span className="value-icon"><BookOpen size={20}/></span><span className="card-number">{article.reading.toUpperCase()}</span></div>
