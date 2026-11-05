@@ -67,6 +67,16 @@ test.describe("Interface NAKAHYA en production", () => {
     await expect(page.getByRole("button", { name: "Gérer les cookies" })).toBeVisible();
   });
 
+  test("charge le conteneur Google Tag Manager configuré uniquement après consentement", async ({ page }) => {
+    await page.addInitScript(() => localStorage.clear());
+    await page.goto("/");
+    await expect(page.locator('script[data-nakahya-gtm="true"]')).toHaveCount(0);
+    await page.getByRole("button", { name: "Accepter la mesure d’audience" }).click();
+    const gtmScript = page.locator('script[data-nakahya-gtm="true"]');
+    await expect(gtmScript).toHaveAttribute("src", "https://www.googletagmanager.com/gtm.js?id=GTM-M782VXCD");
+    await expect(page.getByRole("button", { name: "Gérer les cookies" })).toBeVisible();
+  });
+
   test("la navigation vers la connexion fonctionne", async ({ page }) => {
     await page.goto("/");
     // The homepage hero exposes a visible login link even when header actions

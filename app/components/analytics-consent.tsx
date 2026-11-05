@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "nakahya-analytics-consent";
-const GTM_ID = "GTM-MPMV8SSW";
+const GTM_ID = "GTM-M782VXCD";
 
 type Consent = "granted" | "denied";
 
@@ -21,7 +21,10 @@ export default function AnalyticsConsent() {
     if (consent !== "granted") return;
     if (document.querySelector('script[data-nakahya-gtm="true"]')) return;
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    window.gtag = (...args: unknown[]) => {
+      window.dataLayer.push(args);
+    };
+    window.gtag("js", new Date());
     const script = document.createElement("script");
     script.async = true;
     script.src = "https://www.googletagmanager.com/gtm.js?id=" + GTM_ID;
@@ -52,5 +55,8 @@ export default function AnalyticsConsent() {
 }
 
 declare global {
-  interface Window { dataLayer: Array<Record<string, unknown>>; }
+  interface Window {
+    dataLayer: unknown[];
+    gtag: (...args: unknown[]) => void;
+  }
 }

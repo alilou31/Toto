@@ -333,3 +333,12 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - **Google Tag Manager :** conteneur `GTM-MPMV8SSW` chargé uniquement après consentement explicite à la mesure d'audience. Le refus est mémorisé et aucun script GTM n'est ajouté ; un contrôle « Cookies » permet de rouvrir le choix. Aucun pixel ni cookie analytique n'est activé avant accord.
 - **Limite conformité :** le consentement est volontairement opt-in ; l'éditeur doit encore configurer dans GTM les balises et leur paramétrage de consentement, vérifier la politique de confidentialité et tester les cookies réellement déposés avant lancement de campagnes. Le code ne remplace pas la revue RGPD/CNIL.
 - **Tests :** Playwright vérifie la section d’installation, le manifest et le refus de mesure d’audience. Les scénarios fonctionnels de navigation isolent explicitement le consentement (refus mémorisé) afin que la bannière ne masque pas les contrôles testés ; les scénarios dédiés vérifient séparément le comportement de consentement. Sur mobile, la bannière est positionnée au-dessus de la navigation basse pour ne pas intercepter ses interactions. Les instructions manuelles dépendent des versions de navigateur et du système.
+
+
+## Mise à jour du conteneur Google Tag Manager — 2026-11-05
+
+- Remplacement de l'ancien identifiant par le conteneur fourni : `GTM-M782VXCD`.
+- Initialisation `gtag('js', new Date())` et chargement de `gtm.js?id=GTM-M782VXCD` dans le composant global existant, sans ajouter une deuxième balise par page.
+- Le chargement reste conditionné au consentement explicite déjà en place ; un refus ne charge aucun script GTM.
+- Test Playwright étendu : refus sans chargement et acceptation avec vérification de l'URL exacte du conteneur.
+- À vérifier après publication : configuration des balises et du consentement dans l'interface Google Tag Manager, ainsi que les cookies réellement déposés. La modification du code ne configure pas les balises dans le compte Google.
