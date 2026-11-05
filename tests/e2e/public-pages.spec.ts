@@ -13,7 +13,7 @@ test.describe("Pages publiques NAKAHYA", () => {
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
     const howLink = page.getByRole("link", { name: /Comment ça marche/i }).first();
     await expect(howLink).toBeVisible();
-    await expect(howLink).toHaveAttribute("href", "#comment-ca-marche");
+    await expect(howLink).toHaveAttribute("href", "/#comment-ca-marche");
     await expect(page.getByRole("heading", { name: /Derrière chaque profil/i })).toBeVisible();
     await expect(page.getByText("À VENIR SUR", { exact: true }).first()).toBeVisible();
   });
