@@ -41,6 +41,7 @@ test("Likes reste accessible si le chargement du profil personnel échoue", asyn
   const card = page.locator("article.value-card").filter({ has: page.getByRole("heading", { name: "Yanis" }) });
   await expect(card).toBeVisible();
   await expect(card).toContainText("Musique");
-  await expect(card.getByRole("link", { name: /Ouvrir la conversation/i })).toHaveAttribute("href", "/messages/conversation-2");
+  await expect(card.getByRole("link", { name: /Débloquer les échanges/i })).toHaveAttribute("href", "/offres");
+  await expect(card.getByRole("link", { name: /Ouvrir la conversation/i })).toHaveCount(0);
 });
 
