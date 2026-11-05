@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { localeFromAcceptLanguage, normalizeLocale } from "@/lib/i18n";
 import ConnectedAppChrome from "@/app/components/connected-app-chrome";
+import AnalyticsConsent from "@/app/components/analytics-consent";
 import LocaleCompatibilityTranslator from "@/app/components/locale-compatibility-translator";
 import "./gamified.css";
 import "./profile-ui.css";
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
   description: siteDescription,
   applicationName: "NAKAHYA",
   category: "social",
+  manifest: "/manifest.webmanifest",
   keywords: ["rencontre sérieuse", "application de rencontre", "faire connaissance en jouant", "rencontre par affinités", "rencontre par centres d’intérêt", "compatibilité amoureuse", "relation durable", "rencontre francophone", "jeux pour faire connaissance"],
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   openGraph: {
@@ -40,6 +42,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const requestHeaders = await headers();
   const savedLocale = cookieStore.get("nikahya_locale")?.value;
   const locale = savedLocale ? normalizeLocale(savedLocale) : localeFromAcceptLanguage(requestHeaders.get("accept-language"));
-  return <html lang={locale}><body><LocaleCompatibilityTranslator /><ConnectedAppChrome>{children}</ConnectedAppChrome></body></html>;
+  return <html lang={locale}><body><LocaleCompatibilityTranslator /><ConnectedAppChrome>{children}</ConnectedAppChrome><AnalyticsConsent /></body></html>;
 }
 

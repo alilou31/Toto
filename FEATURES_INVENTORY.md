@@ -315,3 +315,21 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - Correctif candidat `fix/deploy-without-r2` : suppression du binding R2 obligatoire de la configuration Worker ; les routes média conservent leur contrôle de binding absent et renvoient HTTP 503. Les messages texte/emoji ne dépendent pas de R2.
 - Les fonctions photo/vidéo/audio restent désactivées en production jusqu'au provisionnement du bucket et à la réintroduction explicite du binding.
 - Ne déclarer ce correctif livré qu'après CI verte, publication Cloudflare et smoke HTTP réussi sur `https://nakahya.com`.
+
+
+## Landing page simplifiée et humanisée — candidat 2026-11-04
+
+- Recentrage de la page d'accueil sur une promesse unique : rencontre sérieuse, découverte humaine, jeux comme facilitateur.
+- Suppression des sections éditoriales redondantes (présentation de marque répétée, catalogue de jeux détaillé et méthode répétée) au profit d'un récit humain, d'un parcours en trois étapes et d'une section confiance concise.
+- Conservation des métadonnées SEO, données structurées FAQ, connexion, inscription, newsletter anonyme et liens légaux.
+- Ajout d'un emplacement mobile App Store / Google Play marqué « à venir » : aucune fiche officielle ni URL de téléchargement n'a été confirmée dans le dépôt. Ne pas afficher « disponible » avant validation des deux liens et publication effective.
+- Validation attendue : lint, tests, build, Playwright responsive (390/768/1024/1440), contrôle visuel et vérification de l'absence de lien de boutique fictif.
+
+
+## Landing publique — installation manuelle et mesure d'audience (PR #88)
+
+- **Installation manuelle/PWA :** la landing explique l'ajout à l'écran d'accueil sur iOS (Safari > Partager > Sur l'écran d'accueil) et Android (Chrome > Installer l'application / Ajouter à l'écran d'accueil). Un bouton natif est affiché uniquement lorsque le navigateur expose `beforeinstallprompt`. Le service worker est enregistré pour satisfaire les navigateurs Chromium compatibles ; il ne met pas les données privées en cache.
+- **Stores :** App Store et Google Play restent indiqués « à venir » tant que les fiches officielles ne sont pas publiées.
+- **Google Tag Manager :** conteneur `GTM-MPMV8SSW` chargé uniquement après consentement explicite à la mesure d'audience. Le refus est mémorisé et aucun script GTM n'est ajouté ; un contrôle « Cookies » permet de rouvrir le choix. Aucun pixel ni cookie analytique n'est activé avant accord.
+- **Limite conformité :** le consentement est volontairement opt-in ; l'éditeur doit encore configurer dans GTM les balises et leur paramétrage de consentement, vérifier la politique de confidentialité et tester les cookies réellement déposés avant lancement de campagnes. Le code ne remplace pas la revue RGPD/CNIL.
+- **Tests :** Playwright vérifie la section d’installation, le manifest et le refus de mesure d’audience. Les scénarios fonctionnels de navigation isolent explicitement le consentement (refus mémorisé) afin que la bannière ne masque pas les contrôles testés ; les scénarios dédiés vérifient séparément le comportement de consentement. Sur mobile, la bannière est positionnée au-dessus de la navigation basse pour ne pas intercepter ses interactions. Les instructions manuelles dépendent des versions de navigateur et du système.

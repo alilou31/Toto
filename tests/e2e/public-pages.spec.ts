@@ -11,8 +11,11 @@ test.describe("Pages publiques NAKAHYA", () => {
     await expect(page).toHaveTitle(/NAKAHYA/i);
     await expect(page.getByRole("link", { name: /NAKAHYA/i }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Créer mon (compte|profil)/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /Voir comment ça marche/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Voir comment ça marche/i })).toHaveAttribute("href", "/demo");
+    const howLink = page.getByRole("link", { name: /Comment ça marche/i }).first();
+    await expect(howLink).toBeVisible();
+    await expect(howLink).toHaveAttribute("href", "/#comment-ca-marche");
+    await expect(page.getByRole("heading", { name: /Derrière chaque profil/i })).toBeVisible();
+    await expect(page.getByText("À VENIR SUR", { exact: true }).first()).toBeVisible();
   });
 
   test("la navigation mène au formulaire de connexion", async ({ page }) => {

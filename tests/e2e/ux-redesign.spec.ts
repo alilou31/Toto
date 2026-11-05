@@ -18,6 +18,10 @@ const cockpitRoutes = [
 ];
 
 test.describe("NAKAHYA — pages publiques", () => {
+  test.beforeEach(async ({ page }) => {
+    // Isolate page/navigation assertions from the first-visit analytics consent UI.
+    await page.addInitScript(() => window.localStorage.setItem("nakahya-analytics-consent", "denied"));
+  });
   for (const route of publicRoutes) {
     test(`affiche ${route.path}`, async ({ page }) => {
       const response = await page.goto(route.path);
@@ -30,7 +34,7 @@ test.describe("NAKAHYA — pages publiques", () => {
     await page.goto("/connexion");
     await expect(page.getByLabel(/adresse e-mail/i)).toBeVisible();
     await expect(page.getByLabel(/mot de passe/i)).toBeVisible();
-    await expect(page.getByRole("button", { name: /connecter|connexion|continuer/i })).toBeVisible();
+    await expect(page.getByRole("button", { name: /se connecter/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /inscri|créer.*(compte|profil)/i })).toBeVisible();
   });
 
@@ -48,17 +52,19 @@ test.describe("NAKAHYA — pages publiques", () => {
   });
   test("la landing présente la promesse et les trois engagements de marque", async ({ page }) => {
     await page.goto("/");
-    const identity = page.locator("#identite");
-    await expect(identity).toBeVisible();
-    await expect(identity.getByRole("heading", { name: /Moins de profils à parcourir.*Plus de personnes à découvrir/i })).toBeVisible();
-    await expect(identity.getByText("La sincérité")).toBeVisible();
-    await expect(identity.getByText("La complicité", { exact: true })).toBeVisible();
-    await expect(identity.getByText("Le respect")).toBeVisible();
+    const humanSection = page.locator("#concept");
+    await expect(humanSection).toBeVisible();
+    await expect(humanSection.getByRole("heading", { name: /Derrière chaque profil.*une vraie personne/i })).toBeVisible();
+    await expect(humanSection.getByText(/On ne cherche pas le profil parfait/i)).toBeVisible();
+    await expect(page.locator("#comment-ca-marche .landing-how-grid article")).toHaveCount(3);
   });
 
 });
 
 test.describe("NAKAHYA — cockpit et navigation", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => window.localStorage.setItem("nakahya-analytics-consent", "denied"));
+  });
   for (const route of cockpitRoutes) {
     test(`ouvre ${route.path} sans erreur HTTP`, async ({ page }) => {
       const response = await page.goto(route.path);
@@ -98,6 +104,10 @@ test.describe("NAKAHYA — cockpit et navigation", () => {
 
 test.describe("NAKAHYA — responsive mobile", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  test.beforeEach(async ({ page }) => {
+    // This suite validates mobile navigation, not the separate consent interaction.
+    await page.addInitScript(() => window.localStorage.setItem("nakahya-analytics-consent", "denied"));
+  });
 
   test("la landing page n'a pas de débordement horizontal", async ({ page }) => {
     await page.goto("/");
