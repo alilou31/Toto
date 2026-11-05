@@ -11,7 +11,7 @@ export async function GET() {
     if (!user) return NextResponse.json({ error: "Authentification requise." }, { status: 401, headers: { "Cache-Control": "no-store" } });
 
     const sql = getDb();
-    const ownRows = await sql`select * from public.profiles where id = ${user.id} limit 1`;
+    const ownRows = await sql`select gender from public.profiles where id = ${user.id} limit 1`;
     const ownGender = ownRows[0]?.gender;
     if (ownGender !== "man" && ownGender !== "woman") {
       return NextResponse.json({ error: "Choisissez d’abord Homme ou Femme dans votre profil pour accéder aux rencontres.", code: "GENDER_REQUIRED" }, { status: 409, headers: { "Cache-Control": "no-store" } });
