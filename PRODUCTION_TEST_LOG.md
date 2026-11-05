@@ -26,6 +26,14 @@
 - Les migrations Neon `005_game_sessions.sql` et `007_rencontre_sessions.sql` ont été déclarées exécutées le 2026-10-12 puis confirmées comme déjà vérifiées par l'utilisateur le 2026-10-13. Ne pas les rouvrir dans le backlog courant sans nouvel indice concret de régression.
 - L'historique ci-dessous ne prétend pas certifier des tests dont les journaux complets n'ont pas été inspectés. Les statuts « rapporté » sont volontairement séparés des résultats d'exécution vérifiés.
 
+### SEC-2026-11-05-01 — Correctif candidat de contrôle d'accès aux fiches profil
+
+- **SHA de base :** `9121bdc8c2a2d18d75407e229a3e014eb1503ff2`.
+- **Constat vérifié :** `/api/discover` filtrait sur le genre opposé, mais `/api/profiles/[profileId]` ne le faisait pas lors d'une consultation directe. Les contrôles de visibilité, majorité, onboarding et blocage étaient déjà présents.
+- **Correctif candidat :** appliquer le genre opposé dans les deux requêtes de lecture publique, garder l'accès au propre profil et renvoyer `409 GENDER_REQUIRED` si le membre n'a pas choisi Homme/Femme.
+- **Test ajouté au parcours E2E existant :** deux comptes de genres opposés, consultation croisée et absence de date de naissance dans la réponse publique.
+- **État :** CANDIDAT NON VALIDÉ. CI, build, lint et Playwright restent à exécuter. Aucun test réel à deux comptes ni aucune écriture de production n'a été déclenché.
+
 ## Historique des exécutions
 
 ### PROD-2026-11-03-05 — Audit du domaine après #81, avant correction
