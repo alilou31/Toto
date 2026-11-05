@@ -31,9 +31,9 @@
 - **SHA de base :** `9121bdc8c2a2d18d75407e229a3e014eb1503ff2` ; **SHA testé :** `f65c1c8f5cc784f81057c9538675b46b206ff8d0`.
 - **Constat vérifié :** `/api/discover` filtrait sur le genre opposé, mais `/api/profiles/[profileId]` ne le faisait pas lors d'une consultation directe. Les contrôles de visibilité, majorité, onboarding et blocage étaient déjà présents.
 - **Correctif :** appliquer le genre opposé dans la requête principale et le fallback legacy, garder l'accès au propre profil et renvoyer `409 GENDER_REQUIRED` si le membre n'a pas choisi Homme/Femme.
-- **Test E2E ajouté au parcours existant :** deux comptes de genres opposés, consultation croisée et absence de date de naissance dans la réponse publique. Le parcours réel à deux comptes en production n'a pas été déclenché.
+- **Tests E2E :** le parcours à deux comptes vérifie l'accès croisé entre genres opposés et l'absence de date de naissance dans le JSON public. Un scénario complémentaire facultatif utilise un compte C du même genre que A et attend `404` lors d'une lecture directe ; il nécessite `E2E_USER_C_EMAIL/PASSWORD`.
 - **CI : PASSÉE** — [NIKAHYA CI #42047690330](https://github.com/alilou31/Toto/actions/runs/42047690330) : tests unitaires, lint, build et Playwright réussis. **Build Cloudflare : PASSÉ** — [run #42047690289](https://github.com/alilou31/Toto/actions/runs/42047690289). Le job « Deploy to Cloudflare production » est ignoré sur la PR, comme attendu.
-- **État au 2026-11-05 :** validé par CI, PR #92 ouverte et non fusionnée ; aucun déploiement production de ce correctif. Revue finale du code à effectuer avant fusion.
+- **État au 2026-11-05 :** le scénario même-genre a été ajouté au SHA `ec07970d0f933b66db3ecd776c2e0922c13d9279`, puis l'inventaire a été mis à jour sur `26ebf5ef92b482b74f9e98be2dc1ff8ec70af1ee`. Les workflows sont en cours/pending sur ces nouveaux commits ; le test C dépend de secrets E2E dédiés. PR #92 ouverte, non fusionnée et non déployée.
 
 ## Historique des exécutions
 
