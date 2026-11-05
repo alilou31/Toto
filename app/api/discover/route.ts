@@ -8,3 +8,5 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   return NextResponse.json({ error: "Gender selection required" }, { status: 409 });
 }
+
+// gender is selected in the member profile.
