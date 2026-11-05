@@ -18,6 +18,10 @@ const cockpitRoutes = [
 ];
 
 test.describe("NAKAHYA — pages publiques", () => {
+  test.beforeEach(async ({ page }) => {
+    // Isolate page/navigation assertions from the first-visit analytics consent UI.
+    await page.addInitScript(() => window.localStorage.setItem("nakahya-analytics-consent", "denied"));
+  });
   for (const route of publicRoutes) {
     test(`affiche ${route.path}`, async ({ page }) => {
       const response = await page.goto(route.path);
@@ -30,7 +34,7 @@ test.describe("NAKAHYA — pages publiques", () => {
     await page.goto("/connexion");
     await expect(page.getByLabel(/adresse e-mail/i)).toBeVisible();
     await expect(page.getByLabel(/mot de passe/i)).toBeVisible();
-    await expect(page.getByRole("button", { name: /connecter|connexion|continuer/i })).toBeVisible();
+    await expect(page.getByRole("button", { name: /se connecter/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /inscri|créer.*(compte|profil)/i })).toBeVisible();
   });
 
@@ -58,6 +62,9 @@ test.describe("NAKAHYA — pages publiques", () => {
 });
 
 test.describe("NAKAHYA — cockpit et navigation", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => window.localStorage.setItem("nakahya-analytics-consent", "denied"));
+  });
   for (const route of cockpitRoutes) {
     test(`ouvre ${route.path} sans erreur HTTP`, async ({ page }) => {
       const response = await page.goto(route.path);

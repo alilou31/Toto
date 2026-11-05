@@ -7,6 +7,8 @@ const profiles = [
 
 // All member data and writes are intercepted, also against production.
 async function setup(page: Page) {
+  // Keep analytics consent deterministic; these tests exercise discovery, not the consent banner.
+  await page.addInitScript(() => window.localStorage.setItem("nakahya-analytics-consent", "denied"));
   await page.route("**/api/auth/me", route => route.fulfill({ json: { user: { email: "fixture@example.test" } } }));
   await page.route("**/api/profile", route => route.fulfill({ json: { profile: { onboarding_completed: true } } }));
   await page.route("**/api/rencontre/sessions", route => route.fulfill({ json: { sessions: [] } }));
