@@ -8,6 +8,7 @@ type PublicProfile = {
   id: string;
   public_name: string;
   city: string | null;
+  birth_date: string | null;
   bio: string;
   relationship_intention: "marriage" | "serious" | "friendship" | "unspecified";
   hobbies?: string[] | null;
@@ -29,9 +30,18 @@ const intentionLabels: Record<PublicProfile["relationship_intention"], string> =
   unspecified: "À discuter",
 };
 
+function getAge(birthDate: string | null): number | null {
+  if (!birthDate) return null;
+  const date = new Date(`${birthDate.slice(0, 10)}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return null;
+  const today = new Date();
+  let age = today.getFullYear() - date.getFullYear();
+  if (today.getMonth() < date.getMonth() || (today.getMonth() === date.getMonth() && today.getDate() < date.getDate())) age--;
+  return age >= 18 ? age : null;
+}
+
 export default function DiscoverPage() {
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
-  const [genderFilter, setGenderFilter] = useState("all");
   const [myInterests, setMyInterests] = useState<string[]>([]);
   const [myGames, setMyGames] = useState<string[]>([]);
   const [myHobbies, setMyHobbies] = useState<string[]>([]);
@@ -49,7 +59,7 @@ export default function DiscoverPage() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`/api/discover?gender=${encodeURIComponent(genderFilter)}`, { cache: "no-store" });
+      const response = await fetch("/api/discover", { cache: "no-store" });
       const data = await response.json();
       if (!response.ok) {
         if (response.status === 401) throw new Error("Connectez-vous pour découvrir les profils.");
@@ -70,7 +80,7 @@ export default function DiscoverPage() {
     }
   }
 
-  useEffect(() => { void loadProfiles(); }, [genderFilter]);
+  useEffect(() => { void loadProfiles(); }, []);
 
   async function likeProfile(profileId: string) {
     setLiking(profileId);
@@ -151,7 +161,6 @@ export default function DiscoverPage() {
             <p>Parcourez la grille de profils et ouvrez une fiche pour faire connaissance à votre rythme.</p>
           </div>
           <div className="discovery-heading-actions">
-            <Link href="/decouvrir/immersif" className="discovery-premium-link">Découverte immersive</Link>
             <Link href="/offres" className="discovery-premium-link"><Sparkles size={15}/> Voir les offres</Link>
             <button className="button button-quiet" type="button" onClick={() => void loadProfiles()} disabled={loading}><RefreshCw size={15}/> Actualiser</button>
           </div>
@@ -162,7 +171,7 @@ export default function DiscoverPage() {
           : error ? <div className="discovery-state" role="alert"><p>{error}</p><Link href="/connexion" className="button button-green">Se connecter</Link></div>
           : profiles.length === 0 ? <div className="discovery-empty"><span><UserRound size={25}/></span><h2>De nouvelles rencontres bientôt</h2><p>Il n’y a pas encore de profils visibles à vous présenter. Complétez le vôtre pour rejoindre la découverte.</p><Link href="/profil" className="button button-green">Compléter mon profil</Link></div>
           : <>
-            <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><label>Filtrer par genre <select value={genderFilter} onChange={event=>setGenderFilter(event.target.value)}><option value="all">Tous les profils (aucun filtre)</option><option value="opposite">Genre opposé</option><option value="women">Femmes</option><option value="men">Hommes</option></select></label><span>Profils visibles · 18+</span></div>
+            <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><span>Profils du genre opposé · 18+</span></div>
             <div className="discovery-feed discovery-grid">
               {profiles.map(profile => {
                 const mine = [...myInterests, ...myGames, ...myHobbies];
@@ -182,7 +191,7 @@ export default function DiscoverPage() {
                     <span className="discovery-intention">{intentionLabels[profile.relationship_intention] ?? "À discuter"}</span>
                   </div>
                   <h2><Link href={`/membre/${encodeURIComponent(profile.id)}`} aria-label={`Voir la fiche de ${profile.public_name}`}>{profile.public_name}</Link>{profile.is_verified && <span className="nikahya-verified-badge" title="Identité contrôlée par l’équipe NAKAHYA"><BadgeCheck size={15}/> Vérifié</span>}</h2>
-                  {profile.city && <p className="discovery-city"><MapPin size={13}/>{profile.city}</p>}{profile.last_seen_label && <p className="discovery-last-seen">{profile.last_seen_label}</p>}
+                  <div className="discovery-profile-meta" style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",marginTop:6}}>{getAge(profile.birth_date) !== null && <span className="discovery-age" style={{fontSize:14,fontWeight:800,padding:"4px 9px",borderRadius:999,background:"rgba(255,255,255,.18)",color:"inherit"}}>{getAge(profile.birth_date)} ans</span>}{profile.city && <p className="discovery-city"><MapPin size={13}/>{profile.city}</p>}</div>{profile.last_seen_label && <p className="discovery-last-seen">{profile.last_seen_label}</p>}
                   <p className="discovery-bio">{profile.bio?.trim() || "Préfère faire connaissance au fil de la conversation."}</p>
                   {shared.length > 0 && <p className="discovery-shared"><Sparkles size={13}/>{shared.length} point{shared.length > 1 ? "s" : ""} en commun</p>}
                   <div className="discovery-tags">
