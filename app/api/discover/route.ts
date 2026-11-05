@@ -7,5 +7,8 @@ export async function GET() {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Authentification requise." }, { status: 401 });
   const sql = getDb();
-  return NextResponse.json({ error: "Choisissez Homme ou Femme dans votre profil.", code: "GENDER_REQUIRED" }, { status: 409 });
+  const rows = await sql`select * from public.profiles where id = ${user.id} limit 1`;
+  const own = rows[0];
+  if (own?.gender !== "man" && own?.gender !== "woman") return NextResponse.json({ error: "Choisissez Homme ou Femme." }, { status: 409 });
+  return NextResponse.json({ profiles: [] });
 }
