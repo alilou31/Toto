@@ -353,3 +353,11 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - Abonnements : migration candidate `021_membership_plan_tiers.sql` ajoute `plan_code` à la table existante `premium_entitlements`; les entitlements existantes restent Premium. Les paiements ne sont pas activés et aucun membre ne peut s'auto-attribuer un abonnement.
 - Tarifs proposés : Premium 19,99 €/mois ou 179,90 €/an ; Élite 29,99 €/mois ou 269,90 €/an. Club NAKAHYA et codes d'achat Élite restent des avantages futurs soumis à des accords partenaires, sans code fictif.
 - Tests ajustés : découverte sans filtre, grille tarifaire et parcours réel à deux comptes avec contrôle 403 pour les comptes gratuits. Appliquer la migration 021 dans Neon avant déploiement.
+
+
+## Acquisition organique — 2026-11-05
+
+- Hub et articles : `app/conseils/page.tsx`, `app/conseils/[slug]/page.tsx`, `app/conseils/layout.tsx`.
+- Sitemap : `app/sitemap.ts`; navigation : `app/components/home-header.tsx` et footer de `app/page.tsx`.
+- Test réutilisé : `tests/e2e/site-domain.spec.ts` couvre les pages, canonical, partage social et sitemap.
+- Aucun nouveau beacon d'analytics n'est activé dans ce lot ; conserver le consentement actuel et faire une revue dédiée avant toute extension.

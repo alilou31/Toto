@@ -458,3 +458,14 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [ ] Connecter le prestataire de paiement, ses webhooks et les parcours résiliation/remboursement avant d'activer les CTA d'abonnement.
 - [ ] Valider avec deux comptes gratuits, deux abonnés et un couple mixte ; vérifier aussi les médias et l'absence de fuite d'aperçus.
 - [ ] Activer les codes d'achat Élite uniquement après accords partenaires et implémentation d'un registre de codes valides, dates, quotas et conditions.
+
+
+## Acquisition organique — 2026-11-05
+
+- [x] Ajouter un hub public `/conseils` et trois articles éditoriaux originaux en français.
+- [x] Ajouter canonical, Open Graph et données structurées aux pages éditoriales.
+- [x] Ajouter les pages au sitemap et aux navigations publiques.
+- [x] Étendre le test existant `tests/e2e/site-domain.spec.ts` plutôt que créer un test SEO parallèle.
+- [ ] Valider le domaine dans Google Search Console et soumettre `https://nakahya.com/sitemap.xml` (action propriétaire).
+- [ ] Faire relire les contenus et les informations légales avant campagne publique.
+- [ ] Toute nouvelle mesure d'audience doit réutiliser le consentement analytics existant et faire l'objet d'une revue de confidentialité.
