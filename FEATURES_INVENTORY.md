@@ -53,8 +53,8 @@
 
 - **Correctif implémenté sur PR #92** (`fix/profile-opposite-gender-authorization`) : `GET /api/profiles/[profileId]` applique côté serveur le filtre du genre opposé dans la requête principale et le fallback legacy.
 - Le profil personnel reste consultable par son propriétaire ; un membre sans genre valide reçoit `409 GENDER_REQUIRED` avant toute lecture d'un autre profil.
-- Le parcours E2E existant à deux comptes a été étendu : genres opposés, consultation croisée des fiches et absence de date de naissance dans la réponse publique. Le scénario réel à deux comptes dépend des secrets E2E et n'a pas été exécuté en production.
-- **CI PR #92 : PASSÉE** sur le SHA `f65c1c8f5cc784f81057c9538675b46b206ff8d0` : tests unitaires/lint/build et Playwright réussis ; build Cloudflare Worker réussi. Le job de déploiement production est ignoré sur une PR, comme attendu.
+- Le parcours E2E à deux comptes vérifie les genres opposés, la consultation croisée et l'absence de date de naissance dans le JSON public. Un scénario complémentaire facultatif (compte C, même genre que A) vérifie le refus `404` sur accès direct ; il nécessite `E2E_USER_C_EMAIL/PASSWORD`.
+- **CI PR #92 : PASSÉE** sur le SHA `e6a2abe96b516cc55b90d8ee2186261a809f562e` (avant l'ajout du scénario C ; relance attendue pour le nouveau commit) : tests unitaires/lint/build et Playwright réussis ; build Cloudflare Worker réussi. Le job de déploiement production est ignoré sur une PR, comme attendu.
 - **Statut : VALIDÉ PAR CI, EN ATTENTE DE REVUE/FUSION.** Pas encore fusionné, pas encore déployé en production.
 
 ## Inventaire actuel
