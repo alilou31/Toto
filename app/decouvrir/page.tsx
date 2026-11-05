@@ -37,6 +37,7 @@ export default function DiscoverPage() {
   const [myHobbies, setMyHobbies] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [needsGender, setNeedsGender] = useState(false);
   const [liking, setLiking] = useState<string | null>(null);
   const [blocking, setBlocking] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
@@ -52,6 +53,7 @@ export default function DiscoverPage() {
       const response = await fetch("/api/discover", { cache: "no-store" });
       const data = await response.json();
       if (!response.ok) {
+        if (response.status === 409 && data.code === "GENDER_REQUIRED") setNeedsGender(true);
         if (response.status === 401) throw new Error("Connectez-vous pour découvrir les profils.");
         throw new Error(data.error || "Impossible de charger les profils.");
       }
@@ -158,7 +160,7 @@ export default function DiscoverPage() {
 
         {notice && <p className="discovery-notice" role="status">{notice} <Link href="/matchs">Voir mes likes</Link></p>}
         {loading ? <div className="discovery-state" role="status">Chargement des profils visibles…</div>
-          : error ? <div className="discovery-state" role="alert"><p>{error}</p><Link href="/connexion" className="button button-green">Se connecter</Link></div>
+          : error ? <div className="discovery-state" role="alert"><p>{error}</p>{needsGender ? <Link href="/profil" className="button button-green">Choisir Homme ou Femme</Link> : <Link href="/connexion" className="button button-green">Se connecter</Link>}</div>
           : profiles.length === 0 ? <div className="discovery-empty"><span><UserRound size={25}/></span><h2>De nouvelles rencontres bientôt</h2><p>Il n’y a pas encore de profils visibles à vous présenter. Complétez le vôtre pour rejoindre la découverte.</p><Link href="/profil" className="button button-green">Compléter mon profil</Link></div>
           : <>
             <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><span>Profils du genre opposé · 18+</span></div>
