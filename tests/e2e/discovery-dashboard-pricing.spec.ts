@@ -7,8 +7,8 @@ test.describe("Découverte compacte et offres", () => {
         status: 200,
         contentType: "application/json",
         body: JSON.stringify({ profiles: [
-          { id: "amina", public_name: "Amina", city: "Lyon", birth_date: "1995-01-01", bio: "J’aime les énigmes et les voyages.", relationship_intention: "serious", interests: ["Voyages", "Cuisine"], favorite_games: ["Énigmes"], hobbies: ["Lecture"] },
-          { id: "sarah", public_name: "Sarah", city: "Bordeaux", birth_date: "1990-01-01", bio: "Je cherche une relation sincère.", relationship_intention: "marriage", interests: ["Lecture"], favorite_games: ["Calcul"], hobbies: ["Randonnée"] }
+          { id: "amina", public_name: "Amina", city: "Lyon", age: 31, bio: "J’aime les énigmes et les voyages.", relationship_intention: "serious", interests: ["Voyages", "Cuisine"], favorite_games: ["Énigmes"], hobbies: ["Lecture"] },
+          { id: "sarah", public_name: "Sarah", city: "Bordeaux", age: 36, bio: "Je cherche une relation sincère.", relationship_intention: "marriage", interests: ["Lecture"], favorite_games: ["Calcul"], hobbies: ["Randonnée"] }
         ] }),
       });
     });
