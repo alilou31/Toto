@@ -21,7 +21,8 @@ export async function GET() {
       select p.id, p.public_name, p.city, p.bio, p.relationship_intention, extract(year from age(current_date, p.birth_date))::int as age,
         p.hobbies, p.favorite_games, p.interests, p.occupation,
         (select pp.storage_path from public.profile_photos pp where pp.user_id = p.id and pp.moderation_status = 'approved' order by pp.display_order asc limit 1) as photo_url,
-        false as is_online, null::text as last_seen_label,
+        coalesce(p.last_seen_at >= now() - interval '2 minutes', false) as is_online,
+        case when p.last_seen_at >= now() - interval '2 minutes' then 'En ligne' when p.last_seen_at >= now() - interval '1 hour' then 'Vu récemment' when p.last_seen_at >= now() - interval '24 hours' then 'Vu aujourd’hui' else null end as last_seen_label,
         (p.verification_status = 'verified') as is_verified,
         case when p.show_sensitive_identity then p.religion else null end as religion,
         case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
