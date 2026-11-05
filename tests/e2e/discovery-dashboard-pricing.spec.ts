@@ -7,8 +7,8 @@ test.describe("Découverte compacte et offres", () => {
         status: 200,
         contentType: "application/json",
         body: JSON.stringify({ profiles: [
-          { id: "amina", public_name: "Amina", city: "Lyon", bio: "J’aime les énigmes et les voyages.", relationship_intention: "serious", interests: ["Voyages", "Cuisine"], favorite_games: ["Énigmes"], hobbies: ["Lecture"] },
-          { id: "sarah", public_name: "Sarah", city: "Bordeaux", bio: "Je cherche une relation sincère.", relationship_intention: "marriage", interests: ["Lecture"], favorite_games: ["Calcul"], hobbies: ["Randonnée"] }
+          { id: "amina", public_name: "Amina", city: "Lyon", age: 31, bio: "J’aime les énigmes et les voyages.", relationship_intention: "serious", interests: ["Voyages", "Cuisine"], favorite_games: ["Énigmes"], hobbies: ["Lecture"] },
+          { id: "sarah", public_name: "Sarah", city: "Bordeaux", age: 36, bio: "Je cherche une relation sincère.", relationship_intention: "marriage", interests: ["Lecture"], favorite_games: ["Calcul"], hobbies: ["Randonnée"] }
         ] }),
       });
     });
@@ -32,8 +32,9 @@ test.describe("Découverte compacte et offres", () => {
     });
 
     await page.goto("/decouvrir");
-    await expect(page.locator(".discovery-results-bar select")).toHaveValue("all");
     await expect(page.locator(".discovery-card")).toHaveCount(2);
+    await expect(page.locator(".discovery-card").filter({ hasText: "Amina" }).locator(".discovery-age")).toHaveText("31 ans");
+    await expect(page.locator(".discovery-card").filter({ hasText: "Sarah" }).locator(".discovery-age")).toHaveText("36 ans");
     await expect(page.locator(".discovery-card h2").filter({ hasText: "Amina" })).toBeVisible();
     await expect(page.locator(".discovery-card h2").filter({ hasText: "Sarah" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Bloquer Amina" })).toBeVisible();

@@ -11,6 +11,7 @@ type Profile = {
   id: string;
   public_name: string;
   city?: string | null;
+  age?: number | null;
   bio?: string | null;
   photo_url?: string | null;
   relationship_intention?: string | null;
@@ -153,7 +154,7 @@ export default function ImmersiveDiscoveryPage() {
             <div className="immersive-photo-caption">
               <span className="immersive-intention">{intentions[current.relationship_intention ?? ""] ?? "À découvrir"}</span>
               <h2>{current.public_name}</h2>
-              {current.city && <p><MapPin size={15}/>{current.city}</p>}
+              {(typeof current.age === "number" || current.city) && <p>{typeof current.age === "number" && <strong>{current.age} ans</strong>}{typeof current.age === "number" && current.city ? " · " : ""}{current.city && <><MapPin size={15}/>{current.city}</>}</p>}
             </div>
           </div>
           <div className="immersive-summary">

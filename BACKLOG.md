@@ -458,3 +458,12 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [ ] Connecter le prestataire de paiement, ses webhooks et les parcours résiliation/remboursement avant d'activer les CTA d'abonnement.
 - [ ] Valider avec deux comptes gratuits, deux abonnés et un couple mixte ; vérifier aussi les médias et l'absence de fuite d'aperçus.
 - [ ] Activer les codes d'achat Élite uniquement après accords partenaires et implémentation d'un registre de codes valides, dates, quotas et conditions.
+
+
+## Découverte par genre obligatoire — 2026-11-05
+
+- [x] Remplacer le filtre utilisateur par un choix obligatoire Homme/Femme dans le profil.
+- [x] Filtrer côté API uniquement sur le genre opposé au membre connecté ; refuser la découverte si son genre n'est pas renseigné.
+- [x] Faire pointer le bouton central Découvrir vers la grille complète des profils.
+- [x] Afficher clairement l'âge sur chaque carte sans exposer la date de naissance.
+- [ ] Appliquer la migration 022 dans Neon et tester le parcours réel avec deux comptes Homme/Femme.

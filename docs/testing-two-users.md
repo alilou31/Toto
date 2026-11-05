@@ -28,3 +28,12 @@ Le scénario vérifie la connexion des deux comptes, la découverte mutuelle, le
 
 Sans les quatre variables d'environnement, le test est volontairement ignoré et **ne doit pas être présenté comme une validation réelle des données Neon**.
 
+
+
+## Découverte par genre — 2026-11-05
+
+- Chaque profil doit sélectionner obligatoirement Homme (`man`) ou Femme (`woman`). Les anciennes valeurs non conformes sont remises à `NULL` par la migration 022 afin que le membre choisisse lui-même ; aucune valeur n'est attribuée automatiquement.
+- L'API `/api/discover` calcule côté serveur le genre opposé à partir du profil connecté. Un profil sans genre valide reçoit HTTP 409 et doit compléter `/profil`.
+- Les cartes affichent l'âge calculé à partir de la date de naissance ; la date complète n'est jamais affichée.
+- Le bouton central « Découvrir » ouvre la grille `/decouvrir`, pas la vue immersive d'un seul profil.
+- Après déploiement, appliquer `db/migrations/022_binary_gender_opposite_discovery.sql` dans Neon, puis vérifier avec deux comptes de genres opposés et un compte sans genre choisi.

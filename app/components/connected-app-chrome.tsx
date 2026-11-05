@@ -123,7 +123,7 @@ export default function ConnectedAppChrome({ children }: { children: React.React
   const items = [
     { href: "/tableau-de-bord", label: "Accueil", icon: House, active: pathname === "/tableau-de-bord" || pathname === "/cockpit" },
     { href: "/matchs", label: "Likes", icon: Heart, active: pathname === "/matchs" },
-    { href: "/decouvrir/immersif", label: "Découvrir", icon: Compass, active: pathname.startsWith("/decouvrir"), primary: true },
+    { href: "/decouvrir", label: "Découvrir", icon: Compass, active: pathname.startsWith("/decouvrir"), primary: true },
     { href: "/cockpit/jeux", label: "Jouer", icon: Gamepad2, active: pathname.startsWith("/cockpit/jeux") || pathname === "/rencontre" },
     { href: "/notifications", label: "Alertes", icon: Bell, active: pathname === "/notifications", badge: totalAlerts },
   ];
@@ -149,7 +149,7 @@ export default function ConnectedAppChrome({ children }: { children: React.React
       </details>
       <nav className="connected-bottom-nav" aria-label="Navigation de votre espace">
         {items.map(({ href, label, icon: Icon, active, primary, badge }) => (
-          <Link key={href} href={href} aria-current={active ? "page" : undefined} aria-label={primary ? "Découverte immersive" : label} className={`connected-nav-item${active ? " is-active" : ""}${primary ? " connected-nav-discover" : ""}`}>
+          <Link key={href} href={href} aria-current={active ? "page" : undefined} aria-label={label} className={`connected-nav-item${active ? " is-active" : ""}${primary ? " connected-nav-discover" : ""}`}>
             <span className="connected-nav-icon"><Icon size={primary ? 23 : 20} strokeWidth={active ? 2.5 : 2}/>{typeof badge === "number" && badge > 0 && <span className="connected-nav-badge">{badge > 9 ? "9+" : badge}</span>}</span>
             <span>{label}</span>
           </Link>
