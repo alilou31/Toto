@@ -353,3 +353,11 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - Abonnements : migration candidate `021_membership_plan_tiers.sql` ajoute `plan_code` à la table existante `premium_entitlements`; les entitlements existantes restent Premium. Les paiements ne sont pas activés et aucun membre ne peut s'auto-attribuer un abonnement.
 - Tarifs proposés : Premium 19,99 €/mois ou 179,90 €/an ; Élite 29,99 €/mois ou 269,90 €/an. Club NAKAHYA et codes d'achat Élite restent des avantages futurs soumis à des accords partenaires, sans code fictif.
 - Tests ajustés : découverte sans filtre, grille tarifaire et parcours réel à deux comptes avec contrôle 403 pour les comptes gratuits. Appliquer la migration 021 dans Neon avant déploiement.
+
+
+## Découverte Homme/Femme — 2026-11-05 (candidat)
+
+- Choix obligatoire au niveau du profil : Homme ou Femme uniquement. Les profils historiques non conformes doivent choisir explicitement avant de découvrir les profils.
+- Filtrage strict côté serveur vers le genre opposé ; aucun filtre client ne permet de choisir un autre groupe.
+- `/decouvrir` reste la grille complète des profils éligibles ; le bouton central ouvre cette grille. L'âge calculé est affiché sur les cartes ; la date de naissance complète n'est pas envoyée par l'API de découverte.
+- Migration requise : `db/migrations/022_binary_gender_opposite_discovery.sql`. Code non prêt production tant que migration Neon et tests réels à deux comptes ne sont pas validés.
