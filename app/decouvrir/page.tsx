@@ -31,7 +31,7 @@ const intentionLabels: Record<PublicProfile["relationship_intention"], string> =
 
 export default function DiscoverPage() {
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
-  const [genderFilter, setGenderFilter] = useState("opposite");
+  const [genderFilter, setGenderFilter] = useState("all");
   const [myInterests, setMyInterests] = useState<string[]>([]);
   const [myGames, setMyGames] = useState<string[]>([]);
   const [myHobbies, setMyHobbies] = useState<string[]>([]);
@@ -82,7 +82,7 @@ export default function DiscoverPage() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Impossible d’envoyer cet intérêt.");
-      setNotice(data.matched ? "C’est réciproque ! Vous avez un nouveau match." : "Intérêt envoyé. Si cette personne vous choisit aussi, vous aurez un match.");
+      setNotice(data.matched ? "C’est réciproque ! Vous avez un nouveau match." : "Like envoyé. Si cette personne vous choisit aussi, vous aurez un match.");
     } catch (cause) {
       setNotice(cause instanceof Error ? cause.message : "Service indisponible.");
     } finally {
@@ -138,7 +138,7 @@ export default function DiscoverPage() {
         <Link href="/tableau-de-bord" className="discovery-back"><ArrowLeft size={16}/> Mon espace</Link>
         <Link href="/" className="brand" aria-label="NAKAHYA, accueil"><span className="brand-mark"><Heart size={18}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
         <nav aria-label="Navigation découverte">
-          <Link href="/matchs">Mes affinités</Link>
+          <Link href="/matchs">Mes likes</Link>
           <Link href="/profil">Mon profil</Link>
         </nav>
       </header>
@@ -157,12 +157,12 @@ export default function DiscoverPage() {
           </div>
         </div>
 
-        {notice && <p className="discovery-notice" role="status">{notice} <Link href="/matchs">Voir mes affinités</Link></p>}
+        {notice && <p className="discovery-notice" role="status">{notice} <Link href="/matchs">Voir mes likes</Link></p>}
         {loading ? <div className="discovery-state" role="status">Chargement des profils visibles…</div>
           : error ? <div className="discovery-state" role="alert"><p>{error}</p><Link href="/connexion" className="button button-green">Se connecter</Link></div>
           : profiles.length === 0 ? <div className="discovery-empty"><span><UserRound size={25}/></span><h2>De nouvelles rencontres bientôt</h2><p>Il n’y a pas encore de profils visibles à vous présenter. Complétez le vôtre pour rejoindre la découverte.</p><Link href="/profil" className="button button-green">Compléter mon profil</Link></div>
           : <>
-            <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><label>Filtrer par genre <select value={genderFilter} onChange={event=>setGenderFilter(event.target.value)}><option value="opposite">Genre opposé (par défaut)</option><option value="women">Femmes</option><option value="men">Hommes</option><option value="all">Tous les genres</option></select></label><span>Profils visibles · 18+</span></div>
+            <div className="discovery-results-bar"><span><strong>{profiles.length}</strong> profils à découvrir</span><label>Filtrer par genre <select value={genderFilter} onChange={event=>setGenderFilter(event.target.value)}><option value="all">Tous les profils (aucun filtre)</option><option value="opposite">Genre opposé</option><option value="women">Femmes</option><option value="men">Hommes</option></select></label><span>Profils visibles · 18+</span></div>
             <div className="discovery-feed discovery-grid">
               {profiles.map(profile => {
                 const mine = [...myInterests, ...myGames, ...myHobbies];
@@ -192,8 +192,8 @@ export default function DiscoverPage() {
                   </div>
                   <div className="discovery-card-actions">
                     <Link href={`/membre/${encodeURIComponent(profile.id)}`} className="discovery-detail-link" aria-label={`Consulter la fiche de ${profile.public_name}`}>Voir la fiche</Link>
-                    <button className="discovery-like" type="button" onClick={() => void likeProfile(profile.id)} disabled={liking !== null || blocking !== null} aria-label={`Envoyer un intérêt à ${profile.public_name}`} title="Envoyer un intérêt">
-                      <Heart size={16} fill="none"/>{liking === profile.id ? "…" : "Intéressé·e"}
+                    <button className="discovery-like" type="button" onClick={() => void likeProfile(profile.id)} disabled={liking !== null || blocking !== null} aria-label={`Liker ${profile.public_name}`} title="Liker ce profil">
+                      <Heart size={16} fill="#16a34a" color="#16a34a"/>{liking === profile.id ? "…" : "Like"}
                     </button>
                   </div>
                   <div className="discovery-secondary-actions">

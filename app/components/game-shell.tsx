@@ -5,7 +5,7 @@ const navigation = [
   { href: "/cockpit", label: "Mon espace", shortLabel: "Accueil", icon: House },
   { href: "/decouvrir", label: "Découvrir", shortLabel: "Découvrir", icon: Search, primary: true },
   { href: "/cockpit/jeux", label: "Jouer", shortLabel: "Jouer", icon: Gamepad2 },
-  { href: "/matchs", label: "Affinités", shortLabel: "Affinités", icon: Sparkles },
+  { href: "/matchs", label: "Likes", shortLabel: "Likes", icon: Heart },
   { href: "/profil", label: "Mon profil", shortLabel: "Profil", icon: CircleUserRound },
   { href: "/cockpit/visites", label: "Visites de profil", shortLabel: "Visites", icon: Eye },
 ];

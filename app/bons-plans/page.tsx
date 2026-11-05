@@ -112,8 +112,8 @@ export default function BonsPlansPage() {
         )}
       </section>
       <section className="bons-plans-bottom">
-        <div><span className="bons-plans-eyebrow">À DEUX, C’EST MIEUX</span><h2>Vous avez déjà une affinité ?</h2><p>Proposez une idée simple et laissez la conversation décider de la suite.</p></div>
-        <Link href="/matchs" className="bons-plans-cta">Retrouver mes affinités <ArrowRight size={17} /></Link>
+        <div><span className="bons-plans-eyebrow">À DEUX, C’EST MIEUX</span><h2>Vous avez déjà un match ?</h2><p>Proposez une idée simple et laissez la conversation décider de la suite.</p></div>
+        <Link href="/matchs" className="bons-plans-cta">Retrouver mes matchs <ArrowRight size={17} /></Link>
       </section>
       <p className="bons-plans-disclaimer">Ces suggestions sont éditoriales : aucun tarif, disponibilité ou réservation n’est garanti. Les liens commerciaux éventuels sont identifiés « Lien affilié » et peuvent générer une commission pour NAKAHYA. Ne partagez pas de données personnelles avec un prestataire sans nécessité.</p>
     </main>

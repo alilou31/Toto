@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { hasConversationChatAccess, membershipRequiredResponse } from "@/lib/membership";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -30,6 +31,7 @@ export async function GET(_request: Request, context: RouteContext) {
     const { conversationId } = await context.params;
     if (!/^[0-9a-f-]{36}$/i.test(conversationId)) return NextResponse.json({ error: "Conversation introuvable." }, { status: 404 });
     if (!(await authorizedConversation(conversationId, user.id))) return NextResponse.json({ error: "Conversation introuvable." }, { status: 404 });
+    if (!(await hasConversationChatAccess(conversationId))) return NextResponse.json(membershipRequiredResponse(), { status: 403, headers: { "Cache-Control": "no-store" } });
     const sql = getDb();
     const messages = await sql`
       select id, sender_id, body, created_at, read_at, message_type, attachment_mime_type, attachment_size, attachment_name, attachment_max_views, attachment_view_count, attachment_expires_at, (attachment_key is not null) as attachment_available
@@ -55,6 +57,7 @@ export async function POST(request: Request, context: RouteContext) {
   try {
     const { conversationId } = await context.params;
     if (!/^[0-9a-f-]{36}$/i.test(conversationId) || !(await authorizedConversation(conversationId, user.id))) return NextResponse.json({ error: "Conversation introuvable." }, { status: 404 });
+    if (!(await hasConversationChatAccess(conversationId))) return NextResponse.json(membershipRequiredResponse(), { status: 403, headers: { "Cache-Control": "no-store" } });
     const sql = getDb();
     const rows = await sql`
       insert into public.messages (conversation_id, sender_id, body)

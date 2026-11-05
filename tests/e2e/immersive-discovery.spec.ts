@@ -33,6 +33,8 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       await central.click();
       await expect(page.getByRole("heading", { name: "Amina", exact: true })).toBeVisible();
       await expect(central).toHaveAttribute("aria-current", "page");
+      await expect(page.getByRole("button", { name: "Passer ce profil" })).toHaveCSS("color", "rgb(185, 28, 28)");
+      await expect(page.getByRole("button", { name: "Liker Amina" })).toHaveCSS("background-color", "rgb(21, 128, 61)");
       await page.getByRole("button", { name: "Passer ce profil" }).click();
       await expect(page.getByRole("heading", { name: "Sarah", exact: true })).toBeVisible();
       expect(writes).toEqual([]);

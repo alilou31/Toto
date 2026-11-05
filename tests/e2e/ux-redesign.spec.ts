@@ -78,7 +78,7 @@ test.describe("NAKAHYA — cockpit et navigation", () => {
     await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Mon espace" })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Découvrir" })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Jouer" })).toBeVisible();
-    await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Affinités" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Likes" })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Navigation principale" }).getByRole("link", { name: "Mon profil" })).toBeVisible();
   });
 

@@ -19,7 +19,7 @@ const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "NAKAHYA — Rencontres sérieuses : faites connaissance en jouant",
-  description: "Envie d’une relation sérieuse ? Découvrez NAKAHYA, l’application de rencontre qui vous aide à faire connaissance grâce aux jeux, aux affinités, aux valeurs et aux projets de vie.",
+  description: "Envie d’une relation sérieuse ? Découvrez NAKAHYA, l’application de rencontre qui vous aide à faire connaissance grâce aux jeux, aux compatibilités, aux valeurs et aux projets de vie.",
   alternates: { canonical: "/" },
 };
 
@@ -62,7 +62,7 @@ export default async function Home() {
           <div className="floating-card floating-card-bottom landing-glass-card"><span className="float-check"><MessageCircleHeart size={17} /></span><span><strong>Une vraie découverte</strong><small>À votre rythme, sans pression</small></span></div>
           <div className="landing-orbit landing-orbit-one" /><div className="landing-orbit landing-orbit-two" />
         </div>
-        <div className="hero-bottom"><span>RENCONTRES SÉRIEUSES · JEUX · AFFINITÉS</span><span className="bottom-center">FRANCE & FRANCOPHONIE</span><a href="#concept">DÉCOUVRIR ↓</a></div>
+        <div className="hero-bottom"><span>RENCONTRES SÉRIEUSES · JEUX · LIKES</span><span className="bottom-center">FRANCE & FRANCOPHONIE</span><a href="#concept">DÉCOUVRIR ↓</a></div>
       </section>
       <section className="landing-human section-pad" id="concept" aria-labelledby="landing-human-title">
         <div className="landing-human-copy">
@@ -85,7 +85,7 @@ export default async function Home() {
         </div>
         <div className="landing-how-grid">
           <article><span>01</span><h3>Présentez-vous</h3><p>Parlez de vos centres d’intérêt, de vos valeurs et de ce que vous souhaitez construire.</p></article>
-          <article><span>02</span><h3>Découvrez l’autre</h3><p>Les affinités et les petits jeux ouvrent la discussion et facilitent les premiers échanges.</p></article>
+          <article><span>02</span><h3>Découvrez l’autre</h3><p>Les compatibilités et les petits jeux ouvrent la discussion et facilitent les premiers échanges.</p></article>
           <article><span>03</span><h3>Laissez le lien grandir</h3><p>Discutez, apprenez à vous connaître et voyez si vos envies se rejoignent.</p></article>
         </div>
         <div className="landing-how-cta"><Link href="/inscription" className="button button-green landing-primary-cta">Créer mon profil <ArrowRight size={16} /></Link><span>Gratuit pour commencer · Réservé aux 18 ans et plus</span></div>

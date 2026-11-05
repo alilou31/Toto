@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getCurrentUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { hasConversationChatAccess, membershipRequiredResponse } from "@/lib/membership";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -87,6 +88,7 @@ export async function POST(request: Request, context: RouteContext) {
     if (!/^[0-9a-f-]{36}$/i.test(conversationId) || !(await authorizedConversation(conversationId, user.id))) {
       return NextResponse.json({ error: "Conversation introuvable." }, { status: 404, headers: { "Cache-Control": "no-store" } });
     }
+    if (!(await hasConversationChatAccess(conversationId))) return NextResponse.json(membershipRequiredResponse(), { status: 403, headers: { "Cache-Control": "no-store" } });
     const bucket = await getBucket();
     if (!bucket) return NextResponse.json({ error: "Le stockage privé des médias n'est pas encore configuré." }, { status: 503, headers: { "Cache-Control": "no-store" } });
 
@@ -153,6 +155,7 @@ export async function GET(_request: Request, context: RouteContext) {
     if (!/^[0-9a-f-]{36}$/i.test(conversationId) || !(await authorizedConversation(conversationId, user.id))) {
       return NextResponse.json({ error: "Conversation introuvable." }, { status: 404, headers: { "Cache-Control": "no-store" } });
     }
+    if (!(await hasConversationChatAccess(conversationId))) return NextResponse.json(membershipRequiredResponse(), { status: 403, headers: { "Cache-Control": "no-store" } });
     const url = new URL(_request.url);
     const messageId = url.searchParams.get("messageId");
     if (!messageId || !/^[0-9a-f-]{36}$/i.test(messageId)) return NextResponse.json({ error: "Média introuvable." }, { status: 404 });

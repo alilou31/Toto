@@ -342,3 +342,14 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - Le chargement reste conditionné au consentement explicite déjà en place ; un refus ne charge aucun script GTM.
 - Test Playwright existant étendu : refus sans chargement et acceptation avec vérification de l'URL exacte du conteneur et de l'événement d'initialisation GTM.
 - **GA4 reste à configurer dans le conteneur** : créer/publier une balise Google avec l'ID de mesure GA4 `G-...` et un déclencheur adapté. Le code du site ne peut pas inventer cet ID ni configurer le compte Google.
+
+
+## Likes, matchs gratuits et messagerie Premium/Élite — 2026-11-05
+
+- Découverte : filtre initial explicite `all` ; l'API renvoie tous les profils éligibles lorsqu'aucun filtre n'est transmis. Les règles 18+, visibilité, blocage et exclusion du compte courant restent appliquées.
+- Vocabulaire UI : la rubrique précédemment nommée « Affinités » devient « Likes ». Le cœur Like est vert et l'action Passer est rouge dans la découverte immersive.
+- Offre Découverte : likes et matchs, sans échange privé (texte, photo, vidéo ou audio).
+- Messagerie : lecture et écriture texte/média vérifiées côté API. Un échange est déverrouillé uniquement si les deux membres du match ont une entitlement active Premium ou Élite. Les aperçus de messages sont masqués pour les matchs verrouillés.
+- Abonnements : migration candidate `021_membership_plan_tiers.sql` ajoute `plan_code` à la table existante `premium_entitlements`; les entitlements existantes restent Premium. Les paiements ne sont pas activés et aucun membre ne peut s'auto-attribuer un abonnement.
+- Tarifs proposés : Premium 19,99 €/mois ou 179,90 €/an ; Élite 29,99 €/mois ou 269,90 €/an. Club NAKAHYA et codes d'achat Élite restent des avantages futurs soumis à des accords partenaires, sans code fictif.
+- Tests ajustés : découverte sans filtre, grille tarifaire et parcours réel à deux comptes avec contrôle 403 pour les comptes gratuits. Appliquer la migration 021 dans Neon avant déploiement.

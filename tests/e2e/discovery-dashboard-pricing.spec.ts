@@ -32,10 +32,12 @@ test.describe("Découverte compacte et offres", () => {
     });
 
     await page.goto("/decouvrir");
+    await expect(page.locator(".discovery-results-bar select")).toHaveValue("all");
     await expect(page.locator(".discovery-card")).toHaveCount(2);
     await expect(page.locator(".discovery-card h2").filter({ hasText: "Amina" })).toBeVisible();
     await expect(page.locator(".discovery-card h2").filter({ hasText: "Sarah" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Bloquer Amina" })).toBeVisible();
+    await expect(page.locator(".discovery-like svg").first()).toHaveAttribute("fill", "#16a34a");
     await page.getByRole("link", { name: "Voir la fiche de Amina" }).click();
     await expect(page).toHaveURL(/\/membre\/amina$/);
     await expect(page.getByRole("heading", { name: /Jeux auxquels cette personne a joué/i })).toBeVisible();
@@ -44,11 +46,15 @@ test.describe("Découverte compacte et offres", () => {
 
   test("présente les formules sans simuler un paiement non configuré", async ({ page }) => {
     await page.goto("/offres");
-    await expect(page.getByRole("heading", { name: "Essentiel" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Découverte" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Premium" })).toBeVisible();
-    await expect(page.locator(".pricing-card-premium .pricing-price")).toContainText("9,99 €");
-    await expect(page.locator(".pricing-card-premium .pricing-annual")).toContainText("79,99 € / an");
-    await expect(page.getByRole("button", { name: "Paiement bientôt disponible" })).toBeDisabled();
-    await expect(page.getByText(/aucun prélèvement n’est possible/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Élite" })).toBeVisible();
+    await expect(page.locator(".pricing-card-premium .pricing-price")).toContainText("19,99 €");
+    await expect(page.locator(".pricing-card-premium .pricing-annual")).toContainText("179,90 € / an");
+    await expect(page.locator(".pricing-card-elite .pricing-price")).toContainText("29,99 €");
+    await expect(page.locator(".pricing-card-elite .pricing-annual")).toContainText("269,90 € / an");
+    await expect(page.getByText(/Aucun message texte, photo, vidéo ou audio/i)).toBeVisible();
+    await expect(page.getByRole("button", { name: "Abonnement bientôt disponible" })).toHaveCount(2);
+    await expect(page.getByText(/paiement non activé/i)).toBeVisible();
   });
 });

@@ -106,7 +106,7 @@ Le suivi ci-dessous remplace les anciennes cases à cocher historiques de ce REA
 
 Les sections de ce README qui décrivent les fonctionnalités et les limites restent des notes d'architecture ; en cas de divergence sur le statut de réalisation, utiliser l'inventaire et le registre de tests datés ci-dessus plutôt que les anciennes cases historiques.
 
-## Profils et affinités
+## Profils et likes
 
 Les profils peuvent renseigner des jeux favoris, des hobbies, des centres d’intérêt et un métier afin de faciliter les conversations et de mettre en avant les points communs. Religion/spiritualité et origine/ethnicité sont facultatives et ne sont visibles sur les profils publics qu’après consentement explicite. Appliquer `db/migrations/006_shared_interests.sql` dans Neon après les migrations précédentes.
 
