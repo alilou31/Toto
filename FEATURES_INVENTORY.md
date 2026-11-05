@@ -338,7 +338,7 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 ## Mise à jour du conteneur Google Tag Manager — 2026-11-05
 
 - Remplacement de l'ancien identifiant par le conteneur fourni : `GTM-M782VXCD`.
-- Initialisation `gtag('js', new Date())` et chargement de `gtm.js?id=GTM-M782VXCD` dans le composant global existant, sans ajouter une deuxième balise par page.
+- Bootstrap GTM natif : ajout de `{ "gtm.start": Date.now(), event: "gtm.js" }` à `dataLayer` avant l'injection du script `gtm.js?id=GTM-M782VXCD`. Il n'y a pas de deuxième balise par page ni de chargement direct concurrent de gtag.js.
 - Le chargement reste conditionné au consentement explicite déjà en place ; un refus ne charge aucun script GTM.
-- Test Playwright étendu : refus sans chargement et acceptation avec vérification de l'URL exacte du conteneur.
-- À vérifier après publication : configuration des balises et du consentement dans l'interface Google Tag Manager, ainsi que les cookies réellement déposés. La modification du code ne configure pas les balises dans le compte Google.
+- Test Playwright existant étendu : refus sans chargement et acceptation avec vérification de l'URL exacte du conteneur et de l'événement d'initialisation GTM.
+- **GA4 reste à configurer dans le conteneur** : créer/publier une balise Google avec l'ID de mesure GA4 `G-...` et un déclencheur adapté. Le code du site ne peut pas inventer cet ID ni configurer le compte Google.

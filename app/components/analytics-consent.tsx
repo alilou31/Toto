@@ -21,10 +21,12 @@ export default function AnalyticsConsent() {
     if (consent !== "granted") return;
     if (document.querySelector('script[data-nakahya-gtm="true"]')) return;
     window.dataLayer = window.dataLayer || [];
-    window.gtag = (...args: unknown[]) => {
-      window.dataLayer.push(args);
-    };
-    window.gtag("js", new Date());
+    // Use the official GTM bootstrap event. The gtm.start timestamp and
+    // gtm.js event are required for GTM's Initialization / All Pages triggers.
+    window.dataLayer.push({
+      "gtm.start": Date.now(),
+      event: "gtm.js",
+    });
     const script = document.createElement("script");
     script.async = true;
     script.src = "https://www.googletagmanager.com/gtm.js?id=" + GTM_ID;
@@ -57,6 +59,5 @@ export default function AnalyticsConsent() {
 declare global {
   interface Window {
     dataLayer: unknown[];
-    gtag: (...args: unknown[]) => void;
   }
 }

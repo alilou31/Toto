@@ -74,6 +74,10 @@ test.describe("Interface NAKAHYA en production", () => {
     await page.getByRole("button", { name: "Accepter la mesure d’audience" }).click();
     const gtmScript = page.locator('script[data-nakahya-gtm="true"]');
     await expect(gtmScript).toHaveAttribute("src", "https://www.googletagmanager.com/gtm.js?id=GTM-M782VXCD");
+    await expect.poll(() => page.evaluate(() => {
+      const layer = (window as Window & { dataLayer?: Array<Record<string, unknown>> }).dataLayer ?? [];
+      return layer.some((entry) => entry.event === "gtm.js" && typeof entry["gtm.start"] === "number");
+    })).toBe(true);
     await expect(page.getByRole("button", { name: "Gérer les cookies" })).toBeVisible();
   });
 

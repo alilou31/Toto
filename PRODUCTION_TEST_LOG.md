@@ -260,3 +260,13 @@
 - **Ajout proposé :** réutilisation Resend, création de comptes uniquement après validation de l’adresse par lien sécurisé, migration 017 et flag `EMAIL_VERIFICATION_ENABLED`. L’activation effective de ces derniers n’est **pas prouvée** par le dépôt.
 - **Résultat de livraison d'emails :** **NON TESTÉ** ; aucun email envoyé à un vrai compte ni inscription persistée lors de cette livraison de code.
 - **Garde-fous :** flag désactivé par défaut ; appliquer la migration 017, vérifier le DNS d'envoi et les secrets, puis valider l'E2E avec une boîte test autorisée avant activation publique. Ajouter les preuves de PR CI, déploiement et smoke sous une nouvelle entrée une fois exécutés.
+
+
+### PROD-2026-11-05-01 — Correction du bootstrap Google Tag Manager
+
+- **Commit de référence avant correction :** `43b4a3b0e30fba4426c9e0c63a764222ed7a35a6`.
+- **Constat :** le composant injectait bien le script du conteneur après consentement, mais initialisait `dataLayer` avec la commande `gtag('js', ...)` au lieu de l'événement de démarrage standard de GTM. Le chargement du fichier GTM seul ne prouvait pas qu'une balise GA4 envoyait des événements.
+- **Correction :** envoyer `{ "gtm.start": Date.now(), event: "gtm.js" }` avant l'injection du script. Le consentement explicite et le refus sans chargement restent inchangés.
+- **Tests :** extension du test Playwright de consentement déjà présent pour vérifier l'URL du conteneur et la présence de l'événement d'initialisation.
+- **Limite externe :** GA4 nécessite toujours une balise Google publiée dans GTM avec un ID de mesure `G-...`. L'ID `GTM-M782VXCD` identifie uniquement le conteneur Tag Manager. L'envoi effectif de données à Analytics reste à valider dans les outils Google après configuration.
+- **CI / déploiement / production :** à renseigner après exécution des workflows du commit correctif ; aucune validation n'est présumée ici.
