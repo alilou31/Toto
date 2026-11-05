@@ -63,6 +63,20 @@ test("parcours complet à deux comptes : découverte, match, défi à 4 question
     const [idA, idB] = await Promise.all([ownProfileId(pageA), ownProfileId(pageB)]);
     expect(idA).not.toBe(idB);
 
+    // Direct profile URLs must obey the same opposite-gender rule as discovery.
+    const [profileA, profileB] = await Promise.all([pageA.request.get("/api/profile"), pageB.request.get("/api/profile")]);
+    const [dataA, dataB] = await Promise.all([profileA.json(), profileB.json()]);
+    expect(["man", "woman"]).toContain(dataA.profile?.gender);
+    expect(["man", "woman"]).toContain(dataB.profile?.gender);
+    expect(dataA.profile.gender).not.toBe(dataB.profile.gender);
+    const directProfileA = await pageB.request.get(`/api/profiles/${idA}`);
+    const directProfileB = await pageA.request.get(`/api/profiles/${idB}`);
+    expect(directProfileA.status(), "B doit pouvoir consulter le profil opposé de A").toBe(200);
+    expect(directProfileB.status(), "A doit pouvoir consulter le profil opposé de B").toBe(200);
+    const publicProfile = (await directProfileA.json()).profile;
+    expect(publicProfile).not.toHaveProperty("birth_date");
+    expect(publicProfile).not.toHaveProperty("birthDate");
+
     // Mutual interest must create a real persisted match and a conversation.
     await sendInterest(pageA, idB);
     await sendInterest(pageB, idA);
