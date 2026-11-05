@@ -18,7 +18,7 @@ export async function GET() {
     }
     const targetGender = ownGender === "man" ? "woman" : "man";
     const profiles = await sql`
-      select p.id, p.public_name, p.city, p.bio, p.relationship_intention, p.birth_date,
+      select p.id, p.public_name, p.city, p.bio, p.relationship_intention, extract(year from age(current_date, p.birth_date))::int as age,
         p.hobbies, p.favorite_games, p.interests, p.occupation,
         (select pp.storage_path from public.profile_photos pp where pp.user_id = p.id and pp.moderation_status = 'approved' order by pp.display_order asc limit 1) as photo_url,
         false as is_online, null::text as last_seen_label,
