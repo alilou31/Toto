@@ -1,8 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const profiles = [
-  { id: "amina", public_name: "Amina", city: "Lyon", birth_date: "1995-01-01", bio: "J’aime les énigmes.", relationship_intention: "serious", photo_url: "https://photos.example/amina.jpg" },
-  { id: "sarah", public_name: "Sarah", city: "Bordeaux", birth_date: "1990-01-01", bio: "Une relation sincère.", relationship_intention: "marriage" },
+  { id: "amina", public_name: "Amina", city: "Lyon", age: 31, bio: "J’aime les énigmes.", relationship_intention: "serious", photo_url: "https://photos.example/amina.jpg" },
+  { id: "sarah", public_name: "Sarah", city: "Bordeaux", age: 36, bio: "Une relation sincère.", relationship_intention: "marriage" },
 ];
 
 // All member data and writes are intercepted, also against production.
@@ -24,22 +24,18 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     test.use({ viewport });
     test.beforeEach(async ({ page }) => setup(page));
 
-    test("le bouton central connecté ouvre l'immersion, Passer n'envoie rien", async ({ page }) => {
-      const writes: string[] = [];
-      page.on("request", r => { if (r.method() === "POST" && r.url().includes("/api/interests")) writes.push(r.postData() || ""); });
+    test("le bouton central Découvrir ouvre la grille complète des profils", async ({ page }) => {
       await page.goto("/decouvrir");
-      const central = page.getByRole("navigation", { name: "Navigation de votre espace" }).getByRole("link", { name: "Découverte immersive" });
-      await expect(central).toHaveAttribute("href", "/decouvrir/immersif");
+      const central = page.getByRole("navigation", { name: "Navigation de votre espace" }).getByRole("link", { name: "Découvrir" });
+      await expect(central).toHaveAttribute("href", "/decouvrir");
       await central.click();
+      await expect(page).toHaveURL("/decouvrir");
+      await expect(page.locator(".discovery-card")).toHaveCount(2);
       await expect(page.getByRole("heading", { name: "Amina", exact: true })).toBeVisible();
-      await expect(page.locator(".immersive-profile")).toContainText("31 ans");
-      await expect(central).toHaveAttribute("aria-current", "page");
-      await expect(page.getByRole("button", { name: "Passer ce profil" })).toHaveCSS("color", "rgb(185, 28, 28)");
-      await expect(page.getByRole("button", { name: "Liker Amina" })).toHaveCSS("background-color", "rgb(21, 128, 61)");
-      await page.getByRole("button", { name: "Passer ce profil" }).click();
       await expect(page.getByRole("heading", { name: "Sarah", exact: true })).toBeVisible();
-      expect(writes).toEqual([]);
-      await expect(page.getByRole("img", { name: "Photo indisponible" })).toBeVisible();
+      await expect(page.locator(".discovery-card").filter({ hasText: "Amina" }).locator(".discovery-age")).toHaveText("31 ans");
+      await expect(page.locator(".discovery-card").filter({ hasText: "Sarah" }).locator(".discovery-age")).toHaveText("36 ans");
+      await expect(central).toHaveAttribute("aria-current", "page");
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
     });
 
