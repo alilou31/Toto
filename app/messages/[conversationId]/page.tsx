@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, Gamepad2, Heart, ImagePlus, Mic, Send, Smile, Video, X } from "lucide-react";
+import { ArrowLeft, Gamepad2, Heart, ImagePlus, LockKeyhole, Mic, Send, Smile, Video, X } from "lucide-react";
 
 type Message = { id: string; sender_id: string; body: string; created_at: string; read_at: string | null; message_type?: "text" | "image" | "video" | "audio"; attachment_mime_type?: string | null; attachment_name?: string | null; attachment_available?: boolean };
 const emojis = ["😀","😃","😊","😍","🥰","😘","😉","😂","🤣","😅","🤗","🤔","🥹","❤️","🧡","💛","💚","💙","💕","💞","🌹","✨","🙏","👍","👏","🎉","☕","🌸","🥳"];
@@ -17,6 +17,7 @@ export default function MessagesPage() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [membershipRequired, setMembershipRequired] = useState(false);
   const [emojiOpen, setEmojiOpen] = useState(false);
   const [recording, setRecording] = useState(false);
   const [viewLimit, setViewLimit] = useState("1");
@@ -31,7 +32,14 @@ export default function MessagesPage() {
     try {
       const response = await fetch("/api/conversations/" + encodeURIComponent(conversationId) + "/messages", { cache: "no-store" });
       const data = await response.json();
+      if (response.status === 403 && data.code === "CHAT_MEMBERSHIP_REQUIRED") {
+        setMembershipRequired(true);
+        setMessages([]);
+        setError("");
+        return;
+      }
       if (!response.ok) throw new Error(response.status === 401 ? "Connectez-vous pour accéder à cette conversation." : data.error || "Conversation inaccessible.");
+      setMembershipRequired(false);
       setMessages(Array.isArray(data.messages) ? data.messages : []);
       setCurrentUserId(data.currentUserId || "");
       setError("");
@@ -100,14 +108,24 @@ export default function MessagesPage() {
 
   const mediaUrl = (id: string) => `/api/conversations/${encodeURIComponent(conversationId)}/attachments?messageId=${encodeURIComponent(id)}`;
 
-  return <main className="auth-page">
+  return membershipRequired ? (
+    <main className="auth-page">
+      <section className="auth-card auth-card-wide">
+        <Link href="/matchs" className="auth-back"><ArrowLeft size={16}/> Retour à mes matchs</Link>
+        <div className="section-kicker auth-kicker">MATCH CONFIRMÉ</div>
+        <h1 className="auth-title">Le premier pas est fait.<br/><em>Débloquez la conversation.</em></h1>
+        <p className="auth-description">Vous pouvez conserver votre match gratuitement. Pour échanger des messages, photos, vidéos et audios, les deux membres doivent disposer d’un abonnement Premium ou Élite actif.</p>
+        <Link href="/offres" className="button button-green"><LockKeyhole size={16}/> Comparer les abonnements</Link>
+      </section>
+    </main>
+  ) : <main className="auth-page">
     <Link href="/matchs" className="auth-back"><ArrowLeft size={16}/> Retour à mes matchs</Link>
     <section className="auth-card auth-card-wide">
       <Link href="/" className="brand auth-brand"><span className="brand-mark"><Heart size={20}/></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link>
       <div className="section-kicker auth-kicker">MESSAGERIE PRIVÉE</div>
       <h1 className="auth-title">Prenez le temps<br/><em>de vous découvrir.</em></h1>
       <p className="auth-description">Seuls les deux membres de ce match peuvent lire et envoyer des messages dans cette conversation.</p>
-      <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:12}}><Link href="/rencontre" className="button button-quiet"><Gamepad2 size={16}/> Proposer un jeu</Link><Link href="/matchs" className="button button-quiet">Voir mes affinités</Link></div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:12}}><Link href="/rencontre" className="button button-quiet"><Gamepad2 size={16}/> Proposer un jeu</Link><Link href="/matchs" className="button button-quiet">Voir mes likes</Link></div>
       {error && <p className="auth-notice" role="alert">{error}</p>}
       <div style={{display:"flex",flexDirection:"column",gap:12,minHeight:160,maxHeight:"55vh",overflowY:"auto",padding:"12px 0"}} aria-live="polite">
         {loading ? <p>Chargement des messages…</p> : messages.length === 0 ? <p>La conversation est vide. Vous pouvez envoyer le premier message.</p> : messages.map(message => {

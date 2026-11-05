@@ -138,7 +138,7 @@ export default function MemberProfilePage() {
             {notice && <p className="auth-notice" role="status">{notice}</p>}
             <div className="member-detail-actions">
               <Link href={returnHref} className="button button-quiet"><ArrowLeft size={16}/> Continuer la découverte</Link>
-              <Link href="/matchs" className="button button-green">Mes affinités <Heart size={16}/></Link>
+              <Link href="/matchs" className="button button-green">Mes likes <Heart size={16}/></Link>
               <button type="button" className="button button-quiet member-block-button" onClick={() => void blockMember()} disabled={blocking}><Ban size={15}/>{blocking ? "Blocage…" : "Bloquer ce profil"}</button>
             </div>
           </>

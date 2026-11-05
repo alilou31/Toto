@@ -18,7 +18,7 @@ export default function Conditions() {
       </aside>
 
       <h2>1. Objet et accès</h2>
-      <p>NAKAHYA est un projet de service de rencontre destiné aux adultes de 18 ans et plus qui souhaitent faire connaissance au moyen de profils, d’affinités, de jeux et de conversations. L’accès public et les fonctionnalités disponibles peuvent évoluer pendant la phase pilote.</p>
+      <p>NAKAHYA est un projet de service de rencontre destiné aux adultes de 18 ans et plus qui souhaitent faire connaissance au moyen de profils, de likes, de jeux et de conversations. L’accès public et les fonctionnalités disponibles peuvent évoluer pendant la phase pilote.</p>
 
       <h2>2. Compte et informations</h2>
       <ul>
@@ -31,7 +31,7 @@ export default function Conditions() {
       <h2>3. Respect, blocage et signalement</h2>
       <p>Respectez les limites et le consentement des autres membres. Les outils de blocage et de signalement peuvent être utilisés pour signaler une conduite problématique. Le responsable doit définir avant lancement les modalités de revue, les délais de traitement, les mesures possibles, les voies de recours et la conservation des preuves.</p>
 
-      <h2>4. Jeux et affinités</h2>
+      <h2>4. Jeux et likes</h2>
       <p>Les jeux sont des supports de conversation et ne garantissent ni compatibilité amoureuse ni résultat relationnel. Les scores ou réponses ne doivent pas être interprétés comme une évaluation scientifique d’une personne.</p>
 
       <h2>5. Disponibilité et suspension</h2>

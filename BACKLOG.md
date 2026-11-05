@@ -445,3 +445,16 @@ Voir [docs/RELEASE_NO_EXTERNAL_SERVICES_2026-10-27.md](./docs/RELEASE_NO_EXTERNA
 - [x] Quotas applicatifs : 100 Mo par expéditeur, 250 Mo par conversation, 8 Go globaux.
 - [x] Ajouter une réservation atomique des quotas pour les uploads concurrents (migration 020). L'alerte automatique à 6 Go reste à mettre en place.
 - [ ] Configurer la règle R2 `ephemeral/` à 7 jours, appliquer les migrations 018/019 et valider avec deux comptes réels de test.
+
+
+## Likes, matchs gratuits et messagerie Premium/Élite — 2026-11-05
+
+- [x] Renommer la rubrique UI « Affinités » en « Likes » et différencier visuellement Like (vert) / Passer (rouge).
+- [x] Afficher tous les profils éligibles par défaut dans Découvrir lorsqu'aucun filtre n'est choisi.
+- [x] Définir l'offre gratuite comme découverte + likes + matchs, sans échanges privés.
+- [x] Verrouiller côté API les lectures/écritures de messages et les médias si l'un des deux membres n'a pas d'entitlement active Premium/Élite.
+- [x] Présenter les tarifs Premium 19,99 €/mois et Élite 29,99 €/mois, avec offres et codes partenaires réservés Élite (à activer après contractualisation).
+- [ ] Appliquer `db/migrations/021_membership_plan_tiers.sql` dans Neon avant déploiement.
+- [ ] Connecter le prestataire de paiement, ses webhooks et les parcours résiliation/remboursement avant d'activer les CTA d'abonnement.
+- [ ] Valider avec deux comptes gratuits, deux abonnés et un couple mixte ; vérifier aussi les médias et l'absence de fuite d'aperçus.
+- [ ] Activer les codes d'achat Élite uniquement après accords partenaires et implémentation d'un registre de codes valides, dates, quotas et conditions.

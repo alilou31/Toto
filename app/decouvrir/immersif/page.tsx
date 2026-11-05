@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { discoveryPhotoSrc, discoveryPosition } from "@/lib/discovery-navigation";
-import { ArrowLeft, Heart, MapPin, SkipForward, Sparkles, UserRound } from "lucide-react";
+import { ArrowLeft, Heart, MapPin, X, Sparkles, UserRound } from "lucide-react";
 import { GameShell, PageHeading } from "../../components/game-shell";
 
 type Profile = {
@@ -95,7 +95,7 @@ export default function ImmersiveDiscoveryPage() {
       const data = await response.json().catch(() => ({}));
       if (!active.current) return;
       if (!response.ok) throw new Error(data.error || "Impossible d’envoyer cet intérêt.");
-      setNotice(data.matched ? "C’est réciproque ! Vous avez un nouveau match." : "Intérêt envoyé.");
+      setNotice(data.matched ? "C’est réciproque ! Vous avez un nouveau match." : "Like envoyé.");
       advanceTo(Math.min(index + 1, profiles.length));
     } catch (cause) {
       if (!active.current) return;
@@ -130,8 +130,8 @@ export default function ImmersiveDiscoveryPage() {
       .immersive-actions button{display:flex;justify-content:center;align-items:center;gap:9px;min-height:54px;border-radius:999px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:transform .18s,box-shadow .18s}
       .immersive-actions button:hover{transform:translateY(-2px);box-shadow:0 7px 18px #173c2a1a}
       .immersive-actions button:disabled{opacity:.55;cursor:wait}
-      .immersive-pass{border:1px solid #dfe5dc;background:#fff;color:#46534a}
-      .immersive-like{border:1px solid #075b4b;background:#075b4b;color:#fff}
+      .immersive-pass{border:1px solid #fecaca;background:#fff1f2;color:#b91c1c}
+      .immersive-like{border:1px solid #15803d;background:#15803d;color:#fff}
       .immersive-hint{text-align:center;color:#788179;font-size:11px;margin:14px 0 30px}
       .immersive-empty{max-width:600px;margin:35px auto;padding:38px 22px;text-align:center;background:#fff;border:1px solid #e5e8e1;border-radius:18px}
       .immersive-empty>span{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#edf4ee;color:#075b4b}
@@ -160,8 +160,8 @@ export default function ImmersiveDiscoveryPage() {
             <p>{current.bio?.trim() || "Cette personne préfère se dévoiler au fil de la conversation."}</p>
             <Link href={`/membre/${encodeURIComponent(current.id)}?retour=immersif&position=${index}`} className="immersive-full-profile">Consulter le profil complet <span aria-hidden="true">↗</span></Link>
             <div className="immersive-actions">
-              <button type="button" className="immersive-pass" onClick={pass} disabled={busy} aria-label="Passer ce profil"><SkipForward size={19}/><span>Passer</span></button>
-              <button type="button" className="immersive-like" onClick={() => void like()} disabled={busy} aria-label={`Liker ${current.public_name}`}><Heart size={21}/><span>{busy ? "Envoi…" : "Liker"}</span></button>
+              <button type="button" className="immersive-pass" onClick={pass} disabled={busy} aria-label="Passer ce profil"><X size={19}/><span>Passer</span></button>
+              <button type="button" className="immersive-like" onClick={() => void like()} disabled={busy} aria-label={`Liker ${current.public_name}`}><Heart size={21} fill="currentColor"/><span>{busy ? "Envoi…" : "Like"}</span></button>
             </div>
           </div>
         </article>

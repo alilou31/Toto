@@ -29,18 +29,19 @@ async function sendInterest(page: Page, targetId: string) {
     has: page.locator(`a[href="/membre/${targetId}"]`),
   });
   await expect(targetCard, `Le profil ${targetId} doit apparaître dans Découvrir`).toBeVisible({ timeout: 15_000 });
-  await targetCard.getByRole("button", { name: /Envoyer un intérêt/ }).click();
-  await expect(page.getByRole("status")).toContainText(/Intérêt envoyé|réciproque|nouveau match/i, { timeout: 15_000 });
+  await targetCard.getByRole("button", { name: /Liker/ }).click();
+  await expect(page.getByRole("status")).toContainText(/Like envoyé|réciproque|nouveau match/i, { timeout: 15_000 });
 }
 
-async function matchConversationId(page: Page, otherProfileId: string): Promise<string> {
+async function matchConversationId(page: Page, otherProfileId: string): Promise<{ conversationId: string; chatUnlocked: boolean }> {
   const response = await page.request.get("/api/matches");
   expect(response.status()).toBe(200);
   const data = await response.json();
   const match = (data.matches ?? []).find((item: { profile_id: string }) => item.profile_id === otherProfileId);
   expect(match, "Le match réciproque doit exister").toBeTruthy();
   expect(match.conversation_id, "Le match doit avoir une conversation").toBeTruthy();
-  return match.conversation_id as string;
+  expect(typeof match.chat_unlocked, "L'API doit exposer l'état d'accès à la messagerie").toBe("boolean");
+  return { conversationId: match.conversation_id as string, chatUnlocked: match.chat_unlocked as boolean };
 }
 
 test("parcours complet à deux comptes : découverte, match, défi à 4 questions et messagerie", async ({ browser }) => {
@@ -69,7 +70,8 @@ test("parcours complet à deux comptes : découverte, match, défi à 4 question
       matchConversationId(pageA, idB),
       matchConversationId(pageB, idA),
     ]);
-    expect(conversationA).toBe(conversationB);
+    expect(conversationA.conversationId).toBe(conversationB.conversationId);
+    expect(conversationA.chatUnlocked).toBe(conversationB.chatUnlocked);
 
     // A creates a real Neon-backed challenge; B joins using its invitation code.
     await pageA.goto("/cockpit/defis");
@@ -108,21 +110,28 @@ test("parcours complet à deux comptes : découverte, match, défi à 4 question
     await expect(pageB.locator(".game-play-result")).toBeVisible({ timeout: 15_000 });
 
     // Exchange a message in each direction and verify persistence from the other account.
-    const firstMessage = `Bonjour ! Petit test de conversation NAKAHYA ${Date.now()}.`;
-    await pageA.goto(`/messages/${conversationA}`);
-    await pageA.getByLabel("Votre message").fill(firstMessage);
-    await pageA.getByRole("button", { name: /Envoyer le message/i }).click();
-    await expect(pageA.getByText(firstMessage)).toBeVisible();
-
-    await pageB.goto(`/messages/${conversationB}`);
-    await expect(pageB.getByText(firstMessage)).toBeVisible({ timeout: 15_000 });
-    const reply = `Bien reçu, je te réponds ! ${Date.now()}.`;
-    await pageB.getByLabel("Votre message").fill(reply);
-    await pageB.getByRole("button", { name: /Envoyer le message/i }).click();
-    await expect(pageB.getByText(reply)).toBeVisible();
-
-    await pageA.reload();
-    await expect(pageA.getByText(reply)).toBeVisible({ timeout: 15_000 });
+    if (conversationA.chatUnlocked) {
+      const firstMessage = `Bonjour ! Petit test de conversation NAKAHYA ${Date.now()}.`;
+      await pageA.goto(`/messages/${conversationA.conversationId}`);
+      await pageA.getByLabel("Votre message").fill(firstMessage);
+      await pageA.getByRole("button", { name: /Envoyer le message/i }).click();
+      await expect(pageA.getByText(firstMessage)).toBeVisible();
+      await pageB.goto(`/messages/${conversationB.conversationId}`);
+      await expect(pageB.getByText(firstMessage)).toBeVisible({ timeout: 15_000 });
+      const reply = `Bien reçu, je te réponds ! ${Date.now()}.`;
+      await pageB.getByLabel("Votre message").fill(reply);
+      await pageB.getByRole("button", { name: /Envoyer le message/i }).click();
+      await expect(pageB.getByText(reply)).toBeVisible();
+      await pageA.reload();
+      await expect(pageA.getByText(reply)).toBeVisible({ timeout: 15_000 });
+    } else {
+      const readA = await pageA.request.get(`/api/conversations/${conversationA.conversationId}/messages`);
+      expect(readA.status()).toBe(403);
+      expect((await readA.json()).code).toBe("CHAT_MEMBERSHIP_REQUIRED");
+      const sendA = await pageA.request.post(`/api/conversations/${conversationA.conversationId}/messages`, { data: { body: "Ce message ne doit pas être envoyé." } });
+      expect(sendA.status()).toBe(403);
+      expect((await sendA.json()).code).toBe("CHAT_MEMBERSHIP_REQUIRED");
+    }
   } finally {
     await contextA.close();
     await contextB.close();

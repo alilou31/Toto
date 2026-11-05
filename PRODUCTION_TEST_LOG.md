@@ -270,3 +270,14 @@
 - **Tests :** extension du test Playwright de consentement déjà présent pour vérifier l'URL du conteneur et la présence de l'événement d'initialisation.
 - **Limite externe :** GA4 nécessite toujours une balise Google publiée dans GTM avec un ID de mesure `G-...`. L'ID `GTM-M782VXCD` identifie uniquement le conteneur Tag Manager. L'envoi effectif de données à Analytics reste à valider dans les outils Google après configuration.
 - **CI / déploiement / production :** à renseigner après exécution des workflows du commit correctif ; aucune validation n'est présumée ici.
+
+
+### PROD-2026-11-05-02 — Likes, filtres Découvrir et messagerie par abonnement
+
+- **Base de code :** `d6a9e5862f3a3ae1f31fb85a55538b167a2ffdbd`.
+- **Découverte :** aucun filtre transmis signifie maintenant tous les profils éligibles ; les règles d'âge, visibilité, blocage et exclusion de soi restent inchangées.
+- **Terminologie / UX :** rubrique renommée Likes ; cœur vert pour Like et bouton rouge pour Passer dans l'immersion.
+- **Offres :** Découverte gratuite (likes/matchs sans messages), Premium 19,99 €/mois ou 179,90 €/an, Élite 29,99 €/mois ou 269,90 €/an. Les offres partenaires et codes Élite restent conditionnés aux contrats partenaires ; aucun code factice n'est activé.
+- **Sécurité de la messagerie :** l'API bloque GET/POST texte et GET/POST média avec 403 si les deux participants n'ont pas chacun une entitlement active. Les aperçus de messages ne sont pas exposés dans la liste des matchs verrouillés.
+- **Migration requise :** appliquer `db/migrations/021_membership_plan_tiers.sql` dans Neon. Les entitlements existantes sont conservées comme Premium. Le paiement reste désactivé et aucun abonnement ne peut être acheté depuis l'interface.
+- **CI / Worker / smoke / Neon :** à vérifier sur le commit candidat ; ne pas déclarer la production validée avant ces contrôles.

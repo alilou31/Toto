@@ -1,0 +1,17 @@
+.subscription-return-page{min-height:100svh;display:grid;place-items:center;padding:28px 16px;background:radial-gradient(ellipse at 50% 0%,rgba(104,88,151,.2),transparent 55%),var(--background,#090b12);color:var(--foreground,#f5f3fa)}
+.subscription-return-card{width:min(100%,520px);padding:clamp(26px,6vw,48px);border:1px solid rgba(255,255,255,.12);border-radius:28px;background:rgba(20,22,33,.88);box-shadow:0 24px 80px rgba(0,0,0,.32);text-align:center}
+.subscription-return-brand{display:inline-flex;align-items:center;gap:10px;margin-bottom:34px;color:inherit;text-decoration:none;font-weight:800;letter-spacing:.12em}
+.subscription-return-mark{display:grid;place-items:center;width:36px;height:36px;border:1px solid rgba(255,255,255,.18);border-radius:12px}
+.subscription-return-dot{color:#b9a8e6}
+.subscription-return-icon{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 20px;border-radius:50%;background:rgba(115,170,139,.14);color:#8bc5a0}
+.subscription-return-kicker{margin:0 0 10px;color:#b9a8e6;font-size:.72rem;font-weight:800;letter-spacing:.16em}
+.subscription-return-card h1{margin:0;font-size:clamp(1.8rem,6vw,2.45rem);line-height:1.12;letter-spacing:-.035em}
+.subscription-return-lead{margin:18px 0 24px;color:rgba(245,243,250,.76);line-height:1.65}
+.subscription-return-status{display:flex;gap:13px;align-items:flex-start;padding:16px;text-align:left;border:1px solid rgba(210,175,105,.3);border-radius:16px;background:rgba(210,175,105,.08);color:#e8c98f}
+.subscription-return-status span{display:grid;gap:4px;color:rgba(245,243,250,.75);font-size:.9rem;line-height:1.5}
+.subscription-return-status strong{color:#f1d8a8}
+.subscription-return-note{margin:20px 0;color:rgba(245,243,250,.58);font-size:.82rem;line-height:1.6}
+.subscription-return-cta{display:inline-flex;justify-content:center;align-items:center;gap:10px;width:100%;min-height:50px;margin-top:8px;padding:12px 18px;border-radius:14px;background:#eee8fa;color:#171321;text-decoration:none;font-weight:750;transition:transform .18s ease,background .18s ease}
+.subscription-return-cta:hover{transform:translateY(-1px);background:#fff}
+.subscription-return-security{display:flex;justify-content:center;align-items:center;gap:7px;margin:20px 0 0;color:rgba(245,243,250,.48);font-size:.75rem}
+@media(prefers-reduced-motion:reduce){.subscription-return-cta{transition:none}.subscription-return-cta:hover{transform:none}}

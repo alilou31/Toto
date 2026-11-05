@@ -6,7 +6,7 @@ Statut : proposition implémentée sur la branche `feat/neo-midnight-design-syst
 
 - Mode sombre immersif, chaleureux et accessible.
 - Aucun violet/lilas/plum dans la palette de marque.
-- Lime électrique pour les CTA et sélections ; menthe pour les réussites et affinités ; corail en accent émotionnel rare.
+- Lime électrique pour les CTA et sélections ; menthe pour les réussites et compatibilités ; corail en accent émotionnel rare.
 - Glassmorphism limité au chrome sticky/overlays ; surfaces opaques ailleurs pour préserver lisibilité et performances.
 - La rencontre reste le cœur du produit ; les jeux aident à faire connaissance.
 
@@ -46,7 +46,7 @@ Statut : proposition implémentée sur la branche `feat/neo-midnight-design-syst
 - Champs sombres avec labels persistants, focus visible et erreurs explicites.
 - Chips/filtres avec sélection lime.
 - Navigation mobile compacte ; le bouton central ouvre la découverte immersive et le lien Découvrir du tableau de bord garde la grille existante.
-- Profil : photo dominante, informations publiques autorisées, affinités communes et états de vérification réels.
+- Profil : photo dominante, informations publiques autorisées, compatibilités communes et états de vérification réels.
 - Discussions : bulles différenciées par surface et contraste, pas par couleur seule.
 - Jeux : une question à la fois, progression menthe et feedback instantané mais léger.
 
@@ -54,7 +54,7 @@ Statut : proposition implémentée sur la branche `feat/neo-midnight-design-syst
 
 1. Landing : promesse de rencontre, CTA lime, photo immersive, sections et SEO conservés.
 2. Inscription : formulaires, progression, consentements et authentification inchangés fonctionnellement.
-3. Espace connecté : bento modéré, activité, profil, affinités, disponibilité et classements.
+3. Espace connecté : bento modéré, activité, profil, compatibilités, disponibilité et classements.
 4. Découverte : photo grand format, résumé, J'aime/Passer ; la grille classique reste accessible.
 5. Profils : photos, valeurs, projets, intérêts et jeux partagés selon les règles de visibilité.
 6. Discussions : liste, conversation, invitations aux défis et états de lecture/erreur.

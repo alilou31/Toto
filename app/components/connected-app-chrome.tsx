@@ -9,7 +9,7 @@ type NoticeCounts = { interests: number; games: number };
 const tips = [
   "Un bon début de conversation ? Une question ouverte, simple et sincère.",
   "Vos centres d’intérêt donnent de belles idées pour lancer un jeu à deux.",
-  "Prenez votre temps : une vraie affinité se découvre, elle ne se force pas.",
+  "Un like ne force rien : une rencontre se construit à deux.",
   "Un profil authentique aide les bonnes personnes à vous reconnaître.",
   "Le respect du rythme de chacun fait partie de la rencontre.",
 ];
@@ -122,7 +122,7 @@ export default function ConnectedAppChrome({ children }: { children: React.React
   const totalAlerts = counts.interests + counts.games;
   const items = [
     { href: "/tableau-de-bord", label: "Accueil", icon: House, active: pathname === "/tableau-de-bord" || pathname === "/cockpit" },
-    { href: "/matchs", label: "Affinités", icon: Heart, active: pathname === "/matchs" },
+    { href: "/matchs", label: "Likes", icon: Heart, active: pathname === "/matchs" },
     { href: "/decouvrir/immersif", label: "Découvrir", icon: Compass, active: pathname.startsWith("/decouvrir"), primary: true },
     { href: "/cockpit/jeux", label: "Jouer", icon: Gamepad2, active: pathname.startsWith("/cockpit/jeux") || pathname === "/rencontre" },
     { href: "/notifications", label: "Alertes", icon: Bell, active: pathname === "/notifications", badge: totalAlerts },

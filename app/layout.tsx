@@ -19,7 +19,7 @@ import "./dashboard-offers-carousel.css";
 
 const siteUrl = getSiteUrl();
 const siteTitle = "NAKAHYA — Rencontres sérieuses, faites connaissance en jouant";
-const siteDescription = "Envie d’une relation sérieuse ? Découvrez NAKAHYA : une nouvelle façon de faire connaissance grâce aux jeux, aux affinités, aux valeurs et aux projets de vie.";
+const siteDescription = "Envie d’une relation sérieuse ? Découvrez NAKAHYA : une nouvelle façon de faire connaissance grâce aux jeux, aux compatibilités, aux valeurs et aux projets de vie.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   applicationName: "NAKAHYA",
   category: "social",
   manifest: "/manifest.webmanifest",
-  keywords: ["rencontre sérieuse", "application de rencontre", "faire connaissance en jouant", "rencontre par affinités", "rencontre par centres d’intérêt", "compatibilité amoureuse", "relation durable", "rencontre francophone", "jeux pour faire connaissance"],
+  keywords: ["rencontre sérieuse", "application de rencontre", "faire connaissance en jouant", "rencontre par compatibilités", "rencontre par centres d’intérêt", "compatibilité amoureuse", "relation durable", "rencontre francophone", "jeux pour faire connaissance"],
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   openGraph: {
     title: siteTitle, description: siteDescription, url: siteUrl, siteName: "NAKAHYA", type: "website", locale: "fr_FR",

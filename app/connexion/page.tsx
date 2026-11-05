@@ -78,7 +78,7 @@ export default function ConnexionPage() {
           <div className="auth-story-copy">
             <span className="auth-story-eyebrow"><Sparkles size={14} /> LA RENCONTRE, AUTREMENT</span>
             <h1>Moins de swipe.<br /><em>Plus de vrai.</em></h1>
-            <p>Apprenez à vous connaître en jouant. Des affinités sincères, des conversations qui ont du sens, à votre rythme.</p>
+            <p>Apprenez à vous connaître en jouant. Des likes sincères, des conversations qui ont du sens, à votre rythme.</p>
           </div>
           <div className="auth-game-preview" aria-label="Des jeux pour mieux se connaître">
             <div className="auth-game-card auth-game-card-main">
@@ -101,7 +101,7 @@ export default function ConnexionPage() {
           <div className="auth-card-topline"><span className="auth-status-dot" /> VOTRE ESPACE PERSONNEL</div>
           <div className="section-kicker auth-kicker">HEUREUX DE VOUS REVOIR</div>
           <h2 id="auth-login-title" className="auth-title">Votre histoire<br /><em>continue ici.</em></h2>
-          <p className="auth-description">Retrouvez vos affinités, vos défis et les belles conversations en cours.</p>
+          <p className="auth-description">Retrouvez vos likes, vos défis et les belles conversations en cours.</p>
           <form onSubmit={submit} className="auth-form">
             <label htmlFor="email">Adresse e-mail</label>
             <div className="input-wrap"><Mail size={17} /><input id="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="vous@exemple.fr" maxLength={254} /></div>

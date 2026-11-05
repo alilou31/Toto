@@ -133,7 +133,7 @@ export default function HomeHeader({ locale = "fr" }: { locale?: SupportedLocale
             <Link href="/tableau-de-bord"><LayoutDashboard size={17}/> Mon espace</Link>
             <Link href="/profil"><UserRound size={17}/> Mon profil</Link>
             <Link href="/decouvrir"><Search size={17}/> Découvrir des profils</Link>
-            <Link href="/matchs"><Heart size={17}/> Affinités</Link>
+            <Link href="/matchs"><Heart size={17}/> Likes</Link>
             <Link href="/cockpit/jeux"><Gamepad2 size={17}/> Jouer</Link>
             <Link href="/rencontre"><Heart size={17}/> Alchimie</Link>
             <button type="button" onClick={logout} disabled={loggingOut}><LogOut size={17}/>{loggingOut ? "Déconnexion…" : "Se déconnecter"}</button>

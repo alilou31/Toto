@@ -16,10 +16,9 @@ export async function GET(request: Request) {
     const requestedFilter = new URL(request.url).searchParams.get("gender");
     const allowedFilters = ["opposite", "women", "men", "all"];
     if (requestedFilter && !allowedFilters.includes(requestedFilter)) return NextResponse.json({ error: "Filtre de genre invalide." }, { status: 400, headers: { "Cache-Control": "no-store" } });
-    const ownRows = await sql`select gender, preferred_gender from public.profiles where id = ${user.id} limit 1`;
+    const ownRows = await sql`select gender from public.profiles where id = ${user.id} limit 1`;
     const ownGender = String(ownRows[0]?.gender ?? "");
-    const savedPreference = String(ownRows[0]?.preferred_gender ?? "opposite");
-    const filter = requestedFilter ?? savedPreference;
+    const filter = requestedFilter ?? "all";
     const targetGender = filter === "women" ? "woman" : filter === "men" ? "man" : filter === "opposite" ? (ownGender === "man" ? "woman" : ownGender === "woman" ? "man" : "all") : "all";
     let profiles;
     try {
