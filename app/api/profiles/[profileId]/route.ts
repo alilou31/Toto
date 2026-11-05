@@ -20,6 +20,13 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
       if (!own.length) return NextResponse.json({ error: "Profil introuvable." }, { status: 404, headers: { "Cache-Control": "no-store" } });
       return NextResponse.json({ profile: own[0] }, { headers: { "Cache-Control": "no-store" } });
     }
+    const ownRows = await sql`select gender from public.profiles where id = ${user.id} limit 1`;
+    const ownGender = ownRows[0]?.gender;
+    if (ownGender !== "man" && ownGender !== "woman") {
+      return NextResponse.json({ error: "Choisissez d’abord Homme ou Femme dans votre profil pour accéder aux rencontres.", code: "GENDER_REQUIRED" }, { status: 409, headers: { "Cache-Control": "no-store" } });
+    }
+    const targetGender = ownGender === "man" ? "woman" : "man";
+
     let rows;
     try {
       rows = await sql`
@@ -29,6 +36,7 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
           case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
         from public.profiles p
         where p.id = ${profileId}
+          and p.gender = ${targetGender}
           and p.visibility = 'visible'
           and p.onboarding_completed = true
           and p.birth_date is not null
@@ -50,6 +58,7 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
           case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
         from public.profiles p
         where p.id = ${profileId}
+          and p.gender = ${targetGender}
           and p.visibility = 'visible'
           and p.onboarding_completed = true
           and p.birth_date is not null
