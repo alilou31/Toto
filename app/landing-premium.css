@@ -267,3 +267,24 @@
  .landing-page .landing-store-badges{width:100%}
  .landing-page .landing-store-badge{flex:1;min-width:135px}
 }
+
+
+/* Installation manuelle et consentement analytique */
+.landing-manual-install{display:grid;grid-template-columns:64px minmax(0,1fr);gap:22px;max-width:1120px;margin:44px auto;padding:34px clamp(22px,5vw,58px);border:1px solid #173f3520;border-radius:26px;background:linear-gradient(135deg,#ffffffed,#f4f0e8e8);box-shadow:0 18px 50px #173f3510}
+.landing-manual-install-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:#173f35;color:#fff}
+.landing-manual-install-copy h3{margin:8px 0;font-family:var(--serif);font-size:clamp(24px,3vw,34px);color:#173f35}
+.landing-manual-install-copy>p{color:#6f6570;line-height:1.7;max-width:760px}
+.landing-install-instructions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}
+.landing-install-instructions>div{padding:17px;border:1px solid #173f3520;border-radius:16px;background:#ffffffb8}
+.landing-install-instructions strong{color:#173f35}.landing-install-instructions p{margin:8px 0 0;color:#6f6570;font-size:13px;line-height:1.7}
+.landing-install-instructions svg{display:inline;vertical-align:middle}
+.landing-install-button{display:inline-flex;align-items:center;gap:9px;border:0;cursor:pointer}
+.landing-install-note,.landing-install-status{font-size:12px;color:#286956}
+.nakahya-consent-banner{position:fixed;z-index:10000;left:18px;right:18px;bottom:18px;max-width:980px;margin:auto;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:22px;border:1px solid #ffffff45;border-radius:20px;background:#14241fee;color:#fff;box-shadow:0 18px 60px #07140f55;backdrop-filter:blur(18px)}
+.nakahya-consent-banner strong{font-size:15px}.nakahya-consent-banner p{margin:5px 0;font-size:12px;line-height:1.6;color:#e4e9e5}.nakahya-consent-banner a{font-size:12px;color:#c6dfd0;text-decoration:underline}
+.nakahya-consent-actions{display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}
+.nakahya-consent-actions button,.nakahya-consent-manage{border-radius:999px;padding:11px 15px;font-size:12px;font-weight:700;cursor:pointer}
+.nakahya-consent-primary{background:#dcefe3;color:#173f35;border:1px solid #dcefe3}
+.nakahya-consent-secondary{background:transparent;color:#fff;border:1px solid #ffffff70}
+.nakahya-consent-manage{position:fixed;z-index:9998;bottom:12px;right:12px;background:#173f35;color:white;border:1px solid #ffffff55;box-shadow:0 4px 18px #0002}
+@media(max-width:700px){.landing-manual-install{grid-template-columns:1fr;margin:28px 16px;padding:23px}.landing-install-instructions{grid-template-columns:1fr}.nakahya-consent-banner{left:10px;right:10px;bottom:10px;display:block;padding:17px}.nakahya-consent-actions{margin-top:13px;justify-content:stretch}.nakahya-consent-actions button{flex:1}.nakahya-consent-manage{bottom:8px;right:8px}}

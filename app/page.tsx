@@ -6,6 +6,7 @@ import Link from "next/link";
 import HomeHeader from "@/app/components/home-header";
 import { getCurrentUser } from "@/lib/auth";
 import NewsletterSignup from "@/app/components/newsletter-signup";
+import ManualInstall from "@/app/components/manual-install";
 import { ArrowRight, ArrowDown, Brain, Heart, LockKeyhole, MessageCircleHeart, ShieldCheck, Check } from "lucide-react";
 
 const faqs = [
@@ -105,6 +106,7 @@ export default async function Home() {
           <div className="landing-store-badge"><span className="landing-store-icon">▶</span><span><small>À VENIR SUR</small><strong>Google Play</strong></span></div>
         </div>
       </section>
+      <ManualInstall />
       {!currentUser && <NewsletterSignup />}
       <section className="final-cta landing-final-cta"><div className="cta-flower">✳</div><div className="section-kicker">VOTRE HISTOIRE PEUT COMMENCER ICI</div><h2>La bonne rencontre<br />commence parfois <em>par un jeu.</em></h2><p>Faites le premier pas. Le reste se découvre à deux.</p><Link href="/inscription" className="button button-light landing-final-button">Créer mon compte gratuitement <ArrowRight size={17} /></Link><span className="cta-signature">NAKAHYA — La rencontre qui change tout.</span></section>
       <footer className="footer landing-footer"><div className="footer-main"><Link href="/" className="brand brand-footer" aria-label="NAKAHYA, accueil"><span className="brand-mark"><Heart size={19} /></span><span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span></Link><p>Faire connaissance en jouant.<br />Se rapprocher pour ce qui compte.</p><div className="footer-social">FAIT AVEC INTENTION <Heart size={13} /></div></div><div className="footer-links"><div><strong>Découvrir</strong><a href="#concept">Notre approche</a><a href="#comment-ca-marche">Comment ça marche</a><a href="#confiance">Confiance</a><a href="#faq">FAQ</a></div><div><strong>Votre espace</strong><Link href="/inscription">Créer un profil</Link><Link href="/connexion">Connexion</Link></div><div><strong>Informations</strong><Link href="/confidentialite">Confidentialité</Link><Link href="/conditions">Conditions d’utilisation</Link><Link href="/mentions-legales#contact">Contact éditeur</Link></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} NAKAHYA. Tous droits réservés.</span><span>Réservé aux adultes de 18 ans et plus.</span><span>Conçu avec soin, en France.</span></div></footer>

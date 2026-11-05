@@ -46,6 +46,27 @@ test.describe("Interface NAKAHYA en production", () => {
     await expect(page.locator('a[href="/connexion"]').first()).toBeVisible();
   });
 
+  test("la landing propose l’installation manuelle et un manifest PWA", async ({ page }) => {
+    const response = await page.goto("/");
+    expect(response?.status()).toBe(200);
+    await expect(page.getByRole("heading", { name: /Installer NAKAHYA manuellement/i })).toBeVisible();
+    await expect(page.getByText(/Ouvrez NAKAHYA dans Safari/i)).toBeVisible();
+    await expect(page.getByText(/Ouvrez NAKAHYA dans Chrome/i)).toBeVisible();
+    const manifest = await page.request.get("/manifest.webmanifest");
+    expect(manifest.ok()).toBeTruthy();
+    const json = await manifest.json();
+    expect(json.name).toContain("NAKAHYA");
+    expect(json.start_url).toBe("/");
+  });
+
+  test("le consentement analytique permet de refuser sans charger Google Tag Manager", async ({ page }) => {
+    await page.addInitScript(() => localStorage.clear());
+    await page.goto("/");
+    await page.getByRole("button", { name: "Continuer sans accepter" }).click();
+    await expect(page.locator('script[data-nakahya-gtm="true"]')).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Gérer les cookies" })).toBeVisible();
+  });
+
   test("la navigation vers la connexion fonctionne", async ({ page }) => {
     await page.goto("/");
     // The homepage hero exposes a visible login link even when header actions
