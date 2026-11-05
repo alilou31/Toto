@@ -38,7 +38,6 @@ export async function GET() {
              or (b.blocker_id = p.id and b.blocked_id = ${user.id})
         )
       order by p.updated_at desc
-      limit 50
     `;
     return NextResponse.json({ profiles }, { headers: { "Cache-Control": "no-store" } });
   } catch {
