@@ -8,7 +8,7 @@ type PublicProfile = {
   id: string;
   public_name: string;
   city: string | null;
-  birth_date: string | null;
+  age: number | null;
   bio: string;
   relationship_intention: "marriage" | "serious" | "friendship" | "unspecified";
   hobbies?: string[] | null;
@@ -29,16 +29,6 @@ const intentionLabels: Record<PublicProfile["relationship_intention"], string> =
   friendship: "Faire connaissance",
   unspecified: "À discuter",
 };
-
-function getAge(birthDate: string | null): number | null {
-  if (!birthDate) return null;
-  const date = new Date(`${birthDate.slice(0, 10)}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return null;
-  const today = new Date();
-  let age = today.getFullYear() - date.getFullYear();
-  if (today.getMonth() < date.getMonth() || (today.getMonth() === date.getMonth() && today.getDate() < date.getDate())) age--;
-  return age >= 18 ? age : null;
-}
 
 export default function DiscoverPage() {
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
@@ -191,7 +181,7 @@ export default function DiscoverPage() {
                     <span className="discovery-intention">{intentionLabels[profile.relationship_intention] ?? "À discuter"}</span>
                   </div>
                   <h2><Link href={`/membre/${encodeURIComponent(profile.id)}`} aria-label={`Voir la fiche de ${profile.public_name}`}>{profile.public_name}</Link>{profile.is_verified && <span className="nikahya-verified-badge" title="Identité contrôlée par l’équipe NAKAHYA"><BadgeCheck size={15}/> Vérifié</span>}</h2>
-                  <div className="discovery-profile-meta" style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",marginTop:6}}>{getAge(profile.birth_date) !== null && <span className="discovery-age" style={{fontSize:14,fontWeight:800,padding:"4px 9px",borderRadius:999,background:"rgba(255,255,255,.18)",color:"inherit"}}>{getAge(profile.birth_date)} ans</span>}{profile.city && <p className="discovery-city"><MapPin size={13}/>{profile.city}</p>}</div>{profile.last_seen_label && <p className="discovery-last-seen">{profile.last_seen_label}</p>}
+                  <div className="discovery-profile-meta" style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",marginTop:6}}>{typeof profile.age === "number" && <span className="discovery-age" style={{fontSize:14,fontWeight:800,padding:"4px 9px",borderRadius:999,background:"rgba(255,255,255,.18)",color:"inherit"}}>{profile.age} ans</span>}{profile.city && <p className="discovery-city"><MapPin size={13}/>{profile.city}</p>}</div>{profile.last_seen_label && <p className="discovery-last-seen">{profile.last_seen_label}</p>}
                   <p className="discovery-bio">{profile.bio?.trim() || "Préfère faire connaissance au fil de la conversation."}</p>
                   {shared.length > 0 && <p className="discovery-shared"><Sparkles size={13}/>{shared.length} point{shared.length > 1 ? "s" : ""} en commun</p>}
                   <div className="discovery-tags">
