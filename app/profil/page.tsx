@@ -129,7 +129,7 @@ export default function ProfilePage() {
     return () => { active = false; };
   }, []);
 
-  const snapshot = useMemo(() => JSON.stringify({ publicName, photos, city, bio, birthDate, gender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity }), [publicName, city, bio, birthDate, gender, preferredGender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity]);
+  const snapshot = useMemo(() => JSON.stringify({ publicName, photos, city, bio, birthDate, gender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity }), [publicName, city, bio, birthDate, gender, intention, visibility, hobbies, favoriteGames, interests, occupation, religion, ethnicity, showSensitiveIdentity]);
   const dirty = Boolean(savedSnapshot) && snapshot !== savedSnapshot;
   const progress = getProfileProgress({ publicName, birthDate, city, bio, intention });
   const selectedIntention = intentions.find(item => item.value === intention)?.label ?? "À discuter";
