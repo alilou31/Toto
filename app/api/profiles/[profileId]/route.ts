@@ -58,6 +58,7 @@ export async function GET(_request: Request, context: { params: Promise<{ profil
           case when p.show_sensitive_identity then p.ethnicity else null end as ethnicity
         from public.profiles p
         where p.id = ${profileId}
+          and p.gender = ${targetGender}
           and p.visibility = 'visible'
           and p.onboarding_completed = true
           and p.birth_date is not null
