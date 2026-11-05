@@ -102,7 +102,7 @@ export default function HomeHeader({ locale = "fr" }: { locale?: SupportedLocale
         <span className="brand-word">NAKAHYA<span className="brand-dot">.</span></span>
       </Link>
       <nav className="desktop-nav" aria-label="Navigation principale">
-        <Link href="/#concept">Notre approche</Link><Link href="/#comment-ca-marche">Comment ça marche</Link><Link href="/#confiance">Confiance</Link>
+        <Link href="/#concept">Notre approche</Link><Link href="/#comment-ca-marche">Comment ça marche</Link><Link href="/#confiance">Confiance</Link><Link href="/conseils">Conseils</Link>
       </nav>
       <div className="header-actions" aria-live="polite"><LocaleSwitcher initialLocale={locale} />
         {session === "checking" ? <span className="login-link" role="status">Vérification…</span> : session === "signed-in" ? (
@@ -126,6 +126,7 @@ export default function HomeHeader({ locale = "fr" }: { locale?: SupportedLocale
           
           <Link href="/#comment-ca-marche"><ArrowRight size={17}/> Comment ça marche</Link>
           <Link href="/#confiance"><UserRound size={17}/> Sécurité et confidentialité</Link>
+          <Link href="/conseils"><Heart size={17}/> Conseils rencontre</Link>
         </div>
         {session === "signed-in" ? (
           <div className="mobile-nav-section">

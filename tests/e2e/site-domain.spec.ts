@@ -3,7 +3,7 @@ import { getSiteUrl } from "../../lib/site-origin";
 
 const origin = process.env.PLAYWRIGHT_BASE_URL?.startsWith("https://nakahya.com") ? "https://nakahya.com" : getSiteUrl();
 
-for (const path of ["/", "/demo", "/bons-plans"]) {
+for (const path of ["/", "/demo", "/bons-plans", "/conseils", "/conseils/rencontre-serieuse-ou-commencer", "/conseils/questions-pour-faire-connaissance", "/conseils/valeurs-compatibilite-couple"]) {
   test(`canonical et partage social cohérents : ${path}`, async ({ page }) => {
     const response = await page.goto(path);
     expect(response?.status()).toBe(200);
@@ -20,6 +20,10 @@ for (const path of ["/", "/demo", "/bons-plans"]) {
 test("sitemap et robots utilisent la même origine et excluent le privé", async ({ request }) => {
   const sitemap = await (await request.get("/sitemap.xml")).text();
   expect(sitemap).toContain(`${origin}/bons-plans`);
+  expect(sitemap).toContain(`${origin}/conseils`);
+  expect(sitemap).toContain(`${origin}/conseils/rencontre-serieuse-ou-commencer`);
+  expect(sitemap).toContain(`${origin}/conseils/questions-pour-faire-connaissance`);
+  expect(sitemap).toContain(`${origin}/conseils/valeurs-compatibilite-couple`);
   expect(sitemap).not.toContain("workers.dev");
   expect(sitemap).not.toContain("/decouvrir");
   const robots = await (await request.get("/robots.txt")).text();
