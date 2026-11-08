@@ -3,7 +3,7 @@
 
 create table if not exists public.product_feedback (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.auth_users(id) on delete set null,
+  user_id text references public.auth_users(id) on delete set null,
   category text not null check (category in ('experience', 'discovery', 'games', 'trust_safety', 'pricing', 'other')),
   rating smallint check (rating between 1 and 5),
   message text not null check (char_length(message) between 10 and 2000),
@@ -24,7 +24,7 @@ create table if not exists public.market_insights (
   theme text not null check (char_length(theme) between 2 and 80),
   sentiment text not null check (sentiment in ('pain_point', 'request', 'positive', 'objection', 'opportunity')),
   summary text not null check (char_length(summary) between 10 and 1500),
-  created_by uuid references public.auth_users(id) on delete set null,
+  created_by text references public.auth_users(id) on delete set null,
   created_at timestamptz not null default now(),
   constraint market_insights_external_url_http check (external_url ~ '^https?://')
 );
