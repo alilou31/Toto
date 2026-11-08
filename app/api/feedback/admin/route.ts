@@ -50,9 +50,12 @@ export async function POST(request: Request) {
   const summary = typeof data.summary === "string" ? data.summary.trim() : "";
   let parsedUrl: URL | null = null;
   try { parsedUrl = new URL(externalUrl); } catch { /* validation below */ }
+  const isRedditHost = parsedUrl && ["reddit.com", "www.reddit.com", "old.reddit.com"].includes(parsedUrl.hostname.toLowerCase());
+  const validSubreddit = /^[A-Za-z0-9_]{2,80}$/.test(subreddit);
   if (!parsedUrl || !["http:", "https:"].includes(parsedUrl.protocol) || externalUrl.length > 2048
     || theme.length < 2 || theme.length > 80 || !sentiments.has(sentiment)
-    || summary.length < 10 || summary.length > 1500 || (source === "reddit" && (!subreddit || subreddit.length > 80))) {
+    || summary.length < 10 || summary.length > 1500
+    || (source === "reddit" && (!isRedditHost || !validSubreddit))) {
     return NextResponse.json({ error: "Vérifiez la source, le lien, le thème et le résumé." }, { status: 400, headers: noStore });
   }
   try {
