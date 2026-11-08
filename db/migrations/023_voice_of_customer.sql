@@ -3,7 +3,7 @@
 
 create table if not exists public.product_feedback (
   id uuid primary key default gen_random_uuid(),
-  user_id text references public.auth_users(id) on delete set null,
+  user_id text references public.auth_users(id) on delete cascade,
   category text not null check (category in ('experience', 'discovery', 'games', 'trust_safety', 'pricing', 'other')),
   rating smallint check (rating between 1 and 5),
   message text not null check (char_length(message) between 10 and 2000),
