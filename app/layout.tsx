@@ -16,6 +16,7 @@ import "./research-brand-system.css";
 import "./outings.css";
 import "./bons-plans.css";
 import "./dashboard-offers-carousel.css";
+import "./voice-of-customer.css";
 
 const siteUrl = getSiteUrl();
 const siteTitle = "NAKAHYA — Rencontres sérieuses, faites connaissance en jouant";
