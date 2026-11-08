@@ -361,3 +361,13 @@ Voir aussi `tests/README.md` et `PRODUCTION_TEST_LOG.md`. Avant d'affirmer qu'un
 - Filtrage strict côté serveur vers le genre opposé ; aucun filtre client ne permet de choisir un autre groupe.
 - `/decouvrir` reste la grille complète des profils éligibles ; le bouton central ouvre cette grille. L'âge calculé est affiché sur les cartes ; la date de naissance complète n'est pas envoyée par l'API de découverte.
 - Migration requise : `db/migrations/022_binary_gender_opposite_discovery.sql`. Code non prêt production tant que migration Neon et tests réels à deux comptes ne sont pas validés.
+
+
+## Voice of Customer — candidat PR (2026-11-08)
+
+- **CODE PRÉSENT sur branche candidate** : page publique `/avis`, API de collecte, tableau de bord produit `/admin/feedback` et saisie manuelle d'insights Reddit.
+- **Sécurité** : retours anonymes possibles, session facultative, honeypot, rate limit partagé, accès dashboard par allowlist `FEEDBACK_ADMIN_EMAILS`, réponses `no-store`.
+- **Base** : migration candidate `db/migrations/023_voice_of_customer.sql` ; **NON EXÉCUTÉE dans Neon**. Aucune donnée ne sera persistée avant son application.
+- **Reddit** : aucune collecte automatique ni publication. Veille manuelle et saisie d'une URL publique avec synthèse reformulée jusqu'à autorisation Reddit vérifiée pour l'usage commercial.
+- **Tests** : `tests/e2e/feedback.spec.ts` ajouté ; résultat CI à vérifier sur le SHA final. Aucun test de production exécuté.
+- **Mise en service** : voir `VOICE_OF_CUSTOMER.md`. Ne pas fusionner ni déployer sans validation explicite.
