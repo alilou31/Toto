@@ -49,6 +49,14 @@
 - **Tests** : CI/Playwright verts sur le SHA contrôlé, mais tests UI avec API simulée uniquement ; parcours réel à deux comptes et suppression physique R2 encore à valider.
 - **À FAIRE avant lancement public** : bucket privé et binding opérationnels, règle R2, rapprochement périodique objets/base, alerte à 6 Go, tests réels à deux comptes, politique de modération et suppression de compte.
 
+## Sécurité profil — correctif candidat du 2026-11-05
+
+- **Correctif implémenté sur PR #92** (`fix/profile-opposite-gender-authorization`) : `GET /api/profiles/[profileId]` applique côté serveur le filtre du genre opposé dans la requête principale et le fallback legacy.
+- Le profil personnel reste consultable par son propriétaire ; un membre sans genre valide reçoit `409 GENDER_REQUIRED` avant toute lecture d'un autre profil.
+- Le parcours E2E à deux comptes vérifie les genres opposés, la consultation croisée et l'absence de date de naissance dans le JSON public. Un scénario complémentaire facultatif (compte C, même genre que A) vérifie le refus `404` sur accès direct ; il nécessite `E2E_USER_C_EMAIL/PASSWORD`.
+- **CI PR #92 : PASSÉE** sur le SHA `e6a2abe96b516cc55b90d8ee2186261a809f562e` (avant l'ajout du scénario C ; relance attendue pour le nouveau commit) : tests unitaires/lint/build et Playwright réussis ; build Cloudflare Worker réussi. Le job de déploiement production est ignoré sur une PR, comme attendu.
+- **Statut : VALIDÉ PAR CI, EN ATTENTE DE REVUE/FUSION.** Pas encore fusionné, pas encore déployé en production.
+
 ## Inventaire actuel
 
 ## Instantané historique — 2026-10-12 (vérification Playwright production)

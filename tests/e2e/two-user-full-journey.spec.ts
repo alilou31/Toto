@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 const baseUrl = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3000";
 const userA = { email: process.env.E2E_USER_A_EMAIL, password: process.env.E2E_USER_A_PASSWORD };
 const userB = { email: process.env.E2E_USER_B_EMAIL, password: process.env.E2E_USER_B_PASSWORD };
+const userC = { email: process.env.E2E_USER_C_EMAIL, password: process.env.E2E_USER_C_PASSWORD };
 
 async function signIn(page: Page, user: { email?: string; password?: string }) {
   await page.goto("/connexion");
@@ -62,6 +63,20 @@ test("parcours complet à deux comptes : découverte, match, défi à 4 question
     await Promise.all([signIn(pageA, userA), signIn(pageB, userB)]);
     const [idA, idB] = await Promise.all([ownProfileId(pageA), ownProfileId(pageB)]);
     expect(idA).not.toBe(idB);
+
+    // Direct profile URLs must obey the same opposite-gender rule as discovery.
+    const [profileA, profileB] = await Promise.all([pageA.request.get("/api/profile"), pageB.request.get("/api/profile")]);
+    const [dataA, dataB] = await Promise.all([profileA.json(), profileB.json()]);
+    expect(["man", "woman"]).toContain(dataA.profile?.gender);
+    expect(["man", "woman"]).toContain(dataB.profile?.gender);
+    expect(dataA.profile.gender).not.toBe(dataB.profile.gender);
+    const directProfileA = await pageB.request.get(`/api/profiles/${idA}`);
+    const directProfileB = await pageA.request.get(`/api/profiles/${idB}`);
+    expect(directProfileA.status(), "B doit pouvoir consulter le profil opposé de A").toBe(200);
+    expect(directProfileB.status(), "A doit pouvoir consulter le profil opposé de B").toBe(200);
+    const publicProfile = (await directProfileA.json()).profile;
+    expect(publicProfile).not.toHaveProperty("birth_date");
+    expect(publicProfile).not.toHaveProperty("birthDate");
 
     // Mutual interest must create a real persisted match and a conversation.
     await sendInterest(pageA, idB);
@@ -135,5 +150,37 @@ test("parcours complet à deux comptes : découverte, match, défi à 4 question
   } finally {
     await contextA.close();
     await contextB.close();
+  }
+});
+
+
+// Optional isolated regression: a third account with the same gender as A must not read A's public profile.
+test("un membre du même genre ne peut pas lire une fiche par accès direct", async ({ browser }) => {
+  test.skip(
+    !userA.email || !userA.password || !userC.email || !userC.password,
+    "Configurez E2E_USER_A_EMAIL/PASSWORD et E2E_USER_C_EMAIL/PASSWORD ; C doit avoir le même genre que A.",
+  );
+  test.skip(userA.email?.toLowerCase() === userC.email?.toLowerCase(), "Les comptes A et C doivent être distincts.");
+  test.setTimeout(45_000);
+
+  const contextA = await browser.newContext({ baseURL: baseUrl });
+  const contextC = await browser.newContext({ baseURL: baseUrl });
+  const pageA = await contextA.newPage();
+  const pageC = await contextC.newPage();
+  try {
+    await Promise.all([signIn(pageA, userA), signIn(pageC, userC)]);
+    const [idA, idC] = await Promise.all([ownProfileId(pageA), ownProfileId(pageC)]);
+    expect(idA).not.toBe(idC);
+
+    const [profileA, profileC] = await Promise.all([pageA.request.get("/api/profile"), pageC.request.get("/api/profile")]);
+    const [dataA, dataC] = await Promise.all([profileA.json(), profileC.json()]);
+    expect(["man", "woman"]).toContain(dataA.profile?.gender);
+    expect(dataC.profile?.gender, "Le compte C doit être configuré avec le même genre que A").toBe(dataA.profile.gender);
+
+    const directRead = await pageC.request.get(`/api/profiles/${idA}`);
+    expect(directRead.status(), "Un membre du même genre ne doit pas accéder à la fiche par ID").toBe(404);
+  } finally {
+    await contextA.close();
+    await contextC.close();
   }
 });
